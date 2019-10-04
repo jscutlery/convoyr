@@ -3,7 +3,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpExtModule } from './http-ext.module';
 import { useCachePlugin } from './cache-plugin';
 
