@@ -1,4 +1,5 @@
 import { Observable, SubscribableOrPromise } from 'rxjs';
+import { TLSSocket } from 'tls';
 
 export interface Headers {
   [key: string]: string;
@@ -33,7 +34,7 @@ export type NextFn = ({ req: Request }) => Observable<Response>;
 export type SyncOrAsync<T> = T | SubscribableOrPromise<T>;
 
 export interface Plugin {
-  condition({ req }: { req: Request }): boolean;
+  condition?({ req }: { req: Request }): boolean;
   handle({
     req
   }: {
@@ -44,9 +45,8 @@ export interface Plugin {
 
 export function useCachePlugin(): Plugin {
   return {
-    condition: null,
     handle({ req, next }) {
-      throw new Error('🚧 Not implemented error!');
+      return next({req});
     }
   };
 }

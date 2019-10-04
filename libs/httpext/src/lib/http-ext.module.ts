@@ -1,14 +1,7 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { Plugin, Request, NextFn, SyncOrAsync } from './cache-plugin';
-import {
-  HTTP_INTERCEPTORS,
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest,
-  HttpEvent,
-  HttpClientModule
-} from '@angular/common/http';
-import { Observable, isObservable, , of, from } from 'rxjs';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { from, isObservable, Observable, of } from 'rxjs';
+import { NextFn, Plugin, Request, SyncOrAsync } from './cache-plugin';
 
 
 export function isPromise<T>(value: any): value is Promise<T> {
@@ -29,14 +22,22 @@ export class HttpExt {
 
   private _plugins: Plugin[];
 
-  processRequest(req) {
-    this._processRequest(req, this._plugins);
+  constructor({plugins}: {plugins: Plugin[]}) {
+    this._plugins = plugins;
   }
 
-  _processRequest(req: Request, plugins: Plugin[]) {
+  handle({req, handler}) {
+    return this._handle({req, plugins: this._plugins, handler});
+  }
+
+  _handle({req, plugins, handler}: {req: Request, plugins: Plugin[], handler}) {
+
+    if (plugins.length === 0) {
+      return handler(req);
+    }
 
     const next: NextFn = (args) => {
-      const res = this._processRequest(args.req, plugins.slice(1))
+      const res = this._handle({req: args.req, plugins: plugins.slice(1), handler})
       return fromSyncOrAsync(res);
     }
 
@@ -47,21 +48,30 @@ export class HttpExt {
 }
 
 export class HttpExtInterceptor implements HttpInterceptor {
-  private httpExt: Plugin[];
+  private _httpExt: HttpExt;
 
   constructor({ httpExt }: { httpExt: HttpExt }) {
     this._httpExt = httpExt;
   }
 
   intercept(
-    req: HttpRequest<any>,
+    ngReq: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return this._httpExt.processRequest(fromNgRequest(req)).pipe(
-      concatMap(ngReq => next(ngReq)),
-      concatMap(ngRes => this._httpExt.processResponse(fromNgResponse(ngRes))),
-      map(res => toNgRes(res))
-    );
+    // (Request) => Observable<Response>
+    // const handler = req => {
+    //   return next(toNgRequest(req))
+    //     .pipe(map(fromNgResponse));      
+    // }
+    // return this._httpExt.handle({req: fromNgRequest(ngReq), handler})
+
+    return this._httpExt.handle({req: ngReq, handler: next});
+
+    // return this._httpExt.handle(fromNgRequest(req)).pipe(
+    //   concatMap(ngReq => next(ngReq)),
+    //   concatMap(ngRes => this._httpExt.processResponse(fromNgResponse(ngRes))),
+    //   map(res => toNgRes(res))
+    // );
   }
 }
 
@@ -77,10 +87,9 @@ export class HttpExtModule {
         {
           provide: HTTP_INTERCEPTORS,
           multi: true,
-          useValue: httpExt
+          useValue: httpExtInterceptor
         }
       ]
     };
   }
 }
-<

@@ -27,7 +27,7 @@ describe('CachePlugin', () => {
 
   afterEach(() => httpController.verify());
 
-  xit('🚧 should retrieve resource with exact same url once', () => {
+  it('🚧 should retrieve resource with exact same url once', () => {
     const observer = jest.fn();
 
     httpClient
