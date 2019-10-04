@@ -30,8 +30,6 @@ describe('CachePlugin', () => {
   xit('🚧 should retrieve resource with exact same url once', () => {
     const observer = jest.fn();
 
-    console.log(httpController);
-
     httpClient
       .get('https://jscutlery.github.io/items/ITEM_ID')
       .subscribe(observer);
