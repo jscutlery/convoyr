@@ -1,13 +1,64 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
+import { HttpExtModule } from './http-ext.module';
+import { createCachePlugin } from './cache-plugin';
 
 describe('CachePlugin', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [
+        HttpClientTestingModule,
+        HttpExtModule.forRoot({
+          plugins: [createCachePlugin()]
+        })
+      ]
     });
   });
 
-  it.todo('🚧 should retrieve resource with exact same url once');
-  
+  let httpClient: HttpClient;
+  beforeEach(() => (httpClient = TestBed.get(HttpClient)));
+
+  let httpController: HttpTestingController;
+  beforeEach(() => (httpController = TestBed.get(HttpTestingController)));
+
+  afterEach(() => httpController.verify());
+
+  xit('🚧 should retrieve resource with exact same url once', () => {
+    const observer = jest.fn();
+
+    console.log(httpController);
+
+    httpClient
+      .get('https://jscutlery.github.io/items/ITEM_ID')
+      .subscribe(observer);
+
+    httpController
+      .expectOne('https://jscutlery.github.io/items/ITEM_ID')
+      .flush({
+        id: 'ITEM_ID',
+        title: 'ITEM_TITLE'
+      });
+
+    expect(observer).toHaveBeenCalledTimes(1);
+    expect(observer.mock.calls[0][0]).toEqual({
+      id: 'ITEM_ID',
+      title: 'ITEM_TITLE'
+    });
+
+    httpClient
+      .get('https://jscutlery.github.io/items/ITEM_ID')
+      .subscribe(observer);
+
+    httpController.expectNone('https://jscutlery.github.io/items/ITEM_ID');
+
+    expect(observer).toHaveBeenCalledTimes(2);
+    expect(observer.mock.calls[1][0]).toEqual({
+      id: 'ITEM_ID',
+      title: 'ITEM_TITLE'
+    });
+  });
 });
