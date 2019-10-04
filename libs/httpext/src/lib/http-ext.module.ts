@@ -65,7 +65,7 @@ export class HttpExtInterceptor implements HttpInterceptor {
     // }
     // return this._httpExt.handle({req: fromNgRequest(ngReq), handler})
 
-    return this._httpExt.handle({req: ngReq, handler: next});
+    return this._httpExt.handle({req: ngReq, handler: req => next.handle(req)});
 
     // return this._httpExt.handle(fromNgRequest(req)).pipe(
     //   concatMap(ngReq => next(ngReq)),

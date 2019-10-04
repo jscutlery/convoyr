@@ -1,9 +1,13 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, async, fakeAsync } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  HttpClient,
+  HTTP_INTERCEPTORS,
+  HttpClientModule
+} from '@angular/common/http';
 import { HttpExtModule } from './http-ext.module';
 import { useCachePlugin } from './cache-plugin';
 
@@ -27,7 +31,7 @@ describe('CachePlugin', () => {
 
   afterEach(() => httpController.verify());
 
-  it('🚧 should retrieve resource with exact same url once', () => {
+  xit('🚧 should retrieve resource with exact same url once', () => {
     const observer = jest.fn();
 
     httpClient
