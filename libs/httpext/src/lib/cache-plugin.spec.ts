@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { HttpExtModule } from './http-ext.module';
-import { createCachePlugin } from './cache-plugin';
+import { useCachePlugin } from './cache-plugin';
 
 describe('CachePlugin', () => {
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe('CachePlugin', () => {
       imports: [
         HttpClientTestingModule,
         HttpExtModule.forRoot({
-          plugins: [createCachePlugin()]
+          plugins: [useCachePlugin()]
         })
       ]
     });
