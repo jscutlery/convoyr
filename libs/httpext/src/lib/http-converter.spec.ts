@@ -2,6 +2,7 @@ import { HttpHeaders, HttpRequest, HttpParams } from '@angular/common/http';
 
 import { Request } from './http';
 import { fromNgReq, toNgReq } from './http-converter';
+import objectContaining = jasmine.objectContaining;
 
 describe('fromNgReq', () => {
   it('should convert HttpRequest with body to Request object', () => {
@@ -35,6 +36,25 @@ describe('fromNgReq', () => {
 });
 
 describe('toNgReq', () => {
+  it('should convert Request with body to HttpRequest', () => {
+    const request: Request = {
+      url: 'https://presidents.com',
+      method: 'PUT',
+      body: { data: { name: 'Jacques Chirac' } },
+      headers: { Authorization: 'Bearer token' },
+      params: { id: '1' }
+    };
+
+    const ngRequest = toNgReq(request);
+    expect(ngRequest).toEqual(
+      objectContaining({
+        method: 'PUT',
+        url: 'https://presidents.com',
+        body: { data: { name: 'Jacques Chirac' } }
+      })
+    );
+    expect(ngRequest.headers.get('Authorization')).toEqual('Bearer token');
+  });
   it('should convert Request object to HttpRequest', () => {
     const requests: Request<unknown>[] = [
       {
