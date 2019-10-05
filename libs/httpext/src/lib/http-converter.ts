@@ -2,7 +2,7 @@ import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 
 import { HttpMethod, Request } from './http';
 
-export function fromNgClass(
+function fromNgClass(
   ngClass: HttpHeaders | HttpParams
 ): { [key: string]: string } {
   return ngClass.keys().reduce((obj, key) => ({ [key]: ngClass.get(key) }), {});
