@@ -61,24 +61,13 @@ describe('HttpExtModule', () => {
     });
 
     expect(mockHandle).toHaveBeenCalledTimes(1);
-    expect(mockHandle.mock.calls[0][0].req).toMatchInlineSnapshot(
-      {
-        url: 'https://jscutlery.github.io/items/ITEM_ID',
-        method: 'GET',
-        body: null,
-        headers: {},
-        params: {}
-      },
-      `
-      Object {
-        "body": null,
-        "headers": Object {},
-        "method": "GET",
-        "params": Object {},
-        "url": "https://jscutlery.github.io/items/ITEM_ID",
-      }
-    `
-    );
+    expect(mockHandle.mock.calls[0][0].req).toEqual({
+      url: 'https://jscutlery.github.io/items/ITEM_ID',
+      method: 'GET',
+      body: null,
+      headers: {},
+      params: {}
+    });
     expect(typeof mockHandle.mock.calls[0][0].next).toEqual('function');
   });
 });
