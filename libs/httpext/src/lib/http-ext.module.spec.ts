@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { HttpExtModule } from './http-ext.module';
@@ -9,12 +12,12 @@ function loggerPlugin(): Plugin {
   return {
     handle({ req, next }) {
       console.log('hello world');
-      return next({req});
+      return next({ req });
     }
   };
 }
 
-describe('CachePlugin', () => {
+describe('HttpExtModule', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -56,5 +59,5 @@ describe('CachePlugin', () => {
     });
 
     expect(console.log).toHaveBeenCalledWith('hello world');
-  })
+  });
 });
