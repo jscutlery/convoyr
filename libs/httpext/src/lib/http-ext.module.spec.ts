@@ -7,15 +7,18 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpExtModule } from './http-ext.module';
 import { Plugin } from './plugin';
+import mock = jest.mock;
 
 describe('HttpExtModule', () => {
+  let mockHandle: jest.Mock;
+
   beforeEach(() => {
+    /* A plugin handle that just calls through the next plugin.*/
+    mockHandle = jest.fn(({ req, next }) => next({ req }));
+
     function spyingPlugin(): Plugin {
       return {
-        handle({ req, next }) {
-          console.log('hello world');
-          return next({ req });
-        }
+        handle: mockHandle
       };
     }
 
@@ -39,7 +42,6 @@ describe('HttpExtModule', () => {
 
   it('should log once', () => {
     const observer = jest.fn();
-    console.log = jest.fn();
 
     httpClient
       .get('https://jscutlery.github.io/items/ITEM_ID')
@@ -58,6 +60,25 @@ describe('HttpExtModule', () => {
       title: 'ITEM_TITLE'
     });
 
-    expect(console.log).toHaveBeenCalledWith('hello world');
+    expect(mockHandle).toHaveBeenCalledTimes(1);
+    expect(mockHandle.mock.calls[0][0].req).toMatchInlineSnapshot(
+      {
+        url: 'https://jscutlery.github.io/items/ITEM_ID',
+        method: 'GET',
+        body: null,
+        headers: {},
+        params: {}
+      },
+      `
+      Object {
+        "body": null,
+        "headers": Object {},
+        "method": "GET",
+        "params": Object {},
+        "url": "https://jscutlery.github.io/items/ITEM_ID",
+      }
+    `
+    );
+    expect(typeof mockHandle.mock.calls[0][0].next).toEqual('function');
   });
 });
