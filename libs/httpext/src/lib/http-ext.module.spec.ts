@@ -1,23 +1,32 @@
-import { TestBed, async, fakeAsync } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import {
-  HttpClient,
-  HTTP_INTERCEPTORS,
-  HttpClientModule
-} from '@angular/common/http';
-import { HttpExtModule } from './http-ext.module';
-import { useCachePlugin } from './cache-plugin';
+import { TestBed } from '@angular/core/testing';
 
-describe('CachePlugin', () => {
+import { HttpExtModule } from './http-ext.module';
+import { Plugin } from './plugin';
+import mock = jest.mock;
+
+describe('HttpExtModule', () => {
+  let mockHandle: jest.Mock;
+
   beforeEach(() => {
+    /* A plugin handle that just calls through the next plugin.*/
+    mockHandle = jest.fn(({ req, next }) => next({ req }));
+
+    function spyingPlugin(): Plugin {
+      return {
+        handle: mockHandle
+      };
+    }
+
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         HttpExtModule.forRoot({
-          plugins: [useCachePlugin()]
+          plugins: [spyingPlugin()]
         })
       ]
     });
@@ -31,7 +40,7 @@ describe('CachePlugin', () => {
 
   afterEach(() => httpController.verify());
 
-  xit('🚧 should retrieve resource with exact same url once', () => {
+  it('should log once', () => {
     const observer = jest.fn();
 
     httpClient
@@ -51,16 +60,14 @@ describe('CachePlugin', () => {
       title: 'ITEM_TITLE'
     });
 
-    httpClient
-      .get('https://jscutlery.github.io/items/ITEM_ID')
-      .subscribe(observer);
-
-    httpController.expectNone('https://jscutlery.github.io/items/ITEM_ID');
-
-    expect(observer).toHaveBeenCalledTimes(2);
-    expect(observer.mock.calls[1][0]).toEqual({
-      id: 'ITEM_ID',
-      title: 'ITEM_TITLE'
+    expect(mockHandle).toHaveBeenCalledTimes(1);
+    expect(mockHandle.mock.calls[0][0].req).toEqual({
+      url: 'https://jscutlery.github.io/items/ITEM_ID',
+      method: 'GET',
+      body: null,
+      headers: {},
+      params: {}
     });
+    expect(typeof mockHandle.mock.calls[0][0].next).toEqual('function');
   });
 });
