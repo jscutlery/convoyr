@@ -55,48 +55,22 @@ describe('toNgReq', () => {
     );
     expect(ngRequest.headers.get('Authorization')).toEqual('Bearer token');
   });
-  it('should convert Request object to HttpRequest', () => {
-    const requests: Request<unknown>[] = [
-      {
-        url: 'https://presidents.com',
-        method: 'PUT',
-        body: { data: { name: 'Jack Chirac' } },
-        headers: { Authorization: 'token' },
-        params: { id: '1' }
-      },
-      {
-        url: 'https://test.com',
+
+  it('should convert Request wihtout body to HttpRequest', () => {
+    const request: Request = {
+      url: 'https://test.com',
+      method: 'GET',
+      body: null,
+      headers: {},
+      params: {}
+    };
+
+    const ngRequest = toNgReq(request);
+    expect(ngRequest).toEqual(
+      objectContaining({
         method: 'GET',
-        body: null,
-        headers: {},
-        params: {}
-      }
-    ];
-
-    const expectations: HttpRequest<any>[] = [
-      new HttpRequest(
-        'PUT',
-        'https://presidents.com',
-        { data: { name: 'Jack Chirac' } },
-        {
-          headers: new HttpHeaders({ Authorization: 'token' }),
-          params: new HttpParams().set('id', '1')
-        }
-      ),
-      new HttpRequest('GET', 'https://test.com', {
-        headers: new HttpHeaders(),
-        params: new HttpParams()
+        url: 'https://test.com'
       })
-    ];
-
-    requests.forEach((request, i) => {
-      const converted = toNgReq(request);
-      expect(converted).toHaveProperty('method', expectations[i].method);
-      expect(converted).toHaveProperty('url', expectations[i].url);
-      expect(converted.body).toEqual(expectations[i].body);
-      Object.entries(requests[i].headers).forEach(([header, value]) =>
-        expect(expectations[i].headers.get(header)).toBe(value)
-      );
-    });
+    );
   });
 });
