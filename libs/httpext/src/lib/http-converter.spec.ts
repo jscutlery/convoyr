@@ -4,39 +4,33 @@ import { Request } from './http';
 import { fromNgReq, toNgReq } from './http-converter';
 
 describe('fromNgReq', () => {
-  it('should convert HttpRequest to Request object', () => {
-    const requests = [
-      new HttpRequest(
-        'POST',
-        'https://angular.io',
-        { data: 'hello world' },
-        { headers: new HttpHeaders({ Authorization: 'token' }) }
-      ),
-      new HttpRequest('GET', 'https://wikipedia.com', {
-        params: new HttpParams().set('id', '1')
-      })
-    ];
-
-    const expectations: Request<unknown>[] = [
-      {
-        url: 'https://angular.io',
-        method: 'POST',
-        body: { data: 'hello world' },
-        headers: { Authorization: 'token' },
-        params: {}
-      },
-      {
-        url: 'https://wikipedia.com',
-        method: 'GET',
-        body: null,
-        headers: {},
-        params: { id: '1' }
-      }
-    ];
-
-    requests.forEach((ngRequest, i) =>
-      expect(fromNgReq(ngRequest)).toEqual(expectations[i])
+  it('should convert POST HttpRequest to Request object', () => {
+    const ngRequest = new HttpRequest(
+      'POST',
+      'https://angular.io',
+      { data: 'hello world' },
+      { headers: new HttpHeaders({ Authorization: 'token' }) }
     );
+    expect(fromNgReq(ngRequest)).toEqual({
+      url: 'https://angular.io',
+      method: 'POST',
+      body: { data: 'hello world' },
+      headers: { Authorization: 'token' },
+      params: {}
+    });
+  });
+
+  it('should convert GET HttpRequest to Request object', () => {
+    const ngRequest = new HttpRequest('GET', 'https://wikipedia.com', {
+      params: new HttpParams().set('id', '1')
+    });
+    expect(fromNgReq(ngRequest)).toEqual({
+      url: 'https://wikipedia.com',
+      method: 'GET',
+      body: null,
+      headers: {},
+      params: { id: '1' }
+    });
   });
 });
 
