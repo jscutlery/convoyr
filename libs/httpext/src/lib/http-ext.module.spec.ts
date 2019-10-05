@@ -8,22 +8,22 @@ import { TestBed } from '@angular/core/testing';
 import { HttpExtModule } from './http-ext.module';
 import { Plugin } from './plugin';
 
-function loggerPlugin(): Plugin {
-  return {
-    handle({ req, next }) {
-      console.log('hello world');
-      return next({ req });
-    }
-  };
-}
-
 describe('HttpExtModule', () => {
   beforeEach(() => {
+    function spyingPlugin(): Plugin {
+      return {
+        handle({ req, next }) {
+          console.log('hello world');
+          return next({ req });
+        }
+      };
+    }
+
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         HttpExtModule.forRoot({
-          plugins: [loggerPlugin()]
+          plugins: [spyingPlugin()]
         })
       ]
     });
