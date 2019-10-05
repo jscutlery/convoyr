@@ -4,7 +4,7 @@ import { Request } from './http';
 import { fromNgReq, toNgReq } from './http-converter';
 
 describe('fromNgReq', () => {
-  it('should convert POST HttpRequest to Request object', () => {
+  it('should convert HttpRequest with body to Request object', () => {
     const ngRequest = new HttpRequest(
       'POST',
       'https://angular.io',
@@ -20,7 +20,7 @@ describe('fromNgReq', () => {
     });
   });
 
-  it('should convert GET HttpRequest to Request object', () => {
+  it('should convert HttpRequest without body to Request object', () => {
     const ngRequest = new HttpRequest('GET', 'https://wikipedia.com', {
       params: new HttpParams().set('id', '1')
     });
