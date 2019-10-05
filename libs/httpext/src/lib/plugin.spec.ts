@@ -1,15 +1,18 @@
-import { TestBed, async, fakeAsync } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
-import {
-  HttpClient,
-  HTTP_INTERCEPTORS,
-  HttpClientModule
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+
 import { HttpExtModule } from './http-ext.module';
-import { useCachePlugin } from './cache-plugin';
+import { Plugin } from './plugin';
+
+function loggerPlugin(): Plugin {
+  return {
+    handle({ req, next }) {
+      console.log('hello world');
+      return next({req});
+    }
+  };
+}
 
 describe('CachePlugin', () => {
   beforeEach(() => {
@@ -17,7 +20,7 @@ describe('CachePlugin', () => {
       imports: [
         HttpClientTestingModule,
         HttpExtModule.forRoot({
-          plugins: [useCachePlugin()]
+          plugins: [loggerPlugin()]
         })
       ]
     });
@@ -31,8 +34,9 @@ describe('CachePlugin', () => {
 
   afterEach(() => httpController.verify());
 
-  xit('🚧 should retrieve resource with exact same url once', () => {
+  it('should log once', () => {
     const observer = jest.fn();
+    console.log = jest.fn();
 
     httpClient
       .get('https://jscutlery.github.io/items/ITEM_ID')
@@ -51,16 +55,6 @@ describe('CachePlugin', () => {
       title: 'ITEM_TITLE'
     });
 
-    httpClient
-      .get('https://jscutlery.github.io/items/ITEM_ID')
-      .subscribe(observer);
-
-    httpController.expectNone('https://jscutlery.github.io/items/ITEM_ID');
-
-    expect(observer).toHaveBeenCalledTimes(2);
-    expect(observer.mock.calls[1][0]).toEqual({
-      id: 'ITEM_ID',
-      title: 'ITEM_TITLE'
-    });
-  });
+    expect(console.log).toHaveBeenCalledWith('hello world');
+  })
 });
