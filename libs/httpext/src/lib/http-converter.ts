@@ -8,7 +8,7 @@ function fromNgClass(
   return ngClass.keys().reduce((obj, key) => ({ [key]: ngClass.get(key) }), {});
 }
 
-export function fromNgReq(req: HttpRequest<any>): Request<unknown> {
+export function fromNgReq(req: HttpRequest<unknown>): Request<unknown> {
   return {
     url: req.url,
     method: req.method as HttpMethod,
@@ -18,7 +18,7 @@ export function fromNgReq(req: HttpRequest<any>): Request<unknown> {
   };
 }
 
-export function toNgReq(req: Request<unknown>): HttpRequest<any> {
+export function toNgReq(req: Request<unknown>): HttpRequest<unknown> {
   const init = {
     headers: new HttpHeaders(req.headers),
     params: new HttpParams({ fromObject: req.params })

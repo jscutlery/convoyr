@@ -7,7 +7,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpExtModule } from './http-ext.module';
 import { Plugin } from './plugin';
-import mock = jest.mock;
 
 describe('HttpExtModule', () => {
   let mockHandle: jest.Mock;
@@ -40,7 +39,7 @@ describe('HttpExtModule', () => {
 
   afterEach(() => httpController.verify());
 
-  it('should log once', () => {
+  it('should handle http request', () => {
     const observer = jest.fn();
 
     httpClient

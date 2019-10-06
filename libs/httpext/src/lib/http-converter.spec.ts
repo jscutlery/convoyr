@@ -56,7 +56,7 @@ describe('toNgReq', () => {
     expect(ngRequest.headers.get('Authorization')).toEqual('Bearer token');
   });
 
-  it('should convert Request wihtout body to HttpRequest', () => {
+  it('should convert Request without body to HttpRequest', () => {
     const request: Request = {
       url: 'https://test.com',
       method: 'GET',
