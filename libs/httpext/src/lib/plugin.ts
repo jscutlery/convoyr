@@ -3,11 +3,11 @@ import { NextFn } from './http-ext';
 import { SyncOrAsync } from './utils/from-sync-or-async';
 
 export interface Plugin {
-  condition?({ req }: { req: Request }): boolean;
+  condition?({ request }: { request: Request }): boolean;
   handle({
-    req
+    request
   }: {
-    req: Request;
+    request: Request;
     next: NextFn;
   }): SyncOrAsync<Response>;
 }

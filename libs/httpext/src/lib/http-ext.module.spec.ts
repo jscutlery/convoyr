@@ -13,7 +13,7 @@ describe('HttpExtModule', () => {
 
   beforeEach(() => {
     /* A plugin handle that just calls through the next plugin.*/
-    mockHandle = jest.fn(({ req, next }) => next({ req }));
+    mockHandle = jest.fn(({ request, next }) => next({ request }));
 
     function spyingPlugin(): Plugin {
       return {
@@ -60,7 +60,7 @@ describe('HttpExtModule', () => {
     });
 
     expect(mockHandle).toHaveBeenCalledTimes(1);
-    expect(mockHandle.mock.calls[0][0].req).toEqual({
+    expect(mockHandle.mock.calls[0][0].request).toEqual({
       url: 'https://jscutlery.github.io/items/ITEM_ID',
       method: 'GET',
       body: null,

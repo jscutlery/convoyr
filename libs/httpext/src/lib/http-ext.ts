@@ -4,7 +4,7 @@ import { Request } from './http';
 import { Plugin } from './plugin';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 
-export type NextFn = ({ req: Request }) => Observable<Response>;
+export type NextFn = ({ request: Request }) => Observable<Response>;
 
 export class HttpExt {
   private _plugins: Plugin[];
@@ -14,37 +14,37 @@ export class HttpExt {
   }
 
   handle({
-    req,
+    request,
     handler
   }: {
-    req: Request<unknown>;
-    handler: (req: Request<unknown>) => Observable<any>;
+    request: Request<unknown>;
+    handler: (request: Request<unknown>) => Observable<any>;
   }) {
-    return this._handle({ req, plugins: this._plugins, handler });
+    return this._handle({ request, plugins: this._plugins, handler });
   }
 
   private _handle({
-    req,
+    request,
     plugins,
     handler
   }: {
-    req: Request;
+    request: Request;
     plugins: Plugin[];
     handler;
   }) {
     if (plugins.length === 0) {
-      return handler(req);
+      return handler(request);
     }
 
     const next: NextFn = args => {
-      const res = this._handle({
-        req: args.req,
+      const response = this._handle({
+        request: args.request,
         plugins: plugins.slice(1),
         handler
       });
-      return fromSyncOrAsync(res);
+      return fromSyncOrAsync(response);
     };
 
-    return plugins[0].handle({ req, next });
+    return plugins[0].handle({ request, next });
   }
 }
