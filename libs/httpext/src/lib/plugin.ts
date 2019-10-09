@@ -1,5 +1,6 @@
-import { Request, Response } from './http';
 import { RequestHandlerFn } from './http-ext';
+import { Request } from './request';
+import { Response } from './response';
 import { SyncOrAsync } from './utils/from-sync-or-async';
 
 export interface Plugin {

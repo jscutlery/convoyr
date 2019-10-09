@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpRequest, HttpParams } from '@angular/common/http';
 
-import { Request } from './http';
 import { fromNgReq, toNgReq } from './http-converter';
+import { Request } from './request';
 import objectContaining = jasmine.objectContaining;
 
 describe('fromNgReq', () => {

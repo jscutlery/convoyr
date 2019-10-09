@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 
-import { Request } from './http';
 import { HttpExt } from './http-ext';
+import { Request } from './request';
 
 /* A plugin handle that just calls through the next plugin.*/
 export function createSpyPlugin(

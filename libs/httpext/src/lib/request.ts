@@ -1,6 +1,4 @@
-export interface Headers {
-  [key: string]: string;
-}
+import { Headers } from './headers';
 
 export type HttpMethod =
   | 'HEAD'
@@ -17,11 +15,4 @@ export interface Request<T = unknown> {
   readonly body: T | null;
   readonly headers: Headers;
   readonly params: { [key: string]: string | string[] };
-}
-
-export interface Response<T = unknown> {
-  data: T;
-  status: number;
-  statusText: string;
-  headers: Headers;
 }

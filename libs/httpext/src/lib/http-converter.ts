@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 
-import { HttpMethod, Request } from './http';
+import { HttpMethod, Request } from './request';
 
 function fromNgClass(
   ngClass: HttpHeaders | HttpParams

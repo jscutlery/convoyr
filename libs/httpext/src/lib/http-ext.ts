@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
 
-import { Request, Response } from './http';
 import { Plugin } from './plugin';
+import { Request } from './request';
+import { Response } from './response';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
 
