@@ -74,14 +74,14 @@ describe('HttpExt', () => {
 
   it('should conditionally handle plugins', done => {
     const pluginA = createSpyPlugin(req =>
-      req.url.includes('the-ultimate-question-of-life')
+      req.url.startsWith('https://answer-to-the-ultimate-question-of-life.com/')
     );
     const pluginB = createSpyPlugin(req =>
-      req.url.includes('something-else-that-do-not-match')
+      req.url.startsWith('https://something-else-that-do-not-match.com/')
     );
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
     const request: Request = {
-      url: 'https://answer-to-the-ultimate-question-of-life.com',
+      url: 'https://answer-to-the-ultimate-question-of-life.com/',
       method: 'GET',
       body: null,
       headers: {},
@@ -101,7 +101,7 @@ describe('HttpExt', () => {
 
     /* The first plugin should match the condition and handle the request */
     expect(pluginA.condition.mock.calls[0][0].request).toEqual({
-      url: 'https://answer-to-the-ultimate-question-of-life.com',
+      url: 'https://answer-to-the-ultimate-question-of-life.com/',
       method: 'GET',
       body: null,
       headers: {},
@@ -110,7 +110,7 @@ describe('HttpExt', () => {
     expect(pluginA.condition.mock.results[0].value).toBeTruthy();
     expect(pluginA.handle.mock.calls.length).toBe(1);
     expect(pluginA.handle.mock.calls[0][0].request).toEqual({
-      url: 'https://answer-to-the-ultimate-question-of-life.com',
+      url: 'https://answer-to-the-ultimate-question-of-life.com/',
       method: 'GET',
       body: null,
       headers: {},
@@ -119,7 +119,7 @@ describe('HttpExt', () => {
 
     /* The second plugin shouldn't match the condition and never handle */
     expect(pluginB.condition.mock.calls[0][0].request).toEqual({
-      url: 'https://answer-to-the-ultimate-question-of-life.com',
+      url: 'https://answer-to-the-ultimate-question-of-life.com/',
       method: 'GET',
       body: null,
       headers: {},
