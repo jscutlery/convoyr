@@ -2,6 +2,7 @@ import { of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
 import { createRequest, Request } from './request';
+import { createResponse } from './response';
 
 /* A plugin handle that just calls through the next plugin.*/
 export function createSpyPlugin(
@@ -24,13 +25,12 @@ describe('HttpExt', () => {
 
     const response = httpExt.handle({
       request,
-      handler: req =>
-        of({
-          data: { answer: 42 },
-          status: 200,
-          statusText: 'ok',
-          headers: {}
-        })
+      handler: () =>
+        of(
+          createResponse({
+            data: { answer: 42 }
+          })
+        )
     });
 
     expect(pluginA.handle.mock.calls.length).toBe(1);
@@ -56,7 +56,7 @@ describe('HttpExt', () => {
       expect(resp).toEqual({
         data: { answer: 42 },
         status: 200,
-        statusText: 'ok',
+        statusText: 'OK',
         headers: {}
       });
       done();
@@ -85,7 +85,7 @@ describe('HttpExt', () => {
         of({
           data: { answer: 42 },
           status: 200,
-          statusText: 'ok',
+          statusText: 'OK',
           headers: {}
         })
     });
@@ -123,7 +123,7 @@ describe('HttpExt', () => {
       expect(resp).toEqual({
         data: { answer: 42 },
         status: 200,
-        statusText: 'ok',
+        statusText: 'OK',
         headers: {}
       });
       done();
