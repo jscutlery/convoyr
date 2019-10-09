@@ -7,7 +7,7 @@ import { isFunction } from './utils/is-function';
 
 export type NextFn = ({ request: Request }) => Observable<Response>;
 
-export type RequestHandler = (request: Request<unknown>) => Observable<any>;
+export type RequestHandler = (request: Request) => Observable<any>;
 
 export class HttpExt {
   private _plugins: Plugin[];
@@ -16,13 +16,7 @@ export class HttpExt {
     this._plugins = plugins;
   }
 
-  handle({
-    request,
-    handler
-  }: {
-    request: Request<unknown>;
-    handler: RequestHandler;
-  }) {
+  handle({ request, handler }: { request: Request; handler: RequestHandler }) {
     return this._handle({ request, plugins: this._plugins, handler });
   }
 
@@ -31,7 +25,7 @@ export class HttpExt {
     plugins,
     handler
   }: {
-    request: Request<unknown>;
+    request: Request;
     plugins: Plugin[];
     handler;
   }) {
