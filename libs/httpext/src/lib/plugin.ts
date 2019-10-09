@@ -1,5 +1,5 @@
 import { Request, Response } from './http';
-import { NextFn } from './http-ext';
+import { RequestHandlerFn } from './http-ext';
 import { SyncOrAsync } from './utils/from-sync-or-async';
 
 export interface Plugin {
@@ -8,6 +8,6 @@ export interface Plugin {
     request
   }: {
     request: Request;
-    next: NextFn;
+    next: RequestHandlerFn;
   }): SyncOrAsync<Response>;
 }

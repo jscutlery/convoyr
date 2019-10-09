@@ -5,9 +5,7 @@ import { Plugin } from './plugin';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
 
-export type NextFn = ({ request: Request }) => Observable<Response>;
-
-export type RequestHandler = ({ request: Request }) => Observable<any>;
+export type RequestHandlerFn = ({ request: Request }) => Observable<Response>;
 
 export class HttpExt {
   private _plugins: Plugin[];
@@ -21,7 +19,7 @@ export class HttpExt {
     handler
   }: {
     request: Request;
-    handler: RequestHandler;
+    handler: RequestHandlerFn;
   }): Observable<Response> {
     return this._handle({ request, plugins: this._plugins, handler });
   }
@@ -33,7 +31,7 @@ export class HttpExt {
   }: {
     request: Request;
     plugins: Plugin[];
-    handler: RequestHandler;
+    handler: RequestHandlerFn;
   }): Observable<Response> {
     if (plugins.length === 0) {
       return handler({ request });
@@ -44,7 +42,7 @@ export class HttpExt {
     /**
      * Calls next plugins recursively.
      */
-    const next: NextFn = args => {
+    const next: RequestHandlerFn = args => {
       const response = this._handle({
         request: args.request,
         plugins: plugins.slice(1),
