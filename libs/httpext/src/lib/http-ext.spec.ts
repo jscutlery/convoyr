@@ -24,7 +24,7 @@ describe('HttpExt', () => {
       url: 'https://answer-to-the-ultimate-question-of-life.com'
     });
 
-    const response = httpExt.handle({
+    const response$ = httpExt.handle({
       request,
       handler: () =>
         of(
@@ -58,7 +58,7 @@ describe('HttpExt', () => {
       })
     );
 
-    response.subscribe(resp => {
+    response$.subscribe(resp => {
       expect(resp).toEqual({
         data: { answer: 42 },
         status: 200,
