@@ -73,7 +73,7 @@ describe('HttpExt', () => {
     );
   });
 
-  it('should conditionally handle plugins', done => {
+  it('should conditionally handle plugins', () => {
     const pluginA = createSpyPlugin(req =>
       req.url.startsWith('https://answer-to-the-ultimate-question-of-life.com/')
     );
@@ -85,7 +85,7 @@ describe('HttpExt', () => {
       url: 'https://answer-to-the-ultimate-question-of-life.com/'
     });
 
-    const response = httpExt.handle({
+    const response$ = httpExt.handle({
       request,
       handler: () =>
         of(
@@ -95,43 +95,23 @@ describe('HttpExt', () => {
         )
     });
 
-    /* The first plugin should match the condition and handle the request */
-    expect(pluginA.condition.mock.calls[0][0].request).toEqual({
-      url: 'https://answer-to-the-ultimate-question-of-life.com/',
-      method: 'GET',
-      body: null,
-      headers: {},
-      params: {}
-    });
-    expect(pluginA.condition.mock.results[0].value).toBeTruthy();
-    expect(pluginA.handle.mock.calls.length).toBe(1);
-    expect(pluginA.handle.mock.calls[0][0].request).toEqual({
-      url: 'https://answer-to-the-ultimate-question-of-life.com/',
-      method: 'GET',
-      body: null,
-      headers: {},
-      params: {}
-    });
+    /* The first plugin should match the condition and handle the request. */
+    expect(pluginA.handle).toHaveBeenCalledTimes(1);
 
-    /* The second plugin shouldn't match the condition and never handle */
-    expect(pluginB.condition.mock.calls[0][0].request).toEqual({
-      url: 'https://answer-to-the-ultimate-question-of-life.com/',
-      method: 'GET',
-      body: null,
-      headers: {},
-      params: {}
-    });
-    expect(pluginB.condition.mock.results[0].value).toBeFalsy();
-    expect(pluginB.handle.mock.calls.length).toBe(0);
+    /* The second plugin should not be called as it doesn't match the condition. */
+    expect(pluginB.handle).not.toBeCalled();
 
-    response.subscribe(resp => {
-      expect(resp).toEqual({
-        data: { answer: 42 },
-        status: 200,
-        statusText: 'OK',
-        headers: {}
-      });
-      done();
-    });
+    const responseObserver = jest.fn();
+
+    response$.subscribe(responseObserver);
+
+    expect(responseObserver).toHaveBeenCalledTimes(1);
+    expect(responseObserver).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: {
+          answer: 42
+        }
+      })
+    );
   });
 });
