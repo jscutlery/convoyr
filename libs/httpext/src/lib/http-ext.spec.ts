@@ -19,6 +19,7 @@ describe('HttpExt', () => {
     const pluginA = createSpyPlugin();
     const pluginB = createSpyPlugin();
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
+
     const request = createRequest({
       url: 'https://answer-to-the-ultimate-question-of-life.com'
     });
@@ -33,7 +34,7 @@ describe('HttpExt', () => {
         )
     });
 
-    expect(pluginA.handle.mock.calls.length).toBe(1);
+    expect(pluginA.handle).toHaveBeenCalledTimes(1);
     expect(typeof pluginA.handle.mock.calls[0][0].next).toBe('function');
     expect(pluginA.handle.mock.calls[0][0].request).toEqual({
       url: 'https://answer-to-the-ultimate-question-of-life.com',
@@ -42,7 +43,8 @@ describe('HttpExt', () => {
       headers: {},
       params: {}
     });
-    expect(pluginB.handle.mock.calls.length).toBe(1);
+
+    expect(pluginB.handle).toHaveBeenCalledTimes(1);
     expect(typeof pluginB.handle.mock.calls[0][0].next).toBe('function');
     expect(pluginB.handle.mock.calls[0][0].request).toEqual({
       url: 'https://answer-to-the-ultimate-question-of-life.com',
