@@ -11,5 +11,3 @@ export interface Plugin {
     next: NextFn;
   }): SyncOrAsync<Response>;
 }
-
-
