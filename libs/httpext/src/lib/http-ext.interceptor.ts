@@ -5,7 +5,6 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Response } from './http';
 
 import { fromNgReq, toNgReq } from './http-converter';
 import { HttpExt } from './http-ext';
@@ -28,7 +27,7 @@ export class HttpExtInterceptor implements HttpInterceptor {
      */
     return this._httpExt.handle({
       request: fromNgReq(ngReq),
-      handler: request => next.handle(toNgReq(request))
+      handler: ({ request }) => next.handle(toNgReq(request))
     }) as Observable<any>;
   }
 }
