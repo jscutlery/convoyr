@@ -37,6 +37,10 @@ export class HttpExt {
     }
 
     const [plugin] = plugins;
+
+    /**
+     * Calls next plugins recursively.
+     */
     const next: NextFn = args => {
       const response = this._handle({
         request: args.request,
@@ -46,7 +50,10 @@ export class HttpExt {
       return fromSyncOrAsync(response);
     };
 
-    if (this._skip({ request, plugin })) {
+    /**
+     * Skip plugin if plugin's condition tells so.
+     */
+    if (this._shouldSkip({ request, plugin })) {
       const response = next({ request });
       return fromSyncOrAsync(response);
     }
@@ -54,7 +61,10 @@ export class HttpExt {
     return plugin.handle({ request, next });
   }
 
-  private _skip({
+  /**
+   * Tells if the given plugin should be skipped or not depending on plugins condition.
+   */
+  private _shouldSkip({
     request,
     plugin
   }: {
