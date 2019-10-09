@@ -1,3 +1,4 @@
+import { create } from 'domain';
 import { of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
@@ -80,23 +81,18 @@ describe('HttpExt', () => {
       req.url.startsWith('https://something-else-that-do-not-match.com/')
     );
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
-    const request: Request = {
-      url: 'https://answer-to-the-ultimate-question-of-life.com/',
-      method: 'GET',
-      body: null,
-      headers: {},
-      params: {}
-    };
+    const request = createRequest({
+      url: 'https://answer-to-the-ultimate-question-of-life.com/'
+    });
 
     const response = httpExt.handle({
       request,
-      handler: req =>
-        of({
-          data: { answer: 42 },
-          status: 200,
-          statusText: 'OK',
-          headers: {}
-        })
+      handler: () =>
+        of(
+          createResponse({
+            data: { answer: 42 }
+          })
+        )
     });
 
     /* The first plugin should match the condition and handle the request */
