@@ -34,25 +34,29 @@ describe('HttpExt', () => {
         )
     });
 
+    /*
+     * Make sure plugin A is called with the right args.
+     */
     expect(pluginA.handle).toHaveBeenCalledTimes(1);
     expect(typeof pluginA.handle.mock.calls[0][0].next).toBe('function');
-    expect(pluginA.handle.mock.calls[0][0].request).toEqual({
-      url: 'https://answer-to-the-ultimate-question-of-life.com',
-      method: 'GET',
-      body: null,
-      headers: {},
-      params: {}
-    });
+    expect(pluginA.handle.mock.calls[0][0].request).toEqual(
+      expect.objectContaining({
+        url: 'https://answer-to-the-ultimate-question-of-life.com',
+        method: 'GET'
+      })
+    );
 
+    /*
+     * Make sure plugin B is called with the right args.
+     */
     expect(pluginB.handle).toHaveBeenCalledTimes(1);
     expect(typeof pluginB.handle.mock.calls[0][0].next).toBe('function');
-    expect(pluginB.handle.mock.calls[0][0].request).toEqual({
-      url: 'https://answer-to-the-ultimate-question-of-life.com',
-      method: 'GET',
-      body: null,
-      headers: {},
-      params: {}
-    });
+    expect(pluginB.handle.mock.calls[0][0].request).toEqual(
+      expect.objectContaining({
+        url: 'https://answer-to-the-ultimate-question-of-life.com',
+        method: 'GET'
+      })
+    );
 
     response.subscribe(resp => {
       expect(resp).toEqual({
