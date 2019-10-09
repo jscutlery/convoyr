@@ -28,7 +28,7 @@ export class HttpExt {
     plugins,
     handler
   }: {
-    request: Request;
+    request: Request<unknown>;
     plugins: Plugin[];
     handler;
   }) {
@@ -36,6 +36,7 @@ export class HttpExt {
       return handler(request);
     }
 
+    const [plugin] = plugins;
     const next: NextFn = args => {
       const response = this._handle({
         request: args.request,
@@ -45,6 +46,24 @@ export class HttpExt {
       return fromSyncOrAsync(response);
     };
 
-    return plugins[0].handle({ request, next });
+    if (this._skip({ request, plugin })) {
+      const response = next({ request });
+      return fromSyncOrAsync(response);
+    }
+
+    return plugin.handle({ request, next });
+  }
+
+  private _skip({
+    request,
+    plugin
+  }: {
+    request: Request<unknown>;
+    plugin: Plugin;
+  }): boolean {
+    return (
+      typeof plugin.condition === 'function' &&
+      plugin.condition({ request }) === false
+    );
   }
 }
