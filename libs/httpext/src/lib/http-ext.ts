@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Request } from './http';
+import { Request, Response } from './http';
 import { Plugin } from './plugin';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
@@ -16,7 +16,13 @@ export class HttpExt {
     this._plugins = plugins;
   }
 
-  handle({ request, handler }: { request: Request; handler: RequestHandler }) {
+  handle({
+    request,
+    handler
+  }: {
+    request: Request;
+    handler: RequestHandler;
+  }): Observable<Response> {
     return this._handle({ request, plugins: this._plugins, handler });
   }
 
@@ -27,8 +33,8 @@ export class HttpExt {
   }: {
     request: Request;
     plugins: Plugin[];
-    handler;
-  }) {
+    handler: RequestHandler;
+  }): Observable<Response> {
     if (plugins.length === 0) {
       return handler(request);
     }
@@ -55,7 +61,7 @@ export class HttpExt {
       return fromSyncOrAsync(response);
     }
 
-    return plugin.handle({ request, next });
+    return fromSyncOrAsync(plugin.handle({ request, next }));
   }
 
   /**
