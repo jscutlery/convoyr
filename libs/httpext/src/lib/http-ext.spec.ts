@@ -1,35 +1,22 @@
-import { of, Observable } from 'rxjs';
+import { of } from 'rxjs';
 
-import { Request, Response } from './http';
+import { Request } from './http';
 import { HttpExt } from './http-ext';
 
+/* A plugin handle that just calls through the next plugin.*/
+export function createSpyPlugin(
+  condition: (request: Request) => boolean = (request: Request) => true
+) {
+  return {
+    condition: jest.fn(({ request }) => condition(request)),
+    handle: jest.fn(({ request, next }) => next({ request }))
+  };
+}
+
 describe('HttpExt', () => {
-  let handler: (request: Request<any>) => Observable<Response<any>>;
-
-  function createSpyPlugin(
-    condition: (request: Request) => boolean = (request: Request) => true
-  ) {
-    return {
-      condition: jest.fn(({ request }) => condition(request)),
-      handle: jest.fn(({ request, next }) => next({ request }))
-    };
-  }
-
-  beforeEach(() => {
-    handler = request =>
-      of({
-        data: { answer: 42 },
-        status: 200,
-        statusText: 'ok',
-        headers: {}
-      });
-  });
-
   it('should handle multiple plugins', done => {
     const pluginA = createSpyPlugin();
-    const mockHandleA = pluginA.handle;
     const pluginB = createSpyPlugin();
-    const mockHandleB = pluginB.handle;
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
     const request: Request = {
       url: 'https://answer-to-the-ultimate-question-of-life.com',
@@ -39,20 +26,29 @@ describe('HttpExt', () => {
       params: {}
     };
 
-    const response = httpExt.handle({ request, handler });
+    const response = httpExt.handle({
+      request,
+      handler: req =>
+        of({
+          data: { answer: 42 },
+          status: 200,
+          statusText: 'ok',
+          headers: {}
+        })
+    });
 
-    expect(mockHandleA.mock.calls.length).toBe(1);
-    expect(typeof mockHandleA.mock.calls[0][0].next).toBe('function');
-    expect(mockHandleA.mock.calls[0][0].request).toEqual({
+    expect(pluginA.handle.mock.calls.length).toBe(1);
+    expect(typeof pluginA.handle.mock.calls[0][0].next).toBe('function');
+    expect(pluginA.handle.mock.calls[0][0].request).toEqual({
       url: 'https://answer-to-the-ultimate-question-of-life.com',
       method: 'GET',
       body: null,
       headers: {},
       params: {}
     });
-    expect(mockHandleB.mock.calls.length).toBe(1);
-    expect(typeof mockHandleB.mock.calls[0][0].next).toBe('function');
-    expect(mockHandleB.mock.calls[0][0].request).toEqual({
+    expect(pluginB.handle.mock.calls.length).toBe(1);
+    expect(typeof pluginB.handle.mock.calls[0][0].next).toBe('function');
+    expect(pluginB.handle.mock.calls[0][0].request).toEqual({
       url: 'https://answer-to-the-ultimate-question-of-life.com',
       method: 'GET',
       body: null,
@@ -87,8 +83,18 @@ describe('HttpExt', () => {
       params: {}
     };
 
-    const response = httpExt.handle({ request, handler });
+    const response = httpExt.handle({
+      request,
+      handler: req =>
+        of({
+          data: { answer: 42 },
+          status: 200,
+          statusText: 'ok',
+          headers: {}
+        })
+    });
 
+    /* The first plugin should match the condition and handle the request */
     expect(pluginA.condition.mock.calls[0][0].request).toEqual({
       url: 'https://answer-to-the-ultimate-question-of-life.com',
       method: 'GET',
@@ -106,6 +112,7 @@ describe('HttpExt', () => {
       params: {}
     });
 
+    /* The second plugin shouldn't match the condition and never handle */
     expect(pluginB.condition.mock.calls[0][0].request).toEqual({
       url: 'https://answer-to-the-ultimate-question-of-life.com',
       method: 'GET',

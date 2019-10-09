@@ -1,31 +1,21 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { HttpExtModule } from './http-ext.module';
-import { Plugin } from './plugin';
+import { createSpyPlugin } from './http-ext.spec';
 
 describe('HttpExtModule', () => {
-  let mockHandle: jest.Mock;
+  let spyPlugin;
 
   beforeEach(() => {
-    /* A plugin handle that just calls through the next plugin.*/
-    mockHandle = jest.fn(({ request, next }) => next({ request }));
-
-    function spyingPlugin(): Plugin {
-      return {
-        handle: mockHandle
-      };
-    }
+    spyPlugin = createSpyPlugin();
 
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         HttpExtModule.forRoot({
-          plugins: [spyingPlugin()]
+          plugins: [spyPlugin]
         })
       ]
     });
@@ -59,14 +49,14 @@ describe('HttpExtModule', () => {
       title: 'ITEM_TITLE'
     });
 
-    expect(mockHandle).toHaveBeenCalledTimes(1);
-    expect(mockHandle.mock.calls[0][0].request).toEqual({
+    expect(spyPlugin.handle).toHaveBeenCalledTimes(1);
+    expect(spyPlugin.handle.mock.calls[0][0].request).toEqual({
       url: 'https://jscutlery.github.io/items/ITEM_ID',
       method: 'GET',
       body: null,
       headers: {},
       params: {}
     });
-    expect(typeof mockHandle.mock.calls[0][0].next).toEqual('function');
+    expect(typeof spyPlugin.handle.mock.calls[0][0].next).toEqual('function');
   });
 });
