@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
-import { Request } from './request';
+import { createRequest, Request } from './request';
 
 /* A plugin handle that just calls through the next plugin.*/
 export function createSpyPlugin(
@@ -18,13 +18,9 @@ describe('HttpExt', () => {
     const pluginA = createSpyPlugin();
     const pluginB = createSpyPlugin();
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
-    const request: Request = {
-      url: 'https://answer-to-the-ultimate-question-of-life.com',
-      method: 'GET',
-      body: null,
-      headers: {},
-      params: {}
-    };
+    const request = createRequest({
+      url: 'https://answer-to-the-ultimate-question-of-life.com'
+    });
 
     const response = httpExt.handle({
       request,

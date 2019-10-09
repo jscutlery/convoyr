@@ -16,3 +16,15 @@ export interface Request<T = unknown> {
   readonly headers: Headers;
   readonly params: { [key: string]: string | string[] };
 }
+
+export type RequestArgs<T> = { url: string } & Partial<Request<T>>;
+
+export function createRequest<T>(request: RequestArgs<T>): Request {
+  return {
+    url: request.url,
+    method: request.method || 'GET',
+    body: request.body,
+    headers: request.headers || {},
+    params: request.params || {}
+  };
+}
