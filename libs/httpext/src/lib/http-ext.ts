@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Request } from './http';
 import { Plugin } from './plugin';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
+import { isFunction } from './utils/is-function';
 
 export type NextFn = ({ request: Request }) => Observable<Response>;
 
@@ -72,8 +73,7 @@ export class HttpExt {
     plugin: Plugin;
   }): boolean {
     return (
-      typeof plugin.condition === 'function' &&
-      plugin.condition({ request }) === false
+      isFunction(plugin.condition) && plugin.condition({ request }) === false
     );
   }
 }
