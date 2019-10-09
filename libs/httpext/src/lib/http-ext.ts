@@ -4,7 +4,7 @@ import { Request } from './http';
 import { Plugin } from './plugin';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 
-export type NextFn = ({ req: Request }) => Observable<Response>;
+export type NextFn = ({ request: Request }) => Observable<Response>;
 
 export class HttpExt {
   private _plugins: Plugin[];
@@ -14,37 +14,56 @@ export class HttpExt {
   }
 
   handle({
-    req,
+    request,
     handler
   }: {
-    req: Request<unknown>;
-    handler: (req: Request<unknown>) => Observable<any>;
+    request: Request<unknown>;
+    handler: (request: Request<unknown>) => Observable<any>;
   }) {
-    return this._handle({ req, plugins: this._plugins, handler });
+    return this._handle({ request, plugins: this._plugins, handler });
   }
 
   private _handle({
-    req,
+    request,
     plugins,
     handler
   }: {
-    req: Request;
+    request: Request<unknown>;
     plugins: Plugin[];
     handler;
   }) {
     if (plugins.length === 0) {
-      return handler(req);
+      return handler(request);
     }
 
+    const [plugin] = plugins;
     const next: NextFn = args => {
-      const res = this._handle({
-        req: args.req,
+      const response = this._handle({
+        request: args.request,
         plugins: plugins.slice(1),
         handler
       });
-      return fromSyncOrAsync(res);
+      return fromSyncOrAsync(response);
     };
 
-    return plugins[0].handle({ req, next });
+    if (this._skip({ request, plugin })) {
+      const response = next({ request });
+      return fromSyncOrAsync(response);
+    }
+
+    return plugin.handle({ request, next });
+  }
+
+  private _skip({
+    request,
+    plugin
+  }: {
+    request: Request<unknown>;
+    plugin: Plugin;
+  }): boolean {
+    return (
+      typeof plugin.condition === 'function' &&
+      plugin.condition({ request }) === false
+    );
   }
 }
