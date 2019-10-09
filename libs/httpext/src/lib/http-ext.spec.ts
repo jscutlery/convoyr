@@ -15,7 +15,7 @@ export function createSpyPlugin(
 }
 
 describe('HttpExt', () => {
-  it('should handle multiple plugins', done => {
+  it('should handle multiple plugins', () => {
     const pluginA = createSpyPlugin();
     const pluginB = createSpyPlugin();
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
@@ -58,15 +58,18 @@ describe('HttpExt', () => {
       })
     );
 
-    response$.subscribe(resp => {
-      expect(resp).toEqual({
-        data: { answer: 42 },
-        status: 200,
-        statusText: 'OK',
-        headers: {}
-      });
-      done();
-    });
+    const responseObserver = jest.fn();
+
+    response$.subscribe(responseObserver);
+
+    expect(responseObserver).toHaveBeenCalledTimes(1);
+    expect(responseObserver).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: {
+          answer: 42
+        }
+      })
+    );
   });
 
   it('should conditionally handle plugins', done => {
