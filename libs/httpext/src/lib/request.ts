@@ -23,7 +23,7 @@ export function createRequest<T>(request: RequestArgs<T>): Request {
   return {
     url: request.url,
     method: request.method || 'GET',
-    body: request.body,
+    body: request.body || null,
     headers: request.headers || {},
     params: request.params || {}
   };
