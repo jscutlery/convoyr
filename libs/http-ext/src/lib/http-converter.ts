@@ -1,6 +1,7 @@
-import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 
 import { HttpMethod, HttpExtRequest } from './request';
+import { HttpExtResponse, createResponse } from './response';
 
 function fromNgClass(
   ngClass: HttpHeaders | HttpParams
@@ -35,4 +36,22 @@ export function toNgReq(
   }
 
   return new HttpRequest(request.method, request.url, init);
+}
+
+export function fromNgResponse(ngResponse: HttpResponse<unknown>): HttpExtResponse<unknown> {
+  return createResponse({
+    data: ngResponse.body,
+    headers: fromNgClass(ngResponse.headers),
+    status: ngResponse.status,
+    statusText: ngResponse.statusText
+  });
+}
+
+export function toNgResponse(response: HttpExtResponse) {
+  return new HttpResponse({
+    body: response.data,
+    headers: new HttpHeaders(response.headers),
+    status: response.status,
+    statusText: response.statusText
+  });
 }

@@ -1,9 +1,10 @@
+import { HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { of, EMPTY } from 'rxjs';
+
 import { HttpExt } from './http-ext';
 import { HttpExtInterceptor } from './http-ext.interceptor';
 import { createRequest } from './request';
-import { HttpRequest, HttpHandler, HttpResponse } from '@angular/common/http';
 import { createResponse } from './response';
-import { of } from 'rxjs';
 
 function asMock<TReturn, TArgs extends any[]>(
   value: (...TArgs) => TReturn
@@ -24,7 +25,8 @@ describe('HttpExtInterceptor', () => {
 
     interceptor = new HttpExtInterceptor({ httpExt });
     next = {
-      handle: jest.fn()
+      /* Just to avoid pipe error */
+      handle: jest.fn().mockReturnValue(EMPTY)
     };
   });
 
@@ -64,7 +66,7 @@ describe('HttpExtInterceptor', () => {
 
   it.todo('🚧 should ignore HttpEvents except HttpResponse');
 
-  xit('🚧 should convert Angular HttpResponse to HttpExtResponse before handing it back to plugins', () => {
+  it('should convert Angular HttpResponse to HttpExtResponse before handing it back to plugins', () => {
     asMock(next.handle).mockReturnValue(
       of(
         new HttpResponse({

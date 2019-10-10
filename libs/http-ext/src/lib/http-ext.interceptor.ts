@@ -2,11 +2,13 @@ import {
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest
+  HttpRequest,
+  HttpResponse
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 
-import { fromNgReq, toNgReq } from './http-converter';
+import { fromNgReq, fromNgResponse, toNgReq, toNgResponse } from './http-converter';
 import { HttpExt } from './http-ext';
 
 export class HttpExtInterceptor implements HttpInterceptor {
@@ -27,7 +29,11 @@ export class HttpExtInterceptor implements HttpInterceptor {
      */
     return this._httpExt.handle({
       request: fromNgReq(ngReq),
-      handler: ({ request }) => next.handle(toNgReq(request)) as Observable<any>
-    }) as Observable<any>;
+      handler: ({ request }) =>
+        next.handle(toNgReq(request)).pipe(
+          filter(httpEvent => httpEvent instanceof HttpResponse),
+          map(fromNgResponse)
+        )
+    }).pipe(map(toNgResponse))
   }
 }
