@@ -1,5 +1,5 @@
 {
-  "npmScope": "httpext",
+  "npmScope": "http-ext",
   "implicitDependencies": {
     "angular.json": "*",
     "package.json": "*",
@@ -14,7 +14,7 @@
     "sandbox": {
       "tags": []
     },
-    "httpext": {
+    "http-ext": {
       "tags": []
     }
   }

@@ -16,7 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@httpext/httpext": ["libs/httpext/src/index.ts"]
+      "@http-ext/http-ext": ["libs/http-ext/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -6,7 +6,7 @@
       "schematics": {},
       "root": "apps/sandbox",
       "sourceRoot": "apps/sandbox/src",
-      "prefix": "httpext",
+      "prefix": "http-ext",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -120,35 +120,35 @@
         }
       }
     },
-    "httpext": {
+    "http-ext": {
       "projectType": "library",
-      "root": "libs/httpext",
-      "sourceRoot": "libs/httpext/src",
-      "prefix": "httpext",
+      "root": "libs/http-ext",
+      "sourceRoot": "libs/http-ext/src",
+      "prefix": "http-ext",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "libs/httpext/tsconfig.lib.json",
-            "project": "libs/httpext/ng-package.json"
+            "tsConfig": "libs/http-ext/tsconfig.lib.json",
+            "project": "libs/http-ext/ng-package.json"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs/httpext/tsconfig.lib.json",
-              "libs/httpext/tsconfig.spec.json"
+              "libs/http-ext/tsconfig.lib.json",
+              "libs/http-ext/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/httpext/**"]
+            "exclude": ["**/node_modules/**", "!libs/http-ext/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/httpext/jest.config.js",
-            "tsConfig": "libs/httpext/tsconfig.spec.json",
-            "setupFile": "libs/httpext/src/test-setup.ts"
+            "jestConfig": "libs/http-ext/jest.config.js",
+            "tsConfig": "libs/http-ext/tsconfig.spec.json",
+            "setupFile": "libs/http-ext/src/test-setup.ts"
           }
         }
       },

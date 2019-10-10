@@ -1,5 +1,5 @@
 {
-  "name": "@httpext/httpext",
+  "name": "@http-ext/http-ext",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^8.2.4",

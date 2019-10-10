@@ -1,4 +1,4 @@
-import { Plugin } from '@httpext/httpext';
+import { Plugin } from '@http-ext/http-ext';
 
 export function loggerPlugin(): Plugin {
   return {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'httpext-root',
+  selector: 'http-ext-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
