@@ -4,6 +4,7 @@ import { Plugin } from './plugin';
 import { HttpExtRequest } from './request';
 import { HttpExtResponse } from './response';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
+import { isBoolean } from './utils/is-boolean';
 import { isFunction } from './utils/is-function';
 
 export type RequestHandlerFn = ({
@@ -100,11 +101,12 @@ export class HttpExt {
   }): void {
     if (
       isFunction(plugin.condition) &&
-      typeof plugin.condition({ request }) !== 'boolean'
+      isBoolean(plugin.condition({ request })) === false
     ) {
       throw new Error(
-        `Invalid plugin condition return type at index ${index}, expecting boolean got
-          ${typeof plugin.condition({ request })}.`
+        `Invalid plugin condition return type at index ${index}, expecting boolean got ${typeof plugin.condition(
+          { request }
+        )}.`
       );
     }
   }
