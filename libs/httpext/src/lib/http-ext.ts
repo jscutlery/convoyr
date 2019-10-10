@@ -6,7 +6,9 @@ import { HttpExtResponse } from './response';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
 
-export type RequestHandlerFn = ({ request: Request }) => Observable<HttpExtResponse>;
+export type RequestHandlerFn = ({
+  request: Request
+}) => Observable<HttpExtResponse>;
 
 export class HttpExt {
   private _plugins: Plugin[];
@@ -52,6 +54,12 @@ export class HttpExt {
       return fromSyncOrAsync(response);
     };
 
+    this._throwIfInvalidCondition({
+      plugin,
+      request,
+      index: plugins.length - 1
+    });
+
     /**
      * Skip plugin if plugin's condition tells so.
      */
@@ -70,11 +78,34 @@ export class HttpExt {
     request,
     plugin
   }: {
-    request: HttpExtRequest<unknown>;
+    request: HttpExtRequest;
     plugin: Plugin;
   }): boolean {
     return (
       isFunction(plugin.condition) && plugin.condition({ request }) === false
     );
+  }
+
+  /**
+   * Throw an exception if the plugin condition return type is invalid.
+   */
+  private _throwIfInvalidCondition({
+    plugin,
+    request,
+    index
+  }: {
+    plugin: Plugin;
+    request: HttpExtRequest;
+    index: number;
+  }): void {
+    if (
+      isFunction(plugin.condition) &&
+      typeof plugin.condition({ request }) !== 'boolean'
+    ) {
+      throw new Error(
+        `Invalid plugin condition return type at index ${index}, expecting boolean got
+          ${typeof plugin.condition({ request })}.`
+      );
+    }
   }
 }
