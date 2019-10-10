@@ -22,12 +22,15 @@ describe('HttpExtInterceptor', () => {
     };
   });
 
-  it('should call handler', () => {
+  /* Create an Angular HttpRequest and hand it to interceptor. */
+  beforeEach(() => {
     const ngRequest = new HttpRequest('GET', 'https://test.com');
 
     /* Go! */
     interceptor.intercept(ngRequest, next);
+  });
 
+  it('should convert Angular HttpRequest to HttpExtRequest before handing it to plugin', () => {
     /* Check that request is transformed from Angular HttpRequest to HttpExtRequest and forwarded to `httpExt`. */
     expect(httpExt.handle).toHaveBeenCalledTimes(1);
     expect(httpExt.handle).toHaveBeenCalledWith(
@@ -35,7 +38,9 @@ describe('HttpExtInterceptor', () => {
         request: createRequest({ url: 'https://test.com', method: 'GET' })
       })
     );
+  });
 
+  it('should convert HttpExtRequest to Angular HttpRequest', () => {
     /* Check that request is transformed from HttpExtRequest to Angular HttpRequest when forwarded to Angular. */
     expect(next.handle).toHaveBeenCalledTimes(1);
 
@@ -53,12 +58,7 @@ describe('HttpExtInterceptor', () => {
 
   it.todo('🚧 should ignore HttpEvents except HttpResponse');
 
-  xit(
-    '🚧 should convert HttpResponse to HttpExtResponse before handing it to plugin'
-  , () => {
+  xit('🚧 should convert HttpResponse to HttpExtResponse before handing it to plugin', () => {});
 
-
-  });
-
-  it.todo('🚧 should convert plugin HttpExtResponse to HttpResponse');
+  it.todo('🚧 should convert plugin HttpExtResponse to Angular HttpResponse');
 });
