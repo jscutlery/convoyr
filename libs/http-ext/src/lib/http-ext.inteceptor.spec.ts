@@ -10,6 +10,12 @@ describe('HttpExtInterceptor', () => {
 
   beforeEach(() => {
     httpExt = new HttpExt({ plugins: [] });
+
+    /* Making a passthrough mock `HttpExt`. */
+    jest
+      .spyOn(httpExt, 'handle')
+      .mockImplementation(({ request, handler }) => handler({ request }));
+
     interceptor = new HttpExtInterceptor({ httpExt });
     next = {
       handle: jest.fn()
@@ -18,11 +24,6 @@ describe('HttpExtInterceptor', () => {
 
   it('should call handler', () => {
     const ngRequest = new HttpRequest('GET', 'https://test.com');
-
-    /* Making a passthrough mock `HttpExt`. */
-    jest
-      .spyOn(httpExt, 'handle')
-      .mockImplementation(({ request, handler }) => handler({ request }));
 
     /* Go! */
     interceptor.intercept(ngRequest, next);
@@ -55,6 +56,7 @@ describe('HttpExtInterceptor', () => {
   xit(
     '🚧 should convert HttpResponse to HttpExtResponse before handing it to plugin'
   , () => {
+
 
   });
 
