@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'httpext',
+  name: 'http-ext',
   preset: '../../jest.config.js',
-  coverageDirectory: '../../coverage/libs/httpext',
+  coverageDirectory: '../../coverage/libs/http-ext',
   snapshotSerializers: [
     'jest-preset-angular/AngularSnapshotSerializer.js',
     'jest-preset-angular/HTMLCommentSerializer.js'

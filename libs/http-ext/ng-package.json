@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/libs/httpext",
+  "dest": "../../dist/libs/http-ext",
   "lib": {
     "entryFile": "src/index.ts"
   }
