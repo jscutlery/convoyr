@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
 
 import { Plugin } from './plugin';
-import { Request } from './request';
-import { Response } from './response';
+import { HttpExtRequest } from './request';
+import { HttpExtResponse } from './response';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
 
-export type RequestHandlerFn = ({ request: Request }) => Observable<Response>;
+export type RequestHandlerFn = ({ request: Request }) => Observable<HttpExtResponse>;
 
 export class HttpExt {
   private _plugins: Plugin[];
@@ -19,9 +19,9 @@ export class HttpExt {
     request,
     handler
   }: {
-    request: Request;
+    request: HttpExtRequest;
     handler: RequestHandlerFn;
-  }): Observable<Response> {
+  }): Observable<HttpExtResponse> {
     return this._handle({ request, plugins: this._plugins, handler });
   }
 
@@ -30,10 +30,10 @@ export class HttpExt {
     plugins,
     handler
   }: {
-    request: Request;
+    request: HttpExtRequest;
     plugins: Plugin[];
     handler: RequestHandlerFn;
-  }): Observable<Response> {
+  }): Observable<HttpExtResponse> {
     if (plugins.length === 0) {
       return handler({ request });
     }
@@ -70,7 +70,7 @@ export class HttpExt {
     request,
     plugin
   }: {
-    request: Request<unknown>;
+    request: HttpExtRequest<unknown>;
     plugin: Plugin;
   }): boolean {
     return (

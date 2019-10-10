@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpRequest, HttpParams } from '@angular/common/http';
 
 import { fromNgReq, toNgReq } from './http-converter';
-import { Request } from './request';
+import { HttpExtRequest } from './request';
 import objectContaining = jasmine.objectContaining;
 
 describe('fromNgReq', () => {
@@ -37,7 +37,7 @@ describe('fromNgReq', () => {
 
 describe('toNgReq', () => {
   it('should convert Request with body to HttpRequest', () => {
-    const request: Request = {
+    const request: HttpExtRequest = {
       url: 'https://presidents.com',
       method: 'PUT',
       body: { data: { name: 'Jacques Chirac' } },
@@ -57,7 +57,7 @@ describe('toNgReq', () => {
   });
 
   it('should convert Request without body to HttpRequest', () => {
-    const request: Request = {
+    const request: HttpExtRequest = {
       url: 'https://test.com',
       method: 'GET',
       body: null,

@@ -1,14 +1,18 @@
 import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 
-import { HttpMethod, Request } from './request';
+import { HttpMethod, HttpExtRequest } from './request';
 
 function fromNgClass(
   ngClass: HttpHeaders | HttpParams
 ): { [key: string]: string } {
-  return ngClass.keys().reduce((obj, key) => ({ [key]: ngClass.get(key) }), {});
+  return ngClass
+    .keys()
+    .reduce((_obj, key) => ({ [key]: ngClass.get(key) }), {});
 }
 
-export function fromNgReq(request: HttpRequest<unknown>): Request<unknown> {
+export function fromNgReq(
+  request: HttpRequest<unknown>
+): HttpExtRequest<unknown> {
   return {
     url: request.url,
     method: request.method as HttpMethod,
@@ -18,7 +22,9 @@ export function fromNgReq(request: HttpRequest<unknown>): Request<unknown> {
   };
 }
 
-export function toNgReq(request: Request<unknown>): HttpRequest<unknown> {
+export function toNgReq(
+  request: HttpExtRequest<unknown>
+): HttpRequest<unknown> {
   const init = {
     headers: new HttpHeaders(request.headers),
     params: new HttpParams({ fromObject: request.params })

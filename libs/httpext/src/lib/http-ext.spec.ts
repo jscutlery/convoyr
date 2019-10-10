@@ -2,12 +2,12 @@ import { create } from 'domain';
 import { of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
-import { createRequest, Request } from './request';
+import { createRequest, HttpExtRequest } from './request';
 import { createResponse } from './response';
 
 /* A plugin handle that just calls through the next plugin.*/
 export function createSpyPlugin(
-  condition: (request: Request) => boolean = (request: Request) => true
+  condition: (request: HttpExtRequest) => boolean = (request: HttpExtRequest) => true
 ) {
   return {
     condition: jest.fn(({ request }) => condition(request)),
