@@ -1,7 +1,15 @@
 import { HttpExt } from './http-ext';
 import { HttpExtInterceptor } from './http-ext.interceptor';
 import { createRequest } from './request';
-import { HttpRequest, HttpHandler } from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpResponse } from '@angular/common/http';
+import { createResponse } from './response';
+import { of } from 'rxjs';
+
+function asMock<TReturn, TArgs extends any[]>(
+  value: (...TArgs) => TReturn
+): jest.Mock<TReturn, TArgs> {
+  return value as jest.Mock<TReturn, TArgs>;
+}
 
 describe('HttpExtInterceptor', () => {
   let httpExt: HttpExt;
@@ -11,10 +19,8 @@ describe('HttpExtInterceptor', () => {
   beforeEach(() => {
     httpExt = new HttpExt({ plugins: [] });
 
-    /* Making a passthrough mock `HttpExt`. */
-    jest
-      .spyOn(httpExt, 'handle')
-      .mockImplementation(({ request, handler }) => handler({ request }));
+    /* Mock `HttpExt.handle`. */
+    jest.spyOn(httpExt, 'handle');
 
     interceptor = new HttpExtInterceptor({ httpExt });
     next = {
@@ -30,7 +36,7 @@ describe('HttpExtInterceptor', () => {
     interceptor.intercept(ngRequest, next);
   });
 
-  it('should convert Angular HttpRequest to HttpExtRequest before handing it to plugin', () => {
+  it('should convert Angular HttpRequest to HttpExtRequest before handing it to plugins', () => {
     /* Check that request is transformed from Angular HttpRequest to HttpExtRequest and forwarded to `httpExt`. */
     expect(httpExt.handle).toHaveBeenCalledTimes(1);
     expect(httpExt.handle).toHaveBeenCalledWith(
@@ -40,7 +46,7 @@ describe('HttpExtInterceptor', () => {
     );
   });
 
-  it('should convert HttpExtRequest to Angular HttpRequest', () => {
+  it('should convert HttpExtRequest to Angular HttpRequest after plugins transformations', () => {
     /* Check that request is transformed from HttpExtRequest to Angular HttpRequest when forwarded to Angular. */
     expect(next.handle).toHaveBeenCalledTimes(1);
 
@@ -58,7 +64,37 @@ describe('HttpExtInterceptor', () => {
 
   it.todo('🚧 should ignore HttpEvents except HttpResponse');
 
-  xit('🚧 should convert HttpResponse to HttpExtResponse before handing it to plugin', () => {});
+  xit('🚧 should convert Angular HttpResponse to HttpExtResponse before handing it back to plugins', () => {
+    asMock(next.handle).mockReturnValue(
+      of(
+        new HttpResponse({
+          body: {
+            answer: 42
+          }
+        })
+      )
+    );
+    const { request, handler } = asMock(httpExt.handle).mock.calls[0][0];
+
+    const observer = jest.fn();
+
+    handler({ request }).subscribe(observer);
+
+    expect(observer).toHaveBeenCalledTimes(1);
+    const response = observer.mock.calls[0][0];
+
+    /* 😜 just making sure that it's not an Angular HttpResponse. */
+    expect(response).not.toBeInstanceOf(HttpResponse);
+    expect(response).toEqual(
+      createResponse({
+        status: 200,
+        statusText: 'OK',
+        data: {
+          answer: 42
+        }
+      })
+    );
+  });
 
   it.todo('🚧 should convert plugin HttpExtResponse to Angular HttpResponse');
 });
