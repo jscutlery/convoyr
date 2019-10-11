@@ -1,6 +1,7 @@
 {
   "name": "@jscutlery/http-ext",
-  "version": "0.0.1",
+  "version": "0.0.0",
+  "repository": "git://github.com/jscutlery/http-ext.git",
   "peerDependencies": {
     "@angular/common": "^8.2.4",
     "@angular/core": "^8.2.4"
