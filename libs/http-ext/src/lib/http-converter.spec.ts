@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpRequest, HttpParams } from '@angular/common/http';
 
-import { fromNgReq, toNgReq } from './http-converter';
+import { fromNgRequest, toNgReq } from './http-converter';
 import { HttpExtRequest } from './request';
 import objectContaining = jasmine.objectContaining;
 
@@ -12,7 +12,7 @@ describe('fromNgReq', () => {
       { data: 'hello world' },
       { headers: new HttpHeaders({ Authorization: 'token' }) }
     );
-    expect(fromNgReq(ngRequest)).toEqual({
+    expect(fromNgRequest(ngRequest)).toEqual({
       url: 'https://angular.io',
       method: 'POST',
       body: { data: 'hello world' },
@@ -25,7 +25,7 @@ describe('fromNgReq', () => {
     const ngRequest = new HttpRequest('GET', 'https://wikipedia.com', {
       params: new HttpParams().set('id', '1')
     });
-    expect(fromNgReq(ngRequest)).toEqual({
+    expect(fromNgRequest(ngRequest)).toEqual({
       url: 'https://wikipedia.com',
       method: 'GET',
       body: null,
