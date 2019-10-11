@@ -11,7 +11,7 @@ function fromNgClass(
     .reduce((_obj, key) => ({ [key]: ngClass.get(key) }), {});
 }
 
-export function fromNgReq(
+export function fromNgRequest(
   request: HttpRequest<unknown>
 ): HttpExtRequest<unknown> {
   return {
