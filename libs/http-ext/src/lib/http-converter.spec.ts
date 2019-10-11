@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpRequest, HttpParams } from '@angular/common/http';
 
-import { fromNgRequest, toNgReq } from './http-converter';
+import { fromNgRequest, toNgRequest } from './http-converter';
 import { HttpExtRequest } from './request';
 import objectContaining = jasmine.objectContaining;
 
@@ -45,7 +45,7 @@ describe('toNgReq', () => {
       params: { id: '1' }
     };
 
-    const ngRequest = toNgReq(request);
+    const ngRequest = toNgRequest(request);
     expect(ngRequest).toEqual(
       objectContaining({
         method: 'PUT',
@@ -65,7 +65,7 @@ describe('toNgReq', () => {
       params: {}
     };
 
-    const ngRequest = toNgReq(request);
+    const ngRequest = toNgRequest(request);
     expect(ngRequest).toEqual(
       objectContaining({
         method: 'GET',
