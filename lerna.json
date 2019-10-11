@@ -6,7 +6,7 @@
   "command": {
     "publish": {
       "conventionalCommits": true,
-      "registry": "https://npm.pkg.github.com/jscutlery"
+      "registry": "https://npm.pkg.github.com"
     }
   }
 }
