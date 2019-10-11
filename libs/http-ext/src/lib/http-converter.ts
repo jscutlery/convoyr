@@ -23,7 +23,7 @@ export function fromNgRequest(
   };
 }
 
-export function toNgReq(
+export function toNgRequest(
   request: HttpExtRequest<unknown>
 ): HttpRequest<unknown> {
   const init = {
