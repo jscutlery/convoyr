@@ -1,8 +1,6 @@
 {
   "version": "0.0.0",
-  "packages": [
-    "libs/*"
-  ],
+  "packages": ["libs/*"],
   "command": {
     "publish": {
       "conventionalCommits": true,

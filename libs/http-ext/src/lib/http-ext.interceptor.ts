@@ -1,8 +1,19 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-import { fromNgRequest, fromNgResponse, toNgRequest, toNgResponse } from './http-converter';
+import {
+  fromNgRequest,
+  fromNgResponse,
+  toNgRequest,
+  toNgResponse
+} from './http-converter';
 import { HttpExt } from './http-ext';
 
 export class HttpExtInterceptor implements HttpInterceptor {
@@ -16,13 +27,15 @@ export class HttpExtInterceptor implements HttpInterceptor {
     ngReq: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return this._httpExt.handle({
-      request: fromNgRequest(ngReq),
-      handler: ({ request }) =>
-        next.handle(toNgRequest(request)).pipe(
-          filter(httpEvent => httpEvent instanceof HttpResponse),
-          map(fromNgResponse)
-        )
-    }).pipe(map(toNgResponse))
+    return this._httpExt
+      .handle({
+        request: fromNgRequest(ngReq),
+        handler: ({ request }) =>
+          next.handle(toNgRequest(request)).pipe(
+            filter(httpEvent => httpEvent instanceof HttpResponse),
+            map(fromNgResponse)
+          )
+      })
+      .pipe(map(toNgResponse));
   }
 }
