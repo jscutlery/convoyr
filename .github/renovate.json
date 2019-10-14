@@ -9,8 +9,5 @@
   "lockFileMaintenance": {
     "enabled": true
   },
-  "pin": {
-    "automerge": false
-  },
   "rangeStrategy": "update-lockfile"
 }
