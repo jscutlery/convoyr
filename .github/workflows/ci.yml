@@ -21,3 +21,4 @@ jobs:
         run: |
           yarn install
           yarn test:http-ext:ci
+          yarn test:http-ext:collect-coverage
