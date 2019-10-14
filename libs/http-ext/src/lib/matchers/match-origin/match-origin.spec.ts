@@ -6,9 +6,6 @@ describe.each([
   ['https://test.com', 'https://test.com', true],
   ['https://test.com', 'https://angular.io', false],
 
-  /* Using a wildcard */
-  ['https://test.com', '*', true],
-
   /* Using an Array */
   ['https://test.com', ['https://test.com'], true],
   ['https://test.com', ['https://angular.io'], false],
