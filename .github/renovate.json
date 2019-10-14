@@ -1,13 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/renovatebot/renovate/master/renovate-schema.json",
   "extends": ["config:base"],
-  "automerge": true,
-  "automergeType": "branch",
   "baseBranches": [
     "develop"
   ],
   "lockFileMaintenance": {
-    "enabled": true
+    "enabled": true,
+    "automerge": true,
+    "automergeType": "branch"
   },
   "rangeStrategy": "update-lockfile"
 }
