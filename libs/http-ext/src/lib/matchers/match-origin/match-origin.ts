@@ -1,3 +1,4 @@
+import { RequestCondition } from '../../plugin';
 import { HttpExtRequest } from '../../request';
 import { matchArrayOrigin } from './match-array-origin';
 import { matchPredicateOrigin, Predicate } from './match-predicate-origin';
@@ -6,9 +7,9 @@ import { matchStringOrigin } from './match-string-origin';
 
 export type Matcher = string | string[] | RegExp | Predicate;
 
-export const matchOrigin = (matcher: Matcher) => (
-  request: HttpExtRequest
-): boolean => {
+export const matchOrigin = (matcher: Matcher): RequestCondition => ({
+  request
+}): boolean => {
   return [
     matchStringOrigin,
     matchArrayOrigin,

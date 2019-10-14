@@ -6,7 +6,8 @@ import { createResponse } from './response';
 
 /* A plugin handle that just calls through the next plugin.*/
 export function createSpyPlugin(
-  condition: (request: HttpExtRequest) => boolean = (request: HttpExtRequest) => true
+  condition: (request: HttpExtRequest) => boolean = (request: HttpExtRequest) =>
+    true
 ) {
   return {
     condition: jest.fn(({ request }) => condition(request)),

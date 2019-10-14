@@ -21,9 +21,8 @@ describe.each([
   'matchOrigin with url: %p and matcher: %p => %p',
   (origin, matcher, expected) => {
     it('should check origin', () => {
-      expect(matchOrigin(matcher)(createRequest({ url: origin }))).toBe(
-        expected
-      );
+      const request = createRequest({ url: origin });
+      expect(matchOrigin(matcher)({ request })).toBe(expected);
     });
   }
 );
