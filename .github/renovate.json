@@ -6,5 +6,8 @@
   "baseBranches": [
     "develop"
   ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "rangeStrategy": "update-lockfile"
 }
