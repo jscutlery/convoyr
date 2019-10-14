@@ -72,7 +72,7 @@
     "ts-jest": "24.0.0",
     "ts-node": "~8.4.1",
     "tsickle": "^0.37.0",
-    "tslint": "~5.11.0",
+    "tslint": "~5.20.0",
     "typescript": "~3.4.5"
   },
   "workspaces": [
