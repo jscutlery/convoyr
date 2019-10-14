@@ -10,7 +10,7 @@
     "build:http-ext": "ng build http-ext",
     "test": "ng test",
     "test:http-ext": "ng test http-ext --watch",
-    "test:http-ext:ci": "ng test http-ext",
+    "test:http-ext:ci": "ng test http-ext --code-coverage",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e",
     "affected:apps": "nx affected:apps",
