@@ -38,3 +38,13 @@ describe.each([['https://test.com', true], ['http://test.com', false]])(
     });
   }
 );
+
+describe('matchOrigin', () => {
+  xit('🚧 should throw when given an object', () => {
+    expect(() => matchOrigin({} as any)).toThrow();
+  });
+
+  xit('🚧 should throw when given an number', () => {
+    expect(() => matchOrigin(123 as any)).toThrow();
+  });
+});
