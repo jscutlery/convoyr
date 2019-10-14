@@ -69,7 +69,7 @@
     "lerna": "^3.17.0",
     "ng-packagr": "^5.6.1",
     "prettier": "1.18.2",
-    "ts-jest": "24.0.0",
+    "ts-jest": "24.1.0",
     "ts-node": "~8.4.1",
     "tsickle": "^0.37.0",
     "tslint": "~5.11.0",
