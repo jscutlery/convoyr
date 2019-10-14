@@ -1,4 +1,10 @@
-import { from, isObservable, Observable, of, SubscribableOrPromise } from 'rxjs';
+import {
+  from,
+  isObservable,
+  Observable,
+  of,
+  SubscribableOrPromise
+} from 'rxjs';
 
 import { isPromise } from './is-promise';
 
