@@ -6,6 +6,9 @@ describe.each([
   ['https://test.com', 'https://test.com', true],
   ['https://test.com', 'https://angular.io', false],
 
+  /* Using a wildcard */
+  ['https://test.com', '*', true],
+
   /* Using an Array */
   ['https://test.com', ['https://test.com'], true],
   ['https://test.com', ['https://angular.io'], false],
@@ -16,7 +19,7 @@ describe.each([
 
   /* Using a Predicate */
   ['https://test.com', (origin: string) => origin.startsWith('https://'), true],
-  ['http://test.com', (origin: string) => origin.startsWith('https://'), false],
+  ['http://test.com', (origin: string) => origin.startsWith('https://'), false]
 ])('matchOrigin(%p, %p) => %p', (origin, matcher, expected) => {
   it('should check origin', () => {
     expect(matchOrigin(matcher, createRequest({ url: origin }))).toBe(expected);

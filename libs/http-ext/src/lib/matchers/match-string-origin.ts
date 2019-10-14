@@ -1,17 +1,17 @@
 import { isString } from '../utils/is-string';
 import { Matcher } from './match-origin';
 
+const isWildcard = (value: any): value is '*' =>
+  isString(value) && value === '*';
+
 export const matchStringOrigin = (
   origin: string,
-  matcher: Matcher,
+  matcher: Matcher
 ): boolean => {
-  if (isString(matcher) && matcher === '*') {
+  if (isWildcard(matcher)) {
     return true;
-  } else if (
-    isString(matcher) &&
-    matcher !== '*' &&
-    origin.match(matcher as string)
-  ) {
+  }
+  if (isString(matcher) && origin === matcher) {
     return true;
   }
 

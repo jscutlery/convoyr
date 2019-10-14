@@ -1,7 +1,12 @@
-import { Predicate } from './match-origin';
+import { isFunction } from '../utils/is-function';
 
-export function matchPredicateOrigin(origin: string, predicate: Predicate): boolean {
-  if (typeof predicate === 'function') {
+export type Predicate = (origin: string) => boolean;
+
+export function matchPredicateOrigin(
+  origin: string,
+  predicate: Predicate
+): boolean {
+  if (isFunction(predicate)) {
     return predicate(origin);
   }
 
