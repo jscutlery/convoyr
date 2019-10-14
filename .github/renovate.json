@@ -7,7 +7,10 @@
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
-    "automergeType": "branch"
+    "automergeType": "branch",
+    "schedule": [
+      "before 5am"
+    ]
   },
   "rangeStrategy": "update-lockfile"
 }
