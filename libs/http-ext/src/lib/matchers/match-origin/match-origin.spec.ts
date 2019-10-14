@@ -4,10 +4,13 @@ import { matchOrigin } from './match-origin';
 describe.each([
   /* Using a string */
   ['https://test.com', 'https://test.com', true],
+  // @todo ['https://test.com/test', 'https://test.com', true],
   ['https://test.com', 'https://angular.io', false],
+  // @todo ['https://test.com.test.com', 'https://test.com', false],
 
   /* Using an Array */
   ['https://test.com', ['https://test.com'], true],
+  // @todo ['https://test.com/test', ['https://test.com'], true],
   ['https://test.com', ['https://angular.io'], false],
 
   /* Using a RegExp */
