@@ -1,4 +1,4 @@
-import { createRequest } from '../request';
+import { createRequest } from '../../request';
 import { matchOrigin } from './match-origin';
 
 describe.each([

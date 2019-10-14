@@ -1,4 +1,4 @@
-import { HttpExtRequest } from '../request';
+import { HttpExtRequest } from '../../request';
 import { matchArrayOrigin } from './match-array-origin';
 import { matchPredicateOrigin, Predicate } from './match-predicate-origin';
 import { matchRegExpOrigin } from './match-reg-exp-origin';

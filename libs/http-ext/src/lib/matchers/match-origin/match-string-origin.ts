@@ -1,4 +1,4 @@
-import { isString } from '../utils/is-string';
+import { isString } from '../../utils/is-string';
 import { Matcher } from './match-origin';
 
 const isWildcard = (value: any): value is '*' =>

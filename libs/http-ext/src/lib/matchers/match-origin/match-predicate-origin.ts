@@ -1,4 +1,4 @@
-import { isFunction } from '../utils/is-function';
+import { isFunction } from '../../utils/is-function';
 
 export type Predicate = (origin: string) => boolean;
 
