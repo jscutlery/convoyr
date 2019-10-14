@@ -4,5 +4,6 @@
   "automergeType": "branch",
   "baseBranches": [
     "develop"
-  ]
+  ],
+  "rangeStrategy": "update-lockfile"
 }
