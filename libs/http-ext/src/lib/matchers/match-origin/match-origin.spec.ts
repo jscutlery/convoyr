@@ -17,8 +17,13 @@ describe.each([
   /* Using a Predicate */
   ['https://test.com', (origin: string) => origin.startsWith('https://'), true],
   ['http://test.com', (origin: string) => origin.startsWith('https://'), false]
-])('matchOrigin(%p, %p) => %p', (origin, matcher, expected) => {
-  it('should check origin', () => {
-    expect(matchOrigin(matcher, createRequest({ url: origin }))).toBe(expected);
-  });
-});
+])(
+  'matchOrigin with url: %p and matcher: %p => %p',
+  (origin, matcher, expected) => {
+    it('should check origin', () => {
+      expect(matchOrigin(matcher)(createRequest({ url: origin }))).toBe(
+        expected
+      );
+    });
+  }
+);

@@ -6,14 +6,13 @@ import { matchStringOrigin } from './match-string-origin';
 
 export type Matcher = string | string[] | RegExp | Predicate;
 
-export function matchOrigin(
-  matcher: Matcher,
+export const matchOrigin = (matcher: Matcher) => (
   request: HttpExtRequest
-): boolean {
+): boolean => {
   return [
     matchStringOrigin,
     matchArrayOrigin,
     matchRegExpOrigin,
-    matchPredicateOrigin,
+    matchPredicateOrigin
   ].some(match => match(request.url, matcher));
-}
+};
