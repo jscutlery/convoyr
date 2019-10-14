@@ -12,17 +12,26 @@ describe.each([
 
   /* Using a RegExp */
   ['https://test.com', /[a-z]/, true],
-  ['https://test.com', /[0-9]/, false],
-
-  /* Using a Predicate */
-  ['https://test.com', (origin: string) => origin.startsWith('https://'), true],
-  ['http://test.com', (origin: string) => origin.startsWith('https://'), false]
+  ['https://test.com', /[0-9]/, false]
 ])(
   'matchOrigin with url: %p and matcher: %p => %p',
   (origin, matcher, expected) => {
     it('should check origin', () => {
       const request = createRequest({ url: origin });
       expect(matchOrigin(matcher)({ request })).toBe(expected);
+    });
+  }
+);
+
+describe.each([['https://test.com', true], ['http://test.com', false]])(
+  'matchOrigin with url: %p and starts with https predicate => %p',
+  (url, expected) => {
+    const startsWithHttpsPredicate = (origin: string) =>
+      origin.startsWith('https://');
+
+    it('should check origin', () => {
+      const request = createRequest({ url });
+      expect(matchOrigin(startsWithHttpsPredicate)({ request })).toBe(expected);
     });
   }
 );
