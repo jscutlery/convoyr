@@ -5,8 +5,9 @@ export const matchStringOrigin = (
   origin: string,
   matcher: Matcher
 ): boolean => {
-  if (isString(matcher) && origin === matcher) {
-    return true;
+  if (isString(matcher)) {
+    const [protocol,, host] = origin.split(/\/|\?/);
+    return `${protocol}//${host}` === matcher;
   }
 
   return false;
