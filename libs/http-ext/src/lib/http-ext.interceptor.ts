@@ -24,12 +24,12 @@ export class HttpExtInterceptor implements HttpInterceptor {
   }
 
   intercept(
-    ngReq: HttpRequest<any>,
+    ngRequest: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return this._httpExt
       .handle({
-        request: fromNgRequest(ngReq),
+        request: fromNgRequest(ngRequest),
         handler: ({ request }) =>
           next.handle(toNgRequest(request)).pipe(
             filter(httpEvent => httpEvent instanceof HttpResponse),

@@ -4,7 +4,7 @@ import { fromNgRequest, toNgRequest } from './http-converter';
 import { HttpExtRequest } from './request';
 import objectContaining = jasmine.objectContaining;
 
-describe('fromNgReq', () => {
+describe('fromNgRequest', () => {
   it('should convert HttpRequest with body to Request object', () => {
     const ngRequest = new HttpRequest(
       'POST',
@@ -35,7 +35,7 @@ describe('fromNgReq', () => {
   });
 });
 
-describe('toNgReq', () => {
+describe('toNgRequest', () => {
   it('should convert Request with body to HttpRequest', () => {
     const request: HttpExtRequest = {
       url: 'https://presidents.com',
