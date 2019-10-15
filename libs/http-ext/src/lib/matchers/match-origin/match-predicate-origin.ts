@@ -2,13 +2,7 @@ import { isFunction } from '../../utils/is-function';
 
 export type Predicate = (origin: string) => boolean;
 
-export function matchPredicateOrigin(
+export const matchPredicateOrigin = (
   origin: string,
   predicate: Predicate
-): boolean {
-  if (isFunction(predicate)) {
-    return predicate(origin);
-  }
-
-  return false;
-}
+): boolean => isFunction(predicate) && predicate(origin);
