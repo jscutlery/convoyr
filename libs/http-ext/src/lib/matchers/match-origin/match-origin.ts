@@ -25,10 +25,7 @@ export const matchOrigin = (
     });
   }
 
-  return [
-    matchStringOrigin,
-    matchArrayOrigin,
-    matchRegExpOrigin,
-    matchPredicateOrigin
-  ].some(match => match(origin, matchExpression));
+  return [matchArrayOrigin, matchRegExpOrigin, matchPredicateOrigin].some(
+    match => match(origin, matchExpression)
+  );
 };
