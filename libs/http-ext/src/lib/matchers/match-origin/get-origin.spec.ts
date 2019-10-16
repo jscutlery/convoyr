@@ -13,8 +13,9 @@ describe('getOrigin', () => {
     );
   });
 
-  xit('🚧 should fail if invalid URL', () => {
+  it('should fail if invalid URL', () => {
     expect(() => getOrigin('jscutlery.github.io')).toThrow();
     expect(() => getOrigin('jscutlery.github.io:443')).toThrow();
+    expect(() => getOrigin('/test')).toThrow();
   });
 });
