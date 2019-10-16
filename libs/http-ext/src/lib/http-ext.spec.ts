@@ -114,4 +114,21 @@ describe('HttpExt', () => {
       })
     );
   });
+
+  it('should throw when a plugin has invalid condition', () => {
+    const plugin = createSpyPlugin(
+      () => '' as any // 👈🏻 invalid condition
+    );
+    const httpExt = new HttpExt({ plugins: [plugin] });
+    const request = createRequest({
+      url: 'https://test.com/'
+    });
+
+    expect(() =>
+      httpExt.handle({
+        request,
+        handler: () => of(createResponse({ data: null }))
+      })
+    ).toThrow(`invalidPluginConditionError: expecting boolean got string.`);
+  });
 });
