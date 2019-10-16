@@ -20,7 +20,10 @@ export const originArrayMatcher = {
     /* Loop through expressions... */
     return matchExpression.some(childExpression => {
       /* ... find the right matcher for each expression... */
-      const matcher = findMatcher({ matchExpression: childExpression });
+      const matcher = findMatcher({
+        matchExpression: childExpression,
+        matcherList: [originStringMatcher]
+      });
 
       /* ... and handle the expression. */
       return matcher.handle({
