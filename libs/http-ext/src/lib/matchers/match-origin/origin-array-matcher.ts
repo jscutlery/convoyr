@@ -1,5 +1,5 @@
 import { isArray } from '../../utils/is-array';
-import { findMatcher } from './find-matcher';
+import { findMatcherOrThrow } from './find-matcher-or-throw';
 import { originStringMatcher } from './origin-string-matcher';
 
 export const originArrayMatcher = {
@@ -10,7 +10,7 @@ export const originArrayMatcher = {
     /* Loop through expressions... */
     return matchExpression.some(childExpression => {
       /* ... find the right matcher for each expression... */
-      const matcher = findMatcher({
+      const matcher = findMatcherOrThrow({
         matchExpression: childExpression,
         matcherList: [originStringMatcher]
       });

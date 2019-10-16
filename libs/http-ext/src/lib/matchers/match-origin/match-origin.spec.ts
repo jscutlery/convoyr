@@ -48,10 +48,14 @@ describe('matchOrigin', () => {
   beforeEach(() => (request = createRequest({ url: 'https://test.com' })));
 
   it('🚧 should throw when given an object', () => {
-    expect(() => matchOrigin({} as any)({ request })).toThrow();
+    expect(() => matchOrigin({} as any)({ request })).toThrow(
+      'InvalidOriginMatchExpression: {} is an invalid origin match expression.'
+    );
   });
 
   it('🚧 should throw when given an number', () => {
-    expect(() => matchOrigin(123 as any)({ request })).toThrow();
+    expect(() => matchOrigin(123 as any)({ request })).toThrow(
+      'InvalidOriginMatchExpression: 123 is an invalid origin match expression.'
+    );
   });
 });

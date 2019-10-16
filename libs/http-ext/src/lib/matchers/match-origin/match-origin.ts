@@ -1,5 +1,5 @@
 import { RequestCondition } from '../../plugin';
-import { findMatcher } from './find-matcher';
+import { findMatcherOrThrow } from './find-matcher-or-throw';
 import { getOrigin } from './get-origin';
 import { originArrayMatcher } from './origin-array-matcher';
 import { OriginMatchExpression } from './origin-match-expression';
@@ -14,7 +14,7 @@ export const matchOrigin = (
   const origin = getOrigin(request.url);
 
   /* Find the right matcher. */
-  const matcher = findMatcher({
+  const matcher = findMatcherOrThrow({
     matchExpression: matchExpression,
     matcherList: [
       originStringMatcher,
