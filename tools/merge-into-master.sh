@@ -20,7 +20,7 @@ git checkout master
 git pull
 
 # Merge into master only if fast-forward.
-git merge --ff-only "$0"
+git merge --ff-only "$1"
 
 # Push master.
 git push
