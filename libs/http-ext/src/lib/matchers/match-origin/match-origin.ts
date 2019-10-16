@@ -1,7 +1,7 @@
 import { RequestCondition } from '../../plugin';
 import { findMatcher } from './find-matcher';
 import { getOrigin } from './get-origin';
-import { matchArrayOrigin, originArrayMatcher } from './match-array-origin';
+import { originArrayMatcher } from './match-array-origin';
 import { OriginMatchExpression } from './origin-match-expression';
 import { originPredicateMatcher } from './origin-predicate-matcher';
 import { originRegExpMatcher } from './origin-reg-exp-matcher';
@@ -10,23 +10,23 @@ import { originStringMatcher } from './origin-string-matcher';
 export const matchOrigin = (
   matchExpression: OriginMatchExpression
 ): RequestCondition => ({ request }): boolean => {
+  /* Extract origin from URL. */
   const origin = getOrigin(request.url);
 
+  /* Find the right matcher. */
   const matcher = findMatcher({
     matchExpression: matchExpression,
     matcherList: [
-      originRegExpMatcher,
       originStringMatcher,
+      originArrayMatcher,
+      originRegExpMatcher,
       originPredicateMatcher
     ]
   });
 
-  if (matcher != null) {
-    return matcher.handle({
-      matchExpression,
-      origin
-    });
-  }
-
-  return [matchArrayOrigin].some(match => match(origin, matchExpression));
+  /* Handle the origin with the right matcher. */
+  return matcher.handle({
+    matchExpression,
+    origin
+  });
 };
