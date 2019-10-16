@@ -25,6 +25,7 @@
     "format:write": "nx format:write",
     "format:check": "nx format:check",
     "limbo": "tools/limbo.sh",
+    "merge-into-master": "tools/merge-into-master.sh",
     "update": "ng update @nrwl/workspace",
     "update:check": "ng update",
     "workspace-schematic": "nx workspace-schematic",
