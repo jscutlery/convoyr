@@ -1,4 +1,4 @@
-import { createRequest } from '../../request';
+import { createRequest, HttpExtRequest } from '../../request';
 import { matchOrigin } from './match-origin';
 
 describe.each([
@@ -43,11 +43,15 @@ describe.each([['https://test.com', true], ['http://test.com', false]])(
 );
 
 describe('matchOrigin', () => {
-  xit('🚧 should throw when given an object', () => {
-    expect(() => matchOrigin({} as any)).toThrow();
+  let request: HttpExtRequest;
+
+  beforeEach(() => (request = createRequest({ url: 'https://test.com' })));
+
+  it('🚧 should throw when given an object', () => {
+    expect(() => matchOrigin({} as any)({ request })).toThrow();
   });
 
-  xit('🚧 should throw when given an number', () => {
-    expect(() => matchOrigin(123 as any)).toThrow();
+  it('🚧 should throw when given an number', () => {
+    expect(() => matchOrigin(123 as any)({ request })).toThrow();
   });
 });
