@@ -13,6 +13,8 @@ then
   exit 1
 fi
 
+set -x
+
 # Update master.
 git checkout master
 git pull
