@@ -1,4 +1,5 @@
 import { isArray } from '../../utils/is-array';
+import { findMatcher } from './find-matcher';
 import { OriginMatchExpression } from './origin-match-expression';
 import { originStringMatcher } from './origin-string-matcher';
 
@@ -10,3 +11,22 @@ export const matchArrayOrigin = (
   matchers.some(matchExpression =>
     originStringMatcher.handle({ origin, matchExpression })
   );
+
+export const originArrayMatcher = {
+  canHandle(matchExpression) {
+    return isArray(matchExpression);
+  },
+  handle({ origin, matchExpression }) {
+    /* Loop through expressions... */
+    return matchExpression.some(childExpression => {
+      /* ... find the right matcher for each expression... */
+      const matcher = findMatcher(childExpression);
+
+      /* ... and handle the expression. */
+      return matcher.handle({
+        origin,
+        matchExpression: childExpression
+      });
+    });
+  }
+};
