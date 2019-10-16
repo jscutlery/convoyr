@@ -59,7 +59,7 @@
     "@nrwl/workspace": "8.6.0",
     "@types/jest": "24.0.9",
     "@types/node": "~8.9.5",
-    "codelyzer": "~5.0.1",
+    "codelyzer": "~5.1.0",
     "cypress": "3.4.1",
     "dotenv": "8.2.0",
     "eslint": "6.1.0",
