@@ -7,7 +7,13 @@ export const originPredicateMatcher: OriginMatcher = {
   canHandle(matchExpression) {
     return isFunction(matchExpression);
   },
-  handle({ origin, matchExpression }) {
-    return (matchExpression as Function)(origin);
+  handle({
+    origin,
+    matchExpression
+  }: {
+    origin: string;
+    matchExpression: MatchOriginPredicate;
+  }) {
+    return matchExpression(origin);
   }
 };
