@@ -1,7 +1,7 @@
-import { OriginMatchPredicate } from './match-predicate-origin';
+import { MatchOriginPredicate } from './origin-predicate-matcher';
 
 export type OriginMatchExpression =
   | string
   | string[]
   | RegExp
-  | OriginMatchPredicate;
+  | MatchOriginPredicate;

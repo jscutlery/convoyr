@@ -1,15 +1,16 @@
 import { RequestCondition } from '../../plugin';
 import { getOrigin } from './get-origin';
 import { matchArrayOrigin } from './match-array-origin';
-import { matchPredicateOrigin } from './match-predicate-origin';
-import { originRegExpMatcher } from './origin-reg-exp-matcher';
+import { originPredicateMatcher } from './origin-predicate-matcher';
 import { OriginMatchExpression } from './origin-match-expression';
 import { OriginMatcher } from './origin-matcher';
+import { originRegExpMatcher } from './origin-reg-exp-matcher';
 import { originStringMatcher } from './origin-string-matcher';
 
 export const originMatcherList: OriginMatcher[] = [
   originRegExpMatcher,
-  originStringMatcher
+  originStringMatcher,
+  originPredicateMatcher
 ];
 
 export const matchOrigin = (
@@ -28,7 +29,5 @@ export const matchOrigin = (
     });
   }
 
-  return [matchArrayOrigin, matchPredicateOrigin].some(match =>
-    match(origin, matchExpression)
-  );
+  return [matchArrayOrigin].some(match => match(origin, matchExpression));
 };
