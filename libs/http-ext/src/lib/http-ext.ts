@@ -11,6 +11,12 @@ export type RequestHandlerFn = ({
   request: Request
 }) => Observable<HttpExtResponse>;
 
+export function invalidPluginConditionError(type: string) {
+  return new Error(
+    `invalidPluginConditionError: expecting boolean got ${type}.`
+  );
+}
+
 export class HttpExt {
   private _plugins: Plugin[];
 
@@ -55,10 +61,9 @@ export class HttpExt {
       return fromSyncOrAsync(response);
     };
 
-    this._throwIfInvalidCondition({
+    this._throwIfInvalidPluginCondition({
       plugin,
       request,
-      index: plugins.length - 1
     });
 
     /**
@@ -90,24 +95,19 @@ export class HttpExt {
   /**
    * Throw an exception if the plugin condition return type is invalid.
    */
-  private _throwIfInvalidCondition({
+  private _throwIfInvalidPluginCondition({
     plugin,
-    request,
-    index
+    request
   }: {
     plugin: Plugin;
     request: HttpExtRequest;
-    index: number;
   }): void {
     if (
       isFunction(plugin.condition) &&
       isBoolean(plugin.condition({ request })) === false
     ) {
-      throw new Error(
-        `Invalid plugin condition return type at index ${index}, expecting boolean got ${typeof plugin.condition(
-          { request }
-        )}.`
-      );
+      const type = typeof plugin.condition({ request });
+      throw invalidPluginConditionError(type);
     }
   }
 }
