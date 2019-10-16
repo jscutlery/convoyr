@@ -1,4 +1,6 @@
 export const getOrigin = (url: string): string => {
-  const [protocol, , host] = url.split(/\/|\?/);
-  return `${protocol}//${host}`;
+  const [scheme, urlWithoutScheme] = url.split('://');
+
+  const [, , host] = url.split(/\/|\?/);
+  return `${scheme}://${host}`;
 };

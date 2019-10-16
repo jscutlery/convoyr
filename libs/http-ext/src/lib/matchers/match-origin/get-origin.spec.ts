@@ -8,7 +8,13 @@ describe('getOrigin', () => {
     expect(getOrigin('https://jscutlery.github.io/test')).toEqual(
       'https://jscutlery.github.io'
     );
+    expect(getOrigin('https://jscutlery.github.io:443/test')).toEqual(
+      'https://jscutlery.github.io:443'
+    );
   });
 
-  it.todo('🚧 should fail if invalid URL');
+  xit('🚧 should fail if invalid URL', () => {
+    expect(() => getOrigin('jscutlery.github.io')).toThrow();
+    expect(() => getOrigin('jscutlery.github.io:443')).toThrow();
+  });
 });
