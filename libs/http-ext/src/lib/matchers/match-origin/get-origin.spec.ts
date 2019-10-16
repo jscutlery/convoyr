@@ -14,8 +14,14 @@ describe('getOrigin', () => {
   });
 
   it('should fail if invalid URL', () => {
-    expect(() => getOrigin('jscutlery.github.io')).toThrow();
-    expect(() => getOrigin('jscutlery.github.io:443')).toThrow();
-    expect(() => getOrigin('/test')).toThrow();
+    expect(() => getOrigin('jscutlery.github.io')).toThrow(
+      'InvalidUrlError: jscutlery.github.io is not a valid URL.'
+    );
+    expect(() => getOrigin('jscutlery.github.io:443')).toThrow(
+      'InvalidUrlError: jscutlery.github.io:443 is not a valid URL.'
+    );
+    expect(() => getOrigin('/test')).toThrow(
+      'InvalidUrlError: /test is not a valid URL.'
+    );
   });
 });

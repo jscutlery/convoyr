@@ -5,7 +5,7 @@ export function invalidUrlError(url: string) {
 export const getOrigin = (url: string): string => {
   const [scheme, urlWithoutScheme] = url.split('://');
 
-  if (scheme == null && urlWithoutScheme == null) {
+  if (scheme == null || urlWithoutScheme == null) {
     throw invalidUrlError(url);
   }
 
