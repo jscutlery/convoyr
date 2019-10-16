@@ -1,10 +1,10 @@
 import { RequestCondition } from '../../plugin';
 import { getOrigin } from './get-origin';
 import { matchArrayOrigin } from './match-array-origin';
-import { OriginMatchExpression } from './origin-match-expression';
 import { matchPredicateOrigin } from './match-predicate-origin';
 import { matchRegExpOrigin } from './match-reg-exp-origin';
-import { matchStringOrigin, originStringMatcher } from './match-string-origin';
+import { originStringMatcher } from './origin-string-matcher';
+import { OriginMatchExpression } from './origin-match-expression';
 import { OriginMatcher } from './origin-matcher';
 
 export const originMatcherList: OriginMatcher[] = [originStringMatcher];

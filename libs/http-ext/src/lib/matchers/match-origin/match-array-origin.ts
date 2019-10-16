@@ -1,6 +1,6 @@
 import { isArray } from '../../utils/is-array';
-import { originStringMatcher } from './match-string-origin';
 import { OriginMatchExpression } from './origin-match-expression';
+import { originStringMatcher } from './origin-string-matcher';
 
 export const matchArrayOrigin = (
   origin: string,
