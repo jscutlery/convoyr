@@ -2,12 +2,15 @@ import { RequestCondition } from '../../plugin';
 import { getOrigin } from './get-origin';
 import { matchArrayOrigin } from './match-array-origin';
 import { matchPredicateOrigin } from './match-predicate-origin';
-import { matchRegExpOrigin } from './match-reg-exp-origin';
-import { originStringMatcher } from './origin-string-matcher';
+import { originRegExpMatcher } from './match-reg-exp-origin';
 import { OriginMatchExpression } from './origin-match-expression';
 import { OriginMatcher } from './origin-matcher';
+import { originStringMatcher } from './origin-string-matcher';
 
-export const originMatcherList: OriginMatcher[] = [originStringMatcher];
+export const originMatcherList: OriginMatcher[] = [
+  originRegExpMatcher,
+  originStringMatcher
+];
 
 export const matchOrigin = (
   matchExpression: OriginMatchExpression
@@ -25,7 +28,7 @@ export const matchOrigin = (
     });
   }
 
-  return [matchArrayOrigin, matchRegExpOrigin, matchPredicateOrigin].some(
-    match => match(origin, matchExpression)
+  return [matchArrayOrigin, matchPredicateOrigin].some(match =>
+    match(origin, matchExpression)
   );
 };

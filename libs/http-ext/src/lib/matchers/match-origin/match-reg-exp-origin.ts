@@ -1,6 +1,16 @@
-import { OriginMatchExpression } from './origin-match-expression';
+import { OriginMatcher } from './origin-matcher';
 
-export const matchRegExpOrigin = (
-  origin: string,
-  matcher: OriginMatchExpression
-): boolean => matcher instanceof RegExp && matcher.test(origin);
+export const originRegExpMatcher: OriginMatcher = {
+  canHandle(matchExpression) {
+    return matchExpression instanceof RegExp;
+  },
+  handle({
+    origin,
+    matchExpression
+  }: {
+    origin: string;
+    matchExpression: RegExp;
+  }) {
+    return matchExpression.test(origin);
+  }
+};
