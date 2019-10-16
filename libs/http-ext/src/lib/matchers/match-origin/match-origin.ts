@@ -1,7 +1,7 @@
 import { RequestCondition } from '../../plugin';
 import { findMatcher } from './find-matcher';
 import { getOrigin } from './get-origin';
-import { originArrayMatcher } from './match-array-origin';
+import { originArrayMatcher } from './origin-array-matcher';
 import { OriginMatchExpression } from './origin-match-expression';
 import { originPredicateMatcher } from './origin-predicate-matcher';
 import { originRegExpMatcher } from './origin-reg-exp-matcher';

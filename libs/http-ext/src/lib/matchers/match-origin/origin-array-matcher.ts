@@ -1,16 +1,6 @@
 import { isArray } from '../../utils/is-array';
 import { findMatcher } from './find-matcher';
-import { OriginMatchExpression } from './origin-match-expression';
 import { originStringMatcher } from './origin-string-matcher';
-
-export const matchArrayOrigin = (
-  origin: string,
-  matchers: OriginMatchExpression
-): boolean =>
-  isArray(matchers) &&
-  matchers.some(matchExpression =>
-    originStringMatcher.handle({ origin, matchExpression })
-  );
 
 export const originArrayMatcher = {
   canHandle(matchExpression) {
