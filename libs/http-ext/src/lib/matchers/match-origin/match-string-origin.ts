@@ -1,5 +1,16 @@
 import { isString } from '../../utils/is-string';
-import { Matcher } from './match-origin';
+import { OriginMatchExpression } from './origin-match-expression';
 
-export const matchStringOrigin = (origin: string, matcher: Matcher): boolean =>
-  isString(matcher) && matcher === origin;
+export const matchStringOrigin = (
+  origin: string,
+  matcher: OriginMatchExpression
+): boolean => isString(matcher) && matcher === origin;
+
+export const originStringMatcher = {
+  canHandle(expression: OriginMatchExpression) {
+    return isString(expression);
+  },
+  handle({ origin, expression }: { expression: string; origin: string }) {
+    return origin === expression;
+  }
+};

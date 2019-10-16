@@ -1,7 +1,10 @@
 import { isArray } from '../../utils/is-array';
-import { Matcher } from './match-origin';
+import { OriginMatchExpression } from './origin-match-expression';
 import { matchStringOrigin } from './match-string-origin';
 
-export const matchArrayOrigin = (origin: string, matchers: Matcher): boolean =>
+export const matchArrayOrigin = (
+  origin: string,
+  matchers: OriginMatchExpression
+): boolean =>
   isArray(matchers) &&
   matchers.some(matcher => matchStringOrigin(origin, matcher));
