@@ -13,7 +13,7 @@ export type RequestHandlerFn = ({
 
 export function invalidPluginConditionError(type: string) {
   return new Error(
-    `invalidPluginConditionError: expecting boolean got ${type}.`
+    `InvalidPluginConditionError: expecting boolean got ${type}.`
   );
 }
 
