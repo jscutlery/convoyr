@@ -34,6 +34,9 @@ describe('HttpExt', () => {
           })
         )
     });
+    const responseObserver = jest.fn();
+
+    response$.subscribe(responseObserver);
 
     /*
      * Make sure plugin A is called with the right args.
@@ -58,10 +61,6 @@ describe('HttpExt', () => {
         method: 'GET'
       })
     );
-
-    const responseObserver = jest.fn();
-
-    response$.subscribe(responseObserver);
 
     expect(responseObserver).toHaveBeenCalledTimes(1);
     expect(responseObserver).toHaveBeenCalledWith(
@@ -94,16 +93,15 @@ describe('HttpExt', () => {
           })
         )
     });
+    const responseObserver = jest.fn();
+
+    response$.subscribe(responseObserver);
 
     /* The first plugin should match the condition and handle the request. */
     expect(pluginA.handle).toHaveBeenCalledTimes(1);
 
     /* The second plugin should not be called as it doesn't match the condition. */
     expect(pluginB.handle).not.toBeCalled();
-
-    const responseObserver = jest.fn();
-
-    response$.subscribe(responseObserver);
 
     expect(responseObserver).toHaveBeenCalledTimes(1);
     expect(responseObserver).toHaveBeenCalledWith(
@@ -123,13 +121,19 @@ describe('HttpExt', () => {
     const request = createRequest({
       url: 'https://test.com/'
     });
+    const response$ = httpExt.handle({
+      request,
+      handler: () => of(createResponse({ data: null }))
+    });
 
-    expect(() =>
-      httpExt.handle({
-        request,
-        handler: () => of(createResponse({ data: null }))
-      })
-    ).toThrow(`InvalidPluginConditionError: expecting boolean got string.`);
+    const errorObserver = jest.fn();
+
+    response$.subscribe({ error: errorObserver });
+
+    expect(errorObserver).toHaveBeenCalledTimes(1);
+    expect(errorObserver).toHaveBeenCalledWith(
+      `InvalidPluginConditionError: expecting boolean got string.`
+    );
   });
 
 });
