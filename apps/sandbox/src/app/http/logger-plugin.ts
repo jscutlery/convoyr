@@ -1,6 +1,6 @@
-import { Plugin } from '@http-ext/http-ext';
+import { HttpExtPlugin } from '@http-ext/http-ext';
 
-export function loggerPlugin(): Plugin {
+export function loggerPlugin(): HttpExtPlugin {
   return {
     condition({ request }) {
       return true;

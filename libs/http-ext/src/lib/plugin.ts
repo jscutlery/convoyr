@@ -9,7 +9,7 @@ export type RequestCondition = ({
   request: HttpExtRequest
 }) => boolean | Promise<boolean> | Observable<boolean>;
 
-export interface Plugin {
+export interface HttpExtPlugin {
   condition?: RequestCondition;
   handle({
     request

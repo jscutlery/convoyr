@@ -1,7 +1,7 @@
 import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { Plugin } from './plugin';
+import { HttpExtPlugin } from './plugin';
 import { HttpExtRequest } from './request';
 import { HttpExtResponse } from './response';
 import { throwIfInvalidPluginCondition } from './throw-invalid-plugin-condition';
@@ -13,9 +13,9 @@ export type RequestHandlerFn = ({
 }) => Observable<HttpExtResponse>;
 
 export class HttpExt {
-  private _plugins: Plugin[];
+  private _plugins: HttpExtPlugin[];
 
-  constructor({ plugins }: { plugins: Plugin[] }) {
+  constructor({ plugins }: { plugins: HttpExtPlugin[] }) {
     this._plugins = plugins;
   }
 
@@ -35,7 +35,7 @@ export class HttpExt {
     handler
   }: {
     request: HttpExtRequest;
-    plugins: Plugin[];
+    plugins: HttpExtPlugin[];
     handler: RequestHandlerFn;
   }): Observable<HttpExtResponse> {
     if (plugins.length === 0) {
@@ -79,7 +79,7 @@ export class HttpExt {
     plugin
   }: {
     request: HttpExtRequest;
-    plugin: Plugin;
+    plugin: HttpExtPlugin;
   }): Observable<boolean> {
     if (!isFunction(plugin.condition)) {
       return of(true);
