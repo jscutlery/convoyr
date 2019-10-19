@@ -1,18 +1,18 @@
 import { Headers } from './headers';
 
 export interface HttpExtResponse<T = unknown> {
-  data: T;
+  body: T;
   status: number;
   statusText: string;
   headers: Headers;
 }
 
 export type ResponseArgs<T> = Partial<HttpExtResponse<T>> &
-  ({ data: T } | { status: number; statusText: string });
+  ({ body: T } | { status: number; statusText: string });
 
 export function createResponse<T>(response: ResponseArgs<T>): HttpExtResponse {
   return {
-    data: response.data,
+    body: response.body,
     status: response.status || 200,
     statusText: response.statusText || 'OK',
     headers: response.headers || {}

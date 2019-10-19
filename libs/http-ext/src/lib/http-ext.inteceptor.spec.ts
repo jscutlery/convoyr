@@ -91,7 +91,7 @@ describe('HttpExtInterceptor', () => {
     /* Verify that Angular extra events are ignored in the handler. */
     expect(observer).toHaveBeenCalledTimes(1);
     const response = observer.mock.calls[0][0];
-    expect(response).toEqual(createResponse({ data: { answer: 42 } }));
+    expect(response).toEqual(createResponse({ body: { answer: 42 } }));
   });
 
   it('should convert Angular HttpResponse to HttpExtResponse before handling it back to plugins', () => {
@@ -112,7 +112,7 @@ describe('HttpExtInterceptor', () => {
       createResponse({
         status: 200,
         statusText: 'OK',
-        data: {
+        body: {
           answer: 42
         }
       })

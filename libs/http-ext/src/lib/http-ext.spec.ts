@@ -30,7 +30,7 @@ describe('HttpExt', () => {
       handler: () =>
         of(
           createResponse({
-            data: { answer: 42 }
+            body: { answer: 42 }
           })
         )
     });
@@ -65,7 +65,7 @@ describe('HttpExt', () => {
     expect(responseObserver).toHaveBeenCalledTimes(1);
     expect(responseObserver).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: {
+        body: {
           answer: 42
         }
       })
@@ -89,7 +89,7 @@ describe('HttpExt', () => {
       handler: () =>
         of(
           createResponse({
-            data: { answer: 42 }
+            body: { answer: 42 }
           })
         )
     });
@@ -106,7 +106,7 @@ describe('HttpExt', () => {
     expect(responseObserver).toHaveBeenCalledTimes(1);
     expect(responseObserver).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: {
+        body: {
           answer: 42
         }
       })
@@ -123,7 +123,7 @@ describe('HttpExt', () => {
     });
     const response$ = httpExt.handle({
       request,
-      handler: () => of(createResponse({ data: null }))
+      handler: () => of(createResponse({ body: null }))
     });
 
     const errorObserver = jest.fn();
