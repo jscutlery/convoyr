@@ -1,5 +1,10 @@
-import { HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
-import { of, EMPTY } from 'rxjs';
+import {
+  HttpHandler,
+  HttpRequest,
+  HttpResponse,
+  HttpEvent
+} from '@angular/common/http';
+import { of, EMPTY, Observable } from 'rxjs';
 
 import { HttpExt } from './http-ext';
 import { HttpExtInterceptor } from './http-ext.interceptor';
@@ -52,8 +57,7 @@ describe('HttpExtInterceptor', () => {
     /* Check that request is transformed from HttpExtRequest to Angular HttpRequest when forwarded to Angular. */
     expect(next.handle).toHaveBeenCalledTimes(1);
 
-    const forwardedNgRequest = (next.handle as jest.Mock).mock.calls[0][0];
-    forwardedNgRequest.headers.get('test');
+    const forwardedNgRequest = asMock(next.handle).mock.calls[0][0];
 
     expect(forwardedNgRequest).toBeInstanceOf(HttpRequest);
     expect(forwardedNgRequest).toEqual(
@@ -98,5 +102,23 @@ describe('HttpExtInterceptor', () => {
     );
   });
 
-  it.todo('🚧 should convert plugin HttpExtResponse to Angular HttpResponse');
+  it('should convert plugin HttpExtResponse to Angular HttpResponse', () => {
+    asMock(next.handle).mockReturnValue(
+      of(
+        new HttpResponse({
+          body: {
+            answer: 42
+          }
+        })
+      )
+    );
+    const request = new HttpRequest('GET', 'https://test.com');
+    const observer = jest.fn();
+
+    interceptor.intercept(request, next).subscribe(observer);
+
+    const response = observer.mock.calls[0][0];
+    expect(response).toBeInstanceOf(HttpResponse);
+    expect(response).toEqual(expect.objectContaining({ body: { answer: 42 } }));
+  });
 });
