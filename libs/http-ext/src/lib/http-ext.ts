@@ -1,10 +1,11 @@
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
-import { Plugin } from './plugin';
+import { HttpExtPlugin } from './plugin';
 import { HttpExtRequest } from './request';
 import { HttpExtResponse } from './response';
+import { throwIfInvalidPluginCondition } from './throw-invalid-plugin-condition';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
-import { isBoolean } from './utils/is-boolean';
 import { isFunction } from './utils/is-function';
 
 export type RequestHandlerFn = ({
@@ -12,9 +13,9 @@ export type RequestHandlerFn = ({
 }) => Observable<HttpExtResponse>;
 
 export class HttpExt {
-  private _plugins: Plugin[];
+  private _plugins: HttpExtPlugin[];
 
-  constructor({ plugins }: { plugins: Plugin[] }) {
+  constructor({ plugins }: { plugins: HttpExtPlugin[] }) {
     this._plugins = plugins;
   }
 
@@ -34,7 +35,7 @@ export class HttpExt {
     handler
   }: {
     request: HttpExtRequest;
-    plugins: Plugin[];
+    plugins: HttpExtPlugin[];
     handler: RequestHandlerFn;
   }): Observable<HttpExtResponse> {
     if (plugins.length === 0) {
@@ -55,59 +56,35 @@ export class HttpExt {
       return fromSyncOrAsync(response);
     };
 
-    this._throwIfInvalidCondition({
-      plugin,
-      request,
-      index: plugins.length - 1
-    });
-
     /**
-     * Skip plugin if plugin's condition tells so.
+     * Handle plugin if plugin's condition tells so.
      */
-    if (this._shouldSkip({ request, plugin })) {
-      const response = next({ request });
-      return fromSyncOrAsync(response);
-    }
+    return this._shouldHandle({ request, plugin }).pipe(
+      mergeMap(throwIfInvalidPluginCondition),
+      mergeMap(shouldHandle => {
+        if (shouldHandle === false) {
+          return next({ request });
+        }
 
-    return fromSyncOrAsync(plugin.handle({ request, next }));
-  }
-
-  /**
-   * Tells if the given plugin should be skipped or not depending on plugins condition.
-   */
-  private _shouldSkip({
-    request,
-    plugin
-  }: {
-    request: HttpExtRequest;
-    plugin: Plugin;
-  }): boolean {
-    return (
-      isFunction(plugin.condition) && plugin.condition({ request }) === false
+        return fromSyncOrAsync(plugin.handle({ request, next }));
+      })
     );
   }
 
   /**
-   * Throw an exception if the plugin condition return type is invalid.
+   * Tells if the given plugin should be handled or not depending on plugins condition.
    */
-  private _throwIfInvalidCondition({
-    plugin,
+  private _shouldHandle({
     request,
-    index
+    plugin
   }: {
-    plugin: Plugin;
     request: HttpExtRequest;
-    index: number;
-  }): void {
-    if (
-      isFunction(plugin.condition) &&
-      isBoolean(plugin.condition({ request })) === false
-    ) {
-      throw new Error(
-        `Invalid plugin condition return type at index ${index}, expecting boolean got ${typeof plugin.condition(
-          { request }
-        )}.`
-      );
+    plugin: HttpExtPlugin;
+  }): Observable<boolean> {
+    if (!isFunction(plugin.condition)) {
+      return of(true);
     }
+
+    return fromSyncOrAsync(plugin.condition({ request }));
   }
 }

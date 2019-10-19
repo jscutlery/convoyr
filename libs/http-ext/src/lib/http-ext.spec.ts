@@ -30,10 +30,13 @@ describe('HttpExt', () => {
       handler: () =>
         of(
           createResponse({
-            data: { answer: 42 }
+            body: { answer: 42 }
           })
         )
     });
+    const responseObserver = jest.fn();
+
+    response$.subscribe(responseObserver);
 
     /*
      * Make sure plugin A is called with the right args.
@@ -59,14 +62,10 @@ describe('HttpExt', () => {
       })
     );
 
-    const responseObserver = jest.fn();
-
-    response$.subscribe(responseObserver);
-
     expect(responseObserver).toHaveBeenCalledTimes(1);
     expect(responseObserver).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: {
+        body: {
           answer: 42
         }
       })
@@ -90,10 +89,13 @@ describe('HttpExt', () => {
       handler: () =>
         of(
           createResponse({
-            data: { answer: 42 }
+            body: { answer: 42 }
           })
         )
     });
+    const responseObserver = jest.fn();
+
+    response$.subscribe(responseObserver);
 
     /* The first plugin should match the condition and handle the request. */
     expect(pluginA.handle).toHaveBeenCalledTimes(1);
@@ -101,17 +103,37 @@ describe('HttpExt', () => {
     /* The second plugin should not be called as it doesn't match the condition. */
     expect(pluginB.handle).not.toBeCalled();
 
-    const responseObserver = jest.fn();
-
-    response$.subscribe(responseObserver);
-
     expect(responseObserver).toHaveBeenCalledTimes(1);
     expect(responseObserver).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: {
+        body: {
           answer: 42
         }
       })
     );
   });
+
+  it('should throw when a plugin condition returns an invalid value', () => {
+    const plugin = createSpyPlugin(
+      () => '' as any /* 👈🏻 invalid condition */
+    );
+    const httpExt = new HttpExt({ plugins: [plugin] });
+    const request = createRequest({
+      url: 'https://test.com/'
+    });
+    const response$ = httpExt.handle({
+      request,
+      handler: () => of(createResponse({ body: null }))
+    });
+
+    const errorObserver = jest.fn();
+
+    response$.subscribe({ error: errorObserver });
+
+    expect(errorObserver).toHaveBeenCalledTimes(1);
+    expect(errorObserver).toHaveBeenCalledWith(
+      `InvalidPluginConditionError: expecting boolean got string.`
+    );
+  });
+
 });

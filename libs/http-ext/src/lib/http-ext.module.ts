@@ -3,11 +3,11 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { HttpExt } from './http-ext';
 import { HttpExtInterceptor } from './http-ext.interceptor';
-import { Plugin } from './plugin';
+import { HttpExtPlugin } from './plugin';
 
 @NgModule({})
 export class HttpExtModule {
-  static forRoot({ plugins }: { plugins: Plugin[] }): ModuleWithProviders {
+  static forRoot({ plugins }: { plugins: HttpExtPlugin[] }): ModuleWithProviders {
     const httpExt = new HttpExt({ plugins });
     const httpExtInterceptor = new HttpExtInterceptor({ httpExt });
 

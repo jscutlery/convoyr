@@ -47,7 +47,7 @@ export function fromNgResponse(
   ngResponse: HttpResponse<unknown>
 ): HttpExtResponse<unknown> {
   return createResponse({
-    data: ngResponse.body,
+    body: ngResponse.body,
     headers: fromNgClass(ngResponse.headers),
     status: ngResponse.status,
     statusText: ngResponse.statusText
@@ -58,7 +58,7 @@ export function toNgResponse(
   response: HttpExtResponse<unknown>
 ): HttpResponse<unknown> {
   return new HttpResponse({
-    body: response.data,
+    body: response.body,
     headers: new HttpHeaders(response.headers),
     status: response.status,
     statusText: response.statusText
