@@ -1,10 +1,11 @@
 import {
   HttpHandler,
+  HttpProgressEvent,
   HttpRequest,
   HttpResponse,
-  HttpEvent
+  HttpSentEvent
 } from '@angular/common/http';
-import { of, EMPTY, Observable } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
 import { HttpExtInterceptor } from './http-ext.interceptor';
@@ -30,7 +31,7 @@ describe('HttpExtInterceptor', () => {
 
     interceptor = new HttpExtInterceptor({ httpExt });
     next = {
-      /* Just to avoid pipe error */
+      /* Just to avoid pipe error. */
       handle: jest.fn().mockReturnValue(EMPTY)
     };
   });
@@ -68,20 +69,36 @@ describe('HttpExtInterceptor', () => {
     );
   });
 
-  it.todo('🚧 should ignore HttpEvents except HttpResponse');
-
-  it('should convert Angular HttpResponse to HttpExtResponse before handing it back to plugins', () => {
+  it('should ignore HttpEvents except HttpResponse', () => {
+    const httpSentEvent: HttpSentEvent = { type: 0 };
+    const httpProgressEvent: HttpProgressEvent = {
+      type: 3,
+      loaded: 1,
+      total: 0
+    };
     asMock(next.handle).mockReturnValue(
       of(
-        new HttpResponse({
-          body: {
-            answer: 42
-          }
-        })
+        httpSentEvent /* 👈🏻 Simulate some of Angular HttpEvents. */,
+        httpProgressEvent,
+        new HttpResponse({ body: { answer: 42 } })
       )
     );
     const { request, handler } = asMock(httpExt.handle).mock.calls[0][0];
+    const observer = jest.fn();
 
+    handler({ request }).subscribe(observer);
+
+    /* Verify that Angular extra events are ignored in the handler. */
+    expect(observer).toHaveBeenCalledTimes(1);
+    const response = observer.mock.calls[0][0];
+    expect(response).toEqual(createResponse({ data: { answer: 42 } }));
+  });
+
+  it('should convert Angular HttpResponse to HttpExtResponse before handling it back to plugins', () => {
+    asMock(next.handle).mockReturnValue(
+      of(new HttpResponse({ body: { answer: 42 } }))
+    );
+    const { request, handler } = asMock(httpExt.handle).mock.calls[0][0];
     const observer = jest.fn();
 
     handler({ request }).subscribe(observer);
@@ -89,7 +106,7 @@ describe('HttpExtInterceptor', () => {
     expect(observer).toHaveBeenCalledTimes(1);
     const response = observer.mock.calls[0][0];
 
-    /* 😜 just making sure that it's not an Angular HttpResponse. */
+    /* 😜 Just making sure that it's not an Angular HttpResponse. */
     expect(response).not.toBeInstanceOf(HttpResponse);
     expect(response).toEqual(
       createResponse({
@@ -104,13 +121,7 @@ describe('HttpExtInterceptor', () => {
 
   it('should convert plugin HttpExtResponse to Angular HttpResponse', () => {
     asMock(next.handle).mockReturnValue(
-      of(
-        new HttpResponse({
-          body: {
-            answer: 42
-          }
-        })
-      )
+      of(new HttpResponse({ body: { answer: 42 } }))
     );
     const request = new HttpRequest('GET', 'https://test.com');
     const observer = jest.fn();
@@ -118,6 +129,8 @@ describe('HttpExtInterceptor', () => {
     interceptor.intercept(request, next).subscribe(observer);
 
     const response = observer.mock.calls[0][0];
+
+    /* Check there is no raw HttpExtResponse given to the interceptor. */
     expect(response).toBeInstanceOf(HttpResponse);
     expect(response).toEqual(expect.objectContaining({ body: { answer: 42 } }));
   });
