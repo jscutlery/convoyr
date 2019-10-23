@@ -1,5 +1,5 @@
 import { isFunction } from '../../utils/is-function';
-import { OriginMatcher } from './origin-matcher';
+import { OriginMatcher } from './origin-match-expression';
 
 export type MatchOriginPredicate = (origin: string) => boolean;
 

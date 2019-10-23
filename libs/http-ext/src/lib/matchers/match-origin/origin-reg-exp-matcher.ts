@@ -1,4 +1,4 @@
-import { OriginMatcher } from './origin-matcher';
+import { OriginMatcher } from './origin-match-expression';
 
 export const originRegExpMatcher: OriginMatcher = {
   canHandle(matchExpression) {
