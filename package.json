@@ -51,7 +51,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.7",
     "@angular-devkit/build-ng-packagr": "~0.803.9",
-    "@angular/cli": "8.3.12",
+    "@angular/cli": "8.3.13",
     "@angular/compiler-cli": "^8.2.9",
     "@angular/language-service": "^8.2.9",
     "@nrwl/cypress": "8.6.0",
