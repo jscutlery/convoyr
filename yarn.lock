@@ -1931,13 +1931,13 @@
     fastq "^1.6.0"
 
 "@nrwl/angular@^8.5.2":
-  version "8.6.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/angular/-/angular-8.6.0.tgz#aa64246895020d445db66495531f6bffc52a69ef"
-  integrity sha512-wGENlIqKGs+e6yp0oAtlICn/7heBHoBpcp1xoQSADh5pDCNp/Tb0y1caxyBcyT8E9QKf0nGRov9TNb+ku8jp3A==
+  version "8.7.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/angular/-/angular-8.7.0.tgz#abd6e4bf55aa7e9c045d9ce66a1f009c01ac659f"
+  integrity sha512-o9Yl4Pu/b+Vu0hkPa+58h2KmLklb4KNkwOHE5GZMrbEfcwCT8tEQphmvdTmeajKJLiVDKwBYpgIqBf/X6npyCA==
   dependencies:
     "@angular-devkit/schematics" "8.3.3"
-    "@nrwl/cypress" "8.6.0"
-    "@nrwl/jest" "8.6.0"
+    "@nrwl/cypress" "8.7.0"
+    "@nrwl/jest" "8.7.0"
     "@schematics/angular" "8.3.3"
     jasmine-marbles "~0.6.0"
 
@@ -1965,10 +1965,33 @@
     tsconfig-paths-webpack-plugin "3.2.0"
     webpack-node-externals "1.7.2"
 
+"@nrwl/cypress@8.7.0":
+  version "8.7.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-8.7.0.tgz#b635cd8450ac51cf1538eb6c463c74f6d3eb46af"
+  integrity sha512-HxuMRhnvMY/K7W9bV7WSwV1v2wf4buI7WW+4ShRY9l7ILYXt7zQKH8tUYHORjrF9YGe6h1FxlHn0WCr/eDXS2g==
+  dependencies:
+    "@angular-devkit/architect" "0.803.3"
+    "@angular-devkit/core" "8.3.3"
+    "@cypress/webpack-preprocessor" "~4.1.0"
+    fork-ts-checker-webpack-plugin "^0.4.9"
+    tree-kill "1.2.1"
+    ts-loader "5.3.1"
+    tsconfig-paths-webpack-plugin "3.2.0"
+    webpack-node-externals "1.7.2"
+
 "@nrwl/jest@8.6.0":
   version "8.6.0"
   resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-8.6.0.tgz#60ae672fc529abdedf7792f4378a2abd6a08a346"
   integrity sha512-QW9De6wpnbCCl/Rn8t2NclzytljNt85jQbvOja/Op11HPcw86cmAVtFFROhZ7ykTSV8c6kiOfDatJkCxG4Qlgg==
+  dependencies:
+    "@angular-devkit/architect" "0.803.3"
+    "@angular-devkit/core" "8.3.3"
+    "@angular-devkit/schematics" "8.3.3"
+
+"@nrwl/jest@8.7.0":
+  version "8.7.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-8.7.0.tgz#2e64b77c2a6b4bb2e9dca26d20ae2f19bc146960"
+  integrity sha512-Y36ADDqqzwWdCdtNXU0vuKhc8bOCTPPDBULFZz5pUbSay/bdynveR/QyUHoFwvamovzVLJfVKRKuJWcmnkjE9Q==
   dependencies:
     "@angular-devkit/architect" "0.803.3"
     "@angular-devkit/core" "8.3.3"
@@ -10450,9 +10473,9 @@ sass@1.22.9:
     chokidar ">=2.0.0 <4.0.0"
 
 sass@^1.17.3:
-  version "1.23.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.23.0.tgz#bd526ff40dbc5d09a4ed69e2cffa849749977710"
-  integrity sha512-W4HT8+WE31Rzk3EPQC++CXjD5O+lOxgYBIB8Ohvt7/zeE2UzYW+TOczDrRU3KcEy3+xwXXbmDsOZFkoqgD4TKw==
+  version "1.23.1"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.23.1.tgz#0e5b72ba2bd9f0229a637d33f8dd5bf2d810beb3"
+  integrity sha512-zQzJ3UETUWOMd/pJJGH/zvRsBVO97m11RcpfUhcQUHEXf0yHUBgOIE/Nw8aK0m1XyVJPeq228iIK7gVxsJ/Puw==
   dependencies:
     chokidar ">=2.0.0 <4.0.0"
 
