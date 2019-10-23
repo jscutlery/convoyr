@@ -1,84 +1,65 @@
-# Http-ext
+<div align="center">
+  <h1>http-ext</h1>
 
-This project was generated using [Nx](https://nx.dev).
+  <a href="https://github.com/jscutlery/http-ext/actions">
+    <img src="https://github.com/jscutlery/http-ext/workflows/Build%20&%20Test/badge.svg" />
+  </a>
+  <a href="https://codecov.io/gh/jscutlery/http-ext">
+    <img src="https://codecov.io/gh/jscutlery/http-ext/branch/master/graph/badge.svg" />
+  </a>
+  <a href="https://www.codacy.com/manual/Edouardbozon/http-ext?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jscutlery/http-ext&amp;utm_campaign=Badge_Grade">
+    <img src="https://api.codacy.com/project/badge/Grade/c3b42bc2c3054e1c990fa116ace56057"/>
+  </a>
+</div>
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/nx-logo.png" width="450"></p>
+<p align="center">
+  Enhanced HTTP capabilities, based on <a href="https://www.typescriptlang.org" target="blank">TypeScript</a> and <a href="http://reactivex.io/rxjs" target="blank">RxJS</a>.
+</p>
 
-🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
+___
 
-## Quick Start & Documentation
+## Philosophy
 
-[Nx Documentation](https://nx.dev/angular)
+Http-ext is a **pluggable library** that aims to enhance Angular's `HttpClient`. It comes with the idea of `Plugin` that allows you to intercept and transform outgoing requests in a fancy way. Writing your own `HttpInterceptor` may be painful and error prone, that's why http-ext bring an abstraction on the top of it.
 
-[10-minute video showing all Nx features](https://nx.dev/angular/getting-started/what-is-nx)
+## Ecosystem
 
-[Interactive Tutorial](https://nx.dev/angular/tutorial/01-create-application)
+| Name                        | Description                                                                                  |
+| --------------------------- | -------------------------------------------------------------------------------------------- |
+| [@jscutlery/http-ext/core](https://www.npmjs.com/package/@jscutlery/http-ext:core) | :construction: *(wip)* Core module                           |
+| [@jscutlery/http-ext/cache-plugin](https://www.npmjs.com/package/@jscutlery/cache-plugin) | :construction: *(wip)* Cache plugin                   |
 
-## Adding capabilities to your workspace
+## Documentation
+:construction: *(wip)*
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+## Authors
 
-Below are some plugins which you can add to your workspace:
+<table border="0">
+  <tr>
+    <td>
+      <a href="https://github.com/yjaaidi" style="color: white">
+        <img src="https://github.com/yjaaidi.png?s=150" width="150"/>
+      </a>
+    </td>
+    <td>
+      <p><strong>Younes Jaaidi</strong></p>
+      <p><strong>contact: </strong><a href="mailto:contact@wishtack.com">contact@wishtack.com</a></p>
+      <p><strong>twitter: </strong><a href="https://twitter.com/yjaaidi">@yjaaidi</a></p>
+    </td>
+    <td>
+      <a href="https://github.com/Edouardbozon" style="color: white">
+        <img src="https://github.com/Edouardbozon.png?s=150" width="150"/>
+      </a>
+    </td>
+    <td>
+      <p><strong>Edouard Bozon</strong></p>
+      <p><strong>contact: </strong><a href="mailto:bozonedouard@gmail.com">bozonedouard@gmail.com</a></p>
+      <p><strong>twitter: </strong><a href="https://twitter.com/edouardbozon">@edouardbozon</a></p>
+    </td>
+  </tr>
+</table>
 
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
+## License
 
-## Generate an application
-
-Run `ng g @nrwl/angular:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are sharable across libraries and applications. They can be imported from `@http-ext/mylib`.
-
-## Development server
-
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng g component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
+http-ext is MIT licensed
