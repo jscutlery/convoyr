@@ -16,11 +16,11 @@
   Enhanced HTTP capabilities, based on <a href="https://www.typescriptlang.org" target="blank">TypeScript</a> and <a href="http://reactivex.io/rxjs" target="blank">RxJS</a>.
 </p>
 
-___
-
 ## Philosophy
 
-Http-ext is a **pluggable library** that aims to enhance Angular's `HttpClient`. It comes with the idea of `Plugin` that allows you to intercept and transform outgoing requests in a fancy way. Writing your own `HttpInterceptor` may be painful and error prone, that's why http-ext bring an abstraction on the top of it.
+Http-ext is a **pluggable library** that aims to enhance Angular's `HttpClient`. It comes with the idea of `Plugin` that allows you to intercept and transform network requests in a fancy way.
+
+Writing your own `HttpInterceptor` might be painful and error prone, that's why http-ext bring an abstraction on the top of it. We're currently working to provide more built-in plugins for common use-cases.
 
 ## Ecosystem
 
@@ -30,8 +30,8 @@ Http-ext is a **pluggable library** that aims to enhance Angular's `HttpClient`.
 | [@jscutlery/http-ext/cache-plugin](https://www.npmjs.com/package/@jscutlery/cache-plugin) | :construction: *(wip)* Cache plugin                   |
 
 ## Documentation
-:construction: *(wip)*
 
+:construction: *(wip)*
 
 ## Authors
 
@@ -59,6 +59,10 @@ Http-ext is a **pluggable library** that aims to enhance Angular's `HttpClient`.
     </td>
   </tr>
 </table>
+
+## Contributing
+
+Contribution of any kind are welcome.
 
 ## License
 
