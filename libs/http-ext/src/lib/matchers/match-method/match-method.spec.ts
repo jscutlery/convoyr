@@ -1,6 +1,21 @@
 import { createRequest, HttpExtRequest } from '../../request';
 import { matchMethod } from './match-method';
 
+describe.each([
+  ['GET', 'GET', true],
+  ['GET', 'POST', false],
+  ['GET', ['GET', 'PUT'], true],
+  ['GET', ['PUT', 'POST'], false]
+])(
+  'matchMethod with method: %p and matcher: %p => %p',
+  (method, matchExpression, expected) => {
+    it('should check origin', () => {
+      const request = createRequest({ url: 'https://test.com', method });
+      expect(matchMethod(matchExpression)({ request })).toBe(expected);
+    });
+  }
+);
+
 describe('matchMethod', () => {
   let request: HttpExtRequest;
 
