@@ -10,5 +10,6 @@
     "automergeType": "branch",
     "schedule": ["before 5am"]
   },
-  "rangeStrategy": "update-lockfile"
+  "rangeStrategy": "update-lockfile",
+  "commitMessagePrefix": ":package:"
 }
