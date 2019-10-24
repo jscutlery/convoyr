@@ -8,12 +8,12 @@ export const originPredicateMatcher: OriginMatcher = {
     return isFunction(matchExpression);
   },
   handle({
-    expression,
+    value,
     matchExpression
   }: {
-    expression: string;
+    value: string;
     matchExpression: MatchOriginPredicate;
   }) {
-    return matchExpression(expression);
+    return matchExpression(value);
   }
 };

@@ -9,7 +9,7 @@ export const originArrayMatcher: Matcher<OriginMatcher[]> = {
   canHandle(matchExpression) {
     return isArray(matchExpression);
   },
-  handle({ expression, matchExpression }) {
+  handle({ value, matchExpression }) {
     /* Loop through expressions... */
     return matchExpression.some(childExpression => {
       /* ... find the right matcher for each expression... */
@@ -21,7 +21,7 @@ export const originArrayMatcher: Matcher<OriginMatcher[]> = {
 
       /* ... and handle the expression. */
       return matcher.handle({
-        expression,
+        value,
         matchExpression: childExpression
       });
     });
