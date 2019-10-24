@@ -6,4 +6,4 @@ export type OriginMatchExpression =
   | string[]
   | RegExp
   | MatchOriginPredicate;
-export type OriginMatcher = Matcher<OriginMatchExpression>;
+export type OriginMatcher = Matcher<OriginMatchExpression, string>;

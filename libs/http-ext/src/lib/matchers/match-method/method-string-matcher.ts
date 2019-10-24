@@ -5,7 +5,7 @@ export const methodStringMatcher: MethodMatcher = {
   canHandle(matchExpression) {
     return isString(matchExpression);
   },
-  handle({ method, matchExpression }) {
-    return matchExpression === method;
+  handle({ expression, matchExpression }) {
+    return expression === matchExpression;
   }
 };

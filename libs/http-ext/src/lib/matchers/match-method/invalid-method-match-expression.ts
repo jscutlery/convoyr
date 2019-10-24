@@ -1,8 +1,4 @@
-import { MatchMethodExpression } from './match-method-expression';
-
-export function invalidMethodMatchExpression(
-  matchExpression: MatchMethodExpression
-) {
+export function invalidMethodMatchExpression(matchExpression) {
   return new Error(
     `InvalidMethodMatchExpression: ${JSON.stringify(
       matchExpression

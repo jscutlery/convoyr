@@ -5,12 +5,12 @@ export const originRegExpMatcher: OriginMatcher = {
     return matchExpression instanceof RegExp;
   },
   handle({
-    origin,
+    expression,
     matchExpression
   }: {
-    origin: string;
+    expression: string;
     matchExpression: RegExp;
   }) {
-    return matchExpression.test(origin);
+    return matchExpression.test(expression);
   }
 };

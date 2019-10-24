@@ -1,8 +1,7 @@
-export interface MatcherArgs {
-  [key: string]: any;
-}
-
-export interface Matcher<TMatchExpression = any> {
+export interface Matcher<TMatchExpression = any, TExpression = any> {
   canHandle(matchExpression: TMatchExpression): boolean;
-  handle(args: { matchExpression: TMatchExpression } & MatcherArgs): boolean;
+  handle(args: {
+    matchExpression: TMatchExpression;
+    expression: TExpression;
+  }): boolean;
 }
