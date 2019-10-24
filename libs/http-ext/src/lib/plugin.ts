@@ -6,7 +6,9 @@ import { HttpExtResponse } from './response';
 import { SyncOrAsync } from './utils/from-sync-or-async';
 
 export type RequestCondition = ({
-  request: HttpExtRequest
+  request
+}: {
+  request: HttpExtRequest;
 }) => boolean | Promise<boolean> | Observable<boolean>;
 
 export interface HttpExtPlugin {

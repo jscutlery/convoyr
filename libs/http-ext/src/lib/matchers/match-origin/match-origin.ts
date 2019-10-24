@@ -1,6 +1,7 @@
 import { RequestCondition } from '../../plugin';
-import { findMatcherOrThrow } from './find-matcher-or-throw';
+import { findMatcherOrThrow } from '../find-matcher-or-throw';
 import { getOrigin } from './get-origin';
+import { invalidOriginMatchExpression } from './invalid-origin-match-expression';
 import { originArrayMatcher } from './origin-array-matcher';
 import { OriginMatchExpression } from './origin-match-expression';
 import { originPredicateMatcher } from './origin-predicate-matcher';
@@ -21,12 +22,13 @@ export const matchOrigin = (
       originArrayMatcher,
       originRegExpMatcher,
       originPredicateMatcher
-    ]
+    ],
+    errorFactory: invalidOriginMatchExpression
   });
 
   /* Handle the origin with the right matcher. */
   return matcher.handle({
     matchExpression,
-    origin
+    expression: origin
   });
 };

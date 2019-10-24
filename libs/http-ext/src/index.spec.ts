@@ -4,5 +4,6 @@ describe('Public API', () => {
   it('should expose HttpExt', () => {
     expect(publicApi.HttpExtModule).toBeDefined();
     expect(publicApi.matchOrigin).toBeDefined();
+    expect(publicApi.matchMethod).toBeDefined();
   });
 });

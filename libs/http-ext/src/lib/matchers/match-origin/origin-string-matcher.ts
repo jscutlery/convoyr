@@ -1,18 +1,17 @@
 import { isString } from '../../utils/is-string';
-import { OriginMatchExpression } from './origin-match-expression';
-import { OriginMatcher } from './origin-matcher';
+import { OriginMatcher } from './origin-match-expression';
 
 export const originStringMatcher: OriginMatcher = {
-  canHandle(matchExpression: OriginMatchExpression) {
+  canHandle(matchExpression) {
     return isString(matchExpression);
   },
   handle({
-    origin,
+    expression,
     matchExpression
   }: {
     matchExpression: string;
-    origin: string;
+    expression: string;
   }) {
-    return origin === matchExpression;
+    return expression === matchExpression;
   }
 };

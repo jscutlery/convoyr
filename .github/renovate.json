@@ -3,16 +3,13 @@
   "extends": ["config:base"],
   "automerge": true,
   "automergeType": "branch",
-  "baseBranches": [
-    "develop"
-  ],
+  "baseBranches": ["develop"],
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
     "automergeType": "branch",
-    "schedule": [
-      "before 5am"
-    ]
+    "schedule": ["before 5am"]
   },
-  "rangeStrategy": "update-lockfile"
+  "rangeStrategy": "update-lockfile",
+  "commitMessagePrefix": ":package:"
 }

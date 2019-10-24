@@ -1,16 +1,16 @@
-import { OriginMatcher } from './origin-matcher';
+import { OriginMatcher } from './origin-match-expression';
 
 export const originRegExpMatcher: OriginMatcher = {
   canHandle(matchExpression) {
     return matchExpression instanceof RegExp;
   },
   handle({
-    origin,
+    expression,
     matchExpression
   }: {
-    origin: string;
+    expression: string;
     matchExpression: RegExp;
   }) {
-    return matchExpression.test(origin);
+    return matchExpression.test(expression);
   }
 };
