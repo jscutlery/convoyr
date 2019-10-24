@@ -18,10 +18,10 @@ Http-ext is a **pluggable library** that aims to enhance Angular's `HttpClient`.
 
 ## Ecosystem
 
-| Name                                                                                                              | Description                                               |
-| ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| [@jscutlery/http-ext](https://www.npmjs.com/package/@jscutlery/http-ext)                                          | Core module                                               |
-| [@jscutlery/http-ext/cache-plugin](https://www.npmjs.com/package/@jscutlery/http-ext/cache-plugin)                | Cache plugin                                              |
+| Name                                                                                               | Description  |
+| -------------------------------------------------------------------------------------------------- | ------------ |
+| [@jscutlery/http-ext](https://www.npmjs.com/package/@jscutlery/http-ext)                           | Core module  |
+| [@jscutlery/http-ext/cache-plugin](https://www.npmjs.com/package/@jscutlery/http-ext/cache-plugin) | Cache plugin |
 
 ## Changelog
 

@@ -9,7 +9,7 @@ describe.each([
 ])(
   'matchMethod with method: %p and matcher: %p => %p',
   (method, matchExpression, expected) => {
-    it('should check origin', () => {
+    it('should check method', () => {
       const request = createRequest({ url: 'https://test.com', method });
       expect(matchMethod(matchExpression)({ request })).toBe(expected);
     });
