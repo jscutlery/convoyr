@@ -26,7 +26,9 @@ export const routes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpExtModule.forRoot({ plugins: [loggerPlugin(), cachePlugin()] }),
+    HttpExtModule.forRoot({
+      plugins: [loggerPlugin(), cachePlugin({ withCacheInfo: true })]
+    }),
     RouterModule.forRoot(routes)
   ],
   providers: [],

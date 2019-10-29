@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
+import { CacheResponse } from './http/cache-plugin';
 
 @Component({
   template: `
@@ -13,11 +14,18 @@ import { map } from 'rxjs/operators';
   `
 })
 export class BookListComponent {
-  bookList$: Observable<any[]> = this._httpClient
-    .get<any>(
-      'https://www.googleapis.com/books/v1/volumes?q=extreme%20programming'
-    )
-    .pipe(map(response => response.items));
+  bookList$: Observable<any[]>;
+  isFromCache$: Observable<boolean>;
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) {
+    const request$ = this._httpClient
+      .get<CacheResponse<any>>(
+        'https://www.googleapis.com/books/v1/volumes?q=extreme%20programming'
+      )
+      .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+
+    this.bookList$ = request$.pipe(map(response => response.data.items));
+
+    this.isFromCache$ = request$.pipe(map(response => response.isFromCache));
+  }
 }
