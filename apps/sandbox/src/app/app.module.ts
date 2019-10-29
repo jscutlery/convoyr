@@ -7,6 +7,7 @@ import { HttpExtModule } from '@http-ext/http-ext';
 import { AppComponent } from './app.component';
 import { BookDetailComponent } from './book-detail.component';
 import { BookListComponent } from './book-list.component';
+import { cachePlugin } from './http/cache-plugin';
 import { loggerPlugin } from './http/logger-plugin';
 
 export const routes: Routes = [
@@ -25,7 +26,7 @@ export const routes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpExtModule.forRoot({ plugins: [loggerPlugin()] }),
+    HttpExtModule.forRoot({ plugins: [loggerPlugin(), cachePlugin()] }),
     RouterModule.forRoot(routes)
   ],
   providers: [],

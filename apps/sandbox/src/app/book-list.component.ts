@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -12,7 +13,7 @@ import { map } from 'rxjs/operators';
   `
 })
 export class BookListComponent {
-  bookList$ = this._httpClient
+  bookList$: Observable<any[]> = this._httpClient
     .get<any>(
       'https://www.googleapis.com/books/v1/volumes?q=extreme%20programming'
     )
