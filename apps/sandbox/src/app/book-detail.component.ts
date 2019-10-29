@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
+import { CacheResponse } from './http/cache-plugin';
 
 @Component({
   template: `
@@ -12,12 +13,13 @@ export class BookDetailComponent {
   book$ = this._activatedRoute.paramMap.pipe(
     map(paramMap => paramMap.get('bookId')),
     switchMap(bookId =>
-      this._httpClient.get(
+      this._httpClient.get<CacheResponse<any>>(
         `https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(
           bookId
         )}`
       )
-    )
+    ),
+    map(response => response.data)
   );
 
   constructor(

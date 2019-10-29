@@ -8,10 +8,28 @@ import { CacheResponse } from './http/cache-plugin';
   template: `
     <ul>
       <li *ngFor="let book of bookList$ | async">
-        <a [routerLink]="['/book', book.id]">{{ book.volumeInfo.title }}</a>
+        <a
+          [class.is-from-cache]="isFromCache$ | async"
+          [routerLink]="['/book', book.id]"
+          >{{ book.volumeInfo.title }}</a
+        >
       </li>
     </ul>
-  `
+  `,
+  styles: [
+    `
+      @keyframes blink {
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .is-from-cache {
+        color: grey;
+        animation: blink 1s linear infinite;
+      }
+    `
+  ]
 })
 export class BookListComponent {
   bookList$: Observable<any[]>;
