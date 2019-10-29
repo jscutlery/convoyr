@@ -6,12 +6,12 @@ export const originStringMatcher: OriginMatcher = {
     return isString(matchExpression);
   },
   handle({
-    expression,
+    value,
     matchExpression
   }: {
     matchExpression: string;
-    expression: string;
+    value: string;
   }) {
-    return expression === matchExpression;
+    return value === matchExpression;
   }
 };

@@ -1,11 +1,18 @@
+import { HttpMethod } from '../../request';
 import { isArray } from '../../utils/is-array';
 import { MethodMatcher } from './match-method-expression';
 
 export const methodArrayMatcher: MethodMatcher = {
-  canHandle(matchExpression) {
+  canHandle(matchExpression: HttpMethod[]) {
     return isArray(matchExpression);
   },
-  handle({ expression, matchExpression }) {
-    return matchExpression.includes(expression);
+  handle({
+    value,
+    matchExpression
+  }: {
+    value: HttpMethod;
+    matchExpression: HttpMethod[];
+  }) {
+    return matchExpression.includes(value);
   }
 };

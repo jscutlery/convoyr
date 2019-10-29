@@ -20,6 +20,6 @@ export const matchMethod = (
   /* Handle the method with the right matcher. */
   return matcher.handle({
     matchExpression,
-    expression: method
+    value: method
   });
 };
