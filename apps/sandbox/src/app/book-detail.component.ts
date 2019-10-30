@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
-import { CacheResponse } from './http/cache-plugin';
+import { CacheResponse } from './http/cache-plugin/cache-plugin';
 
 @Component({
   template: `
