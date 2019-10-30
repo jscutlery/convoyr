@@ -1,9 +1,9 @@
 import { HttpExtPlugin } from '@http-ext/http-ext';
 
 import { createCacheProvider } from './providers/create-provider';
-import { CacheProviderType } from './providers/provider';
+import { CacheProvider, CacheProviderType } from './providers/provider';
 import { createCacheStrategy } from './strategies/create-strategy';
-import { CacheStrategyType } from './strategies/strategy';
+import { CacheStrategy, CacheStrategyType } from './strategies/strategy';
 
 export interface CacheResponse<TData> {
   isFromCache: boolean;
@@ -16,27 +16,34 @@ export interface CachePluginOptions {
   cache: CacheProviderType;
 }
 
-export function cachePlugin(
-  {
-    strategy = 'cacheThenNetwork',
-    cache = 'memory',
-    withCacheInfo = false
-  }: Partial<CachePluginOptions> = {
-    strategy: 'cacheThenNetwork',
-    cache: 'memory',
-    withCacheInfo: false
-  }
-): HttpExtPlugin {
-  return {
-    handle({ request, next }) {
-      const cacheProvider = createCacheProvider(cache);
-      const cacheHandler = createCacheStrategy({
-        cacheProvider,
-        strategy,
-        withCacheInfo
-      });
+export const DEFAULT_OPTIONS: CachePluginOptions = {
+  strategy: 'cacheThenNetwork',
+  cache: 'memory',
+  withCacheInfo: false
+};
 
-      return cacheHandler.handle({ request, next });
-    }
-  };
+export class CachePlugin implements HttpExtPlugin {
+  private _strategy: CacheStrategy;
+  private _provider: CacheProvider;
+
+  constructor({ cache, strategy, withCacheInfo }: CachePluginOptions) {
+    this._provider = createCacheProvider(cache);
+    this._strategy = createCacheStrategy({
+      cacheProvider: this._provider,
+      strategy,
+      withCacheInfo
+    });
+  }
+
+  handle({ request, next }) {
+    return this._strategy.handle({ request, next });
+  }
+}
+
+export function cachePlugin({
+  strategy = 'cacheThenNetwork',
+  cache = 'memory',
+  withCacheInfo = false
+}: Partial<CachePluginOptions> = DEFAULT_OPTIONS): CachePlugin {
+  return new CachePlugin({ cache, strategy, withCacheInfo });
 }

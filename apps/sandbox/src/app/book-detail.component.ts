@@ -6,6 +6,7 @@ import { CacheResponse } from './http/cache-plugin/cache-plugin';
 
 @Component({
   template: `
+    <a routerLink="/">Home</a>
     <div *ngIf="book$ | async as book">{{ book.volumeInfo.title }}</div>
   `
 })
