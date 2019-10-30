@@ -12,7 +12,7 @@ export class CacheThenNetworkStrategy implements CacheStrategy {
   ) {}
 
   handle({ request, next }) {
-    const real$ = next({ request }).pipe(
+    const fromNetwork$ = next({ request }).pipe(
       tap(response => this.cacheProvider.set(request.url, response)),
       shareReplay({
         refCount: true,
@@ -23,15 +23,20 @@ export class CacheThenNetworkStrategy implements CacheStrategy {
     const fromCache$ = defer(() => {
       const response = this.cacheProvider.get(request.url);
       return response ? of(response) : EMPTY;
-    }).pipe(takeUntil(real$));
+    }).pipe(takeUntil(fromNetwork$));
 
     const withCacheInfo = this.withCacheInfo;
-    /* Order is important here because if we subscribe to fromCache$ first, it will subscribe to real$
+
+    /* Order is important here because if we subscribe to fromCache$ first, it will subscribe to fromNetwork$
      * and `takeUntil` will immediately unsubscribe from it because the result is synchronous.
-     * If real$ is first, it will subscribe and the subscription will be shared with the `takeUntil`
+     * If fromNetwork$ is first, it will subscribe and the subscription will be shared with the `takeUntil`
      * thanks to shareReplay. */
     return merge(
-      _addCacheMetadata({ source$: real$, withCacheInfo, isFromCache: false }),
+      _addCacheMetadata({
+        source$: fromNetwork$,
+        withCacheInfo,
+        isFromCache: false
+      }),
       _addCacheMetadata({
         source$: fromCache$,
         withCacheInfo,
