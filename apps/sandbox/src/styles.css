@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.is-from-cache {
+  color: grey;
+  animation: blink 1s linear infinite;
+}

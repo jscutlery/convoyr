@@ -15,21 +15,7 @@ import { CacheResponse } from './http/cache-plugin/cache-plugin';
         >
       </li>
     </ul>
-  `,
-  styles: [
-    `
-      @keyframes blink {
-        50% {
-          opacity: 0.5;
-        }
-      }
-
-      .is-from-cache {
-        color: grey;
-        animation: blink 1s linear infinite;
-      }
-    `
-  ]
+  `
 })
 export class BookListComponent {
   bookList$: Observable<any[]>;
