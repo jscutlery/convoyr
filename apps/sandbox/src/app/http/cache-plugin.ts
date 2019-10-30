@@ -10,6 +10,11 @@ import { HttpExtRequest } from 'libs/http-ext/src/lib/request';
 import { RequestHandlerFn } from 'libs/http-ext/src/lib/http-ext';
 
 export type CacheStrategyType = 'cacheThenNetwork';
+export type CacheProviderType =
+  | 'memory'
+  | 'sessionStorage'
+  | 'localStorage'
+  | 'indexedDB';
 
 export interface CacheStrategy {
   handle({
@@ -24,20 +29,22 @@ export interface CacheStrategy {
 export function invalidStrategyError(strategy: string) {
   const strategies: CacheStrategyType[] = ['cacheThenNetwork'];
   return new Error(
-    `InvalidStrategyError: could not handle ${strategy}, valid values are ${strategies.toString()}`
+    `InvalidStrategyError: ${strategy} is not a valid strategy, possible values are ${strategies.toString()}`
   );
 }
 
-export function findStrategyOrThrow({
+export function createCacheStrategy({
   strategy,
+  cacheProvider,
   withCacheInfo
 }: {
   withCacheInfo: boolean;
   strategy: CacheStrategyType;
+  cacheProvider: CacheProvider;
 }): CacheStrategy {
   switch (strategy) {
     case 'cacheThenNetwork':
-      return new CacheThenNetworkStrategy({ withCacheInfo });
+      return new CacheThenNetworkStrategy(withCacheInfo, cacheProvider);
 
     default:
       throw invalidStrategyError(strategy);
@@ -45,12 +52,15 @@ export function findStrategyOrThrow({
 }
 
 export class CacheThenNetworkStrategy implements CacheStrategy {
-  constructor(private options: { withCacheInfo: boolean }) {}
+  constructor(
+    private withCacheInfo: boolean,
+    private cacheProvider: CacheProvider
+  ) {}
 
   handle({ request, next }) {
     const real$ = next({ request }).pipe(
       delay(1000),
-      tap(response => cache.set(request.url, response)),
+      tap(response => this.cacheProvider.set(request.url, response)),
       shareReplay({
         refCount: true,
         bufferSize: 1
@@ -58,12 +68,11 @@ export class CacheThenNetworkStrategy implements CacheStrategy {
     );
 
     const fromCache$ = defer(() => {
-      const response = cache.get(request.url);
+      const response = this.cacheProvider.get(request.url);
       return response ? of(response) : EMPTY;
     }).pipe(takeUntil(real$));
 
-    const { withCacheInfo } = this.options;
-
+    const withCacheInfo = this.withCacheInfo;
     /* Order is important here because if we subscribe to fromCache$ first, it will subscribe to real$
      * and `takeUntil` will immediately unsubscribe from it because the result is synchronous.
      * If real$ is first, it will subscribe and the subscription will be shared with the `takeUntil`
@@ -80,43 +89,86 @@ export interface CacheResponse<TData> {
   data: TData;
 }
 
-export const cache = {
+export class MemoryCache implements CacheProvider {
   get(url) {
     const cacheData = this._load();
     return cacheData[url];
-  },
+  }
+
   set(url, response) {
     const cacheData = this._load();
     cacheData[url] = response;
     this._save(cacheData);
-  },
-  _load() {
+  }
+
+  private _load() {
     const raw = localStorage.getItem('http-ext-cache');
     return raw ? JSON.parse(raw) : {};
-  },
-  _save(cacheData) {
+  }
+
+  private _save(cacheData) {
     return localStorage.setItem('http-ext-cache', JSON.stringify(cacheData));
   }
-};
+}
 
 export interface CachePluginOptions {
   withCacheInfo: boolean;
   strategy: CacheStrategyType;
+  cache: CacheProviderType;
+}
+
+export interface CacheProvider {
+  get(url: string): unknown;
+  set(url: string, response: unknown): void;
+}
+
+export function invalidCacheProviderError(cacheProviderType: string) {
+  const cacheProviders: CacheProviderType[] = [
+    'memory',
+    'sessionStorage',
+    'localStorage',
+    'indexedDB'
+  ];
+  return new Error(
+    `InvalidCacheProviderError: couldn't create ${cacheProviderType} cache provider, valid providers are ${cacheProviders.toString()}`
+  );
+}
+
+export function createCacheProvider(
+  cacheProviderType: CacheProviderType
+): CacheProvider {
+  switch (cacheProviderType) {
+    case 'memory':
+      return new MemoryCache();
+
+    // @todo implement others cache providers
+
+    default:
+      throw invalidCacheProviderError(cacheProviderType);
+  }
 }
 
 export function cachePlugin(
   {
     strategy = 'cacheThenNetwork',
+    cache = 'memory',
     withCacheInfo = false
   }: Partial<CachePluginOptions> = {
     strategy: 'cacheThenNetwork',
+    cache: 'memory',
     withCacheInfo: false
   }
 ): HttpExtPlugin {
   return {
     handle({ request, next }) {
-      const cacheStrategy = findStrategyOrThrow({ strategy, withCacheInfo });
-      return cacheStrategy.handle({ request, next });
+      const cacheProvider = createCacheProvider(cache);
+      const cacheHandler = createCacheStrategy({
+        cacheProvider,
+        strategy,
+        withCacheInfo
+      });
+
+      return cacheHandler.handle({ request, next });
     }
   };
 }
