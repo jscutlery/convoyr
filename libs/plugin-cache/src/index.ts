@@ -1,1 +1,1 @@
-export * from './lib/plugin-cache.module';
+export { cachePlugin } from './lib/plugin-cache';
