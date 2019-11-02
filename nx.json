@@ -16,6 +16,9 @@
     },
     "http-ext": {
       "tags": []
+    },
+    "plugin-cache": {
+      "tags": []
     }
   }
 }
