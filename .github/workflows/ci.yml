@@ -11,7 +11,7 @@ jobs:
     - name: Build
       run: |
         yarn install
-        yarn build:http-ext
+        yarn affected:build
   test:
     runs-on: ubuntu-latest
     steps:
@@ -20,7 +20,7 @@ jobs:
       - name: Test
         run: |
           yarn install
-          yarn test:http-ext:ci
+          yarn affected:test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.2
         with:
