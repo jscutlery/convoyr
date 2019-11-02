@@ -1,7 +1,8 @@
-// tslint:disable: nx-enforce-module-boundaries
-import { HttpExtPlugin } from '@http-ext/http-ext';
-import { createRequest } from 'libs/http-ext/src/lib/request';
-import { createResponse } from 'libs/http-ext/src/lib/response';
+import {
+  createRequest,
+  createResponse,
+  HttpExtPlugin
+} from '@http-ext/http-ext';
 import { concat } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
