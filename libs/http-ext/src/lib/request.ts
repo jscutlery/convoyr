@@ -9,17 +9,21 @@ export type HttpMethod =
   | 'PATCH'
   | 'DELETE';
 
-export interface HttpExtRequest<T = unknown> {
+export interface HttpExtRequest<TBody = unknown> {
   readonly url: string;
   readonly method: HttpMethod;
-  readonly body: T | null;
+  readonly body: TBody | null;
   readonly headers: Headers;
   readonly params: { [key: string]: string | string[] };
 }
 
-export type RequestArgs<T> = { url: string } & Partial<HttpExtRequest<T>>;
+export type RequestArgs<TBody> = { url: string } & Partial<
+  HttpExtRequest<TBody>
+>;
 
-export function createRequest<T>(request: RequestArgs<T>): HttpExtRequest {
+export function createRequest<TBody>(
+  request: RequestArgs<TBody>
+): HttpExtRequest {
   return {
     url: request.url,
     method: request.method || 'GET',

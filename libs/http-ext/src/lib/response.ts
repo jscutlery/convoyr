@@ -1,16 +1,18 @@
 import { Headers } from './headers';
 
-export interface HttpExtResponse<T = unknown> {
-  body: T;
+export interface HttpExtResponse<TBody = unknown> {
+  body: TBody;
   status: number;
   statusText: string;
   headers: Headers;
 }
 
-export type ResponseArgs<T> = Partial<HttpExtResponse<T>> &
-  ({ body: T } | { status: number; statusText: string });
+export type ResponseArgs<TBody> = Partial<HttpExtResponse<TBody>> &
+  ({ body: TBody } | { status: number; statusText: string });
 
-export function createResponse<T>(response: ResponseArgs<T>): HttpExtResponse {
+export function createResponse<TBody>(
+  response: ResponseArgs<TBody>
+): HttpExtResponse {
   return {
     body: response.body,
     status: response.status || 200,
