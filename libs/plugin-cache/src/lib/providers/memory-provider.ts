@@ -3,8 +3,6 @@ import { HttpExtResponse } from '@http-ext/http-ext';
 import { CacheProvider } from '../provider';
 
 export class MemoryCacheProvider implements CacheProvider {
-  type: 'memory';
-
   private cache = new Map<string, HttpExtResponse>();
 
   get(url) {

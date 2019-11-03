@@ -3,8 +3,6 @@ import { HttpExtResponse } from '@http-ext/http-ext';
 import { CacheProvider } from '../provider';
 
 export class LocalStorageCacheProvider implements CacheProvider {
-  type: 'localStorage';
-
   get(url): HttpExtResponse {
     const cacheData = this._load();
     return cacheData[url];
