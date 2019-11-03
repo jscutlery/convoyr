@@ -1,8 +1,8 @@
 import { HandlerArgs, HttpExtPlugin } from '@http-ext/http-ext';
-import { defer, EMPTY, merge, of } from 'rxjs';
+import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { shareReplay, takeUntil, tap } from 'rxjs/operators';
 
-import { _applyMetadata } from './add-cache-metadata';
+import { _applyMetadata, ResponseOrCacheResponse } from './add-cache-metadata';
 import { CacheProvider } from './provider';
 import { MemoryCacheProvider } from './providers/memory-provider';
 
@@ -27,7 +27,7 @@ export class CachePlugin implements HttpExtPlugin {
     this._addCacheMetadata = addCacheMetadata;
   }
 
-  handle({ request, next }: HandlerArgs) {
+  handle({ request, next }: HandlerArgs): Observable<ResponseOrCacheResponse> {
     const fromNetwork$ = next({ request }).pipe(
       tap(response => {
         this._cacheProvider.set(request.url, response);

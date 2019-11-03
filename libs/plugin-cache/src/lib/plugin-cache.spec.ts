@@ -3,49 +3,58 @@ import {
   createResponse,
   HttpExtPlugin
 } from '@http-ext/http-ext';
-import { concat } from 'rxjs';
+import { concat, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
 import { _addMetadata } from './add-cache-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
 
+const objectContaining = jasmine.objectContaining;
+
 describe('CachePlugin', () => {
-  let cachePlugin: HttpExtPlugin;
-
-  beforeEach(
-    () => (cachePlugin = createCachePlugin({ addCacheMetadata: true }))
-  );
-
   it(
-    'should serve cache response when hydrated',
+    'should serve cache when hydrated',
     marbles(m => {
-      const request = createRequest({ url: 'https://test.com' });
+      const cachePlugin = createCachePlugin({ addCacheMetadata: true });
+      const request = createRequest({ url: 'https://ultimate-answer.com' });
       const response = createResponse({ body: { answer: 42 } });
       const networkResponse = _addMetadata({ isFromCache: false })(response);
       const cacheResponse = _addMetadata({ isFromCache: true })(response);
 
-      /* Simulate network request */
+      /* Simulate final handler */
       const next = () => m.cold('-r|', { r: response });
 
       /* Run two requests with the same URL to fire cache response */
-      const request1$ = cachePlugin.handle({ request, next }) as any;
-      const request2$ = cachePlugin.handle({ request, next }) as any;
+      const requestA$ = cachePlugin.handle({ request, next }) as any;
+      const requestB$ = cachePlugin.handle({ request, next }) as any;
 
-      /* Execute requests handler in order */
-      const response$ = concat(request1$, request2$);
+      /* Execute requests in order */
+      const responses$ = concat(requestA$, requestB$);
 
+      const values = { n: networkResponse, c: cacheResponse };
       /*                         👇 Second time cache is served first */
-      const expected$ = m.cold('-ncn|', {
-        n: networkResponse,
-        c: cacheResponse
-      });
+      const expected$ = m.cold('-ncn|', values);
 
-      m.expect(response$).toBeObservable(expected$);
+      m.expect(responses$).toBeObservable(expected$);
     })
   );
 
-  it.todo('should not append metadata to response by default');
-  it.todo('should use the memory cache provider by default');
-  it.todo('should store cache using the given provider');
+  it('should not apply metadata by default', () => {
+    const cachePlugin = createCachePlugin();
+    const request = createRequest({ url: 'https://ultimate-answer.com' });
+    const response = createResponse({ body: { answer: 42 } });
+    const next = () => of(response);
+
+    const cacheResponse = cachePlugin.handle({ request, next }) as any;
+    const spyObserver = jest.fn();
+
+    cacheResponse.subscribe(spyObserver);
+    expect(spyObserver).toBeCalledWith(
+      objectContaining({ body: { answer: 42 } })
+    );
+  });
+
+  it.todo('should use `MemoryCacheProvider` by default');
+  it.todo('should store the cache using given provider');
   it.todo('should allow retry with exponential time span');
 });
