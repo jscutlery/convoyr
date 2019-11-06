@@ -11,12 +11,12 @@ export type RequestCondition = ({
   request: HttpExtRequest;
 }) => boolean | Promise<boolean> | Observable<boolean>;
 
+export interface HandlerArgs {
+  request: HttpExtRequest;
+  next: RequestHandlerFn;
+}
+
 export interface HttpExtPlugin {
   condition?: RequestCondition;
-  handle({
-    request
-  }: {
-    request: HttpExtRequest;
-    next: RequestHandlerFn;
-  }): SyncOrAsync<HttpExtResponse>;
+  handle({ request, next }: HandlerArgs): SyncOrAsync<HttpExtResponse>;
 }

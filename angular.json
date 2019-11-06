@@ -153,6 +153,40 @@
         }
       },
       "schematics": {}
+    },
+    "plugin-cache": {
+      "projectType": "library",
+      "root": "libs/plugin-cache",
+      "sourceRoot": "libs/plugin-cache/src",
+      "prefix": "http-ext",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/plugin-cache/tsconfig.lib.json",
+            "project": "libs/plugin-cache/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/plugin-cache/tsconfig.lib.json",
+              "libs/plugin-cache/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/plugin-cache/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/plugin-cache/jest.config.js",
+            "tsConfig": "libs/plugin-cache/tsconfig.spec.json",
+            "setupFile": "libs/plugin-cache/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {
