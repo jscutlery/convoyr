@@ -4,7 +4,7 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/http-ext';
-import { concat, of } from 'rxjs';
+import { concat, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
 import { _addMetadata } from './add-cache-metadata';
@@ -80,10 +80,55 @@ describe('CachePlugin', () => {
     handler.subscribe();
 
     const cacheKey = spyProvider.set.mock.calls[0][0];
-    const cachedResponse = JSON.parse(spyProvider.set.mock.calls[0][1]);
+    const cachedResponse = spyProvider.set.mock.calls[0][1];
 
     expect(spyProvider.set).toBeCalledTimes(1);
     expect(cacheKey).toBe('https://ultimate-answer.com');
-    expect(cachedResponse).toEqual(objectContaining({ body: { answer: 42 } }));
+    expect(JSON.parse(cachedResponse)).toEqual(
+      objectContaining({ body: { answer: 42 } })
+    );
   });
+
+  xit(
+    'WIP: should use query params as store key',
+    marbles(m => {
+      const cachePlugin = createCachePlugin();
+      const nextFn = jest.fn().mockImplementation(({ request: _request }) => {
+        return {
+          a: m.cold('-n|', { n: createResponse({ body: { answer: 'A' } }) }),
+          b: m.cold('-n|', { n: createResponse({ body: { answer: 'B' } }) })
+        }[_request.params.q];
+      });
+
+      const requestA = createRequest({
+        url: 'https://ultimate-answer.com',
+        params: { q: 'a' }
+      });
+      const requestB = createRequest({
+        url: 'https://ultimate-answer.com',
+        params: { q: 'b' }
+      });
+
+      const response1$ = cachePlugin.handle({
+        request: requestA,
+        next: nextFn
+      }) as any;
+      const response2$ = cachePlugin.handle({
+        request: requestB,
+        next: nextFn
+      }) as any;
+      const response3$ = cachePlugin.handle({
+        request: requestA,
+        next: nextFn
+      }) as any;
+
+      const stream$ = concat(response1$, response2$, response3$);
+
+      const expected$ = m.cold('-a-baa|', {
+        a: createResponse({ body: { answer: 'A' } }),
+        b: createResponse({ body: { answer: 'B' } })
+      });
+      m.expect(stream$).toBeObservable(expected$);
+    })
+  );
 });
