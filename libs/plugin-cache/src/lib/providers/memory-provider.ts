@@ -1,15 +1,13 @@
-import { HttpExtResponse } from '@http-ext/http-ext';
-
-import { CacheProvider } from '../provider';
+import { CacheProvider } from '../cache-provider';
 
 export class MemoryCacheProvider implements CacheProvider {
-  private cache = new Map<string, HttpExtResponse>();
+  private cache = new Map<string, string>();
 
-  get(url) {
-    return this.cache.get(url);
+  get(key) {
+    return this.cache.get(key);
   }
 
-  set(url, response) {
-    this.cache.set(url, response);
+  set(key, response) {
+    this.cache.set(key, response);
   }
 }

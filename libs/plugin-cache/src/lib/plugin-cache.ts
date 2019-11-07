@@ -3,7 +3,7 @@ import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { _applyMetadata, ResponseOrCacheResponse } from './add-cache-metadata';
-import { CacheProvider } from './provider';
+import { CacheProvider } from './cache-provider';
 import { MemoryCacheProvider } from './providers/memory-provider';
 
 export interface CachePluginOptions {
@@ -29,9 +29,7 @@ export class CachePlugin implements HttpExtPlugin {
 
   handle({ request, next }: HandlerArgs): Observable<ResponseOrCacheResponse> {
     const fromNetwork$ = next({ request }).pipe(
-      tap(response => {
-        this._cacheProvider.set(request.url, response);
-      }),
+      tap(response => this._store(request, response)),
       shareReplay({
         refCount: true,
         bufferSize: 1
@@ -39,7 +37,7 @@ export class CachePlugin implements HttpExtPlugin {
     );
 
     const fromCache$ = defer(() => {
-      const response = this._cacheProvider.get(request.url);
+      const response = this._load(request);
       return response ? of(response) : EMPTY;
     }).pipe(takeUntil(fromNetwork$));
 
@@ -61,5 +59,14 @@ export class CachePlugin implements HttpExtPlugin {
         isFromCache: true
       })
     );
+  }
+
+  private _store(request, response): void {
+    this._cacheProvider.set(request.url, JSON.stringify(response));
+  }
+
+  private _load(request): ResponseOrCacheResponse | null {
+    const data = this._cacheProvider.get(request.url);
+    return data ? JSON.parse(data) : null;
   }
 }

@@ -81,14 +81,11 @@ describe('CachePlugin', () => {
     const handler = cachePlugin.handle({ request, next }) as any;
     handler.subscribe();
 
-    expect(spyProvider.set).toBeCalledTimes(1);
-    expect(spyProvider.set.mock.calls[0][0]).toBe(
-      'https://ultimate-answer.com'
-    );
-    expect(spyProvider.set.mock.calls[0][1]).toEqual(
-      objectContaining({ body: { answer: 42 } })
-    );
-  });
+    const cacheKey = spyProvider.set.mock.calls[0][0];
+    const cachedResponse = JSON.parse(spyProvider.set.mock.calls[0][1]);
 
-  it.todo('should allow retry with exponential time span');
+    expect(spyProvider.set).toBeCalledTimes(1);
+    expect(cacheKey).toBe('https://ultimate-answer.com');
+    expect(cachedResponse).toEqual(objectContaining({ body: { answer: 42 } }));
+  });
 });
