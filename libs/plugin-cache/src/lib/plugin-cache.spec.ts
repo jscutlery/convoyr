@@ -65,24 +65,24 @@ describe('CachePlugin', () => {
   it('should use `MemoryCacheProvider` by default', () => {
     const cachePlugin = createCachePlugin();
 
-    expect((cachePlugin as any)._cacheProvider).toBeDefined();
-    expect((cachePlugin as any)._cacheProvider).toBeInstanceOf(MemoryAdapter);
+    expect((cachePlugin as any)._storeAdapter).toBeDefined();
+    expect((cachePlugin as any)._storeAdapter).toBeInstanceOf(MemoryAdapter);
   });
 
-  it('should store the cache using given provider', () => {
-    const spyProvider = { set: jest.fn() };
+  it('should store the cache using given adapter', () => {
+    const spyAdapter = { set: jest.fn() };
     const cachePlugin = createCachePlugin({
-      cacheProvider: spyProvider as any
+      storeAdapter: spyAdapter as any
     });
     const next = () => of(response);
 
     const handler = cachePlugin.handle({ request, next }) as any;
     handler.subscribe();
 
-    const cacheKey = spyProvider.set.mock.calls[0][0];
-    const cachedResponse = spyProvider.set.mock.calls[0][1];
+    const cacheKey = spyAdapter.set.mock.calls[0][0];
+    const cachedResponse = spyAdapter.set.mock.calls[0][1];
 
-    expect(spyProvider.set).toBeCalledTimes(1);
+    expect(spyAdapter.set).toBeCalledTimes(1);
     expect(cacheKey).toBe('https://ultimate-answer.com');
     expect(JSON.parse(cachedResponse)).toEqual(
       objectContaining({ body: { answer: 42 } })

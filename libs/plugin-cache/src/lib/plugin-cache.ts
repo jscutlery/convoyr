@@ -1,29 +1,34 @@
-import { HandlerArgs, HttpExtPlugin } from '@http-ext/http-ext';
+import {
+  HandlerArgs,
+  HttpExtPlugin,
+  HttpExtRequest,
+  HttpExtResponse
+} from '@http-ext/http-ext';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { _applyMetadata, ResponseOrCacheResponse } from './add-cache-metadata';
-import { StoreAdapter } from './store-adapters/store-adapter';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
+import { StoreAdapter } from './store-adapters/store-adapter';
 
 export interface CachePluginOptions {
   addCacheMetadata: boolean;
-  cacheProvider: StoreAdapter;
+  storeAdapter: StoreAdapter;
 }
 
 export function cachePlugin({
   addCacheMetadata = false,
-  cacheProvider = new MemoryAdapter()
+  storeAdapter = new MemoryAdapter()
 }: Partial<CachePluginOptions> = {}): HttpExtPlugin {
-  return new CachePlugin({ addCacheMetadata, cacheProvider });
+  return new CachePlugin({ addCacheMetadata, storeAdapter });
 }
 
 export class CachePlugin implements HttpExtPlugin {
   private _addCacheMetadata: boolean;
-  private _cacheProvider: StoreAdapter;
+  private _storeAdapter: StoreAdapter;
 
-  constructor({ addCacheMetadata, cacheProvider }: CachePluginOptions) {
-    this._cacheProvider = cacheProvider;
+  constructor({ addCacheMetadata, storeAdapter }: CachePluginOptions) {
+    this._storeAdapter = storeAdapter;
     this._addCacheMetadata = addCacheMetadata;
   }
 
@@ -61,12 +66,12 @@ export class CachePlugin implements HttpExtPlugin {
     );
   }
 
-  private _store(request, response): void {
-    this._cacheProvider.set(request.url, JSON.stringify(response));
+  private _store(request: HttpExtRequest, response: HttpExtResponse): void {
+    this._storeAdapter.set(request.url, JSON.stringify(response));
   }
 
-  private _load(request): ResponseOrCacheResponse | null {
-    const data = this._cacheProvider.get(request.url);
+  private _load(request: HttpExtRequest): ResponseOrCacheResponse | null {
+    const data = this._storeAdapter.get(request.url);
     return data ? JSON.parse(data) : null;
   }
 }
