@@ -9,7 +9,7 @@ import { marbles } from 'rxjs-marbles/jest';
 
 import { _addMetadata } from './add-cache-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
-import { MemoryCacheProvider } from './providers/memory-provider';
+import { MemoryAdapter } from './store-adapters/memory-adapter';
 
 const objectContaining = jasmine.objectContaining;
 
@@ -66,9 +66,7 @@ describe('CachePlugin', () => {
     const cachePlugin = createCachePlugin();
 
     expect((cachePlugin as any)._cacheProvider).toBeDefined();
-    expect((cachePlugin as any)._cacheProvider).toBeInstanceOf(
-      MemoryCacheProvider
-    );
+    expect((cachePlugin as any)._cacheProvider).toBeInstanceOf(MemoryAdapter);
   });
 
   it('should store the cache using given provider', () => {

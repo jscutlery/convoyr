@@ -3,24 +3,24 @@ import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { _applyMetadata, ResponseOrCacheResponse } from './add-cache-metadata';
-import { CacheProvider } from './cache-provider';
-import { MemoryCacheProvider } from './providers/memory-provider';
+import { StoreAdapter } from './store-adapters/store-adapter';
+import { MemoryAdapter } from './store-adapters/memory-adapter';
 
 export interface CachePluginOptions {
   addCacheMetadata: boolean;
-  cacheProvider: CacheProvider;
+  cacheProvider: StoreAdapter;
 }
 
 export function cachePlugin({
   addCacheMetadata = false,
-  cacheProvider = new MemoryCacheProvider()
+  cacheProvider = new MemoryAdapter()
 }: Partial<CachePluginOptions> = {}): HttpExtPlugin {
   return new CachePlugin({ addCacheMetadata, cacheProvider });
 }
 
 export class CachePlugin implements HttpExtPlugin {
   private _addCacheMetadata: boolean;
-  private _cacheProvider: CacheProvider;
+  private _cacheProvider: StoreAdapter;
 
   constructor({ addCacheMetadata, cacheProvider }: CachePluginOptions) {
     this._cacheProvider = cacheProvider;

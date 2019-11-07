@@ -1,6 +1,6 @@
-import { CacheProvider } from '../cache-provider';
+import { StoreAdapter } from './store-adapter';
 
-export class LocalStorageCacheProvider implements CacheProvider {
+export class LocalStorageAdapter implements StoreAdapter {
   get(key) {
     const cacheData = this._load();
     return cacheData[key];
