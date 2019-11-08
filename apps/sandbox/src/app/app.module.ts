@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpExtModule } from '@http-ext/http-ext';
+import { HttpExtModule } from '@http-ext/core';
 
 import { AppComponent } from './app.component';
 import { loggerPlugin } from './http/logger-plugin';

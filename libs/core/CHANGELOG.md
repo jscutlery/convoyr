@@ -5,4 +5,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 0.0.1 (2019-10-11)
 
-**Note:** Version bump only for package @jscutlery/http-ext
+**Note:** Version bump only for package @jscutlery/core
