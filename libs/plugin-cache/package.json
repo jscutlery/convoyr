@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^8.2.13",
-    "@angular/core": "^8.2.13"
+    "@angular/core": "^8.2.13",
+    "@http-ext/http-ext": "^0.0.1",
+    "rxjs": "^6.5.3"
   }
 }

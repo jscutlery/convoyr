@@ -4,12 +4,12 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/http-ext';
-import { concat, of } from 'rxjs';
+import { concat, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
 import { _addMetadata } from './add-cache-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
-import { MemoryCacheProvider } from './providers/memory-provider';
+import { MemoryAdapter } from './store-adapters/memory-adapter';
 
 const objectContaining = jasmine.objectContaining;
 
@@ -47,7 +47,7 @@ describe('CachePlugin', () => {
     })
   );
 
-  it('should not apply metadata by default', () => {
+  it('should not apply metadata to response by default', () => {
     const cachePlugin = createCachePlugin();
     const next = () => of(response);
 
@@ -62,33 +62,73 @@ describe('CachePlugin', () => {
     );
   });
 
-  it('should use `MemoryCacheProvider` by default', () => {
+  it('should use `MemoryAdapter` by default', () => {
     const cachePlugin = createCachePlugin();
 
-    expect((cachePlugin as any)._cacheProvider).toBeDefined();
-    expect((cachePlugin as any)._cacheProvider).toBeInstanceOf(
-      MemoryCacheProvider
-    );
+    expect((cachePlugin as any)._storeAdapter).toBeDefined();
+    expect((cachePlugin as any)._storeAdapter).toBeInstanceOf(MemoryAdapter);
   });
 
-  it('should store the cache using given provider', () => {
-    const spyProvider = { set: jest.fn() };
+  it('should use given `StoreAdapter` implementation to store cache', () => {
+    const spyAdapter = { set: jest.fn() };
     const cachePlugin = createCachePlugin({
-      cacheProvider: spyProvider as any
+      storeAdapter: spyAdapter as any
     });
     const next = () => of(response);
 
     const handler = cachePlugin.handle({ request, next }) as any;
     handler.subscribe();
 
-    expect(spyProvider.set).toBeCalledTimes(1);
-    expect(spyProvider.set.mock.calls[0][0]).toBe(
-      'https://ultimate-answer.com'
-    );
-    expect(spyProvider.set.mock.calls[0][1]).toEqual(
+    const cacheKey = spyAdapter.set.mock.calls[0][0];
+    const cachedResponse = spyAdapter.set.mock.calls[0][1];
+
+    expect(spyAdapter.set).toBeCalledTimes(1);
+    expect(cacheKey).toBe('https://ultimate-answer.com');
+    expect(JSON.parse(cachedResponse)).toEqual(
       objectContaining({ body: { answer: 42 } })
     );
   });
 
-  it.todo('should allow retry with exponential time span');
+  it(
+    'should handle query string in store key',
+    marbles(m => {
+      const cachePlugin = createCachePlugin();
+      const nextFn = jest.fn().mockImplementation(({ request: _request }) => {
+        return {
+          a: m.cold('-n|', { n: createResponse({ body: { answer: 'A' } }) }),
+          b: m.cold('-n|', { n: createResponse({ body: { answer: 'B' } }) })
+        }[_request.params.q];
+      });
+
+      const requestA = createRequest({
+        url: 'https://ultimate-answer.com',
+        params: { q: 'a' }
+      });
+      const requestB = createRequest({
+        url: 'https://ultimate-answer.com',
+        params: { q: 'b' }
+      });
+
+      const response1$ = cachePlugin.handle({
+        request: requestA,
+        next: nextFn
+      }) as any;
+      const response2$ = cachePlugin.handle({
+        request: requestB,
+        next: nextFn
+      }) as any;
+      const response3$ = cachePlugin.handle({
+        request: requestA,
+        next: nextFn
+      }) as any;
+
+      const stream$ = concat(response1$, response2$, response3$);
+      /*                           👇 Cache is fired here */
+      const expected$ = m.cold('-a-baa|', {
+        a: createResponse({ body: { answer: 'A' } }),
+        b: createResponse({ body: { answer: 'B' } })
+      });
+      m.expect(stream$).toBeObservable(expected$);
+    })
+  );
 });

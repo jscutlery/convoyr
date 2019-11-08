@@ -11,5 +11,5 @@
     "schedule": ["before 5am"]
   },
   "rangeStrategy": "update-lockfile",
-  "commitMessagePrefix": ":package:"
+  "commitMessagePrefix": "📦"
 }
