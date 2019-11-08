@@ -47,7 +47,7 @@ describe('CachePlugin', () => {
     })
   );
 
-  it('should not apply metadata by default', () => {
+  it('should not apply metadata to response by default', () => {
     const cachePlugin = createCachePlugin();
     const next = () => of(response);
 
@@ -62,14 +62,14 @@ describe('CachePlugin', () => {
     );
   });
 
-  it('should use `MemoryCacheProvider` by default', () => {
+  it('should use `MemoryAdapter` by default', () => {
     const cachePlugin = createCachePlugin();
 
     expect((cachePlugin as any)._storeAdapter).toBeDefined();
     expect((cachePlugin as any)._storeAdapter).toBeInstanceOf(MemoryAdapter);
   });
 
-  it('should store the cache using given adapter', () => {
+  it('should use given `StoreAdapter` implementation to store cache', () => {
     const spyAdapter = { set: jest.fn() };
     const cachePlugin = createCachePlugin({
       storeAdapter: spyAdapter as any
@@ -89,8 +89,8 @@ describe('CachePlugin', () => {
     );
   });
 
-  xit(
-    'WIP: should use query params as store key',
+  it(
+    'should handle query string in store key',
     marbles(m => {
       const cachePlugin = createCachePlugin();
       const nextFn = jest.fn().mockImplementation(({ request: _request }) => {
@@ -123,7 +123,7 @@ describe('CachePlugin', () => {
       }) as any;
 
       const stream$ = concat(response1$, response2$, response3$);
-
+      /*                           👇 Cache is fired here */
       const expected$ = m.cold('-a-baa|', {
         a: createResponse({ body: { answer: 'A' } }),
         b: createResponse({ body: { answer: 'B' } })

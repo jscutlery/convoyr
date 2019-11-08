@@ -10,6 +10,7 @@ import { shareReplay, takeUntil, tap } from 'rxjs/operators';
 import { _applyMetadata, ResponseOrCacheResponse } from './add-cache-metadata';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 import { StoreAdapter } from './store-adapters/store-adapter';
+import { toString } from './to-string';
 
 export interface CachePluginOptions {
   addCacheMetadata: boolean;
@@ -67,11 +68,26 @@ export class CachePlugin implements HttpExtPlugin {
   }
 
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
-    this._storeAdapter.set(request.url, JSON.stringify(response));
+    this._storeAdapter.set(
+      this._getStoreKey(request),
+      JSON.stringify(response)
+    );
   }
 
   private _load(request: HttpExtRequest): ResponseOrCacheResponse | null {
-    const data = this._storeAdapter.get(request.url);
+    const data = this._storeAdapter.get(this._getStoreKey(request));
     return data ? JSON.parse(data) : null;
+  }
+
+  private _getStoreKey(request: HttpExtRequest): string {
+    let key = request.url;
+
+    const queryParams = Object.entries(request.params);
+    if (queryParams.length > 0) {
+      const suffix = queryParams.map(toString).join('_');
+      key += suffix;
+    }
+
+    return key;
   }
 }
