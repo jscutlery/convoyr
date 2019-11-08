@@ -3,14 +3,25 @@ coverage:
   round: down
   status:
     project:
-      default:
-       threshold: 0.2
-       if_not_found: success
-    patch:
-      default:
-        enabled: no
-        if_not_found: success
-    changes:
-      default:
-        enabled: no
-        if_not_found: success
+      core:
+        flags: core
+        target: 90%
+      plugin-cache:
+        target: 90%
+        flags: plugin-cache
+      patch:
+        default:
+          enabled: no
+          if_not_found: success
+      changes:
+        default:
+          enabled: no
+          if_not_found: success
+
+flags:
+  core:
+    paths:
+      - libs/core/src
+  plugin-cache:
+    paths:
+      - libs/plugin-cache/src
