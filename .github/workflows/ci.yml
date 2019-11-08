@@ -6,12 +6,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-    - name: Build
-      run: |
-        yarn install
-        yarn affected:build --base=remotes/origin/master
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+      - name: Build
+        run: |
+          yarn install
+          yarn affected:build --base=remotes/origin/master
   test:
     runs-on: ubuntu-latest
     steps:
@@ -20,7 +20,7 @@ jobs:
       - name: Test
         run: |
           yarn install
-          yarn affected:test --base=remotes/origin/master
+          yarn affected:test --base=remotes/origin/master --code-coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.2
         with:

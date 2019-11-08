@@ -7,7 +7,11 @@ import { HttpExtPlugin } from './plugin';
 
 @NgModule({})
 export class HttpExtModule {
-  static forRoot({ plugins }: { plugins: HttpExtPlugin[] }): ModuleWithProviders {
+  static forRoot({
+    plugins
+  }: {
+    plugins: HttpExtPlugin[];
+  }): ModuleWithProviders {
     const httpExt = new HttpExt({ plugins });
     const httpExtInterceptor = new HttpExtInterceptor({ httpExt });
 

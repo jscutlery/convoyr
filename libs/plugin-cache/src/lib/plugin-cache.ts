@@ -3,7 +3,7 @@ import {
   HttpExtPlugin,
   HttpExtRequest,
   HttpExtResponse
-} from '@http-ext/http-ext';
+} from '@http-ext/core';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { shareReplay, takeUntil, tap } from 'rxjs/operators';
 

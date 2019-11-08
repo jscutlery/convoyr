@@ -14,7 +14,7 @@
     "sandbox": {
       "tags": []
     },
-    "http-ext": {
+    "core": {
       "tags": []
     },
     "plugin-cache": {

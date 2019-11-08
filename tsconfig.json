@@ -16,7 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@http-ext/http-ext": ["libs/http-ext/src/index.ts"],
+      "@http-ext/core": ["libs/core/src/index.ts"],
       "@http-ext/plugin-cache": ["libs/plugin-cache/src/index.ts"]
     }
   },

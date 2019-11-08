@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { HttpExtResponse } from '@http-ext/http-ext';
+import { HttpExtResponse } from '@http-ext/core';
 
 export interface CacheResponse<TData> {
   isFromCache: boolean;

@@ -120,35 +120,35 @@
         }
       }
     },
-    "http-ext": {
+    "core": {
       "projectType": "library",
-      "root": "libs/http-ext",
-      "sourceRoot": "libs/http-ext/src",
+      "root": "libs/core",
+      "sourceRoot": "libs/core/src",
       "prefix": "http-ext",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "libs/http-ext/tsconfig.lib.json",
-            "project": "libs/http-ext/ng-package.json"
+            "tsConfig": "libs/core/tsconfig.lib.json",
+            "project": "libs/core/ng-package.json"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs/http-ext/tsconfig.lib.json",
-              "libs/http-ext/tsconfig.spec.json"
+              "libs/core/tsconfig.lib.json",
+              "libs/core/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/http-ext/**"]
+            "exclude": ["**/node_modules/**", "!libs/core/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/http-ext/jest.config.js",
-            "tsConfig": "libs/http-ext/tsconfig.spec.json",
-            "setupFile": "libs/http-ext/src/test-setup.ts"
+            "jestConfig": "libs/core/jest.config.js",
+            "tsConfig": "libs/core/tsconfig.spec.json",
+            "setupFile": "libs/core/src/test-setup.ts"
           }
         }
       },

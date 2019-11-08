@@ -3,8 +3,8 @@ import {
   createResponse,
   HttpExtRequest,
   HttpExtResponse
-} from '@http-ext/http-ext';
-import { concat, of, throwError } from 'rxjs';
+} from '@http-ext/core';
+import { concat, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
 import { _addMetadata } from './add-cache-metadata';
