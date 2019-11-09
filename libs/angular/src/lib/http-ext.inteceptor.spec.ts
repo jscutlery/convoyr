@@ -5,12 +5,10 @@ import {
   HttpResponse,
   HttpSentEvent
 } from '@angular/common/http';
+import { createRequest, createResponse, HttpExt } from '@http-ext/core';
 import { EMPTY, of } from 'rxjs';
 
-import { HttpExt } from './http-ext';
 import { HttpExtInterceptor } from './http-ext.interceptor';
-import { createRequest } from './request';
-import { createResponse } from './response';
 
 function asMock<TReturn, TArgs extends any[]>(
   value: (...TArgs) => TReturn

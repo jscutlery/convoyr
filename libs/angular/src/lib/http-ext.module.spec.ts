@@ -5,8 +5,8 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
+import { createSpyPlugin } from '../../../core/src/lib/http-ext.spec';
 import { HttpExtModule } from './http-ext.module';
-import { createSpyPlugin } from './http-ext.spec';
 
 describe('HttpExtModule', () => {
   let spyPlugin;

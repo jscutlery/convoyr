@@ -19,6 +19,9 @@
     },
     "plugin-cache": {
       "tags": []
+    },
+    "angular": {
+      "tags": []
     }
   }
 }

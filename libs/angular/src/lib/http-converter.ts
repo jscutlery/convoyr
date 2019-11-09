@@ -4,9 +4,13 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-
-import { createRequest, HttpExtRequest, HttpMethod } from './request';
-import { createResponse, HttpExtResponse } from './response';
+import {
+  createRequest,
+  createResponse,
+  HttpExtRequest,
+  HttpExtResponse,
+  HttpMethod
+} from '@http-ext/core';
 
 function fromNgClass(
   ngClass: HttpHeaders | HttpParams

@@ -14,19 +14,49 @@
 
 ## Philosophy
 
-Http-ext is a **pluggable library** that aims to enhance Angular's `HttpClient`. It comes with the idea of `Plugin` that allows you to intercept and transform network requests in a fancy way. Writing your own `HttpInterceptor` might be painful and error prone, that's why http-ext brings an abstraction on the top of it.
+Http-ext is an **extensible** library that aims to enhance HTTP capabilities. It comes with the idea of **plugin** that let you intercept network communications in a fancy way. The reactive nature of this library allows you to create and compose various behaviors on the top of HTTP. Http-ext has a collection of built-in plugins that bring powerful features to your application.
 
 ## Ecosystem
 
-| Name                                                                           | Description  |
-| ------------------------------------------------------------------------------ | ------------ |
-| [@http-ext/core](https://www.npmjs.com/package/@http-ext/core)                 | Core module  |
-| [@http-ext/plugin-cache](https://www.npmjs.com/package/@http-ext/plugin-cache) | Plugin Cache |
+This project is a monorepo that includes the following packages.
+
+| Name                                                                           | Description           | Goal                  |
+| ------------------------------------------------------------------------------ | --------------------- | --------------------- |
+| [@http-ext/core](https://www.npmjs.com/package/@http-ext/core)                 | Core module           | Extensibility         |
+| [@http-ext/angular](https://www.npmjs.com/package/@http-ext/angular)           | Angular module        | Angular compatibility |
+| [@http-ext/plugin-cache](https://www.npmjs.com/package/@http-ext/plugin-cache) | Cache plugin          | Fast and reactive UI  |
+| @http-ext/plugin-retry                                                         | Retry back-off plugin | Resilience            |
+| @http-ext/plugin-authentication                                                | Authentication plugin | Security              |
+
+## Documentation
+
+_Work in progress..._
 
 ## Changelog
 
-[View changes](CHANGELOG.md)
+This library follows the semantic versioning specification. Changelog is available [here](CHANGELOG.md).
+
+## Authors
+
+<table border="0">
+  <tr>
+    <td align="center">
+      <a href="https://github.com/yjaaidi" style="color: white">
+        <img src="https://github.com/yjaaidi.png?s=150" width="150"/>
+      </a>
+      <p style="margin: 0;"><strong>Younes Jaaidi</strong></p>
+      <p><strong>twitter: </strong><a href="https://twitter.com/yjaaidi">@yjaaidi</a></p>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Edouardbozon" style="color: white">
+        <img src="https://github.com/Edouardbozon.png?s=150" width="150"/>
+      </a>
+      <p style="margin: 0;"><strong>Edouard Bozon</strong></p>
+      <p><strong>twitter: </strong><a href="https://twitter.com/edouardbozon">@edouardbozon</a></p>
+    </td>
+  </tr>
+</table>
 
 ## License
 
-http-ext is MIT licensed
+This project is MIT licensed.
