@@ -4,7 +4,7 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { createSpyPlugin } from '@http-ext/core/src/lib/http-ext.spec';
+import { createSpyPlugin } from '@http-ext/test-utils';
 
 import { HttpExtModule } from './http-ext.module';
 

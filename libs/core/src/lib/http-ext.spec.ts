@@ -1,19 +1,9 @@
+import { createSpyPlugin } from '@http-ext/test-utils';
 import { of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
-import { createRequest, HttpExtRequest } from './request';
+import { createRequest } from './request';
 import { createResponse } from './response';
-
-/* A plugin handle that just calls through the next plugin.*/
-export function createSpyPlugin(
-  condition: (request: HttpExtRequest) => boolean = (request: HttpExtRequest) =>
-    true
-) {
-  return {
-    condition: jest.fn(({ request }) => condition(request)),
-    handle: jest.fn(({ request, next }) => next({ request }))
-  };
-}
 
 describe('HttpExt', () => {
   it('should handle multiple plugins', () => {

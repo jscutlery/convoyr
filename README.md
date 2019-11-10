@@ -24,7 +24,8 @@ This project is a monorepo that includes the following packages.
 | ------------------------------------------------------------------------------ | --------------------- | --------------------- |
 | [@http-ext/core](https://www.npmjs.com/package/@http-ext/core)                 | Core module           | Extensibility         |
 | [@http-ext/angular](https://www.npmjs.com/package/@http-ext/angular)           | Angular module        | Angular compatibility |
-| [@http-ext/plugin-cache](https://www.npmjs.com/package/@http-ext/plugin-cache) | Cache plugin          | Fast and reactive UI  |
+| [@http-ext/test-utils](https://www.npmjs.com/package/@http-ext/test-utils)     | Testing module        | Testability           |
+| [@http-ext/plugin-cache](https://www.npmjs.com/package/@http-ext/plugin-cache) | Cache plugin          | Performance           |
 | @http-ext/plugin-retry                                                         | Retry back-off plugin | Resilience            |
 | @http-ext/plugin-authentication                                                | Authentication plugin | Security              |
 
@@ -44,14 +45,14 @@ This library follows the semantic versioning specification. Changelog is availab
       <a href="https://github.com/yjaaidi" style="color: white">
         <img src="https://github.com/yjaaidi.png?s=150" width="150"/>
       </a>
-      <p style="margin: 0;"><strong>Younes Jaaidi</strong></p>
+      <p><strong>Younes Jaaidi</strong></p>
       <p><strong>twitter: </strong><a href="https://twitter.com/yjaaidi">@yjaaidi</a></p>
     </td>
     <td align="center">
       <a href="https://github.com/Edouardbozon" style="color: white">
         <img src="https://github.com/Edouardbozon.png?s=150" width="150"/>
       </a>
-      <p style="margin: 0;"><strong>Edouard Bozon</strong></p>
+      <p><strong>Edouard Bozon</strong></p>
       <p><strong>twitter: </strong><a href="https://twitter.com/edouardbozon">@edouardbozon</a></p>
     </td>
   </tr>

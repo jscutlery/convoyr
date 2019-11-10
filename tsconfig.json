@@ -18,7 +18,8 @@
     "paths": {
       "@http-ext/core": ["libs/core/src/index.ts"],
       "@http-ext/plugin-cache": ["libs/plugin-cache/src/index.ts"],
-      "@http-ext/angular": ["libs/angular/src/index.ts"]
+      "@http-ext/angular": ["libs/angular/src/index.ts"],
+      "@http-ext/test-utils": ["libs/test-utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
