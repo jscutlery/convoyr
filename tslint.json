@@ -53,7 +53,7 @@
     "nx-enforce-module-boundaries": [
       true,
       {
-        "allow": [],
+        "allow": ["@http-ext/core/testing"],
         "depConstraints": [
           {
             "sourceTag": "*",

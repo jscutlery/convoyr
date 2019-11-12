@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@http-ext/core": ["libs/core/src/index.ts"],
+      "@http-ext/core/testing": ["libs/core/src/lib/testing/index.ts"],
       "@http-ext/plugin-cache": ["libs/plugin-cache/src/index.ts"],
       "@http-ext/angular": ["libs/angular/src/index.ts"]
     }

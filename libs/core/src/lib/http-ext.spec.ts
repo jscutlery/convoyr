@@ -1,24 +1,14 @@
 import { of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
-import { createRequest, HttpExtRequest } from './request';
+import { createRequest } from './request';
 import { createResponse } from './response';
-
-/* A plugin handle that just calls through the next plugin.*/
-export function createSpyPlugin(
-  condition: (request: HttpExtRequest) => boolean = (request: HttpExtRequest) =>
-    true
-) {
-  return {
-    condition: jest.fn(({ request }) => condition(request)),
-    handle: jest.fn(({ request, next }) => next({ request }))
-  };
-}
+import { _createSpyPlugin } from './testing';
 
 describe('HttpExt', () => {
   it('should handle multiple plugins', () => {
-    const pluginA = createSpyPlugin();
-    const pluginB = createSpyPlugin();
+    const pluginA = _createSpyPlugin();
+    const pluginB = _createSpyPlugin();
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
 
     const request = createRequest({
@@ -73,10 +63,10 @@ describe('HttpExt', () => {
   });
 
   it('should conditionally handle plugins', () => {
-    const pluginA = createSpyPlugin(req =>
+    const pluginA = _createSpyPlugin(req =>
       req.url.startsWith('https://answer-to-the-ultimate-question-of-life.com/')
     );
-    const pluginB = createSpyPlugin(req =>
+    const pluginB = _createSpyPlugin(req =>
       req.url.startsWith('https://something-else-that-do-not-match.com/')
     );
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
@@ -114,7 +104,7 @@ describe('HttpExt', () => {
   });
 
   it('should throw when a plugin condition returns an invalid value', () => {
-    const plugin = createSpyPlugin(() => '' as any /* 👈🏻 invalid condition */);
+    const plugin = _createSpyPlugin(() => '' as any /* 👈🏻 invalid condition */);
     const httpExt = new HttpExt({ plugins: [plugin] });
     const request = createRequest({
       url: 'https://test.com/'
