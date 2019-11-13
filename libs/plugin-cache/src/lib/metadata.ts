@@ -7,6 +7,9 @@ export interface Metadata {
   createdAt: string;
 }
 
+// @todo remove this type for ts >= 3.5
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
 export type PartialMetadata = Omit<Metadata, 'isFromCache'>;
 
 export interface HttpExtCacheResponse extends HttpExtResponse {
