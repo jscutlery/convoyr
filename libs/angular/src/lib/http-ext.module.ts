@@ -1,9 +1,8 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { HttpExt, HttpExtPlugin } from '@http-ext/core';
 
-import { HttpExt } from './http-ext';
 import { HttpExtInterceptor } from './http-ext.interceptor';
-import { HttpExtPlugin } from './plugin';
 
 @NgModule({})
 export class HttpExtModule {

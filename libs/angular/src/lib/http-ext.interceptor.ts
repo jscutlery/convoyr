@@ -5,6 +5,7 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
+import { HttpExt } from '@http-ext/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -14,7 +15,6 @@ import {
   toNgRequest,
   toNgResponse
 } from './http-converter';
-import { HttpExt } from './http-ext';
 
 export class HttpExtInterceptor implements HttpInterceptor {
   private _httpExt: HttpExt;

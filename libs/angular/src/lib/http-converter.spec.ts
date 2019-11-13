@@ -1,8 +1,9 @@
-import { HttpHeaders, HttpRequest, HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpExtRequest } from '@http-ext/core';
 
 import { fromNgRequest, toNgRequest } from './http-converter';
-import { HttpExtRequest } from './request';
-import objectContaining = jasmine.objectContaining;
+
+const objectContaining = jasmine.objectContaining;
 
 describe('fromNgRequest', () => {
   it('should convert HttpRequest with body to Request object', () => {

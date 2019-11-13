@@ -7,7 +7,11 @@ import {
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { shareReplay, takeUntil, tap } from 'rxjs/operators';
 
-import { _applyMetadata, ResponseOrCacheResponse } from './add-cache-metadata';
+import { applyMetadata, METADATA_KEY } from './apply-metadata';
+import {
+  CacheOrNetworkResponse,
+  HttpExtPartialCacheResponse
+} from './metadata';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 import { StoreAdapter } from './store-adapters/store-adapter';
 import { toString } from './to-string';
@@ -33,7 +37,7 @@ export class CachePlugin implements HttpExtPlugin {
     this._addCacheMetadata = addCacheMetadata;
   }
 
-  handle({ request, next }: HandlerArgs): Observable<ResponseOrCacheResponse> {
+  handle({ request, next }: HandlerArgs): Observable<CacheOrNetworkResponse> {
     const fromNetwork$ = next({ request }).pipe(
       tap(response => this._store(request, response)),
       shareReplay({
@@ -54,12 +58,12 @@ export class CachePlugin implements HttpExtPlugin {
      * If fromNetwork$ is first, it will subscribe and the subscription will be shared with the `takeUntil`
      * thanks to shareReplay. */
     return merge(
-      _applyMetadata({
+      applyMetadata({
         source$: fromNetwork$,
         addCacheMetadata,
         isFromCache: false
       }),
-      _applyMetadata({
+      applyMetadata({
         source$: fromCache$,
         addCacheMetadata,
         isFromCache: true
@@ -67,18 +71,24 @@ export class CachePlugin implements HttpExtPlugin {
     );
   }
 
+  /* Store metadata belong cache if configuration tells so */
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
-    this._storeAdapter.set(
-      this._getStoreKey(request),
-      JSON.stringify(response)
-    );
+    const cache = this._addCacheMetadata
+      ? {
+          ...response,
+          [METADATA_KEY]: { createdAt: new Date().toISOString() }
+        }
+      : response;
+
+    this._storeAdapter.set(this._getStoreKey(request), JSON.stringify(cache));
   }
 
-  private _load(request: HttpExtRequest): ResponseOrCacheResponse | null {
+  private _load(request: HttpExtRequest): HttpExtPartialCacheResponse | null {
     const data = this._storeAdapter.get(this._getStoreKey(request));
     return data ? JSON.parse(data) : null;
   }
 
+  /* Create an uniq key by request URI to retrieve cache later */
   private _getStoreKey(request: HttpExtRequest): string {
     let key = request.url;
 

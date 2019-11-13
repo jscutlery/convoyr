@@ -3,9 +3,15 @@ coverage:
   round: down
   status:
     project:
-      default:
-       threshold: 0.2
-       if_not_found: success
+      core:
+        flags: core
+        target: 90%
+      angular:
+        target: 90%
+        flags: angular
+      plugin-cache:
+        target: 90%
+        flags: plugin-cache
     patch:
       default:
         enabled: no
@@ -14,3 +20,13 @@ coverage:
       default:
         enabled: no
         if_not_found: success
+flags:
+  core:
+    paths:
+      - libs/core/src
+  angular:
+    paths:
+      - libs/angular/src
+  plugin-cache:
+    paths:
+      - libs/plugin-cache/src
