@@ -10,7 +10,7 @@ export class HttpExtModule {
     plugins
   }: {
     plugins: HttpExtPlugin[];
-  }): ModuleWithProviders {
+  }): ModuleWithProviders<HttpExtModule> {
     const httpExt = new HttpExt({ plugins });
     const httpExtInterceptor = new HttpExtInterceptor({ httpExt });
 
