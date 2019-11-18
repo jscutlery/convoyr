@@ -17,6 +17,10 @@ import {
   toNgResponse
 } from './http-converter';
 
+export interface HttpExtConfig {
+  plugins: HttpExtPlugin[];
+}
+
 /**
  * @internal
  */
@@ -30,7 +34,7 @@ export class HttpExtInterceptor implements HttpInterceptor {
 
   constructor(
     @Inject(_HTTP_EXT_CONFIG)
-    private _httpExtConfig: { plugins: HttpExtPlugin[] }
+    private _httpExtConfig: HttpExtConfig
   ) {}
 
   intercept(
