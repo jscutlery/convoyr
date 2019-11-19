@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
@@ -27,7 +27,13 @@ export const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     HttpExtModule.forRoot({
-      plugins: [loggerPlugin(), cachePlugin({ addCacheMetadata: true })]
+      services: [HttpClient],
+      createConfig: client => ({
+        plugins: [
+          /* authPlugin(store.select(getToken)), */ loggerPlugin(),
+          cachePlugin({ addCacheMetadata: true })
+        ]
+      })
     }),
     RouterModule.forRoot(routes)
   ],
