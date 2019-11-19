@@ -30,7 +30,7 @@ export class BookListComponent {
 
     this.bookList$ = request$.pipe(map(response => response.body.items));
     this.isFromCache$ = request$.pipe(
-      map(response => response['__http-ext-metadata'].isFromCache)
+      map(response => response.metadata.isFromCache)
     );
   }
 }

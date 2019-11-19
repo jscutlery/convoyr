@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { HttpExtCacheResponse } from './metadata';
 
-export const METADATA_KEY = '__http-ext-metadata';
+export const METADATA_KEY = 'metadata';
 
 /* Decorate metadata with additional flags */
 export const refineMetadata = ({ isFromCache }: { isFromCache: boolean }) => (
