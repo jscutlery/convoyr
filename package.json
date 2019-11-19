@@ -30,7 +30,8 @@
     "update:check": "ng update",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "_lerna:version": "lerna version --no-push --conventional-commits"
   },
   "private": true,
   "dependencies": {
