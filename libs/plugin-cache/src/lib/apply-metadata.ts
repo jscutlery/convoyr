@@ -2,7 +2,7 @@ import { HttpExtResponse } from '@http-ext/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { HttpExtCacheResponse, CacheOrNetworkResponse } from './metadata';
+import { HttpExtCacheResponse } from './metadata';
 
 export const METADATA_KEY = '__http-ext-metadata';
 
@@ -32,7 +32,7 @@ export function applyMetadata({
   source$: Observable<any>;
   addCacheMetadata: boolean;
   isFromCache: boolean;
-}): Observable<CacheOrNetworkResponse> {
+}): Observable<HttpExtCacheResponse | HttpExtResponse> {
   return addCacheMetadata
     ? source$.pipe(map(refineMetadata({ isFromCache })))
     : source$.pipe(map(omitMetadata));
