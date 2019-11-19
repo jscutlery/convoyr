@@ -1,10 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { HttpExtCacheResponse } from '@http-ext/plugin-cache';
 
 @Component({
+  styles: [
+    `
+      .is-from-cache {
+        color: grey;
+      }
+    `
+  ],
   template: `
     <ul>
       <li *ngFor="let book of bookList$ | async">
@@ -28,9 +35,9 @@ export class BookListComponent {
       )
       .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
-    this.bookList$ = request$.pipe(map(response => response.body.items));
+    this.bookList$ = request$.pipe(map(body => body.data.items));
     this.isFromCache$ = request$.pipe(
-      map(response => response.cacheMetadata.isFromCache)
+      map(body => body.cacheMetadata.isFromCache)
     );
   }
 }

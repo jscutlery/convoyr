@@ -8,12 +8,12 @@ export interface CacheMetadata extends CachePartialMetadata {
   isFromCache: boolean;
 }
 
-export interface HttpExtPartialCacheResponse<TBody = unknown>
-  extends HttpExtResponse<TBody> {
-  cacheMetadata: CachePartialMetadata;
+export interface ResponseAndCacheMetadata {
+  cacheMetadata?: CachePartialMetadata;
+  response: HttpExtResponse;
 }
 
-export interface HttpExtCacheResponse<TBody = unknown>
-  extends HttpExtResponse<TBody> {
+export interface HttpExtCacheResponse<TData = unknown> {
   cacheMetadata: CacheMetadata;
+  data: TData;
 }
