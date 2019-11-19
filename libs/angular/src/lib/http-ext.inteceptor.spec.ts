@@ -22,12 +22,13 @@ describe('HttpExtInterceptor', () => {
   let next: HttpHandler;
 
   beforeEach(() => {
-    httpExt = new HttpExt({ plugins: [] });
+    interceptor = new HttpExtInterceptor({ plugins: [] });
+
+    httpExt = interceptor['_httpExt'];
 
     /* Mock `HttpExt.handle`. */
     jest.spyOn(httpExt, 'handle');
 
-    interceptor = new HttpExtInterceptor({ httpExt });
     next = {
       /* Just to avoid pipe error. */
       handle: jest.fn().mockReturnValue(EMPTY)

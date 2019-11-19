@@ -5,7 +5,8 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import { HttpExt } from '@http-ext/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { HttpExt, HttpExtPlugin } from '@http-ext/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -16,12 +17,25 @@ import {
   toNgResponse
 } from './http-converter';
 
-export class HttpExtInterceptor implements HttpInterceptor {
-  private _httpExt: HttpExt;
+export interface HttpExtConfig {
+  plugins: HttpExtPlugin[];
+}
 
-  constructor({ httpExt }: { httpExt: HttpExt }) {
-    this._httpExt = httpExt;
-  }
+/**
+ * @internal
+ */
+export const _HTTP_EXT_CONFIG = new InjectionToken<{
+  plugins: HttpExtPlugin[];
+}>('HttpExt Config');
+
+@Injectable()
+export class HttpExtInterceptor implements HttpInterceptor {
+  private _httpExt = new HttpExt(this._httpExtConfig);
+
+  constructor(
+    @Inject(_HTTP_EXT_CONFIG)
+    private _httpExtConfig: HttpExtConfig
+  ) {}
 
   intercept(
     ngRequest: HttpRequest<any>,
