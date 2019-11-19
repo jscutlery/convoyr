@@ -11,7 +11,7 @@ jobs:
       - name: Build
         run: |
           yarn install
-          yarn affected:build --base=remotes/origin/master
+          yarn affected:build --all --base=remotes/origin/master
   test:
     runs-on: ubuntu-latest
     steps:
