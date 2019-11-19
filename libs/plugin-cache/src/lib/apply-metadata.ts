@@ -2,24 +2,22 @@ import { HttpExtResponse } from '@http-ext/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { HttpExtCacheResponse } from './metadata';
-
-export const METADATA_KEY = 'metadata';
+import { HttpExtCacheResponse, CacheMetadata } from './metadata';
 
 /* Decorate metadata with additional flags */
 export const refineMetadata = ({ isFromCache }: { isFromCache: boolean }) => (
   response: HttpExtCacheResponse
 ): HttpExtCacheResponse => ({
   ...response,
-  [METADATA_KEY]: {
+  cacheMetadata: {
     isFromCache,
-    ...response[METADATA_KEY]
+    ...response.cacheMetadata
   }
 });
 
 /* Omit metadata object from response */
 export const omitMetadata = ({
-  [METADATA_KEY]: metadata,
+  cacheMetadata: metadata,
   ...response
 }: HttpExtCacheResponse): HttpExtResponse => response;
 

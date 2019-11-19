@@ -7,7 +7,7 @@ import {
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { shareReplay, takeUntil, tap } from 'rxjs/operators';
 
-import { applyMetadata, METADATA_KEY } from './apply-metadata';
+import { applyMetadata } from './apply-metadata';
 import { HttpExtPartialCacheResponse, HttpExtCacheResponse } from './metadata';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 import { StoreAdapter } from './store-adapters/store-adapter';
@@ -76,7 +76,7 @@ export class CachePlugin implements HttpExtPlugin {
     const cache = this._addCacheMetadata
       ? {
           ...response,
-          [METADATA_KEY]: { createdAt: new Date().toISOString() }
+          cacheMetadata: { createdAt: new Date().toISOString() }
         }
       : response;
 

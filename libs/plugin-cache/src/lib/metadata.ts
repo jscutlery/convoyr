@@ -1,21 +1,19 @@
 import { HttpExtResponse } from '@http-ext/core';
 
-import { METADATA_KEY } from './apply-metadata';
-
-export interface PartialMetadata {
+export interface CachePartialMetadata {
   createdAt: string;
 }
 
-export interface Metadata extends PartialMetadata {
+export interface CacheMetadata extends CachePartialMetadata {
   isFromCache: boolean;
 }
 
 export interface HttpExtPartialCacheResponse<TBody = unknown>
   extends HttpExtResponse<TBody> {
-  [METADATA_KEY]: PartialMetadata;
+  cacheMetadata: CachePartialMetadata;
 }
 
 export interface HttpExtCacheResponse<TBody = unknown>
   extends HttpExtResponse<TBody> {
-  [METADATA_KEY]: Metadata;
+  cacheMetadata: CacheMetadata;
 }
