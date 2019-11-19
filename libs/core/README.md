@@ -1,7 +1,5 @@
-# core
+# @http-ext/core
 
-This library was generated with [Nx](https://nx.dev).
+This is part of the HttpExt library.
 
-## Running unit tests
-
-Run `nx test core` to execute the unit tests.
+[Find out more on our GitHub repo](https://github.com/jscutlery/http-ext)

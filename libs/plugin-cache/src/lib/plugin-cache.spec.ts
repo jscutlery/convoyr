@@ -7,7 +7,7 @@ import {
 import { concat, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
-import { refineMetadata, METADATA_KEY } from './apply-metadata';
+import { refineMetadata } from './apply-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 
@@ -28,10 +28,10 @@ describe('CachePlugin', () => {
       const cachePlugin = createCachePlugin({ addCacheMetadata: true });
 
       /* @todo find sexier way to test metadata */
-      const cache = { ...response, [METADATA_KEY]: {} } as any;
+      const cache = { ...response, cacheMetadata: {} } as any;
       const networkResponse = refineMetadata({ isFromCache: false })(cache);
       const cacheResponse = refineMetadata({ isFromCache: true })(cache);
-      cacheResponse[METADATA_KEY].createdAt = '2019-11-13T12:39:51.972Z';
+      cacheResponse.cacheMetadata.createdAt = '2019-11-13T12:39:51.972Z';
       spyOn(Date.prototype, 'toISOString').and.returnValue(
         '2019-11-13T12:39:51.972Z'
       );
