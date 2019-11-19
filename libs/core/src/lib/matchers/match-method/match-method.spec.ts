@@ -1,7 +1,8 @@
-import { createRequest, HttpExtRequest } from '../../request';
+import { createRequest, HttpExtRequest, HttpMethod } from '../../request';
 import { matchMethod } from './match-method';
+import { MatchMethodExpression } from './match-method-expression';
 
-describe.each([
+describe.each<[HttpMethod, MatchMethodExpression, boolean]>([
   ['GET', 'GET', true],
   ['GET', 'POST', false],
   ['GET', ['GET', 'PUT'], true],
