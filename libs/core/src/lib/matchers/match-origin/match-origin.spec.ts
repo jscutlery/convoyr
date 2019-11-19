@@ -1,7 +1,8 @@
 import { createRequest, HttpExtRequest } from '../../request';
 import { matchOrigin } from './match-origin';
+import { OriginMatchExpression } from './origin-match-expression';
 
-describe.each([
+describe.each<[string, OriginMatchExpression, boolean]>([
   /* Using a string */
   ['https://test.com', 'https://test.com', true],
   ['https://test.com', 'https://angular.io', false],
@@ -29,7 +30,10 @@ describe.each([
   }
 );
 
-describe.each([['https://test.com', true], ['http://test.com', false]])(
+describe.each<[string, boolean]>([
+  ['https://test.com', true],
+  ['http://test.com', false]
+])(
   'matchOrigin with url: %p and starts with https predicate => %p',
   (url, expected) => {
     const startsWithHttpsPredicate = (origin: string) =>

@@ -1,8 +1,8 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { HttpExt, HttpExtPlugin } from '@http-ext/core';
+import { HttpExtPlugin } from '@http-ext/core';
 
-import { HttpExtInterceptor } from './http-ext.interceptor';
+import { _HTTP_EXT_CONFIG, HttpExtInterceptor } from './http-ext.interceptor';
 
 @NgModule({})
 export class HttpExtModule {
@@ -10,17 +10,18 @@ export class HttpExtModule {
     plugins
   }: {
     plugins: HttpExtPlugin[];
-  }): ModuleWithProviders {
-    const httpExt = new HttpExt({ plugins });
-    const httpExtInterceptor = new HttpExtInterceptor({ httpExt });
-
+  }): ModuleWithProviders<HttpExtModule> {
     return {
       ngModule: HttpExtModule,
       providers: [
         {
+          provide: _HTTP_EXT_CONFIG,
+          useValue: { plugins }
+        },
+        {
           provide: HTTP_INTERCEPTORS,
           multi: true,
-          useValue: httpExtInterceptor
+          useClass: HttpExtInterceptor
         }
       ]
     };
