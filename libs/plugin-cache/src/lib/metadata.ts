@@ -12,12 +12,12 @@ export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export type PartialMetadata = Omit<Metadata, 'isFromCache'>;
 
-export interface HttpExtCacheResponse extends HttpExtResponse {
-  [METADATA_KEY]: Metadata;
-}
-
-export interface HttpExtPartialCacheResponse extends HttpExtResponse {
+export interface HttpExtPartialCacheResponse<TBody = unknown>
+  extends HttpExtResponse<TBody> {
   [METADATA_KEY]: PartialMetadata;
 }
 
-export type CacheOrNetworkResponse = HttpExtResponse | HttpExtCacheResponse;
+export interface HttpExtCacheResponse<TBody = unknown>
+  extends HttpExtResponse<TBody> {
+  [METADATA_KEY]: Metadata;
+}

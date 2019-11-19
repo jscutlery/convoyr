@@ -1,1 +1,2 @@
-export { cachePlugin } from './lib/plugin-cache';
+export { cachePlugin, CachePluginOptions } from './lib/plugin-cache';
+export { HttpExtCacheResponse } from './lib/metadata';
