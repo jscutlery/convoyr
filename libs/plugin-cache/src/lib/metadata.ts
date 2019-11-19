@@ -2,15 +2,13 @@ import { HttpExtResponse } from '@http-ext/core';
 
 import { METADATA_KEY } from './apply-metadata';
 
-export interface Metadata {
-  isFromCache: boolean;
+export interface PartialMetadata {
   createdAt: string;
 }
 
-// @todo remove this type for ts >= 3.5
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
-export type PartialMetadata = Omit<Metadata, 'isFromCache'>;
+export interface Metadata extends PartialMetadata {
+  isFromCache: boolean;
+}
 
 export interface HttpExtPartialCacheResponse<TBody = unknown>
   extends HttpExtResponse<TBody> {
