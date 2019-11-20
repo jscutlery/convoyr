@@ -2,8 +2,8 @@
   "name": "@http-ext/angular",
   "version": "0.1.0",
   "peerDependencies": {
-    "@angular/common": "^8.2.13",
-    "@angular/core": "^8.2.13",
+    "@angular/common": ">= 8.2.0",
+    "@angular/core": ">= 8.2.0",
     "@http-ext/core": "^0.1.0",
     "rxjs": "^6.5.3"
   }

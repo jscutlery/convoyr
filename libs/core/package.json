@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "repository": "git://github.com/jscutlery/http-ext.git",
   "peerDependencies": {
-    "@angular/common": "^8.2.4",
-    "@angular/core": "^8.2.4",
+    "@angular/common": ">= 8.2.0",
+    "@angular/core": ">= 8.2.0",
     "rxjs": "^6.5.3"
   }
 }
