@@ -52,8 +52,8 @@ export class CachePlugin implements HttpExtPlugin {
     );
 
     const fromCache$ = defer(() => {
-      const cacheMetadataAndResponse = this._load(request);
-      return cacheMetadataAndResponse ? of(cacheMetadataAndResponse) : EMPTY;
+      const cache: ResponseAndCacheMetadata | null = this._load(request);
+      return cache ? of(cache) : EMPTY;
     }).pipe(takeUntil(fromNetwork$));
 
     const addCacheMetadata = this._addCacheMetadata;
@@ -84,9 +84,7 @@ export class CachePlugin implements HttpExtPlugin {
     this._storeAdapter.set(this._getStoreKey(request), JSON.stringify(cache));
   }
 
-  private _load(
-    request: HttpExtRequest
-  ): { cacheMetadata: PartialCacheMetadata; response: HttpExtResponse } | null {
+  private _load(request: HttpExtRequest): ResponseAndCacheMetadata | null {
     const data = this._storeAdapter.get(this._getStoreKey(request));
     return data ? JSON.parse(data) : null;
   }
