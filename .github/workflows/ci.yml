@@ -27,7 +27,10 @@ jobs:
           yarn install --frozen-lockfile
       - name: Test
         run: |
-          yarn affected:test --base=remotes/origin/master --code-coverage
+          yarn ng test core --code-coverage
+          yarn ng test angular --code-coverage
+          yarn ng test plugin-cache --code-coverage
+          yarn ng test sandbox --code-coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.2
         with:
