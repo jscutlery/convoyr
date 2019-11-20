@@ -11,8 +11,6 @@ import { refineMetadata } from './apply-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 
-const objectContaining = jasmine.objectContaining;
-
 describe('CachePlugin', () => {
   let request: HttpExtRequest;
   let response: HttpExtResponse;
@@ -27,11 +25,14 @@ describe('CachePlugin', () => {
     marbles(m => {
       const cachePlugin = createCachePlugin({ addCacheMetadata: true });
 
-      /* @todo find sexier way to test metadata */
-      const cache = { ...response, cacheMetadata: {} } as any;
-      const networkResponse = refineMetadata({ isFromCache: false })(cache);
-      const cacheResponse = refineMetadata({ isFromCache: true })(cache);
-      cacheResponse.cacheMetadata.createdAt = '2019-11-13T12:39:51.972Z';
+      /* @todo find a sexier way to test metadata */
+      const networkResponse = refineMetadata({ response });
+      const cacheResponse = refineMetadata({
+        response,
+        cacheMetadata: {
+          createdAt: '2019-11-13T12:39:51.972Z'
+        }
+      });
       spyOn(Date.prototype, 'toISOString').and.returnValue(
         '2019-11-13T12:39:51.972Z'
       );
@@ -65,7 +66,7 @@ describe('CachePlugin', () => {
 
     expect(spyObserver).toBeCalledTimes(1);
     expect(spyObserver).toBeCalledWith(
-      objectContaining({ body: { answer: 42 } })
+      expect.objectContaining({ body: { answer: 42 } })
     );
   });
 
@@ -87,12 +88,19 @@ describe('CachePlugin', () => {
     handler.subscribe();
 
     const cacheKey = spyAdapter.set.mock.calls[0][0];
-    const cachedResponse = spyAdapter.set.mock.calls[0][1];
+    const cachedData = spyAdapter.set.mock.calls[0][1];
 
     expect(spyAdapter.set).toBeCalledTimes(1);
     expect(cacheKey).toBe('https://ultimate-answer.com');
-    expect(JSON.parse(cachedResponse)).toEqual(
-      objectContaining({ body: { answer: 42 } })
+    expect(JSON.parse(cachedData)).toEqual(
+      expect.objectContaining({
+        cacheMetadata: {
+          createdAt: expect.any(String)
+        },
+        response: expect.objectContaining({
+          body: { answer: 42 }
+        })
+      })
     );
   });
 

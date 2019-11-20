@@ -22,7 +22,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, BookDetailComponent, BookListComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

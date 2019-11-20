@@ -5,10 +5,14 @@ import {
   HttpExtResponse
 } from '@http-ext/core';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
-import { shareReplay, takeUntil, tap } from 'rxjs/operators';
+import { shareReplay, takeUntil, tap, map } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
-import { HttpExtPartialCacheResponse, HttpExtCacheResponse } from './metadata';
+import {
+  HttpExtCacheResponse,
+  PartialCacheMetadata,
+  ResponseAndCacheMetadata
+} from './metadata';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 import { StoreAdapter } from './store-adapters/store-adapter';
 import { toString } from './to-string';
@@ -40,6 +44,7 @@ export class CachePlugin implements HttpExtPlugin {
   }: HandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
     const fromNetwork$ = next({ request }).pipe(
       tap(response => this._store(request, response)),
+      map(response => ({ response })),
       shareReplay({
         refCount: true,
         bufferSize: 1
@@ -47,8 +52,8 @@ export class CachePlugin implements HttpExtPlugin {
     );
 
     const fromCache$ = defer(() => {
-      const response = this._load(request);
-      return response ? of(response) : EMPTY;
+      const cache: ResponseAndCacheMetadata | null = this._load(request);
+      return cache ? of(cache) : EMPTY;
     }).pipe(takeUntil(fromNetwork$));
 
     const addCacheMetadata = this._addCacheMetadata;
@@ -60,30 +65,26 @@ export class CachePlugin implements HttpExtPlugin {
     return merge(
       applyMetadata({
         source$: fromNetwork$,
-        addCacheMetadata,
-        isFromCache: false
+        addCacheMetadata
       }),
       applyMetadata({
         source$: fromCache$,
-        addCacheMetadata,
-        isFromCache: true
+        addCacheMetadata
       })
     );
   }
 
   /* Store metadata belong cache if configuration tells so */
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
-    const cache = this._addCacheMetadata
-      ? {
-          ...response,
-          cacheMetadata: { createdAt: new Date().toISOString() }
-        }
-      : response;
+    const cache: ResponseAndCacheMetadata = {
+      response,
+      cacheMetadata: { createdAt: new Date().toISOString() }
+    };
 
     this._storeAdapter.set(this._getStoreKey(request), JSON.stringify(cache));
   }
 
-  private _load(request: HttpExtRequest): HttpExtPartialCacheResponse | null {
+  private _load(request: HttpExtRequest): ResponseAndCacheMetadata | null {
     const data = this._storeAdapter.get(this._getStoreKey(request));
     return data ? JSON.parse(data) : null;
   }

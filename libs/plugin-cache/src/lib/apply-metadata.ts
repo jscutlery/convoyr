@@ -1,37 +1,36 @@
 import { HttpExtResponse } from '@http-ext/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, pluck } from 'rxjs/operators';
 
-import { HttpExtCacheResponse, CacheMetadata } from './metadata';
+import { CacheMetadata, ResponseAndCacheMetadata } from './metadata';
 
 /* Decorate metadata with additional flags */
-export const refineMetadata = ({ isFromCache }: { isFromCache: boolean }) => (
-  response: HttpExtCacheResponse
-): HttpExtCacheResponse => ({
+export const refineMetadata = ({
+  cacheMetadata,
+  response
+}: ResponseAndCacheMetadata): HttpExtResponse<{
+  cacheMetadata: CacheMetadata;
+  data: unknown;
+}> => ({
   ...response,
-  cacheMetadata: {
-    isFromCache,
-    ...response.cacheMetadata
+  body: {
+    cacheMetadata: {
+      ...cacheMetadata,
+      isFromCache: cacheMetadata != null
+    },
+    data: response.body
   }
 });
-
-/* Omit metadata object from response */
-export const omitMetadata = ({
-  cacheMetadata: metadata,
-  ...response
-}: HttpExtCacheResponse): HttpExtResponse => response;
 
 /* Conditionally add to response observable a metadata object */
 export function applyMetadata({
   source$,
-  addCacheMetadata,
-  isFromCache
+  addCacheMetadata
 }: {
-  source$: Observable<any>;
+  source$: Observable<ResponseAndCacheMetadata>;
   addCacheMetadata: boolean;
-  isFromCache: boolean;
-}): Observable<HttpExtCacheResponse | HttpExtResponse> {
+}): Observable<HttpExtResponse> {
   return addCacheMetadata
-    ? source$.pipe(map(refineMetadata({ isFromCache })))
-    : source$.pipe(map(omitMetadata));
+    ? source$.pipe(map(refineMetadata))
+    : source$.pipe(pluck('response'));
 }

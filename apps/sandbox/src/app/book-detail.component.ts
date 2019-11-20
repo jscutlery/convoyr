@@ -26,9 +26,9 @@ export class BookDetailComponent {
       )
     )
   );
-  book$ = this.request$.pipe(map(response => response.body.data));
+  book$ = this.request$.pipe(map(body => body.data.data));
   isFromCache$ = this.request$.pipe(
-    map(response => response.cacheMetadata.isFromCache)
+    map(body => body.cacheMetadata.isFromCache)
   );
 
   constructor(
