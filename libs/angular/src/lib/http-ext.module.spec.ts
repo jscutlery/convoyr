@@ -25,10 +25,10 @@ describe('HttpExtModule', () => {
   });
 
   let httpClient: HttpClient;
-  beforeEach(() => (httpClient = TestBed.get(HttpClient)));
+  beforeEach(() => (httpClient = TestBed.inject(HttpClient)));
 
   let httpController: HttpTestingController;
-  beforeEach(() => (httpController = TestBed.get(HttpTestingController)));
+  beforeEach(() => (httpController = TestBed.inject(HttpTestingController)));
 
   afterEach(() => httpController.verify());
 
