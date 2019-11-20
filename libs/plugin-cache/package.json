@@ -1,6 +1,9 @@
 {
   "name": "@http-ext/plugin-cache",
   "version": "0.1.0",
+  "license": "MIT",
+  "private": false,
+  "repository": "git@github.com:jscutlery/http-ext.git",
   "peerDependencies": {
     "@angular/common": ">= 8.2.0",
     "@angular/core": ">= 8.2.0",
