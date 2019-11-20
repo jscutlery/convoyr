@@ -12,8 +12,6 @@ import { refineMetadata } from './apply-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 
-const objectContaining = jasmine.objectContaining;
-
 describe('CachePlugin', () => {
   let request: HttpExtRequest;
   let response: HttpExtResponse;
@@ -69,7 +67,7 @@ describe('CachePlugin', () => {
 
     expect(spyObserver).toBeCalledTimes(1);
     expect(spyObserver).toBeCalledWith(
-      objectContaining({ body: { answer: 42 } })
+      expect.objectContaining({ body: { answer: 42 } })
     );
   });
 

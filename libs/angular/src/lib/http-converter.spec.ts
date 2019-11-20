@@ -3,8 +3,6 @@ import { HttpExtRequest } from '@http-ext/core';
 
 import { fromNgRequest, toNgRequest } from './http-converter';
 
-const objectContaining = jasmine.objectContaining;
-
 describe('fromNgRequest', () => {
   it('should convert HttpRequest with body to Request object', () => {
     const ngRequest = new HttpRequest(
@@ -48,7 +46,7 @@ describe('toNgRequest', () => {
 
     const ngRequest = toNgRequest(request);
     expect(ngRequest).toEqual(
-      objectContaining({
+      expect.objectContaining({
         method: 'PUT',
         url: 'https://presidents.com',
         body: { data: { name: 'Jacques Chirac' } }
@@ -68,7 +66,7 @@ describe('toNgRequest', () => {
 
     const ngRequest = toNgRequest(request);
     expect(ngRequest).toEqual(
-      objectContaining({
+      expect.objectContaining({
         method: 'GET',
         url: 'https://test.com'
       })
