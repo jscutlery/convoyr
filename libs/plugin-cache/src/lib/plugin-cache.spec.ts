@@ -1,4 +1,3 @@
-import { CacheMetadata } from './../../../../dist/libs/plugin-cache/lib/metadata.d';
 import {
   createRequest,
   createResponse,

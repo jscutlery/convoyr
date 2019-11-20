@@ -1,4 +1,3 @@
-import { CacheMetadata } from './../../../../dist/libs/plugin-cache/lib/metadata.d';
 import {
   HandlerArgs,
   HttpExtPlugin,
@@ -9,7 +8,11 @@ import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { shareReplay, takeUntil, tap, map } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
-import { HttpExtCacheResponse, CachePartialMetadata } from './metadata';
+import {
+  HttpExtCacheResponse,
+  CachePartialMetadata,
+  ResponseAndCacheMetadata
+} from './metadata';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 import { StoreAdapter } from './store-adapters/store-adapter';
 import { toString } from './to-string';
@@ -73,7 +76,7 @@ export class CachePlugin implements HttpExtPlugin {
 
   /* Store metadata belong cache if configuration tells so */
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
-    const cache = {
+    const cache: ResponseAndCacheMetadata = {
       response,
       cacheMetadata: { createdAt: new Date().toISOString() }
     };
