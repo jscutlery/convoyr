@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/jscutlery/http-ext/compare/v0.1.0...v0.1.1) (2019-11-20)
+
+
+### Bug Fixes
+
+* :beetle: remove broken imports ([607c4ea](https://github.com/jscutlery/http-ext/commit/607c4eac8ca7223219ff36358b00fc8098d01cab))
+
+
+
+
+
 # 0.1.0 (2019-11-19)
 
 
