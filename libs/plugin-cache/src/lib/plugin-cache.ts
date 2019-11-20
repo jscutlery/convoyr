@@ -10,7 +10,7 @@ import { shareReplay, takeUntil, tap, map } from 'rxjs/operators';
 import { applyMetadata } from './apply-metadata';
 import {
   HttpExtCacheResponse,
-  CachePartialMetadata,
+  PartialCacheMetadata,
   ResponseAndCacheMetadata
 } from './metadata';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
@@ -86,7 +86,7 @@ export class CachePlugin implements HttpExtPlugin {
 
   private _load(
     request: HttpExtRequest
-  ): { cacheMetadata: CachePartialMetadata; response: HttpExtResponse } | null {
+  ): { cacheMetadata: PartialCacheMetadata; response: HttpExtResponse } | null {
     const data = this._storeAdapter.get(this._getStoreKey(request));
     return data ? JSON.parse(data) : null;
   }
