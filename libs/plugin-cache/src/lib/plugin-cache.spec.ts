@@ -77,6 +77,30 @@ describe('CachePlugin', () => {
     expect((cachePlugin as any)._storeAdapter).toBeInstanceOf(MemoryAdapter);
   });
 
+  it('should use given request condition', () => {
+    const spyCondition = jest.fn().mockReturnValue(true);
+    const cachePlugin = createCachePlugin({ condition: spyCondition });
+
+    cachePlugin.condition({ request });
+
+    expect(spyCondition).toHaveBeenCalledWith({ request });
+  });
+
+  it('should cache only GET requests by default', () => {
+    const cachePlugin = createCachePlugin();
+    const getRequest = { ...request, method: 'GET' as any };
+    const postRequest = { ...request, method: 'POST' as any };
+    const putRequest = { ...request, method: 'PUT' as any };
+    const patchRequest = { ...request, method: 'PATCH' as any };
+    const deleteRequest = { ...request, method: 'DELETE' as any };
+
+    expect(cachePlugin.condition({ request: getRequest })).toBe(true);
+    expect(cachePlugin.condition({ request: postRequest })).toBe(false);
+    expect(cachePlugin.condition({ request: putRequest })).toBe(false);
+    expect(cachePlugin.condition({ request: patchRequest })).toBe(false);
+    expect(cachePlugin.condition({ request: deleteRequest })).toBe(false);
+  });
+
   it('should use given `StoreAdapter` implementation to store cache', () => {
     const spyAdapter = { set: jest.fn() };
     const cachePlugin = createCachePlugin({

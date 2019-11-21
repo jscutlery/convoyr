@@ -2,17 +2,14 @@ import {
   HandlerArgs,
   HttpExtPlugin,
   HttpExtRequest,
-  HttpExtResponse
+  HttpExtResponse,
+  RequestCondition
 } from '@http-ext/core';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
-import { shareReplay, takeUntil, tap, map } from 'rxjs/operators';
+import { map, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
-import {
-  HttpExtCacheResponse,
-  PartialCacheMetadata,
-  ResponseAndCacheMetadata
-} from './metadata';
+import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 import { StoreAdapter } from './store-adapters/store-adapter';
 import { toString } from './to-string';
@@ -20,22 +17,34 @@ import { toString } from './to-string';
 export interface CachePluginOptions {
   addCacheMetadata: boolean;
   storeAdapter: StoreAdapter;
+  condition: RequestCondition;
 }
 
 export function cachePlugin({
   addCacheMetadata = false,
-  storeAdapter = new MemoryAdapter()
+  storeAdapter = new MemoryAdapter(),
+  condition = ({ request }) => request.method === 'GET'
 }: Partial<CachePluginOptions> = {}): HttpExtPlugin {
-  return new CachePlugin({ addCacheMetadata, storeAdapter });
+  return new CachePlugin({ addCacheMetadata, storeAdapter, condition });
 }
 
 export class CachePlugin implements HttpExtPlugin {
   private _addCacheMetadata: boolean;
   private _storeAdapter: StoreAdapter;
+  private _condition: RequestCondition;
 
-  constructor({ addCacheMetadata, storeAdapter }: CachePluginOptions) {
+  constructor({
+    addCacheMetadata,
+    storeAdapter,
+    condition
+  }: CachePluginOptions) {
     this._storeAdapter = storeAdapter;
     this._addCacheMetadata = addCacheMetadata;
+    this._condition = condition;
+  }
+
+  condition({ request }: { request: HttpExtRequest }) {
+    return this._condition({ request });
   }
 
   handle({
