@@ -14,7 +14,7 @@
 
 ## Philosophy
 
-Http-ext is an **extensible** library that aims to enhance HTTP capabilities. It comes with the idea of **plugin** that let you intercept network communications in a fancy way. The reactive nature of this library allows you to create and compose various behaviors on the top of HTTP. Http-ext has a collection of built-in plugins that bring powerful features to your application.
+**Reactive** and **extensible** library built on the top of HTTP. The main building block is a **plugin** which is a simple function that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in collection to start as fast as possible.
 
 ## Ecosystem
 
@@ -28,13 +28,58 @@ This project is a monorepo that includes the following packages.
 | @http-ext/plugin-retry                                                         | Retry back-off plugin | Resilience            |
 | @http-ext/plugin-authentication                                                | Authentication plugin | Security              |
 
-## Documentation
+## Quick start
 
-_Work in progress..._
+1. Install packages inside your project.
+
+```bash
+yarn add @http-ext/core @http-ext/angular @http-ext/plugin-cache
+```
+
+Or using npm.
+
+```bash
+npm i @http-ext/core @http-ext/angular @http-ext/plugin-cache
+```
+
+2. Import `HttpExtModule` in the root module using the `forRoot` function.
+
+```ts
+import { HttpExtModule } from '@http-ext/angular';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    HttpExtModule.forRoot(/* ... */)
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+3. Define plugins and provide global configuration.
+
+```ts
+import { cachePlugin } from '@http-ext/plugin-cache';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    /* ... */
+    HttpExtModule.forRoot({
+      plugins: [cachePlugin({ addCacheMetadata: true })]
+    })
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
 
 ## Changelog
 
-This library follows the semantic versioning specification. Changelog is available [here](CHANGELOG.md).
+Changes are [available here](CHANGELOG.md).
 
 ## Authors
 
