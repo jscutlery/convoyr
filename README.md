@@ -66,7 +66,7 @@ export class AppModule {}
 
 ## Custom plugin
 
-Plugins are just plain object and functions. You can create your own by implementing the `HttpExtPlugin` interface.
+Plugins are just plain objects and functions. You can create your own by implementing the `HttpExtPlugin` interface.
 
 ```ts
 import { HttpExtPlugin } from '@http-ext/core';
@@ -78,7 +78,7 @@ export function loggerPlugin(): HttpExtPlugin {
       /* Here you can access the request. */
       console.log(`[${request.method}] ${request.url}`);
 
-      /* By pipping the next Fn you can manipulate the response. */
+      /* By piping the next Fn you can manipulate the response. */
       return next({ request }).pipe(
         tap(response => {
           console.log(`[${response.status}] ${request.url}`);
@@ -118,7 +118,7 @@ Be careful when adding properties to the response's body because you can overrid
 
 ### Conditional handling
 
-To select a subset of outgoing requests you can use the `condition` function. This function checks for each request if the plugin should execute the handler.
+To select a subset of outgoing requests you can use the `condition` function. This function checks for each request if the handler should be executed.
 
 ```ts
 export function customPlugin(): HttpExtPlugin {
@@ -137,7 +137,7 @@ export function customPlugin(): HttpExtPlugin {
 
 ### Matchers
 
-A matcher helps you filtering requests more easily and more safely than a raw condition.
+A matcher helps to filter requests more easily and more safely than a raw condition.
 
 ```ts
 import { matchOrigin } from '@http-ext/core';
@@ -160,11 +160,11 @@ Built-in matchers:
 
 ## Road-map
 
-Check-out [the board](https://github.com/jscutlery/http-ext/projects/1) for incoming evolutions.
+For incoming evolutions [check-out the board](https://github.com/jscutlery/http-ext/projects/1).
 
 ## Changelog
 
-Changes are [available here](CHANGELOG.md).
+For new features or breaking changes [check-out the changelog](CHANGELOG.md).
 
 ## Authors
 
