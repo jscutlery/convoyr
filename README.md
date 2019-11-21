@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>http-ext</h1>
+  <h1>HttpExt</h1>
   <a href="https://github.com/jscutlery/http-ext/actions" rel="nofollow">
     <img src="https://github.com/jscutlery/http-ext/workflows/Build%20&%20Test/badge.svg" />
   </a>
@@ -20,7 +20,9 @@
 
 ## Philosophy
 
-**Reactive** and **extensible** library built on the top of HTTP. The main building block is a **plugin** which is a simple function that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in collection to start as fast as possible.
+HttpExt is a **reactive** and **extensible** library built on the top of HTTP. The main building block is a **plugin** which is a simple function that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in collection to start as fast as possible.
+
+This library only supports the Angular's `HttpClient` but it's planned to also support the [Axios client](https://github.com/axios/axios) to run HttpExt both on the browser and the server.
 
 ## Ecosystem
 
@@ -36,44 +38,23 @@ This project is a monorepo that includes the following packages.
 
 ## Quick start
 
-1. Install packages inside your project.
+Install packages inside your project.
 
 ```bash
 yarn add @http-ext/core @http-ext/angular @http-ext/plugin-cache
 ```
 
-Or using npm.
-
-```bash
-npm i @http-ext/core @http-ext/angular @http-ext/plugin-cache
-```
-
-2. Import `HttpExtModule` in the root module using the `forRoot` function.
+Import the module and define plugins you want to use.
 
 ```ts
 import { HttpExtModule } from '@http-ext/angular';
+import { cachePlugin } from '@http-ext/plugin-cache';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpExtModule.forRoot(/* ... */)
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
-```
-
-3. Define plugins and provide global configuration.
-
-```ts
-import { cachePlugin } from '@http-ext/plugin-cache';
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    /* ... */
     HttpExtModule.forRoot({
       plugins: [cachePlugin({ addCacheMetadata: true })]
     })
@@ -82,6 +63,10 @@ import { cachePlugin } from '@http-ext/plugin-cache';
 })
 export class AppModule {}
 ```
+
+## Road-map
+
+Check-out [the board](https://github.com/jscutlery/http-ext/projects/1) for incoming evolutions.
 
 ## Changelog
 
@@ -107,6 +92,10 @@ Changes are [available here](CHANGELOG.md).
     </td>
   </tr>
 </table>
+
+## Contributors
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 ## License
 
