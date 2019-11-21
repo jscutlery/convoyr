@@ -20,9 +20,9 @@
 
 ## Philosophy
 
-HttpExt is a **reactive** and **extensible** library built on the top of HTTP. The main building block is a **plugin** which is a simple function that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in collection to start as fast as possible.
+HttpExt is a **reactive** and **extensible** library built on the top of HTTP. The main building block is a **plugin** which is a simple object that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in collection to start as fast as possible.
 
-This library only supports the Angular's `HttpClient` but it's planned to also support the [Axios client](https://github.com/axios/axios) to run HttpExt both on the browser and the server.
+For now this library only supports the Angular's `HttpClient` but it's planned to support the [Axios client](https://github.com/axios/axios) to run HttpExt both on the browser and the server.
 
 ## Ecosystem
 
@@ -75,10 +75,10 @@ import { tap } from 'rxjs/operators';
 export function loggerPlugin(): HttpExtPlugin {
   return {
     handle({ request, next }) {
-      /* Here you manipulate the request. */
+      /* Here you can access the request. */
       console.log(`[${request.method}] ${request.url}`);
 
-      /* By pipping the next Fn you can also manipulate the response. */
+      /* By pipping the next Fn you can manipulate the response. */
       return next({ request }).pipe(
         tap(response => {
           console.log(`[${response.status}] ${request.url}`);
@@ -89,7 +89,7 @@ export function loggerPlugin(): HttpExtPlugin {
 }
 ```
 
-It's also possible to define a plugin using a class.
+It's also possible to define a plugin using an ES6 class.
 
 ```ts
 import { HttpExtPlugin, HandlerArgs } from '@http-ext/core';
@@ -114,7 +114,7 @@ export class ConcatElapsedTimePlugin implements HttpExtPlugin {
 }
 ```
 
-Be careful when adding properties to the response's body, you can override a field sent by the server and loose some data.
+Be careful when adding properties to the response's body because you can override a field sent by the server and loose some data.
 
 ### Conditional handling
 
