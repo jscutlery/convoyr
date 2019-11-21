@@ -1,10 +1,16 @@
 <div align="center">
   <h1>http-ext</h1>
-  <a href="https://github.com/jscutlery/http-ext/actions">
+  <a href="https://github.com/jscutlery/http-ext/actions" rel="nofollow">
     <img src="https://github.com/jscutlery/http-ext/workflows/Build%20&%20Test/badge.svg" />
   </a>
-  <a href="https://codecov.io/gh/jscutlery/http-ext">
-    <img src="https://codecov.io/gh/jscutlery/http-ext/branch/master/graph/badge.svg" />
+  <a href="https://codecov.io/gh/jscutlery/http-ext" rel="nofollow">
+    <img src="https://badgen.net/codecov/c/github/jscutlery/http-ext" />
+  </a>
+  <a href="https://github.com/jscutlery/@http-ext/blob/master/LICENSE" rel="nofollow">
+    <img alt="" src="https://badgen.net/npm/license/@http-ext/core">
+  </a>
+  <a href="https://www.npmjs.com/package/@http-ext/core" rel="nofollow">
+    <img alt="" src="https://badgen.net/npm/v/@http-ext/core">
   </a>
 </div>
 
@@ -20,13 +26,13 @@
 
 This project is a monorepo that includes the following packages.
 
-| Name                                                                           | Description           | Goal                  |
-| ------------------------------------------------------------------------------ | --------------------- | --------------------- |
-| [@http-ext/core](https://www.npmjs.com/package/@http-ext/core)                 | Core module           | Extensibility         |
-| [@http-ext/angular](https://www.npmjs.com/package/@http-ext/angular)           | Angular module        | Angular compatibility |
-| [@http-ext/plugin-cache](https://www.npmjs.com/package/@http-ext/plugin-cache) | Cache plugin          | Fast and reactive UI  |
-| @http-ext/plugin-retry                                                         | Retry back-off plugin | Resilience            |
-| @http-ext/plugin-authentication                                                | Authentication plugin | Security              |
+| Name                                                                           | Description           | Goal                  | Size                                                                   |
+| ------------------------------------------------------------------------------ | --------------------- | --------------------- | -                                                                      |
+| [@http-ext/core](https://www.npmjs.com/package/@http-ext/core)                 | Core module           | Extensibility         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
+| [@http-ext/angular](https://www.npmjs.com/package/@http-ext/angular)           | Angular module        | Angular compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
+| [@http-ext/plugin-cache](https://www.npmjs.com/package/@http-ext/plugin-cache) | Cache plugin          | Fast and reactive UI  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
+| @http-ext/plugin-retry                                                         | Retry back-off plugin | Resilience            |                                                                        |
+| @http-ext/plugin-authentication                                                | Authentication plugin | Security              |                                                                        |
 
 ## Quick start
 
