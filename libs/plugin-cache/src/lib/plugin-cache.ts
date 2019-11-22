@@ -3,6 +3,7 @@ import {
   HttpExtPlugin,
   HttpExtRequest,
   HttpExtResponse,
+  matchMethod,
   RequestCondition
 } from '@http-ext/core';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
@@ -23,7 +24,7 @@ export interface CachePluginOptions {
 export function cachePlugin({
   addCacheMetadata = false,
   storeAdapter = new MemoryAdapter(),
-  condition = ({ request }) => request.method === 'GET'
+  condition = matchMethod('GET')
 }: Partial<CachePluginOptions> = {}): HttpExtPlugin {
   return new CachePlugin({ addCacheMetadata, storeAdapter, condition });
 }
