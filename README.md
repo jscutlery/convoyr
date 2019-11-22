@@ -6,11 +6,11 @@
   <a href="https://codecov.io/gh/jscutlery/http-ext" rel="nofollow">
     <img src="https://badgen.net/codecov/c/github/jscutlery/http-ext" />
   </a>
-  <a href="https://github.com/jscutlery/@http-ext/blob/master/LICENSE" rel="nofollow">
-    <img alt="" src="https://badgen.net/npm/license/@http-ext/core">
+  <a href="https://github.com/jscutlery/http-ext/blob/master/LICENSE" rel="nofollow">
+    <img src="https://badgen.net/npm/license/@http-ext/core">
   </a>
   <a href="https://www.npmjs.com/package/@http-ext/core" rel="nofollow">
-    <img alt="" src="https://badgen.net/npm/v/@http-ext/core">
+    <img src="https://badgen.net/npm/v/@http-ext/core">
   </a>
 </div>
 
@@ -20,7 +20,7 @@
 
 ## Philosophy
 
-HttpExt is a **reactive** and **extensible** library built on the top of HTTP. The main building block is a **plugin** which is a simple object that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in collection to start as fast as possible.
+HttpExt is a **reactive** and **extensible** library built on the top of HTTP. The main building block is a **plugin** which is a simple object that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in plugin collection to start as fast as possible.
 
 For now this library only supports the Angular's `HttpClient` but it's planned to support the [Axios client](https://github.com/axios/axios) to run HttpExt both on the browser and the server.
 
@@ -28,13 +28,13 @@ For now this library only supports the Angular's `HttpClient` but it's planned t
 
 This project is a monorepo that includes the following packages.
 
-| Name                                                                           | Description           | Goal                  | Size                                                                   |
-| ------------------------------------------------------------------------------ | --------------------- | --------------------- | ---------------------------------------------------------------------- |
-| [@http-ext/core](https://www.npmjs.com/package/@http-ext/core)                 | Core module           | Extensibility         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
-| [@http-ext/angular](https://www.npmjs.com/package/@http-ext/angular)           | Angular module        | Angular compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
-| [@http-ext/plugin-cache](https://www.npmjs.com/package/@http-ext/plugin-cache) | Cache plugin          | Fast and reactive UI  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
-| @http-ext/plugin-retry                                                         | Retry back-off plugin | Resilience            |                                                                        |
-| @http-ext/plugin-authentication                                                | Authentication plugin | Security              |                                                                        |
+| Name                                          | Description           | Goal                  | Size                                                                   |
+| --------------------------------------------- | --------------------- | --------------------- | ---------------------------------------------------------------------- |
+| [@http-ext/core](./libs/core)                 | Core module           | Extensibility         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
+| [@http-ext/angular](./libs/angular)           | Angular module        | Angular compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
+| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin          | Fast and reactive UI  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
+| @http-ext/plugin-retry                        | Retry back-off plugin | Resilience            |                                                                        |
+| @http-ext/plugin-authentication               | Authentication plugin | Security              |                                                                        |
 
 ## Quick start
 
@@ -56,7 +56,7 @@ import { cachePlugin } from '@http-ext/plugin-cache';
     BrowserModule,
     HttpClientModule,
     HttpExtModule.forRoot({
-      plugins: [cachePlugin({ addCacheMetadata: true })]
+      plugins: [cachePlugin()]
     })
   ],
   bootstrap: [AppComponent]
@@ -64,9 +64,13 @@ import { cachePlugin } from '@http-ext/plugin-cache';
 export class AppModule {}
 ```
 
+More documentation about [@http-ext/plugin-cache](./libs/plugin-cache).
+
 ## Custom plugin
 
-Plugins are just plain objects and functions. You can create your own by implementing the `HttpExtPlugin` interface.
+You can easily create your own plugin. Plugins are plain objects that implement the `HttpExtPlugin` interface.
+
+The `handle` function provides you a way to access both `request` and `response` objects. The response is accessible through piping the `next` function. Here you can transform the response event stream as well.
 
 ```ts
 import { HttpExtPlugin } from '@http-ext/core';
@@ -78,7 +82,7 @@ export function loggerPlugin(): HttpExtPlugin {
       /* Here you can access the request. */
       console.log(`[${request.method}] ${request.url}`);
 
-      /* By piping the next Fn you can manipulate the response. */
+      /* By piping the next function you can manipulate the response. */
       return next({ request }).pipe(
         tap(response => {
           console.log(`[${response.status}] ${request.url}`);
@@ -95,15 +99,15 @@ It's also possible to define a plugin using an ES6 class.
 import { HttpExtPlugin, HandlerArgs } from '@http-ext/core';
 import { map } from 'rxjs/operators';
 
-export class ConcatElapsedTimePlugin implements HttpExtPlugin {
-  handle({ request, next }: HandleArgs) {
+export class AddElapsedTimePlugin implements HttpExtPlugin {
+  handle({ request, next }: HandlerArgs) {
     const startAt = performance.now();
 
     return next({ request }).pipe(
       map(response => {
         const elapsedTimeInMs = performance.now() - startAt;
 
-        /* Note that you can only add properties to the body */
+        /* Note that you can transform the response */
         return {
           ...response,
           body: { ...response.body, elapsedTimeInMs }
@@ -114,16 +118,16 @@ export class ConcatElapsedTimePlugin implements HttpExtPlugin {
 }
 ```
 
-Be careful when adding properties to the response's body because you can override a field sent by the server and loose some data.
+Be careful when adding properties to the response's body because you can override a field and loose some data.
 
 ### Conditional handling
 
-To select a subset of outgoing requests you can use the `condition` function. This function checks for each request if the handler should be executed.
+To select a subset of outgoing requests you can use the `condition` function. This function checks for each request if the plugin handler should be executed.
 
 ```ts
 export function customPlugin(): HttpExtPlugin {
   return {
-    /* You can access the request object and decide which request you need to handle */
+    /* Here you can access the request object and decide which request you need to handle */
     condition({ request }) {
       return request.method === 'GET' && request.url.includes('books');
     },
@@ -135,9 +139,11 @@ export function customPlugin(): HttpExtPlugin {
 }
 ```
 
+The `condition` function is not required in a plugin. Be careful because if not provided HttpExt will handle the plugin for **any requests** executed through the HTTP client. For example you don't want to send an authentication token to the wrong origin for obvious security reasons.
+
 ### Matchers
 
-A matcher helps to filter requests more easily and more safely than a raw condition.
+A `Matcher` helps you to select requests in a safer and easier way than a raw condition as seen below.
 
 ```ts
 import { matchOrigin } from '@http-ext/core';
@@ -164,7 +170,7 @@ For incoming evolutions [check-out the board](https://github.com/jscutlery/http-
 
 ## Changelog
 
-For new features or breaking changes [check-out the changelog](CHANGELOG.md).
+For new features or breaking changes [see the changelog](CHANGELOG.md).
 
 ## Authors
 
