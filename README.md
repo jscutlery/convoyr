@@ -70,7 +70,7 @@ More documentation about [@http-ext/plugin-cache](./libs/plugin-cache).
 
 You can easily create your own plugin. Plugins are plain objects that implement the `HttpExtPlugin` interface.
 
-The `handle` function provides you a way to access both `request` and `response` objects. The response is accessible through piping the `next` function. Here you can transform the response event stream as well.
+The `handle` function provides a way to access both `request` and `response` objects. The response is accessible through piping the `next` function. Here you can transform the response event stream as well.
 
 ```ts
 import { HttpExtPlugin } from '@http-ext/core';
