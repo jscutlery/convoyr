@@ -11,7 +11,7 @@ The plugin requires `@http-ext/core` and `@http-ext/angular` to be installed.
 ## Installation
 
 ```bash
-yarn add `@http-ext/plugin-cache`
+yarn add @http-ext/plugin-cache
 ```
 
 ## Usage
@@ -72,7 +72,7 @@ To know more about the `condition` property check-out the [conditional handling 
 
 You can add cache metadata to the response body. Be careful this option changes the body's shape and breaks existing code that need to access to the response body.
 
-Here is an example showing the response body with `addCacheMetadata` set to `false` (default).
+Here is an example showing a response body with `addCacheMetadata` set to `false` (default).
 
 ```json
 { "answer": 42 }
