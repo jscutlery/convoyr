@@ -7,10 +7,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+
       - uses: actions/setup-node@v1
+
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
       - name: Install
         run: |
           yarn install --frozen-lockfile
+
       - name: Build
         run: |
           yarn ng build core --prod
@@ -21,16 +34,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+
       - uses: actions/setup-node@v1
+
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
       - name: Install
         run: |
           yarn install --frozen-lockfile
+
       - name: Test
         run: |
           yarn ng test core --code-coverage
           yarn ng test angular --code-coverage
           yarn ng test plugin-cache --code-coverage
           yarn ng test sandbox --code-coverage
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.2
         with:
