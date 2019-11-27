@@ -9,7 +9,7 @@ import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
 
 export type RequestHandlerFn = ({
-  request: Request
+  request: HttpExtRequest
 }) => Observable<HttpExtResponse>;
 
 export class HttpExt {
@@ -19,6 +19,7 @@ export class HttpExt {
     this._plugins = plugins;
   }
 
+  /* @todo rename to httpHandler */
   handle({
     request,
     handler
@@ -26,23 +27,28 @@ export class HttpExt {
     request: HttpExtRequest;
     handler: RequestHandlerFn;
   }): Observable<HttpExtResponse> {
-    return this._handle({ request, plugins: this._plugins, handler });
+    return this._handle({
+      request,
+      plugins: this._plugins,
+      httpHandler: handler
+    });
   }
 
   private _handle({
     request,
     plugins,
-    handler
+    httpHandler
   }: {
     request: HttpExtRequest;
     plugins: HttpExtPlugin[];
-    handler: RequestHandlerFn;
+    httpHandler: RequestHandlerFn;
   }): Observable<HttpExtResponse> {
     if (plugins.length === 0) {
-      return handler({ request });
+      return httpHandler({ request });
     }
 
     const [plugin] = plugins;
+    const { handler } = plugin;
 
     /**
      * Calls next plugins recursively.
@@ -51,7 +57,7 @@ export class HttpExt {
       const response = this._handle({
         request: args.request,
         plugins: plugins.slice(1),
-        handler
+        httpHandler
       });
       return fromSyncOrAsync(response);
     };
@@ -66,7 +72,7 @@ export class HttpExt {
           return next({ request });
         }
 
-        return fromSyncOrAsync(plugin.handle({ request, next }));
+        return fromSyncOrAsync(handler.handle({ request, next }));
       })
     );
   }

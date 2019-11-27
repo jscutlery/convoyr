@@ -31,9 +31,11 @@ describe('HttpExt', () => {
     /*
      * Make sure plugin A is called with the right args.
      */
-    expect(pluginA.handle).toHaveBeenCalledTimes(1);
-    expect(typeof pluginA.handle.mock.calls[0][0].next).toBe('function');
-    expect(pluginA.handle.mock.calls[0][0].request).toEqual(
+    expect(pluginA.handler.handle).toHaveBeenCalledTimes(1);
+    expect(typeof pluginA.handler.handle.mock.calls[0][0].next).toBe(
+      'function'
+    );
+    expect(pluginA.handler.handle.mock.calls[0][0].request).toEqual(
       expect.objectContaining({
         url: 'https://answer-to-the-ultimate-question-of-life.com',
         method: 'GET'
@@ -43,9 +45,11 @@ describe('HttpExt', () => {
     /*
      * Make sure plugin B is called with the right args.
      */
-    expect(pluginB.handle).toHaveBeenCalledTimes(1);
-    expect(typeof pluginB.handle.mock.calls[0][0].next).toBe('function');
-    expect(pluginB.handle.mock.calls[0][0].request).toEqual(
+    expect(pluginB.handler.handle).toHaveBeenCalledTimes(1);
+    expect(typeof pluginB.handler.handle.mock.calls[0][0].next).toBe(
+      'function'
+    );
+    expect(pluginB.handler.handle.mock.calls[0][0].request).toEqual(
       expect.objectContaining({
         url: 'https://answer-to-the-ultimate-question-of-life.com',
         method: 'GET'
@@ -88,10 +92,10 @@ describe('HttpExt', () => {
     response$.subscribe(responseObserver);
 
     /* The first plugin should match the condition and handle the request. */
-    expect(pluginA.handle).toHaveBeenCalledTimes(1);
+    expect(pluginA.handler.handle).toHaveBeenCalledTimes(1);
 
     /* The second plugin should not be called as it doesn't match the condition. */
-    expect(pluginB.handle).not.toBeCalled();
+    expect(pluginB.handler.handle).not.toBeCalled();
 
     expect(responseObserver).toHaveBeenCalledTimes(1);
     expect(responseObserver).toHaveBeenCalledWith(
@@ -120,7 +124,7 @@ describe('HttpExt', () => {
 
     expect(errorObserver).toHaveBeenCalledTimes(1);
     expect(errorObserver).toHaveBeenCalledWith(
-      `InvalidPluginConditionError: expecting boolean got string.`
+      `InvalidPluginConditionError: expect boolean got string.`
     );
   });
 });

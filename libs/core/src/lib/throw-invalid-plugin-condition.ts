@@ -3,7 +3,7 @@ import { iif, Observable, of, throwError } from 'rxjs';
 import { isBoolean } from './utils/is-boolean';
 
 export function invalidPluginConditionError(type: string) {
-  return `InvalidPluginConditionError: expecting boolean got ${type}.`;
+  return `InvalidPluginConditionError: expect boolean got ${type}.`;
 }
 
 export const throwIfInvalidPluginCondition = (
