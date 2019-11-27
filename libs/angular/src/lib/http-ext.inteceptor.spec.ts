@@ -82,12 +82,12 @@ describe('HttpExtInterceptor', () => {
         new HttpResponse({ body: { answer: 42 } })
       )
     );
-    const { request, handler } = asMock(httpExt.handle).mock.calls[0][0];
+    const { request, httpHandler } = asMock(httpExt.handle).mock.calls[0][0];
     const observer = jest.fn();
 
-    handler({ request }).subscribe(observer);
+    httpHandler({ request }).subscribe(observer);
 
-    /* Verify that Angular extra events are ignored in the handler. */
+    /* Verify that Angular extra events are ignored in the final handler. */
     expect(observer).toHaveBeenCalledTimes(1);
     const response = observer.mock.calls[0][0];
     expect(response).toEqual(createResponse({ body: { answer: 42 } }));
@@ -97,10 +97,10 @@ describe('HttpExtInterceptor', () => {
     asMock(next.handle).mockReturnValue(
       of(new HttpResponse({ body: { answer: 42 } }))
     );
-    const { request, handler } = asMock(httpExt.handle).mock.calls[0][0];
+    const { request, httpHandler } = asMock(httpExt.handle).mock.calls[0][0];
     const observer = jest.fn();
 
-    handler({ request }).subscribe(observer);
+    httpHandler({ request }).subscribe(observer);
 
     expect(observer).toHaveBeenCalledTimes(1);
     const response = observer.mock.calls[0][0];

@@ -6,6 +6,8 @@ export function _createSpyPlugin(
 ) {
   return {
     condition: jest.fn(({ request }) => condition(request)),
-    handle: jest.fn(({ request, next }) => next({ request }))
+    handler: {
+      handle: jest.fn(({ request, next }) => next({ request }))
+    }
   };
 }

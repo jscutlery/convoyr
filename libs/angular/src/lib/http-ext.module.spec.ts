@@ -52,14 +52,16 @@ describe('HttpExtModule', () => {
       title: 'ITEM_TITLE'
     });
 
-    expect(spyPlugin.handle).toHaveBeenCalledTimes(1);
-    expect(spyPlugin.handle.mock.calls[0][0].request).toEqual({
+    expect(spyPlugin.handler.handle).toHaveBeenCalledTimes(1);
+    expect(spyPlugin.handler.handle.mock.calls[0][0].request).toEqual({
       url: 'https://jscutlery.github.io/items/ITEM_ID',
       method: 'GET',
       body: null,
       headers: {},
       params: {}
     });
-    expect(typeof spyPlugin.handle.mock.calls[0][0].next).toEqual('function');
+    expect(typeof spyPlugin.handler.handle.mock.calls[0][0].next).toEqual(
+      'function'
+    );
   });
 });

@@ -41,8 +41,8 @@ describe('CachePlugin', () => {
       const next = () => m.cold('-r|', { r: response });
 
       /* Run two requests with the same URL to fire cache response */
-      const requestA$ = cachePlugin.handle({ request, next }) as any;
-      const requestB$ = cachePlugin.handle({ request, next }) as any;
+      const requestA$ = cachePlugin.handler.handle({ request, next }) as any;
+      const requestB$ = cachePlugin.handler.handle({ request, next }) as any;
 
       /* Execute requests in order */
       const responses$ = concat(requestA$, requestB$);
@@ -59,7 +59,7 @@ describe('CachePlugin', () => {
     const cachePlugin = createCachePlugin();
     const next = () => of(response);
 
-    const cacheResponse = cachePlugin.handle({ request, next }) as any;
+    const cacheResponse = cachePlugin.handler.handle({ request, next }) as any;
     const spyObserver = jest.fn();
 
     cacheResponse.subscribe(spyObserver);
@@ -73,8 +73,10 @@ describe('CachePlugin', () => {
   it('should use `MemoryAdapter` by default', () => {
     const cachePlugin = createCachePlugin();
 
-    expect((cachePlugin as any)._storeAdapter).toBeDefined();
-    expect((cachePlugin as any)._storeAdapter).toBeInstanceOf(MemoryAdapter);
+    expect((cachePlugin as any).handler._storeAdapter).toBeDefined();
+    expect((cachePlugin as any).handler._storeAdapter).toBeInstanceOf(
+      MemoryAdapter
+    );
   });
 
   it('should use given request condition', () => {
@@ -108,7 +110,7 @@ describe('CachePlugin', () => {
     });
     const next = () => of(response);
 
-    const handler = cachePlugin.handle({ request, next }) as any;
+    const handler = cachePlugin.handler.handle({ request, next }) as any;
     handler.subscribe();
 
     const cacheKey = spyAdapter.set.mock.calls[0][0];
@@ -148,15 +150,15 @@ describe('CachePlugin', () => {
         params: { q: 'b' }
       });
 
-      const response1$ = cachePlugin.handle({
+      const response1$ = cachePlugin.handler.handle({
         request: requestA,
         next: nextFn
       }) as any;
-      const response2$ = cachePlugin.handle({
+      const response2$ = cachePlugin.handler.handle({
         request: requestB,
         next: nextFn
       }) as any;
-      const response3$ = cachePlugin.handle({
+      const response3$ = cachePlugin.handler.handle({
         request: requestA,
         next: nextFn
       }) as any;
