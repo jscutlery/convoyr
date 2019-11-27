@@ -3,14 +3,11 @@ import { mergeMap } from 'rxjs/operators';
 
 import { HttpExtPlugin } from './plugin';
 import { HttpExtRequest } from './request';
+import { RequestHandlerFn } from './request-handler';
 import { HttpExtResponse } from './response';
 import { throwIfInvalidPluginCondition } from './throw-invalid-plugin-condition';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
-
-export type RequestHandlerFn = ({
-  request: HttpExtRequest
-}) => Observable<HttpExtResponse>;
 
 export class HttpExt {
   private _plugins: HttpExtPlugin[];
@@ -19,18 +16,17 @@ export class HttpExt {
     this._plugins = plugins;
   }
 
-  /* @todo rename to httpHandler */
   handle({
     request,
-    handler
+    httpHandler
   }: {
     request: HttpExtRequest;
-    handler: RequestHandlerFn;
+    httpHandler: RequestHandlerFn;
   }): Observable<HttpExtResponse> {
     return this._handle({
       request,
       plugins: this._plugins,
-      httpHandler: handler
+      httpHandler
     });
   }
 

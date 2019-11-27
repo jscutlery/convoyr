@@ -1,5 +1,5 @@
-import { RequestHandlerFn } from './http-ext';
 import { HttpExtRequest } from './request';
+import { RequestHandlerFn } from './request-handler';
 import { HttpExtResponse } from './response';
 import { SyncOrAsync } from './utils/from-sync-or-async';
 

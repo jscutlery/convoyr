@@ -17,7 +17,7 @@ describe('HttpExt', () => {
 
     const response$ = httpExt.handle({
       request,
-      handler: () =>
+      httpHandler: () =>
         of(
           createResponse({
             body: { answer: 42 }
@@ -80,7 +80,7 @@ describe('HttpExt', () => {
 
     const response$ = httpExt.handle({
       request,
-      handler: () =>
+      httpHandler: () =>
         of(
           createResponse({
             body: { answer: 42 }
@@ -115,7 +115,7 @@ describe('HttpExt', () => {
     });
     const response$ = httpExt.handle({
       request,
-      handler: () => of(createResponse({ body: null }))
+      httpHandler: () => of(createResponse({ body: null }))
     });
 
     const errorObserver = jest.fn();

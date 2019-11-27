@@ -44,7 +44,7 @@ export class HttpExtInterceptor implements HttpInterceptor {
     return this._httpExt
       .handle({
         request: fromNgRequest(ngRequest),
-        handler: ({ request }) =>
+        httpHandler: ({ request }) =>
           next.handle(toNgRequest(request)).pipe(
             filter(httpEvent => httpEvent instanceof HttpResponse),
             map(fromNgResponse)
