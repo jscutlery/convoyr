@@ -43,7 +43,7 @@ You can give a partial configuration object it will be merged with default value
 | Property           | Type               | Default value         |
 | ------------------ | ------------------ | --------------------- |
 | `addCacheMetadata` | `boolean`          | `false`               |
-| `storeAdapter`     | `StoreAdapter`     | `new MemoryAdapter()` |
+| `storage`          | `StoreAdapter`     | `new MemoryAdapter()` |
 | `condition`        | `RequestCondition` | `matchMethod('GET')`  |
 
 Here is an example passing a configuration object.
@@ -57,7 +57,7 @@ import { LocalStorageAdapter } from '@http-ext/plugin-cache';
       plugins: [
         cachePlugin({
           addCacheMetadata: true,
-          storeAdapter: new LocalStorageAdapter()
+          storage: new LocalStorageAdapter()
         })
       ]
     })
@@ -92,16 +92,16 @@ The same response body with `addCacheMetadata` set to `true`.
 
 The response body is modified, data are moved in a dedicated object and cache metadata are added.
 
-### Available stores
+### Available storage
 
-To cache HTTP responses we need to use a storage. This plugin comes with two store adapters:
+To cache HTTP responses we need to use a storage. This plugin comes with two built-in storage:
 
 - `LocalStorageAdapter` that persists the cache between user's sessions.
 - `MemoryAdapter` that looses its cache between user's sessions.
 
-### Custom store
+### Custom storage
 
-You can create your own adapter by implementing the following interface.
+You can add your own storage by implementing the following interface.
 
 ```ts
 interface StoreAdapter {

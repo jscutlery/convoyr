@@ -28,13 +28,11 @@ For now this library only supports the Angular's `HttpClient` but it's planned t
 
 This project is a monorepo that includes the following packages.
 
-| Name                                          | Description           | Goal                  | Size                                                                   |
-| --------------------------------------------- | --------------------- | --------------------- | ---------------------------------------------------------------------- |
-| [@http-ext/core](./libs/core)                 | Core module           | Extensibility         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
-| [@http-ext/angular](./libs/angular)           | Angular module        | Angular compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
-| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin          | Fast and reactive UI  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
-| @http-ext/plugin-retry                        | Retry back-off plugin | Resilience            |                                                                        |
-| @http-ext/plugin-authentication               | Authentication plugin | Security              |                                                                        |
+| Name                                          | Description    | Goal                  | Size                                                                   |
+| --------------------------------------------- | -------------- | --------------------- | ---------------------------------------------------------------------- |
+| [@http-ext/core](./libs/core)                 | Core module    | Extensibility         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
+| [@http-ext/angular](./libs/angular)           | Angular module | Angular compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
+| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Fast and reactive UI  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
 
 ## Quick start
 
@@ -68,105 +66,92 @@ More documentation about [@http-ext/plugin-cache](./libs/plugin-cache).
 
 ## Custom plugin
 
-You can easily create your own plugin. Plugins are plain objects that implement the `HttpExtPlugin` interface.
+A Plugin is a plain object that implement the `HttpExtPlugin` interface. This object exposes the following properties:
 
-The `handle` function provides a way to access both `request` and `response` objects. The response is accessible through piping the `next` function. Here you can transform the response event stream as well.
+- The `condition` for conditional handling.
+- The `handler` that encapsulates the plugin logic.
 
 ```ts
 import { HttpExtPlugin } from '@http-ext/core';
-import { tap } from 'rxjs/operators';
+import { LoggerHandler } from './handler';
 
 export function loggerPlugin(): HttpExtPlugin {
   return {
-    handle({ request, next }) {
-      /* Here you can access the request. */
-      console.log(`[${request.method}] ${request.url}`);
-
-      /* By piping the next function you can manipulate the response. */
-      return next({ request }).pipe(
-        tap(response => {
-          console.log(`[${response.status}] ${request.url}`);
-        })
-      );
-    }
+    handler: new LoggerHandler()
   };
 }
 ```
 
-It's also possible to define a plugin using an ES6 class.
+Note that the condition is optional. Learn more about [conditional handling](https://github.com/jscutlery/http-ext#conditional-handling).
+
+The `PluginHandler` interface provides a way to access and manipulate both `HttpExtRequest` and `HttpExtResponse` objects.
 
 ```ts
-import { HttpExtPlugin, HandlerArgs } from '@http-ext/core';
-import { map } from 'rxjs/operators';
+import { PluginHandler } from '@http-ext/core';
+import { tap } from 'rxjs/operators';
 
-export class AddElapsedTimePlugin implements HttpExtPlugin {
-  handle({ request, next }: HandlerArgs) {
-    const startAt = performance.now();
+export class LoggerHandler implements PluginHandler {
+  handle({ request, next }) {
+    /* Here you can access the request. */
+    console.log(`[${request.method}] ${request.url}`);
 
+    /* By piping the next function you can manipulate the response. */
     return next({ request }).pipe(
-      map(response => {
-        const elapsedTimeInMs = performance.now() - startAt;
-
-        /* Note that you can transform the response */
-        return {
-          ...response,
-          body: { ...response.body, elapsedTimeInMs }
-        };
+      tap(response => {
+        console.log(`[${response.status}] ${request.url}`);
       })
     );
   }
 }
 ```
 
-Be careful when adding properties to the response's body because you can override a field and loose some data.
+The response is accessible through piping the `next` function. Here you can transform the response event stream as well.
 
 ### Conditional handling
 
-To select a subset of outgoing requests you can use the `condition` function. This function checks for each request if the plugin handler should be executed.
+The `condition` function checks for each request if the plugin handler should be executed.
 
 ```ts
-export function customPlugin(): HttpExtPlugin {
+export function loggerPlugin(): HttpExtPlugin {
   return {
     /* Here you can access the request object and decide which request you need to handle */
     condition({ request }) {
       return request.method === 'GET' && request.url.includes('books');
     },
-
-    handle({ request, next }) {
-      /* ... */
-    }
+    handler: new LoggerHandler()
   };
 }
 ```
 
-The `condition` function is not required in a plugin. Be careful because if not provided HttpExt will handle the plugin for **any requests** executed through the HTTP client. For example you don't want to send an authentication token to the wrong origin for obvious security reasons.
+The `condition` is optional, if not provided the plugin will handle **all requests** executed through the HTTP client. It's important to think about which requests the plugin should be bound.
+
+> Imagine you want to build an authentication plugin that add the authorization token to the request headers and you forget to add conditional handling. The token will potentially leak to other insecure origins which obviously result in a serious security issue.
 
 ### Matchers
 
-A `Matcher` helps you to select requests in a safer and easier way than a raw condition as seen below.
+A `Matcher` is a declarative way to do conditional handling. It's a safer approach than a raw condition and should be used in prior.
 
 ```ts
 import { matchOrigin } from '@http-ext/core';
 
-export function customPlugin(): HttpExtPlugin {
+export function loggerPlugin(): HttpExtPlugin {
   return {
     condition: matchOrigin('https://secure-origin.com'),
-
-    handle({ request, next }) {
-      /* ... */
-    }
+    handler: new LoggerHandler()
   };
 }
 ```
+
+Here only requests matching `https://secure-origin.com` origin will be logged.
 
 Built-in matchers:
 
 - `matchOrigin(arg: string | string[] | RegExp | MatchOriginPredicate)`
 - `matchMethod(arg: HttpMethod | HttpMethod[])`
 
-## Road-map
+## Roadmap
 
-For incoming evolutions [check-out the board](https://github.com/jscutlery/http-ext/projects/1).
+For incoming evolutions [see our board](https://github.com/jscutlery/http-ext/projects/1).
 
 ## Changelog
 
