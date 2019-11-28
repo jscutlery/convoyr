@@ -9,17 +9,17 @@ import { map, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
-import { StoreAdapter } from './store-adapters/store-adapter';
+import { StorageAdapter } from './store-adapters/storage-adapter';
 import { toString } from './to-string';
 
 export interface HandlerOptions {
   addCacheMetadata: boolean;
-  storage: StoreAdapter;
+  storage: StorageAdapter;
 }
 
 export class CacheHandler implements PluginHandler {
   private _addCacheMetadata: boolean;
-  private _storage: StoreAdapter;
+  private _storage: StorageAdapter;
 
   constructor({ addCacheMetadata, storage }: HandlerOptions) {
     this._storage = storage;

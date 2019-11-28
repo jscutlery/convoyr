@@ -43,7 +43,7 @@ You can give a partial configuration object it will be merged with default value
 | Property           | Type               | Default value         |
 | ------------------ | ------------------ | --------------------- |
 | `addCacheMetadata` | `boolean`          | `false`               |
-| `storage`          | `StoreAdapter`     | `new MemoryAdapter()` |
+| `storage`          | `StorageAdapter`   | `new MemoryAdapter()` |
 | `condition`        | `RequestCondition` | `matchMethod('GET')`  |
 
 Here is an example passing a configuration object.
@@ -104,7 +104,7 @@ To cache HTTP responses we need to use a storage. This plugin comes with two bui
 You can add your own storage by implementing the following interface.
 
 ```ts
-interface StoreAdapter {
+interface StorageAdapter {
   get(key: string): string;
   set(key: string, value: string): void;
 }
