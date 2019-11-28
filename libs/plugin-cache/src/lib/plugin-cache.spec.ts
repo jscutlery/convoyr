@@ -70,13 +70,11 @@ describe('CachePlugin', () => {
     );
   });
 
-  it('should use `MemoryAdapter` by default', () => {
+  it('should use `MemoryAdapter` storage by default', () => {
     const cachePlugin = createCachePlugin();
 
-    expect((cachePlugin as any).handler._storeAdapter).toBeDefined();
-    expect((cachePlugin as any).handler._storeAdapter).toBeInstanceOf(
-      MemoryAdapter
-    );
+    expect((cachePlugin as any).handler._storage).toBeDefined();
+    expect((cachePlugin as any).handler._storage).toBeInstanceOf(MemoryAdapter);
   });
 
   it('should use given request condition', () => {
@@ -103,20 +101,20 @@ describe('CachePlugin', () => {
     expect(cachePlugin.condition({ request: deleteRequest })).toBe(false);
   });
 
-  it('should use given `StoreAdapter` implementation to store cache', () => {
-    const spyAdapter = { set: jest.fn() };
+  it('should use given storage implementation to store cache', () => {
+    const spyStorage = { set: jest.fn() };
     const cachePlugin = createCachePlugin({
-      storeAdapter: spyAdapter as any
+      storage: spyStorage as any
     });
     const next = () => of(response);
 
     const handler = cachePlugin.handler.handle({ request, next }) as any;
     handler.subscribe();
 
-    const cacheKey = spyAdapter.set.mock.calls[0][0];
-    const cachedData = spyAdapter.set.mock.calls[0][1];
+    const cacheKey = spyStorage.set.mock.calls[0][0];
+    const cachedData = spyStorage.set.mock.calls[0][1];
 
-    expect(spyAdapter.set).toBeCalledTimes(1);
+    expect(spyStorage.set).toBeCalledTimes(1);
     expect(cacheKey).toBe('https://ultimate-answer.com');
     expect(JSON.parse(cachedData)).toEqual(
       expect.objectContaining({

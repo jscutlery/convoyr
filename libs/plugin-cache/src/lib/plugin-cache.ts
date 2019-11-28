@@ -9,11 +9,11 @@ export interface CachePluginOptions extends HandlerOptions {
 
 export function cachePlugin({
   addCacheMetadata = false,
-  storeAdapter = new MemoryAdapter(),
+  storage = new MemoryAdapter(),
   condition = matchMethod('GET')
 }: Partial<CachePluginOptions> = {}): HttpExtPlugin {
   return {
     condition,
-    handler: new CacheHandler({ addCacheMetadata, storeAdapter })
+    handler: new CacheHandler({ addCacheMetadata, storage })
   };
 }

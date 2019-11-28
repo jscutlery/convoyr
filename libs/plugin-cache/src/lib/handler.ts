@@ -14,15 +14,15 @@ import { toString } from './to-string';
 
 export interface HandlerOptions {
   addCacheMetadata: boolean;
-  storeAdapter: StoreAdapter;
+  storage: StoreAdapter;
 }
 
 export class CacheHandler implements PluginHandler {
   private _addCacheMetadata: boolean;
-  private _storeAdapter: StoreAdapter;
+  private _storage: StoreAdapter;
 
-  constructor({ addCacheMetadata, storeAdapter }: HandlerOptions) {
-    this._storeAdapter = storeAdapter;
+  constructor({ addCacheMetadata, storage }: HandlerOptions) {
+    this._storage = storage;
     this._addCacheMetadata = addCacheMetadata;
   }
 
@@ -69,11 +69,11 @@ export class CacheHandler implements PluginHandler {
       cacheMetadata: { createdAt: new Date().toISOString() }
     };
 
-    this._storeAdapter.set(this._getStoreKey(request), JSON.stringify(cache));
+    this._storage.set(this._getStoreKey(request), JSON.stringify(cache));
   }
 
   private _load(request: HttpExtRequest): ResponseAndCacheMetadata | null {
-    const data = this._storeAdapter.get(this._getStoreKey(request));
+    const data = this._storage.get(this._getStoreKey(request));
     return data ? JSON.parse(data) : null;
   }
 
