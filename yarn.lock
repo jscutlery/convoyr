@@ -1943,13 +1943,13 @@
     fastq "^1.6.0"
 
 "@nrwl/angular@^8.7.1":
-  version "8.8.2"
-  resolved "https://registry.yarnpkg.com/@nrwl/angular/-/angular-8.8.2.tgz#9371a228bcf57b3456c7691b2de7f6b666393093"
-  integrity sha512-vqkHg+2GfXXZY+WAmuw4IFv1rRnPtLcKXWp2RfM1VoC3cHEy56aQuAIwvgoek7WfkJ80SuldELQ6c/EktHTdug==
+  version "8.8.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/angular/-/angular-8.8.3.tgz#616f14d3843af4dbae08751a6bb23c3857ae2118"
+  integrity sha512-5Ly6yju7f5nsMbOYoPM7vb2UUWLgRT++fiAQ0O0QhoZzLM4Lqq/iVwaRuwUa2Z+w/bFRT0X8KRF4JLKHUAiqYg==
   dependencies:
     "@angular-devkit/schematics" "8.3.14"
-    "@nrwl/cypress" "8.8.2"
-    "@nrwl/jest" "8.8.2"
+    "@nrwl/cypress" "8.8.3"
+    "@nrwl/jest" "8.8.3"
     "@schematics/angular" "8.3.14"
     jasmine-marbles "~0.6.0"
 
@@ -1977,10 +1977,32 @@
     tsconfig-paths-webpack-plugin "3.2.0"
     webpack-node-externals "1.7.2"
 
+"@nrwl/cypress@8.8.3":
+  version "8.8.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-8.8.3.tgz#8fb33ebbbe1efbad1519e68bb2a38574a1133394"
+  integrity sha512-7DPczWfzDn/xw33ZyRhigpH6feyWDrQ/BxEXU6KZaTd5nWgFpzyIcRnZlty6Q+i9mqCWq/Rj+OJuqlasUV1Flw==
+  dependencies:
+    "@angular-devkit/architect" "0.803.14"
+    "@angular-devkit/core" "8.3.14"
+    "@cypress/webpack-preprocessor" "~4.1.0"
+    tree-kill "1.2.1"
+    ts-loader "5.3.1"
+    tsconfig-paths-webpack-plugin "3.2.0"
+    webpack-node-externals "1.7.2"
+
 "@nrwl/jest@8.8.2":
   version "8.8.2"
   resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-8.8.2.tgz#d7f198d7e67dcb6694f842fbc6471d3a78b99dcb"
   integrity sha512-N/yz672yeldDETau7lmhnDXz67rQQV3ImeL7g8dC2CDLOTdNYfs41rfbHZ+LJZY7OEhjUlyqAF+vqoZPbPk7nw==
+  dependencies:
+    "@angular-devkit/architect" "0.803.14"
+    "@angular-devkit/core" "8.3.14"
+    "@angular-devkit/schematics" "8.3.14"
+
+"@nrwl/jest@8.8.3":
+  version "8.8.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-8.8.3.tgz#781dd97c6c6ce029d221f79734be70b7145de559"
+  integrity sha512-tuqlrLc+OpWOt/dObxh4M0iUF7vtPMQSq193Bsyz0jyhkL9AagUht67+BXQXzh7oxTkN0wmpC5JDLpCBvl+RhQ==
   dependencies:
     "@angular-devkit/architect" "0.803.14"
     "@angular-devkit/core" "8.3.14"
@@ -3110,10 +3132,15 @@ bluebird@3.5.0:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
   integrity sha1-eRQg1/VR7qKJdFOop3ZT+WYG1nw=
 
-bluebird@3.7.1, bluebird@^3.5.1, bluebird@^3.5.3, bluebird@^3.5.5:
+bluebird@3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.1.tgz#df70e302b471d7473489acf26a93d63b53f874de"
   integrity sha512-DdmyoGCleJnkbp3nkbxTLJ18rjDsE4yCggEwKNXkeV123sPNfOCYeDoeuOY+F2FrSjO1YXcTU+dsy96KMy+gcg==
+
+bluebird@^3.5.1, bluebird@^3.5.3, bluebird@^3.5.5:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
+  integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
@@ -10549,9 +10576,9 @@ schema-utils@^1.0.0:
     ajv-keywords "^3.1.0"
 
 schema-utils@^2.0.0, schema-utils@^2.0.1, schema-utils@^2.1.0, schema-utils@^2.5.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.6.0.tgz#68a259aabbef9d08d1252c2e63c398e476308e80"
-  integrity sha512-UlPB1ME4i/71cih/Rv92gK8043CrJTc2mjkyxDp4pdJ7ZfzY0g0hdGjjDB23jX3X+NXSneCdQbScGhn6K2tbpQ==
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.6.1.tgz#eb78f0b945c7bcfa2082b3565e8db3548011dc4f"
+  integrity sha512-0WXHDs1VDJyo+Zqs9TKLKyD/h7yDpHUhEFsM2CzkICFdoX1av+GBq/J2xRTFfsQO5kBfhZzANf2VcIm84jqDbg==
   dependencies:
     ajv "^6.10.2"
     ajv-keywords "^3.4.1"
