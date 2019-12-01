@@ -1,6 +1,6 @@
-import { StoreAdapter } from './store-adapter';
+import { StorageAdapter } from './storage-adapter';
 
-export class MemoryAdapter implements StoreAdapter {
+export class MemoryAdapter implements StorageAdapter {
   private cache = new Map<string, string>();
 
   get(key) {

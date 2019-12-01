@@ -2,6 +2,6 @@ import { Observable } from 'rxjs';
 
 import { HttpExtResponse } from './response';
 
-export type RequestHandlerFn = ({
+export type NextFn = ({
   request: HttpExtRequest
 }) => Observable<HttpExtResponse>;

@@ -3,7 +3,7 @@ import { mergeMap } from 'rxjs/operators';
 
 import { HttpExtPlugin } from './plugin';
 import { HttpExtRequest } from './request';
-import { RequestHandlerFn } from './request-handler';
+import { NextFn } from './request-handler';
 import { HttpExtResponse } from './response';
 import { throwIfInvalidPluginCondition } from './throw-invalid-plugin-condition';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
@@ -21,7 +21,7 @@ export class HttpExt {
     httpHandler
   }: {
     request: HttpExtRequest;
-    httpHandler: RequestHandlerFn;
+    httpHandler: NextFn;
   }): Observable<HttpExtResponse> {
     return this._handle({
       request,
@@ -37,7 +37,7 @@ export class HttpExt {
   }: {
     request: HttpExtRequest;
     plugins: HttpExtPlugin[];
-    httpHandler: RequestHandlerFn;
+    httpHandler: NextFn;
   }): Observable<HttpExtResponse> {
     if (plugins.length === 0) {
       return httpHandler({ request });
@@ -49,7 +49,7 @@ export class HttpExt {
     /**
      * Calls next plugins recursively.
      */
-    const next: RequestHandlerFn = args => {
+    const next: NextFn = args => {
       const response = this._handle({
         request: args.request,
         plugins: plugins.slice(1),
