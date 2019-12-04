@@ -10,6 +10,7 @@ import { marbles } from 'rxjs-marbles/jest';
 import { refineMetadata } from './apply-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
+import { LocalStorageAdapter } from './store-adapters/local-storage-adapter';
 
 describe('CachePlugin', () => {
   let request: HttpExtRequest;
@@ -20,10 +21,12 @@ describe('CachePlugin', () => {
     response = createResponse({ body: { answer: 42 } });
   });
 
-  it(
+  fit(
     'should serve cache with metadata when hydrated',
     marbles(m => {
-      const cachePlugin = createCachePlugin({ addCacheMetadata: true });
+      const cachePlugin = createCachePlugin({
+        addCacheMetadata: true
+      });
 
       /* @todo find a sexier way to test metadata */
       const networkResponse = refineMetadata({ response });
@@ -49,7 +52,7 @@ describe('CachePlugin', () => {
 
       const values = { n: networkResponse, c: cacheResponse };
       /*                         👇 Second time cache is served first */
-      const expected$ = m.cold('-ncn|', values);
+      const expected$ = m.cold('-n-n|', values);
 
       m.expect(responses$).toBeObservable(expected$);
     })

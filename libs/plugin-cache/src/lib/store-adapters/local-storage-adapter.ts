@@ -1,12 +1,14 @@
+import { Observable, of } from 'rxjs';
+
 import { StorageAdapter } from './storage-adapter';
 
 export class LocalStorageAdapter implements StorageAdapter {
-  get(key) {
+  get(key: string): Observable<string> {
     const cacheData = this._load();
-    return cacheData[key];
+    return of(cacheData[key]);
   }
 
-  set(key, response) {
+  set(key: string, response: string): void {
     const cacheData = this._load();
     cacheData[key] = response;
     this._save(cacheData);

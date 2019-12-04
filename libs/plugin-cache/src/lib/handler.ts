@@ -5,7 +5,7 @@ import {
   PluginHandlerArgs
 } from '@http-ext/core';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
-import { map, shareReplay, takeUntil, tap } from 'rxjs/operators';
+import { map, shareReplay, takeUntil, tap, mergeMap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
@@ -39,10 +39,10 @@ export class CacheHandler implements PluginHandler {
       })
     );
 
-    const fromCache$ = defer(() => {
-      const cache: ResponseAndCacheMetadata | null = this._load(request);
-      return cache ? of(cache) : EMPTY;
-    }).pipe(takeUntil(fromNetwork$));
+    const fromCache$ = this._load(request).pipe(
+      mergeMap(cacheData => (cacheData ? of(cacheData) : EMPTY)),
+      takeUntil(fromNetwork$)
+    );
 
     const addCacheMetadata = this._addCacheMetadata;
 
@@ -72,9 +72,12 @@ export class CacheHandler implements PluginHandler {
     this._storage.set(this._getStoreKey(request), JSON.stringify(cache));
   }
 
-  private _load(request: HttpExtRequest): ResponseAndCacheMetadata | null {
-    const data = this._storage.get(this._getStoreKey(request));
-    return data ? JSON.parse(data) : null;
+  private _load(
+    request: HttpExtRequest
+  ): Observable<ResponseAndCacheMetadata | null> {
+    return this._storage
+      .get(this._getStoreKey(request))
+      .pipe(map(cacheData => (cacheData ? JSON.parse(cacheData) : null)));
   }
 
   /* Create an uniq key by request URI to retrieve cache later */
