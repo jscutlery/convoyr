@@ -21,7 +21,7 @@ describe('CachePlugin', () => {
     response = createResponse({ body: { answer: 42 } });
   });
 
-  fit(
+  it(
     'should serve cache with metadata when hydrated',
     marbles(m => {
       const cachePlugin = createCachePlugin({
