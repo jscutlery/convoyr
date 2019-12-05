@@ -4,9 +4,8 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { defer, EMPTY, merge, Observable, of } from 'rxjs';
-import { map, shareReplay, takeUntil, tap, mergeMap } from 'rxjs/operators';
-
+import { EMPTY, merge, Observable, of } from 'rxjs';
+import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
@@ -30,38 +29,36 @@ export class CacheHandler implements PluginHandler {
     request,
     next
   }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
-    return defer(() => {
-      const fromNetwork$ = next({ request }).pipe(
-        tap(response => this._store(request, response)),
-        map(response => ({ response })),
-        shareReplay({
-          refCount: true,
-          bufferSize: 1
-        })
-      );
+    const fromNetwork$ = next({ request }).pipe(
+      tap(response => this._store(request, response)),
+      map(response => ({ response })),
+      shareReplay({
+        refCount: true,
+        bufferSize: 1
+      })
+    );
 
-      const fromCache$ = this._load(request).pipe(
-        mergeMap(cacheData => (cacheData ? of(cacheData) : EMPTY)),
-        takeUntil(fromNetwork$)
-      );
+    const fromCache$ = this._load(request).pipe(
+      mergeMap(cacheData => (cacheData ? of(cacheData) : EMPTY)),
+      takeUntil(fromNetwork$)
+    );
 
-      const addCacheMetadata = this._addCacheMetadata;
+    const addCacheMetadata = this._addCacheMetadata;
 
-      /* Order is important here because if we subscribe to fromCache$ first, it will subscribe to fromNetwork$
-       * and `takeUntil` will immediately unsubscribe from it because the result is synchronous.
-       * If fromNetwork$ is first, it will subscribe and the subscription will be shared with the `takeUntil`
-       * thanks to shareReplay. */
-      return merge(
-        applyMetadata({
-          source$: fromNetwork$,
-          addCacheMetadata
-        }),
-        applyMetadata({
-          source$: fromCache$,
-          addCacheMetadata
-        })
-      );
-    });
+    /* Order is important here because if we subscribe to fromCache$ first, it will subscribe to fromNetwork$
+     * and `takeUntil` will immediately unsubscribe from it because the result is synchronous.
+     * If fromNetwork$ is first, it will subscribe and the subscription will be shared with the `takeUntil`
+     * thanks to shareReplay. */
+    return merge(
+      applyMetadata({
+        source$: fromNetwork$,
+        addCacheMetadata
+      }),
+      applyMetadata({
+        source$: fromCache$,
+        addCacheMetadata
+      })
+    );
   }
 
   /* Store metadata belong cache if configuration tells so */

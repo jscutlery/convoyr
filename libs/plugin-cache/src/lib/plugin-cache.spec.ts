@@ -4,7 +4,7 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
-import { concat, of } from 'rxjs';
+import { concat, of, EMPTY } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
 import { refineMetadata } from './apply-metadata';
@@ -104,8 +104,11 @@ describe('CachePlugin', () => {
     expect(cachePlugin.condition({ request: deleteRequest })).toBe(false);
   });
 
-  xit('💥 should use given storage implementation to store cache', () => {
-    const spyStorage = { set: jest.fn() };
+  it('should use given storage implementation to store cache', () => {
+    const spyStorage = {
+      get: jest.fn().mockReturnValue(EMPTY),
+      set: jest.fn()
+    };
     const cachePlugin = createCachePlugin({
       storage: spyStorage as any
     });
