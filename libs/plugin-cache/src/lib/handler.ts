@@ -30,36 +30,38 @@ export class CacheHandler implements PluginHandler {
     request,
     next
   }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
-    const fromNetwork$ = next({ request }).pipe(
-      tap(response => this._store(request, response)),
-      map(response => ({ response })),
-      shareReplay({
-        refCount: true,
-        bufferSize: 1
-      })
-    );
+    return defer(() => {
+      const fromNetwork$ = next({ request }).pipe(
+        tap(response => this._store(request, response)),
+        map(response => ({ response })),
+        shareReplay({
+          refCount: true,
+          bufferSize: 1
+        })
+      );
 
-    const fromCache$ = this._load(request).pipe(
-      mergeMap(cacheData => (cacheData ? of(cacheData) : EMPTY)),
-      takeUntil(fromNetwork$)
-    );
+      const fromCache$ = this._load(request).pipe(
+        mergeMap(cacheData => (cacheData ? of(cacheData) : EMPTY)),
+        takeUntil(fromNetwork$)
+      );
 
-    const addCacheMetadata = this._addCacheMetadata;
+      const addCacheMetadata = this._addCacheMetadata;
 
-    /* Order is important here because if we subscribe to fromCache$ first, it will subscribe to fromNetwork$
-     * and `takeUntil` will immediately unsubscribe from it because the result is synchronous.
-     * If fromNetwork$ is first, it will subscribe and the subscription will be shared with the `takeUntil`
-     * thanks to shareReplay. */
-    return merge(
-      applyMetadata({
-        source$: fromNetwork$,
-        addCacheMetadata
-      }),
-      applyMetadata({
-        source$: fromCache$,
-        addCacheMetadata
-      })
-    );
+      /* Order is important here because if we subscribe to fromCache$ first, it will subscribe to fromNetwork$
+       * and `takeUntil` will immediately unsubscribe from it because the result is synchronous.
+       * If fromNetwork$ is first, it will subscribe and the subscription will be shared with the `takeUntil`
+       * thanks to shareReplay. */
+      return merge(
+        applyMetadata({
+          source$: fromNetwork$,
+          addCacheMetadata
+        }),
+        applyMetadata({
+          source$: fromCache$,
+          addCacheMetadata
+        })
+      );
+    });
   }
 
   /* Store metadata belong cache if configuration tells so */

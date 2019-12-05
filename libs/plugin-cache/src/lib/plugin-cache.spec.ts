@@ -52,7 +52,7 @@ describe('CachePlugin', () => {
 
       const values = { n: networkResponse, c: cacheResponse };
       /*                         👇 Second time cache is served first */
-      const expected$ = m.cold('-n-n|', values);
+      const expected$ = m.cold('-ncn|', values);
 
       m.expect(responses$).toBeObservable(expected$);
     })
@@ -104,7 +104,7 @@ describe('CachePlugin', () => {
     expect(cachePlugin.condition({ request: deleteRequest })).toBe(false);
   });
 
-  it('should use given storage implementation to store cache', () => {
+  xit('💥 should use given storage implementation to store cache', () => {
     const spyStorage = { set: jest.fn() };
     const cachePlugin = createCachePlugin({
       storage: spyStorage as any
