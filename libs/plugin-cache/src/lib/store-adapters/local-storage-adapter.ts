@@ -14,12 +14,18 @@ export class LocalStorageAdapter implements StorageAdapter {
     this._save(cacheData);
   }
 
-  private _load() {
-    const cacheData = localStorage.getItem('__http-ext-cache');
+  unset(key) {
+    const cacheData = this._load();
+    delete cacheData[key];
+    this._save(cacheData);
+  }
+
+  private _load(): any {
+    const cacheData = window.localStorage.getItem('__http-ext-cache');
     return cacheData ? cacheData : {};
   }
 
   private _save(cacheData) {
-    return localStorage.setItem('__http-ext-cache', cacheData);
+    return window.localStorage.setItem('__http-ext-cache', cacheData);
   }
 }

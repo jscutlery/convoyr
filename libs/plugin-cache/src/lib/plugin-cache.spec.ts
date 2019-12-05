@@ -6,11 +6,11 @@ import {
 } from '@http-ext/core';
 import { concat, of, EMPTY } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
+import { delay } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
-import { LocalStorageAdapter } from './store-adapters/local-storage-adapter';
 
 describe('CachePlugin', () => {
   let request: HttpExtRequest;
@@ -24,28 +24,29 @@ describe('CachePlugin', () => {
   it(
     'should serve cache with metadata when hydrated',
     marbles(m => {
-      const cachePlugin = createCachePlugin({
-        addCacheMetadata: true
-      });
-
-      /* @todo find a sexier way to test metadata */
+      const cachePlugin = createCachePlugin({ addCacheMetadata: true });
+      const handler = cachePlugin.handler as any;
       const networkResponse = refineMetadata({ response });
       const cacheResponse = refineMetadata({
         response,
         cacheMetadata: {
-          createdAt: '2019-11-13T12:39:51.972Z'
+          createdAt: '2019-11-13T12:39:51.972Z',
+          ttl: '1d'
         }
       });
-      spyOn(Date.prototype, 'toISOString').and.returnValue(
-        '2019-11-13T12:39:51.972Z'
-      );
+      handler._createCacheDate = jest
+        .fn()
+        .mockReturnValue('2019-11-13T12:39:51.972Z');
+      handler._getExpiredAt = jest
+        .fn()
+        .mockReturnValue('2019-11-08T12:39:51.972Z');
 
       /* Simulate final handler */
       const next = () => m.cold('-r|', { r: response });
 
       /* Run two requests with the same URL to fire cache response */
-      const requestA$ = cachePlugin.handler.handle({ request, next }) as any;
-      const requestB$ = cachePlugin.handler.handle({ request, next }) as any;
+      const requestA$ = handler.handle({ request, next });
+      const requestB$ = handler.handle({ request, next });
 
       /* Execute requests in order */
       const responses$ = concat(requestA$, requestB$);
@@ -114,8 +115,8 @@ describe('CachePlugin', () => {
     });
     const next = () => of(response);
 
-    const handler = cachePlugin.handler.handle({ request, next }) as any;
-    handler.subscribe();
+    const handler$ = cachePlugin.handler.handle({ request, next }) as any;
+    handler$.subscribe();
 
     const cacheKey = spyStorage.set.mock.calls[0][0];
     const cachedData = spyStorage.set.mock.calls[0][1];
@@ -125,13 +126,54 @@ describe('CachePlugin', () => {
     expect(JSON.parse(cachedData)).toEqual(
       expect.objectContaining({
         cacheMetadata: {
-          createdAt: expect.any(String)
+          createdAt: expect.any(String),
+          ttl: expect.any(String)
         },
         response: expect.objectContaining({
           body: { answer: 42 }
         })
       })
     );
+  });
+
+  it('should unset cache if expired', done => {
+    const spyStorage = new MemoryAdapter();
+    spyStorage.get = jest.fn(spyStorage.get);
+    spyStorage.set = jest.fn(spyStorage.set);
+    spyStorage.unset = jest.fn(spyStorage.unset);
+
+    const cachePlugin = createCachePlugin({
+      storage: spyStorage as any,
+      addCacheMetadata: true,
+      ttl: '1d'
+    });
+    const handler = cachePlugin.handler as any;
+
+    /* This mocks the `createdAt` date to test against `expireAt` below */
+    handler._createCacheDate = jest
+      .fn()
+      .mockReturnValue('2019-11-10T12:39:51.972Z');
+
+    /* Use an expired date to trigger a cache clean */
+    handler._getExpiredAt = jest
+      .fn()
+      .mockReturnValue(new Date('2019-11-08T12:39:51.972Z'));
+
+    /* A delay is added to ensure the `next` handler emits *after* the cache was hit */
+    const next = () => of(response).pipe(delay(0));
+
+    const handlerA$ = handler.handle({ request, next });
+    const handlerB$ = handler.handle({ request, next });
+
+    concat(handlerA$, handlerB$).subscribe({
+      complete: () => {
+        expect(spyStorage.get).toHaveBeenCalledTimes(2);
+        expect(spyStorage.set).toHaveBeenCalledTimes(2);
+        /* The storage should clean the cache using the `unset` method */
+        expect(spyStorage.unset).toHaveBeenCalled();
+        done();
+      }
+    });
   });
 
   it(

@@ -12,6 +12,7 @@ import { StorageAdapter } from './store-adapters/storage-adapter';
 import { toString } from './to-string';
 
 export interface HandlerOptions {
+  ttl: string;
   addCacheMetadata: boolean;
   storage: StorageAdapter;
 }
@@ -19,10 +20,12 @@ export interface HandlerOptions {
 export class CacheHandler implements PluginHandler {
   private _addCacheMetadata: boolean;
   private _storage: StorageAdapter;
+  private _ttl: string;
 
-  constructor({ addCacheMetadata, storage }: HandlerOptions) {
+  constructor({ addCacheMetadata, storage, ttl }: HandlerOptions) {
     this._storage = storage;
     this._addCacheMetadata = addCacheMetadata;
+    this._ttl = ttl;
   }
 
   handle({
@@ -61,11 +64,30 @@ export class CacheHandler implements PluginHandler {
     );
   }
 
+  private _addDays(fromDate: Date = new Date(), days: number): Date {
+    return new Date(fromDate.valueOf() + 24 * 60 * 60 * days);
+  }
+
+  private _createCacheDate(): string {
+    return new Date().toISOString();
+  }
+
+  private _checkIsExpired(expireAt: Date): boolean {
+    return new Date() >= expireAt;
+  }
+
+  private _getExpiredAt(createdAt: string, ttl: number) {
+    return this._addDays(new Date(createdAt), ttl);
+  }
+
   /* Store metadata belong cache if configuration tells so */
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
     const cache: ResponseAndCacheMetadata = {
       response,
-      cacheMetadata: { createdAt: new Date().toISOString() }
+      cacheMetadata: {
+        createdAt: this._createCacheDate(),
+        ttl: this._ttl
+      }
     };
 
     this._storage.set(this._getStoreKey(request), JSON.stringify(cache));
@@ -74,9 +96,41 @@ export class CacheHandler implements PluginHandler {
   private _load(
     request: HttpExtRequest
   ): Observable<ResponseAndCacheMetadata | null> {
-    return this._storage
-      .get(this._getStoreKey(request))
-      .pipe(map(cacheData => (cacheData ? JSON.parse(cacheData) : null)));
+    return this._storage.get(this._getStoreKey(request)).pipe(
+      map<string, ResponseAndCacheMetadata | null>(cache =>
+        cache ? JSON.parse(cache) : null
+      ),
+      tap(cache => {
+        if (!cache) {
+          return null;
+        }
+
+        let isExpired = false;
+
+        const { ttl, createdAt } = cache.cacheMetadata;
+        const UNIT_POS = ttl.length - 1;
+
+        const parsedTll = parseInt(ttl.substring(0, UNIT_POS), 10);
+        const unit = ttl[UNIT_POS];
+
+        // @todo handle errors and complete parsing
+        // if (!Number.isInteger(parsedTll)) {
+        //   throw invalidTtlError()
+        // }
+
+        // assume that ttl is in days
+        const expireAt = this._getExpiredAt(createdAt, parsedTll);
+
+        isExpired = this._checkIsExpired(expireAt);
+        console.log(isExpired, new Date(createdAt), expireAt);
+
+        if (isExpired) {
+          this._storage.unset(this._getStoreKey(request));
+        }
+
+        return !isExpired ? cache : null;
+      })
+    );
   }
 
   /* Create a unique key by request URI to retrieve cache later. */

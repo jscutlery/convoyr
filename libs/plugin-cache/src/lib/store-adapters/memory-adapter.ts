@@ -11,4 +11,8 @@ export class MemoryAdapter implements StorageAdapter {
   set(key: string, response: string): void {
     this.cache.set(key, response);
   }
+
+  unset(key) {
+    this.cache.delete(key);
+  }
 }

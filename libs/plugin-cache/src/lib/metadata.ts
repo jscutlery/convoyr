@@ -2,6 +2,7 @@ import { HttpExtResponse } from '@http-ext/core';
 
 export interface PartialCacheMetadata {
   createdAt: string;
+  ttl: string;
 }
 
 export interface CacheMetadata extends PartialCacheMetadata {
