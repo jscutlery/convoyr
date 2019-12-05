@@ -10,6 +10,7 @@ import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
 import { toString } from './to-string';
+import { addDays } from './utils/add-days';
 
 export interface HandlerOptions {
   ttl: string;
@@ -64,20 +65,16 @@ export class CacheHandler implements PluginHandler {
     );
   }
 
-  private _addDays(fromDate: Date = new Date(), days: number): Date {
-    return new Date(fromDate.valueOf() + 24 * 60 * 60 * days);
-  }
-
   private _createCacheDate(): string {
     return new Date().toISOString();
   }
 
-  private _checkIsExpired(expireAt: Date): boolean {
+  private _checkCacheIsExpired(expireAt: Date): boolean {
     return new Date() >= expireAt;
   }
 
-  private _getExpiredAt(createdAt: string, ttl: number) {
-    return this._addDays(new Date(createdAt), ttl);
+  private _getCacheExpiredAt(createdAt: string, ttl: number) {
+    return addDays(new Date(createdAt), ttl);
   }
 
   /* Store metadata belong cache if configuration tells so */
@@ -119,9 +116,9 @@ export class CacheHandler implements PluginHandler {
         // }
 
         // assume that ttl is in days
-        const expireAt = this._getExpiredAt(createdAt, parsedTll);
+        const expireAt = this._getCacheExpiredAt(createdAt, parsedTll);
 
-        isExpired = this._checkIsExpired(expireAt);
+        isExpired = this._checkCacheIsExpired(expireAt);
         console.log(isExpired, new Date(createdAt), expireAt);
 
         if (isExpired) {
