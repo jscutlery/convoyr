@@ -4,7 +4,7 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { EMPTY, merge, Observable, of } from 'rxjs';
+import { EMPTY, merge, Observable, of, defer } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
@@ -38,7 +38,7 @@ export class CacheHandler implements PluginHandler {
       })
     );
 
-    const fromCache$ = this._load(request).pipe(
+    const fromCache$ = defer(() => this._load(request)).pipe(
       mergeMap(cacheData => (cacheData ? of(cacheData) : EMPTY)),
       takeUntil(fromNetwork$)
     );
@@ -79,7 +79,7 @@ export class CacheHandler implements PluginHandler {
       .pipe(map(cacheData => (cacheData ? JSON.parse(cacheData) : null)));
   }
 
-  /* Create an uniq key by request URI to retrieve cache later */
+  /* Create a unique key by request URI to retrieve cache later. */
   private _getStoreKey(request: HttpExtRequest): string {
     let key = request.url;
 
