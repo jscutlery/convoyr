@@ -66,7 +66,7 @@ export class CacheHandler implements PluginHandler {
     );
   }
 
-  /* Store metadata belong cache if configuration tells so */
+  /* Store metadata belong cache if configuration tells so. */
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
     const cache: ResponseAndCacheMetadata = {
       response,
@@ -91,6 +91,7 @@ export class CacheHandler implements PluginHandler {
     return addDays(new Date(createdAt), ttl);
   }
 
+  /* @todo maybe there is better moment to check the cache ? */
   private _load(request: HttpExtRequest): Observable<ResponseAndCacheMetadata> {
     return this._storage.get(this._getStoreKey(request)).pipe(
       map<string, ResponseAndCacheMetadata>(cache =>
@@ -121,16 +122,16 @@ export class CacheHandler implements PluginHandler {
       const parsedTll = parseInt(ttl.substring(0, UNIT_POS), 10);
       const unit = ttl[UNIT_POS];
 
-      // @todo handle errors and complete parsing
+      // @todo handle errors for both units and ttl value
+
       // if (!Number.isInteger(parsedTll)) {
       //   throw invalidTtlError()
       // }
 
-      // @todo Assumes that ttl is in days
-      // @todo make it work with another units
+      // @todo make it work with m h d
       const expireAt = this._getCacheExpiredAt(createdAt, parsedTll);
 
-      /* In case cache is expired clear it */
+      /* In case cache is expired clear it. */
       if (this._checkCacheIsExpired(expireAt)) {
         this._storage.unset(this._getStoreKey(request));
         return EMPTY;

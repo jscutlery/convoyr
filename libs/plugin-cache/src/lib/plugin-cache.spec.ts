@@ -148,7 +148,7 @@ describe('CachePlugin', () => {
     });
     const handler = cachePlugin.handler as any;
 
-    /* Force both `_checkCacheIsExpired` and `_createCacheDate` */
+    /* Force both `_checkCacheIsExpired` and `_createCacheDate`. */
     advanceDateTo(new Date('2019-11-10T12:39:51.972Z'));
 
     /* Set an expired date to trigger a cache clean */
@@ -156,12 +156,15 @@ describe('CachePlugin', () => {
       .fn()
       .mockReturnValue(new Date('2019-11-08T12:39:51.972Z'));
 
-    /* A delay is added to ensure the `next` handler emits *after* the cache was hit */
+    /* A delay is added to ensure the `next` handler emits *after* the cache was hit. */
     const next = () => of(response).pipe(delay(0));
 
     const handlerA$ = handler.handle({ request, next });
     const handlerB$ = handler.handle({ request, next });
 
+    /* @todo test mock calls to ensure cache is not served when expired. */
+
+    /* @todo check if there is a synchronous way to achieve this. */
     concat(handlerA$, handlerB$).subscribe({
       complete: () => {
         expect(spyStorage.get).toHaveBeenCalledTimes(2);
