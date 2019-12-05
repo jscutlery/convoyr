@@ -4,12 +4,13 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
-import { concat, of } from 'rxjs';
+import { concat, of, EMPTY } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
 import { refineMetadata } from './apply-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
+import { LocalStorageAdapter } from './store-adapters/local-storage-adapter';
 
 describe('CachePlugin', () => {
   let request: HttpExtRequest;
@@ -23,7 +24,9 @@ describe('CachePlugin', () => {
   it(
     'should serve cache with metadata when hydrated',
     marbles(m => {
-      const cachePlugin = createCachePlugin({ addCacheMetadata: true });
+      const cachePlugin = createCachePlugin({
+        addCacheMetadata: true
+      });
 
       /* @todo find a sexier way to test metadata */
       const networkResponse = refineMetadata({ response });
@@ -102,7 +105,10 @@ describe('CachePlugin', () => {
   });
 
   it('should use given storage implementation to store cache', () => {
-    const spyStorage = { set: jest.fn() };
+    const spyStorage = {
+      get: jest.fn().mockReturnValue(EMPTY),
+      set: jest.fn()
+    };
     const cachePlugin = createCachePlugin({
       storage: spyStorage as any
     });
