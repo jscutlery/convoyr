@@ -65,18 +65,6 @@ export class CacheHandler implements PluginHandler {
     );
   }
 
-  private _createCacheDate(): string {
-    return new Date().toISOString();
-  }
-
-  private _checkCacheIsExpired(expireAt: Date): boolean {
-    return new Date() >= expireAt;
-  }
-
-  private _getCacheExpiredAt(createdAt: string, ttl: number) {
-    return addDays(new Date(createdAt), ttl);
-  }
-
   /* Store metadata belong cache if configuration tells so */
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
     const cache: ResponseAndCacheMetadata = {
@@ -88,6 +76,18 @@ export class CacheHandler implements PluginHandler {
     };
 
     this._storage.set(this._getStoreKey(request), JSON.stringify(cache));
+  }
+
+  private _createCacheDate(): string {
+    return new Date().toISOString();
+  }
+
+  private _checkCacheIsExpired(expireAt: Date): boolean {
+    return new Date() >= expireAt;
+  }
+
+  private _getCacheExpiredAt(createdAt: string, ttl: number) {
+    return addDays(new Date(createdAt), ttl);
   }
 
   private _load(

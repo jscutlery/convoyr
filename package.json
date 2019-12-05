@@ -71,6 +71,7 @@
     "eslint": "6.7.2",
     "husky": "^3.0.9",
     "jest": "24.9.0",
+    "jest-date-mock": "^1.0.7",
     "jest-preset-angular": "7.1.1",
     "lerna": "^3.17.0",
     "lint-staged": "9.5.0",

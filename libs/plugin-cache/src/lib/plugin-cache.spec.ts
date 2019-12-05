@@ -4,7 +4,8 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
-import { concat, of, EMPTY } from 'rxjs';
+import { advanceTo as advanceDateTo, clear as clearDate } from 'jest-date-mock';
+import { concat, EMPTY, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { delay } from 'rxjs/operators';
 
@@ -21,6 +22,8 @@ describe('CachePlugin', () => {
     response = createResponse({ body: { answer: 42 } });
   });
 
+  afterEach(() => clearDate());
+
   it(
     'should serve cache with metadata when hydrated',
     marbles(m => {
@@ -30,16 +33,16 @@ describe('CachePlugin', () => {
       const cacheResponse = refineMetadata({
         response,
         cacheMetadata: {
-          createdAt: '2019-11-13T12:39:51.972Z',
+          createdAt: '2019-12-14T12:39:51.972Z',
           ttl: '1d'
         }
       });
-      handler._createCacheDate = jest
+
+      advanceDateTo(new Date('2019-12-14T12:39:51.972Z'));
+
+      handler._getCacheExpiredAt = jest
         .fn()
-        .mockReturnValue('2019-11-13T12:39:51.972Z');
-      handler._getExpiredAt = jest
-        .fn()
-        .mockReturnValue('2019-11-08T12:39:51.972Z');
+        .mockReturnValue('2019-12-15T12:39:51.972Z');
 
       /* Simulate final handler */
       const next = () => m.cold('-r|', { r: response });
@@ -136,7 +139,7 @@ describe('CachePlugin', () => {
     );
   });
 
-  it('should unset cache if expired', done => {
+  it('should unset cache when ttl expired', done => {
     const spyStorage = new MemoryAdapter();
     spyStorage.get = jest.fn(spyStorage.get);
     spyStorage.set = jest.fn(spyStorage.set);
@@ -149,13 +152,10 @@ describe('CachePlugin', () => {
     });
     const handler = cachePlugin.handler as any;
 
-    /* This mocks the `createdAt` date to test against `expireAt` below */
-    handler._createCacheDate = jest
-      .fn()
-      .mockReturnValue('2019-11-10T12:39:51.972Z');
+    advanceDateTo(new Date('2019-11-10T12:39:51.972Z'));
 
     /* Use an expired date to trigger a cache clean */
-    handler._getExpiredAt = jest
+    handler._getCacheExpiredAt = jest
       .fn()
       .mockReturnValue(new Date('2019-11-08T12:39:51.972Z'));
 
