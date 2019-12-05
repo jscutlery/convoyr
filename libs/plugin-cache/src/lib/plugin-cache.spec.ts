@@ -34,15 +34,11 @@ describe('CachePlugin', () => {
         response,
         cacheMetadata: {
           createdAt: '2019-12-14T12:39:51.972Z',
-          ttl: '1d'
+          ttl: null
         }
       });
-
+      /* Force `_createCacheDate` to match given metadata */
       advanceDateTo(new Date('2019-12-14T12:39:51.972Z'));
-
-      handler._getCacheExpiredAt = jest
-        .fn()
-        .mockReturnValue('2019-12-15T12:39:51.972Z');
 
       /* Simulate final handler */
       const next = () => m.cold('-r|', { r: response });
@@ -130,7 +126,7 @@ describe('CachePlugin', () => {
       expect.objectContaining({
         cacheMetadata: {
           createdAt: expect.any(String),
-          ttl: expect.any(String)
+          ttl: expect.any(Object) /* workaround to match String and null 🙄 */
         },
         response: expect.objectContaining({
           body: { answer: 42 }
@@ -152,9 +148,10 @@ describe('CachePlugin', () => {
     });
     const handler = cachePlugin.handler as any;
 
+    /* Force both `_checkCacheIsExpired` and `_createCacheDate` */
     advanceDateTo(new Date('2019-11-10T12:39:51.972Z'));
 
-    /* Use an expired date to trigger a cache clean */
+    /* Set an expired date to trigger a cache clean */
     handler._getCacheExpiredAt = jest
       .fn()
       .mockReturnValue(new Date('2019-11-08T12:39:51.972Z'));
@@ -169,7 +166,6 @@ describe('CachePlugin', () => {
       complete: () => {
         expect(spyStorage.get).toHaveBeenCalledTimes(2);
         expect(spyStorage.set).toHaveBeenCalledTimes(2);
-        /* The storage should clean the cache using the `unset` method */
         expect(spyStorage.unset).toHaveBeenCalled();
         done();
       }

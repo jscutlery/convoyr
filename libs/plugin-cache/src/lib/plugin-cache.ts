@@ -11,7 +11,7 @@ export function cachePlugin({
   addCacheMetadata = false,
   storage = new MemoryAdapter(),
   condition = matchMethod('GET'),
-  ttl = '1d'
+  ttl = null
 }: Partial<CachePluginOptions> = {}): HttpExtPlugin {
   return {
     condition,
