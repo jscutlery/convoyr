@@ -5,20 +5,13 @@ import {
   PluginHandlerArgs
 } from '@http-ext/core';
 import { defer, EMPTY, iif, merge, Observable, of } from 'rxjs';
-import {
-  map,
-  mergeMap,
-  shareReplay,
-  takeUntil,
-  tap,
-  withLatestFrom
-} from 'rxjs/operators';
+import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
 import { parseTtl, parseTtlUnit, TtlUnit } from './ttl';
-import { addDays } from './utils/add-days';
+import { addDays } from './utils/date';
 
 export interface HandlerOptions {
   ttl: string | null;
@@ -148,7 +141,7 @@ export class CacheHandler implements PluginHandler {
   }
 
   private _getCacheExpiredAt(createdAt: string, ttl: number) {
-    return addDays(new Date(createdAt), ttl);
+    return addDays(ttl, new Date(createdAt));
   }
 
   /* Create a unique key by request URI to retrieve cache later. */
