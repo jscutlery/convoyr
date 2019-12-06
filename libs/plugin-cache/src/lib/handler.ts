@@ -10,6 +10,7 @@ import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
+import { parseTtl, parseTtlUnit, TtlUnit } from './ttl';
 import { addDays } from './utils/add-days';
 
 export interface HandlerOptions {
@@ -21,12 +22,18 @@ export interface HandlerOptions {
 export class CacheHandler implements PluginHandler {
   private _addCacheMetadata: boolean;
   private _storage: StorageAdapter;
-  private _ttl: string | null;
+  private _ttl: number | null = null;
+  private _ttlUnit: TtlUnit | null = null;
+
+  get _ttlWithUnit(): string {
+    return this._ttl + this._ttlUnit;
+  }
 
   constructor({ addCacheMetadata, storage, ttl }: HandlerOptions) {
     this._storage = storage;
     this._addCacheMetadata = addCacheMetadata;
-    this._ttl = ttl;
+    this._ttl = parseTtl(ttl);
+    this._ttlUnit = parseTtlUnit(ttl);
   }
 
   handle({
@@ -70,12 +77,48 @@ export class CacheHandler implements PluginHandler {
     const cache: ResponseAndCacheMetadata = {
       response,
       cacheMetadata: {
-        createdAt: this._createCacheDate(),
-        ttl: this._ttl
+        createdAt: this._createCacheDate()
       }
     };
 
     this._storage.set(this._getCacheKey(request), JSON.stringify(cache));
+  }
+
+  private _load(request: HttpExtRequest): Observable<ResponseAndCacheMetadata> {
+    return this._storage.get(this._getCacheKey(request)).pipe(
+      map<string, ResponseAndCacheMetadata>(cache =>
+        cache ? JSON.parse(cache) : null
+      ),
+      mergeMap(cache =>
+        iif(() => cache != null, this._checkCacheTtl(request, cache), EMPTY)
+      )
+    );
+  }
+
+  /* In case cache is expired clear it. */
+  private _checkCacheTtl(
+    request: HttpExtRequest,
+    cache: ResponseAndCacheMetadata
+  ): Observable<ResponseAndCacheMetadata> {
+    return defer(() => {
+      const ttl = this._ttl;
+
+      if (ttl === null) {
+        return of(cache);
+      }
+
+      const { createdAt } = cache.cacheMetadata;
+      // @todo make it work with m h d
+      const expireAt = this._getCacheExpiredAt(createdAt, ttl);
+
+      /* In case cache is expired clear it. */
+      if (this._checkCacheIsExpired(expireAt)) {
+        this._storage.unset(this._getCacheKey(request));
+        return EMPTY;
+      }
+
+      return of(cache);
+    });
   }
 
   private _createCacheDate(): string {
@@ -90,62 +133,12 @@ export class CacheHandler implements PluginHandler {
     return addDays(new Date(createdAt), ttl);
   }
 
-  /* @todo maybe there is better moment to check the cache ? */
-  private _load(request: HttpExtRequest): Observable<ResponseAndCacheMetadata> {
-    return this._storage.get(this._getCacheKey(request)).pipe(
-      map<string, ResponseAndCacheMetadata>(cache =>
-        cache ? JSON.parse(cache) : null
-      ),
-      mergeMap(cache =>
-        iif(
-          () => cache != null,
-          this._checkCacheExpiration(request, cache),
-          EMPTY
-        )
-      )
-    );
-  }
-
-  private _checkCacheExpiration(
-    request: HttpExtRequest,
-    cache: ResponseAndCacheMetadata
-  ): Observable<ResponseAndCacheMetadata> {
-    return defer(() => {
-      if (this._ttl === null) {
-        return of(cache);
-      }
-
-      const { ttl, createdAt } = cache.cacheMetadata;
-      const UNIT_POS = ttl.length - 1;
-
-      const parsedTll = parseInt(ttl.substring(0, UNIT_POS), 10);
-      const unit = ttl[UNIT_POS];
-
-      // @todo handle errors for both units and ttl value
-
-      // if (!Number.isInteger(parsedTll)) {
-      //   throw invalidTtlError()
-      // }
-
-      // @todo make it work with m h d
-      const expireAt = this._getCacheExpiredAt(createdAt, parsedTll);
-
-      /* In case cache is expired clear it. */
-      if (this._checkCacheIsExpired(expireAt)) {
-        this._storage.unset(this._getCacheKey(request));
-        return EMPTY;
-      }
-
-      return of(cache);
-    });
-  }
-
   /* Create a unique key by request URI to retrieve cache later. */
   private _getCacheKey(request: HttpExtRequest): string {
     const { params } = request;
     const hasParams = Object.keys(params).length > 0;
 
-    /* Note that JSON.stringify is used to avoid browser `encodeURIComponent()` */
+    /* Note that JSON.stringify is used to avoid browser only `encodeURIComponent()` */
     return request.url + (hasParams ? JSON.stringify(request.params) : '');
   }
 }

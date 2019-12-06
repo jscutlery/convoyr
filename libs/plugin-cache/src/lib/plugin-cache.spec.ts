@@ -33,8 +33,7 @@ describe('CachePlugin', () => {
       const cacheResponse = refineMetadata({
         response,
         cacheMetadata: {
-          createdAt: '2019-12-14T12:39:51.972Z',
-          ttl: null
+          createdAt: '2019-12-14T12:39:51.972Z'
         }
       });
       /* Force `_createCacheDate` to match given metadata */
@@ -125,8 +124,7 @@ describe('CachePlugin', () => {
     expect(JSON.parse(cachedData)).toEqual(
       expect.objectContaining({
         cacheMetadata: {
-          createdAt: expect.any(String),
-          ttl: expect.any(Object) /* workaround to match String and null 🙄 */
+          createdAt: expect.any(String)
         },
         response: expect.objectContaining({
           body: { answer: 42 }
@@ -173,6 +171,26 @@ describe('CachePlugin', () => {
         done();
       }
     });
+  });
+
+  it('should throw if ttl is invalid', () => {
+    const createPlugin = () =>
+      createCachePlugin({
+        ttl: 'kd' /* 👈 invalid ttl */
+      });
+
+    expect(createPlugin).toThrowError('InvalidTtl: null is not a valid ttl.');
+  });
+
+  it('should throw if ttl unit is invalid', () => {
+    const createPlugin = () =>
+      createCachePlugin({
+        ttl: '1c' /* 👈 invalid ttl unit */
+      });
+
+    expect(createPlugin).toThrowError(
+      'InvalidTtlUnit: "c" is not a valid unit.'
+    );
   });
 
   it(
