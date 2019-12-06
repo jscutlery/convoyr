@@ -5,7 +5,14 @@ import {
   PluginHandlerArgs
 } from '@http-ext/core';
 import { defer, EMPTY, iif, merge, Observable, of } from 'rxjs';
-import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
+import {
+  map,
+  mergeMap,
+  shareReplay,
+  takeUntil,
+  tap,
+  withLatestFrom
+} from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
@@ -90,34 +97,45 @@ export class CacheHandler implements PluginHandler {
         cache ? JSON.parse(cache) : null
       ),
       mergeMap(cache =>
-        iif(() => cache != null, this._checkCacheTtl(request, cache), EMPTY)
+        iif(
+          () => cache !== null,
+          this._checkCacheTtl(cache).pipe(
+            tap(this._clearCache(request)),
+            mergeMap(isCacheValid => (isCacheValid ? of(cache) : EMPTY))
+          ),
+          EMPTY
+        )
       )
     );
   }
 
-  /* In case cache is expired clear it. */
-  private _checkCacheTtl(
-    request: HttpExtRequest,
-    cache: ResponseAndCacheMetadata
-  ): Observable<ResponseAndCacheMetadata> {
+  /* Clear the cache if expired */
+  private _clearCache(request: HttpExtRequest) {
+    return (isCacheValid: boolean): void => {
+      if (!isCacheValid) {
+        this._storage.unset(this._getCacheKey(request));
+      }
+    };
+  }
+
+  /* Check wether cache is valid or not. */
+  private _checkCacheTtl(cache: ResponseAndCacheMetadata): Observable<boolean> {
     return defer(() => {
       const ttl = this._ttl;
 
       if (ttl === null) {
-        return of(cache);
+        return of(true);
       }
 
       const { createdAt } = cache.cacheMetadata;
-      // @todo make it work with m h d
+      // @todo make it work with all TtlUnit
       const expireAt = this._getCacheExpiredAt(createdAt, ttl);
 
-      /* In case cache is expired clear it. */
       if (this._checkCacheIsExpired(expireAt)) {
-        this._storage.unset(this._getCacheKey(request));
-        return EMPTY;
+        return of(false);
       }
 
-      return of(cache);
+      return of(true);
     });
   }
 
