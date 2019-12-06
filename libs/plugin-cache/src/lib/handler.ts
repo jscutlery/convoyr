@@ -4,7 +4,7 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { defer, EMPTY, merge, Observable, of } from 'rxjs';
+import { defer, EMPTY, iif, merge, Observable, of } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
@@ -46,7 +46,12 @@ export class CacheHandler implements PluginHandler {
     );
 
     const fromCache$ = defer(() => this._loadCache(request)).pipe(
-      mergeMap(this._checkCacheValidity(request)),
+      mergeMap(cache =>
+        this._checkCacheValidity(cache).pipe(
+          tap(this._clearCacheIfInvalid(request)),
+          mergeMap(isCacheValid => (isCacheValid ? of(cache) : EMPTY))
+        )
+      ),
       takeUntil(fromNetwork$)
     );
 
@@ -80,7 +85,6 @@ export class CacheHandler implements PluginHandler {
     this._storage.set(this._getCacheKey(request), JSON.stringify(cache));
   }
 
-  /* Load cache and check its validity. */
   private _loadCache(
     request: HttpExtRequest
   ): Observable<ResponseAndCacheMetadata> {
@@ -89,37 +93,30 @@ export class CacheHandler implements PluginHandler {
       .pipe(mergeMap(cache => (cache ? of(JSON.parse(cache)) : EMPTY)));
   }
 
-  /* Clear cache if expired */
+  private _checkCacheValidity(
+    cache: ResponseAndCacheMetadata
+  ): Observable<boolean> {
+    return defer(() => {
+      /* If no ttl set cache is always valid */
+      if (this._ttl === null) {
+        return of(true);
+      }
+
+      const { createdAt } = cache.cacheMetadata;
+      if (this._isCacheExpired(new Date(createdAt))) {
+        return of(false);
+      }
+
+      return of(true);
+    });
+  }
+
   private _clearCacheIfInvalid(request: HttpExtRequest) {
     return (isCacheValid: boolean): void => {
       if (!isCacheValid) {
         this._storage.unset(this._getCacheKey(request));
       }
     };
-  }
-
-  /* Check wether cache is valid or not. */
-  private _checkCacheValidity(request: HttpExtRequest) {
-    return (
-      cache: ResponseAndCacheMetadata
-    ): Observable<ResponseAndCacheMetadata> =>
-      defer(() => {
-        /* If no ttl set cache is always valid */
-        if (this._ttl === null) {
-          return of(true);
-        }
-
-        /* Ttl given so check its validity */
-        const { createdAt } = cache.cacheMetadata;
-        if (this._isCacheExpired(new Date(createdAt))) {
-          return of(false);
-        }
-
-        return of(true);
-      }).pipe(
-        tap(this._clearCacheIfInvalid(request)),
-        mergeMap(isCacheValid => (isCacheValid ? of(cache) : EMPTY))
-      );
   }
 
   private _createCacheDate(): string {
