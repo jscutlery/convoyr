@@ -4,7 +4,7 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { defer, EMPTY, iif, merge, Observable, of } from 'rxjs';
+import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
@@ -103,18 +103,16 @@ export class CacheHandler implements PluginHandler {
       }
 
       const { createdAt } = cache.cacheMetadata;
-      if (this._isCacheExpired(new Date(createdAt))) {
-        return of(false);
-      }
+      const isValid = this._isCacheExpired(new Date(createdAt)) === false;
 
-      return of(true);
+      return of(isValid);
     });
   }
 
   private _clearCacheIfInvalid(request: HttpExtRequest) {
     return (isCacheValid: boolean): void => {
       if (!isCacheValid) {
-        this._storage.unset(this._getCacheKey(request));
+        this._storage.delete(this._getCacheKey(request));
       }
     };
   }

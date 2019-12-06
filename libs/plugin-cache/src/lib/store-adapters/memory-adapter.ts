@@ -12,7 +12,7 @@ export class MemoryAdapter implements StorageAdapter {
     this.cache.set(key, response);
   }
 
-  unset(key) {
+  delete(key) {
     this.cache.delete(key);
   }
 }

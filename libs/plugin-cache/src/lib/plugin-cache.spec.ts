@@ -137,7 +137,7 @@ describe('CachePlugin', () => {
     const spyStorage = new MemoryAdapter();
     spyStorage.get = jest.fn(spyStorage.get);
     spyStorage.set = jest.fn(spyStorage.set);
-    spyStorage.unset = jest.fn(spyStorage.unset);
+    spyStorage.delete = jest.fn(spyStorage.delete);
 
     const cachePlugin = createCachePlugin({
       storage: spyStorage as any,
@@ -167,7 +167,7 @@ describe('CachePlugin', () => {
       complete: () => {
         expect(spyStorage.get).toHaveBeenCalledTimes(2);
         expect(spyStorage.set).toHaveBeenCalledTimes(2);
-        expect(spyStorage.unset).toHaveBeenCalled();
+        expect(spyStorage.delete).toHaveBeenCalled();
         done();
       }
     });

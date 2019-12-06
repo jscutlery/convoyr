@@ -14,7 +14,7 @@ export class LocalStorageAdapter implements StorageAdapter {
     this._save(cacheData);
   }
 
-  unset(key) {
+  delete(key) {
     const cacheData = this._load();
     delete cacheData[key];
     this._save(cacheData);
