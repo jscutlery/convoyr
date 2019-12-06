@@ -4,14 +4,14 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { defer, EMPTY, iif, merge, Observable, of } from 'rxjs';
+import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
-import { parseTtl, parseTtlUnit, TtlUnit } from './ttl';
-import { addDays } from './utils/date';
+import { invalidTtlError, parseTtl, parseTtlUnit, TtlUnit } from './ttl';
+import { addDays, addHours, addMinutes } from './utils/date';
 
 export interface HandlerOptions {
   ttl: string | null;
@@ -24,10 +24,6 @@ export class CacheHandler implements PluginHandler {
   private _storage: StorageAdapter;
   private _ttl: number | null = null;
   private _ttlUnit: TtlUnit | null = null;
-
-  get _ttlWithUnit(): string {
-    return this._ttl + this._ttlUnit;
-  }
 
   constructor({ addCacheMetadata, storage, ttl }: HandlerOptions) {
     this._storage = storage;
@@ -49,8 +45,8 @@ export class CacheHandler implements PluginHandler {
       })
     );
 
-    const fromCache$ = defer(() => this._load(request)).pipe(
-      mergeMap(cacheData => (cacheData ? of(cacheData) : EMPTY)),
+    const fromCache$ = defer(() => this._loadCache(request)).pipe(
+      mergeMap(this._checkCacheValidity(request)),
       takeUntil(fromNetwork$)
     );
 
@@ -72,7 +68,7 @@ export class CacheHandler implements PluginHandler {
     );
   }
 
-  /* Store metadata belong cache if configuration tells so. */
+  /* Store metadata belong cache. */
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
     const cache: ResponseAndCacheMetadata = {
       response,
@@ -84,26 +80,17 @@ export class CacheHandler implements PluginHandler {
     this._storage.set(this._getCacheKey(request), JSON.stringify(cache));
   }
 
-  private _load(request: HttpExtRequest): Observable<ResponseAndCacheMetadata> {
-    return this._storage.get(this._getCacheKey(request)).pipe(
-      map<string, ResponseAndCacheMetadata>(cache =>
-        cache ? JSON.parse(cache) : null
-      ),
-      mergeMap(cache =>
-        iif(
-          () => cache !== null,
-          this._checkCacheTtl(cache).pipe(
-            tap(this._clearCache(request)),
-            mergeMap(isCacheValid => (isCacheValid ? of(cache) : EMPTY))
-          ),
-          EMPTY
-        )
-      )
-    );
+  /* Load cache and check its validity. */
+  private _loadCache(
+    request: HttpExtRequest
+  ): Observable<ResponseAndCacheMetadata> {
+    return this._storage
+      .get(this._getCacheKey(request))
+      .pipe(mergeMap(cache => (cache ? of(JSON.parse(cache)) : EMPTY)));
   }
 
-  /* Clear the cache if expired */
-  private _clearCache(request: HttpExtRequest) {
+  /* Clear cache if expired */
+  private _clearCacheIfInvalid(request: HttpExtRequest) {
     return (isCacheValid: boolean): void => {
       if (!isCacheValid) {
         this._storage.unset(this._getCacheKey(request));
@@ -112,36 +99,61 @@ export class CacheHandler implements PluginHandler {
   }
 
   /* Check wether cache is valid or not. */
-  private _checkCacheTtl(cache: ResponseAndCacheMetadata): Observable<boolean> {
-    return defer(() => {
-      const ttl = this._ttl;
+  private _checkCacheValidity(request: HttpExtRequest) {
+    return (
+      cache: ResponseAndCacheMetadata
+    ): Observable<ResponseAndCacheMetadata> =>
+      defer(() => {
+        /* If no ttl set cache is always valid */
+        if (this._ttl === null) {
+          return of(true);
+        }
 
-      if (ttl === null) {
+        /* Ttl given so check its validity */
+        const { createdAt } = cache.cacheMetadata;
+        if (this._isCacheExpired(new Date(createdAt))) {
+          return of(false);
+        }
+
         return of(true);
-      }
-
-      const { createdAt } = cache.cacheMetadata;
-      // @todo make it work with all TtlUnit
-      const expireAt = this._getCacheExpiredAt(createdAt, ttl);
-
-      if (this._checkCacheIsExpired(expireAt)) {
-        return of(false);
-      }
-
-      return of(true);
-    });
+      }).pipe(
+        tap(this._clearCacheIfInvalid(request)),
+        mergeMap(isCacheValid => (isCacheValid ? of(cache) : EMPTY))
+      );
   }
 
   private _createCacheDate(): string {
     return new Date().toISOString();
   }
 
-  private _checkCacheIsExpired(expireAt: Date): boolean {
+  private _isCacheExpired(createdAt: Date): boolean {
+    const unit = this._ttlUnit;
+    const ttl = this._ttl;
+    const expireAt = this._getCacheExpiredAt({ createdAt, ttl, unit });
+
     return new Date() >= expireAt;
   }
 
-  private _getCacheExpiredAt(createdAt: string, ttl: number) {
-    return addDays(ttl, new Date(createdAt));
+  /* Retrieve expiration date from cache creation date and ttl */
+  private _getCacheExpiredAt({
+    createdAt,
+    ttl,
+    unit
+  }: {
+    createdAt: Date;
+    ttl: number;
+    unit: TtlUnit;
+  }): Date {
+    switch (unit) {
+      case 'd':
+        return addDays(ttl, createdAt);
+      case 'h':
+        return addHours(ttl, createdAt);
+      case 'm':
+        return addMinutes(ttl, createdAt);
+      default:
+        throw invalidTtlError(ttl);
+    }
   }
 
   /* Create a unique key by request URI to retrieve cache later. */
