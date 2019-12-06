@@ -1,25 +1,27 @@
 export type TtlUnit = 'd' | 'h' | 'm';
 
-export function invalidTtlUnit(unit: any) {
+export function invalidTtlUnitError(unit: any) {
   return new Error(
-    `InvalidTtlUnit: ${JSON.stringify(unit)} is not a valid unit.`
+    `InvalidTtlUnitError: ${JSON.stringify(unit)} is not a valid unit.`
   );
 }
 
-export function invalidTtl(ttl: any) {
-  return new Error(`InvalidTtl: ${JSON.stringify(ttl)} is not a valid ttl.`);
+export function invalidTtlError(ttl: any) {
+  return new Error(
+    `InvalidTtlError: ${JSON.stringify(ttl)} is not a valid ttl.`
+  );
 }
 
 export function checkTtlUnit(unit: any): void {
   const units: TtlUnit[] = ['d', 'h', 'm'];
   if (!units.includes(unit)) {
-    throw invalidTtlUnit(unit);
+    throw invalidTtlUnitError(unit);
   }
 }
 
 export function checkTtl(ttl: any): void {
   if (!Number.isInteger(ttl)) {
-    throw invalidTtl(ttl);
+    throw invalidTtlError(ttl);
   }
 }
 

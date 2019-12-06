@@ -179,7 +179,9 @@ describe('CachePlugin', () => {
         ttl: 'kd' /* 👈 invalid ttl */
       });
 
-    expect(createPlugin).toThrowError('InvalidTtl: null is not a valid ttl.');
+    expect(createPlugin).toThrowError(
+      'InvalidTtlError: null is not a valid ttl.'
+    );
   });
 
   it('should throw if ttl unit is invalid', () => {
@@ -189,7 +191,7 @@ describe('CachePlugin', () => {
       });
 
     expect(createPlugin).toThrowError(
-      'InvalidTtlUnit: "c" is not a valid unit.'
+      'InvalidTtlUnitError: "c" is not a valid unit.'
     );
   });
 
