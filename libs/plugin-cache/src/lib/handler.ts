@@ -10,7 +10,6 @@ import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
-import { toString } from './to-string';
 import { addDays } from './utils/add-days';
 
 export interface HandlerOptions {
@@ -76,7 +75,7 @@ export class CacheHandler implements PluginHandler {
       }
     };
 
-    this._storage.set(this._getStoreKey(request), JSON.stringify(cache));
+    this._storage.set(this._getCacheKey(request), JSON.stringify(cache));
   }
 
   private _createCacheDate(): string {
@@ -93,7 +92,7 @@ export class CacheHandler implements PluginHandler {
 
   /* @todo maybe there is better moment to check the cache ? */
   private _load(request: HttpExtRequest): Observable<ResponseAndCacheMetadata> {
-    return this._storage.get(this._getStoreKey(request)).pipe(
+    return this._storage.get(this._getCacheKey(request)).pipe(
       map<string, ResponseAndCacheMetadata>(cache =>
         cache ? JSON.parse(cache) : null
       ),
@@ -133,7 +132,7 @@ export class CacheHandler implements PluginHandler {
 
       /* In case cache is expired clear it. */
       if (this._checkCacheIsExpired(expireAt)) {
-        this._storage.unset(this._getStoreKey(request));
+        this._storage.unset(this._getCacheKey(request));
         return EMPTY;
       }
 
@@ -142,15 +141,11 @@ export class CacheHandler implements PluginHandler {
   }
 
   /* Create a unique key by request URI to retrieve cache later. */
-  private _getStoreKey(request: HttpExtRequest): string {
-    let key = request.url;
+  private _getCacheKey(request: HttpExtRequest): string {
+    const { params } = request;
+    const hasParams = Object.keys(params).length > 0;
 
-    const queryParams = Object.entries(request.params);
-    if (queryParams.length > 0) {
-      const suffix = queryParams.map(toString).join('_');
-      key += suffix;
-    }
-
-    return key;
+    /* Note that JSON.stringify is used to avoid browser `encodeURIComponent()` */
+    return request.url + (hasParams ? JSON.stringify(request.params) : '');
   }
 }
