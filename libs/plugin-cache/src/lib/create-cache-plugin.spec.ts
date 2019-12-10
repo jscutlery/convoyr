@@ -60,9 +60,10 @@ describe('CachePlugin', () => {
 
   it('should not apply metadata to response by default', () => {
     const cachePlugin = createCachePlugin();
-    const next = () => of(response);
-
-    const cacheResponse = cachePlugin.handler.handle({ request, next }) as any;
+    const cacheResponse = cachePlugin.handler.handle({
+      request,
+      next: () => of(response)
+    });
     const spyObserver = jest.fn();
 
     cacheResponse.subscribe(spyObserver);
@@ -76,8 +77,8 @@ describe('CachePlugin', () => {
   it('should use `MemoryAdapter` storage by default', () => {
     const cachePlugin = createCachePlugin();
 
-    expect((cachePlugin as any).handler._storage).toBeDefined();
-    expect((cachePlugin as any).handler._storage).toBeInstanceOf(MemoryAdapter);
+    expect(cachePlugin.handler['_storage']).toBeDefined();
+    expect(cachePlugin.handler['_storage']).toBeInstanceOf(MemoryAdapter);
   });
 
   it('should use given request condition', () => {
