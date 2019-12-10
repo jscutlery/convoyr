@@ -18,6 +18,11 @@ export interface HandlerOptions {
   maxAge?: string;
 }
 
+export interface CacheEntry {
+  createdAt: Date;
+  response: HttpExtResponse;
+}
+
 export class CacheHandler implements PluginHandler {
   private _addCacheMetadata: boolean;
   private _storage: StorageAdapter;
@@ -72,22 +77,37 @@ export class CacheHandler implements PluginHandler {
 
   /* Store metadata belong cache. */
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
-    const cache: ResponseAndCacheMetadata = {
-      response,
-      cacheMetadata: {
-        createdAt: this._createCacheDate()
-      }
+    const cacheEntry: CacheEntry = {
+      createdAt: new Date(),
+      response
     };
 
-    this._storage.set(this._getCacheKey(request), JSON.stringify(cache));
+    this._storage.set(this._getCacheKey(request), JSON.stringify(cacheEntry));
   }
 
   private _loadCache(
     request: HttpExtRequest
   ): Observable<ResponseAndCacheMetadata> {
-    return this._storage
-      .get(this._getCacheKey(request))
-      .pipe(mergeMap(cache => (cache ? of(JSON.parse(cache)) : EMPTY)));
+    return this._storage.get(this._getCacheKey(request)).pipe(
+      mergeMap(rawCacheEntry => {
+        if (rawCacheEntry == null) {
+          return EMPTY;
+        }
+
+        const cacheEntry: CacheEntry = JSON.parse(rawCacheEntry);
+
+        const createdAt = cacheEntry.createdAt
+          ? new Date(cacheEntry.createdAt)
+          : null;
+
+        return of({
+          response: cacheEntry.response,
+          cacheMetadata: {
+            createdAt
+          }
+        } as ResponseAndCacheMetadata);
+      })
+    );
   }
 
   private _checkCacheValidity(

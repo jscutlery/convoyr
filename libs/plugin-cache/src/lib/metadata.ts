@@ -1,15 +1,12 @@
 import { HttpExtResponse } from '@http-ext/core';
 
-export interface PartialCacheMetadata {
-  createdAt: string;
-}
-
-export interface CacheMetadata extends PartialCacheMetadata {
+export interface CacheMetadata {
+  createdAt: Date;
   isFromCache: boolean;
 }
 
 export interface ResponseAndCacheMetadata {
-  cacheMetadata?: PartialCacheMetadata;
+  cacheMetadata?: CacheMetadata;
   response: HttpExtResponse;
 }
 

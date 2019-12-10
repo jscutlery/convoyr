@@ -34,20 +34,21 @@ describe('CachePlugin', () => {
       const cacheResponse = refineMetadata({
         response,
         cacheMetadata: {
-          createdAt: '2019-01-01T00:00:00.000Z'
+          createdAt: new Date('2019-01-01T00:00:00.000Z')
         }
       });
-      /* Force `_createCacheDate` to match given metadata */
+
+      /* Mock date. */
       advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
-      /* Simulate final handler */
+      /* Simulate final handler. */
       const next = () => m.cold('-r|', { r: response });
 
-      /* Run two requests with the same URL to fire cache response */
+      /* Run two requests with the same URL to fire cache response. */
       const requestA$ = handler.handle({ request, next });
       const requestB$ = handler.handle({ request, next });
 
-      /* Execute requests in order */
+      /* Execute requests in order. */
       const responses$ = concat(requestA$, requestB$);
 
       const values = { n: networkResponse, c: cacheResponse };
@@ -117,6 +118,9 @@ describe('CachePlugin', () => {
     const next = () => of(response);
 
     const handler$ = cachePlugin.handler.handle({ request, next });
+
+    advanceTo(new Date('2019-01-01T00:00:00.000Z'));
+
     await handler$.toPromise();
 
     const cacheKey = spyStorage.set.mock.calls[0][0];
@@ -126,9 +130,7 @@ describe('CachePlugin', () => {
     expect(cacheKey).toBe('{"u":"https://ultimate-answer.com"}');
     expect(JSON.parse(cachedData)).toEqual(
       expect.objectContaining({
-        cacheMetadata: {
-          createdAt: expect.any(String)
-        },
+        createdAt: '2019-01-01T00:00:00.000Z',
         response: expect.objectContaining({
           body: { answer: 42 }
         })

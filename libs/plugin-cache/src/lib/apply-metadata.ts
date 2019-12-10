@@ -4,7 +4,9 @@ import { map, pluck } from 'rxjs/operators';
 
 import { CacheMetadata, ResponseAndCacheMetadata } from './metadata';
 
-/* Decorate metadata with additional flags */
+/**
+ * Adds computed fields like `isFromCache`.
+ */
 export const refineMetadata = ({
   cacheMetadata,
   response
