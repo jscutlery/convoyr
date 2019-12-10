@@ -8,7 +8,7 @@ import { StorageAdapter } from '@http-ext/plugin-cache';
 import { advanceTo, clear as clearDate } from 'jest-date-mock';
 import { concat, EMPTY, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-import { delay } from 'rxjs/operators';
+import { delay, finalize } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
 import { createCachePlugin } from './create-cache-plugin';
@@ -136,40 +136,43 @@ describe('CachePlugin', () => {
     );
   });
 
-  it('should unset cache when ttl expired', async () => {
-    const spyStorage = new MemoryAdapter();
-    spyStorage.get = jest.fn(spyStorage.get);
-    spyStorage.set = jest.fn(spyStorage.set);
-    spyStorage.delete = jest.fn(spyStorage.delete);
+  it(
+    'should unset cache when ttl expired',
+    marbles(m => {
+      const spyStorage = new MemoryAdapter();
+      spyStorage.get = jest.fn(spyStorage.get);
+      spyStorage.set = jest.fn(spyStorage.set);
+      spyStorage.delete = jest.fn(spyStorage.delete);
 
-    const cachePlugin = createCachePlugin({
-      storage: spyStorage as any,
-      addCacheMetadata: true,
-      ttl: '1d'
-    });
-    const handler = cachePlugin.handler;
+      const cachePlugin = createCachePlugin({
+        addCacheMetadata: false,
+        ttl: '1h'
+      });
+      const handler = cachePlugin.handler;
 
-    /* Force both `_checkCacheIsExpired` and `_createCacheDate`. */
-    advanceTo(new Date('2019-11-10T12:39:51.972Z'));
+      /* Fake date based on marbles test scheduler. */
+      const realDate = Date;
+      global.Date = jest.fn(() => new realDate(m.scheduler.now())) as any;
 
-    /* Set an expired date to trigger a cache clean */
-    handler['_getCacheExpiredAt'] = jest
-      .fn()
-      .mockReturnValue(new Date('2019-11-08T12:39:51.972Z'));
+      const next = () => m.cold('-r|', { r: response });
 
-    /* A delay is added to ensure the `next` handler emits *after* the cache was hit. */
-    const next = () => of(response).pipe(delay(0));
+      const requestA$ = handler.handle({ request, next });
+      const requestB$ = handler.handle({ request, next });
 
-    const handlerA$ = handler.handle({ request, next });
-    const handlerB$ = handler.handle({ request, next });
+      /* Wait an hour between the two calls. */
+      const responses$ = concat(
+        requestA$,
+        EMPTY.pipe(delay(3600 * 1000)),
+        requestB$
+      );
 
-    /* @todo test mock calls to ensure cache is not served when expired. */
+      /* No response from cache as it expired...
+       *                                👇 */
+      const expected$ = m.cold('-r 3600s -r|', { r: response });
 
-    await concat(handlerA$, handlerB$).toPromise();
-    expect(spyStorage.get).toHaveBeenCalledTimes(2);
-    expect(spyStorage.set).toHaveBeenCalledTimes(2);
-    expect(spyStorage.delete).toHaveBeenCalled();
-  });
+      m.expect(responses$).toBeObservable(expected$);
+    })
+  );
 
   it('should throw if ttl is invalid', () => {
     const createPlugin = () =>
