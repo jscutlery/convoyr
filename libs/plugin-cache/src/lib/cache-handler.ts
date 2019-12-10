@@ -5,6 +5,7 @@ import {
   PluginHandlerArgs
 } from '@http-ext/core';
 import { HttpExtCacheResponse } from '@http-ext/plugin-cache';
+import { create } from 'domain';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
@@ -98,6 +99,10 @@ export class CacheHandler implements PluginHandler {
         /* Parse the cache entry. */
         const cacheEntry = createCacheEntry(JSON.parse(rawCacheEntry));
 
+        if (this._isCacheExpired(cacheEntry.createdAt)) {
+          return EMPTY;
+        }
+
         return of(cacheEntry);
       }),
       map(cacheEntry => {
@@ -134,6 +139,10 @@ export class CacheHandler implements PluginHandler {
   }
 
   private _isCacheExpired(createdAt: Date): boolean {
+    if (this._maxAgeMilliseconds == null) {
+      return false;
+    }
+
     const expireAt = createdAt.getTime() + this._maxAgeMilliseconds;
 
     return new Date() >= new Date(expireAt);
