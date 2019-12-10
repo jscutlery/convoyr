@@ -10,6 +10,8 @@ import { marbles } from 'rxjs-marbles/jest';
 import { delay } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
+import { createCacheMetadata } from './cache-metadata';
+import { HttpExtCacheResponseBody } from './cache-response';
 import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
 
@@ -29,13 +31,22 @@ describe('CachePlugin', () => {
     marbles(m => {
       const cachePlugin = createCachePlugin({ addCacheMetadata: true });
       const handler = cachePlugin.handler;
-      const networkResponse = refineMetadata({ response });
-      const cacheResponse = refineMetadata({
-        response,
-        cacheMetadata: {
-          createdAt: new Date('2019-01-01T00:00:00.000Z'),
-          isFromCache: true
-        }
+      const networkResponse = createResponse({
+        body: {
+          data: { answer: 42 },
+          cacheMetadata: {
+            isFromCache: false
+          }
+        } as HttpExtCacheResponseBody
+      });
+      const cacheResponse = createResponse({
+        body: {
+          data: { answer: 42 },
+          cacheMetadata: {
+            createdAt: new Date('2019-01-01T00:00:00.000Z'),
+            isFromCache: true
+          }
+        } as HttpExtCacheResponseBody
       });
 
       /* Mock date. */
