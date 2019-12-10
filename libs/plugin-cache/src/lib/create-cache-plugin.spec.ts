@@ -112,11 +112,11 @@ describe('CachePlugin', () => {
   it('should use given storage implementation to store cache', async () => {
     const spyStorage = {
       get: jest.fn().mockReturnValue(EMPTY),
-      set: jest.fn(),
-      delete: jest.fn()
+      set: jest.fn().mockReturnValue(of()),
+      delete: jest.fn().mockReturnValue(of())
     };
     const cachePlugin = createCachePlugin({
-      storage: spyStorage as StorageAdapter
+      storage: spyStorage
     });
     const next = () => of(response);
 

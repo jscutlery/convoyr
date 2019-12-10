@@ -6,7 +6,14 @@ import {
 } from '@http-ext/core';
 import { HttpExtCacheResponse } from '@http-ext/plugin-cache';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
-import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
+import {
+  map,
+  mergeMap,
+  shareReplay,
+  switchMapTo,
+  takeUntil,
+  tap
+} from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
 import { CacheEntry, createCacheEntry, isExpired } from './cache-entry';
@@ -39,7 +46,13 @@ export class CacheHandler implements PluginHandler {
     next
   }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
     const fromNetwork$ = next({ request }).pipe(
-      tap(response => this._store(request, response)),
+      mergeMap(response => {
+        /* Return response immediately but store in cache as side effect. */
+        return merge(
+          of(response),
+          this._store(request, response).pipe(switchMapTo(EMPTY))
+        );
+      }),
       map(response => ({ response })),
       shareReplay({
         refCount: true,
@@ -70,13 +83,19 @@ export class CacheHandler implements PluginHandler {
   }
 
   /* Store metadata belong cache. */
-  private _store(request: HttpExtRequest, response: HttpExtResponse): void {
+  private _store(
+    request: HttpExtRequest,
+    response: HttpExtResponse
+  ): Observable<void> {
     const cacheEntry: CacheEntry = {
       createdAt: new Date(),
       response
     };
 
-    this._storage.set(this._getCacheKey(request), JSON.stringify(cacheEntry));
+    return this._storage.set(
+      this._getCacheKey(request),
+      JSON.stringify(cacheEntry)
+    );
   }
 
   private _loadCache(
