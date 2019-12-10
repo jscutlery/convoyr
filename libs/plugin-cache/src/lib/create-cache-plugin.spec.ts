@@ -11,7 +11,7 @@ import { delay } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
 import { createCacheMetadata } from './cache-metadata';
-import { HttpExtCacheResponseBody } from './cache-response';
+import { WithCacheMetadata } from './cache-response';
 import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
 
@@ -37,7 +37,7 @@ describe('CachePlugin', () => {
           cacheMetadata: {
             isFromCache: false
           }
-        } as HttpExtCacheResponseBody
+        } as WithCacheMetadata
       });
       const cacheResponse = createResponse({
         body: {
@@ -46,7 +46,7 @@ describe('CachePlugin', () => {
             createdAt: new Date('2019-01-01T00:00:00.000Z'),
             isFromCache: true
           }
-        } as HttpExtCacheResponseBody
+        } as WithCacheMetadata
       });
 
       /* Mock date. */

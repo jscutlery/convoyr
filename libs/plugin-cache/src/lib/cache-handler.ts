@@ -5,7 +5,6 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { HttpExtCacheResponseLegacy } from '@http-ext/plugin-cache';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import {
   map,
@@ -20,7 +19,7 @@ import {
   createCacheMetadata,
   createEmptyCacheMetadata
 } from './cache-metadata';
-import { HttpExtCacheResponseBody } from './cache-response';
+import { HttpExtCacheResponse, WithCacheMetadata } from './cache-response';
 import { StorageAdapter } from './storage-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
 
@@ -44,9 +43,7 @@ export class CacheHandler implements PluginHandler {
   handle({
     request,
     next
-  }: PluginHandlerArgs): Observable<
-    HttpExtResponse | HttpExtCacheResponseLegacy
-  > {
+  }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
     const fromNetwork$: Observable<HttpExtResponse> = next({ request }).pipe(
@@ -72,7 +69,7 @@ export class CacheHandler implements PluginHandler {
           ? ({
               cacheMetadata: createCacheMetadata(cacheEntry),
               data: realBody
-            } as HttpExtCacheResponseBody)
+            } as WithCacheMetadata)
           : realBody;
 
         return createResponse({
@@ -94,7 +91,7 @@ export class CacheHandler implements PluginHandler {
             ? ({
                 cacheMetadata: createEmptyCacheMetadata(),
                 data: response.body
-              } as HttpExtCacheResponseBody)
+              } as WithCacheMetadata)
             : response.body;
 
           return createResponse({
