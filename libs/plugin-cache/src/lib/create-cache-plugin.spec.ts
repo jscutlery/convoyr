@@ -12,7 +12,7 @@ import { delay } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
 import { createCachePlugin } from './create-cache-plugin';
-import { MemoryAdapter } from './store-adapters/memory-adapter';
+import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
 
 describe('CachePlugin', () => {
   let request: HttpExtRequest;
@@ -34,7 +34,8 @@ describe('CachePlugin', () => {
       const cacheResponse = refineMetadata({
         response,
         cacheMetadata: {
-          createdAt: new Date('2019-01-01T00:00:00.000Z')
+          createdAt: new Date('2019-01-01T00:00:00.000Z'),
+          isFromCache: true
         }
       });
 
@@ -79,7 +80,9 @@ describe('CachePlugin', () => {
     const cachePlugin = createCachePlugin();
 
     expect(cachePlugin.handler['_storage']).toBeDefined();
-    expect(cachePlugin.handler['_storage']).toBeInstanceOf(MemoryAdapter);
+    expect(cachePlugin.handler['_storage']).toBeInstanceOf(
+      MemoryStorageAdapter
+    );
   });
 
   it('should use given request condition', () => {
@@ -141,7 +144,7 @@ describe('CachePlugin', () => {
   it(
     'should unset cache when ttl expired',
     marbles(m => {
-      const spyStorage = new MemoryAdapter();
+      const spyStorage = new MemoryStorageAdapter();
       spyStorage.get = jest.fn(spyStorage.get);
       spyStorage.set = jest.fn(spyStorage.set);
       spyStorage.delete = jest.fn(spyStorage.delete);

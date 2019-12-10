@@ -8,16 +8,16 @@ export class LocalStorageAdapter implements StorageAdapter {
     return of(cacheData[key]);
   }
 
-  set(key: string, response: string): void {
+  set(key: string, response: string): Observable<void> {
     const cacheData = this._load();
     cacheData[key] = response;
-    this._save(cacheData);
+    return this._save(cacheData);
   }
 
-  delete(key) {
+  delete(key): Observable<void> {
     const cacheData = this._load();
     delete cacheData[key];
-    this._save(cacheData);
+    return this._save(cacheData);
   }
 
   private _load(): any {
@@ -25,7 +25,8 @@ export class LocalStorageAdapter implements StorageAdapter {
     return cacheData ? cacheData : {};
   }
 
-  private _save(cacheData) {
-    return window.localStorage.setItem('__http-ext-cache', cacheData);
+  private _save(cacheData): Observable<void> {
+    window.localStorage.setItem('__http-ext-cache', cacheData);
+    return of();
   }
 }

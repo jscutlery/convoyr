@@ -14,7 +14,7 @@ import {
   createCacheMetadata,
   ResponseAndCacheMetadata
 } from './cache-metadata';
-import { StorageAdapter } from './store-adapters/storage-adapter';
+import { StorageAdapter } from './storage-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
 
 export interface HandlerOptions {
