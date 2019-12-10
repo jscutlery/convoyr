@@ -21,3 +21,19 @@ export function createCacheEntry(cacheEntry: CacheEntryArgs): CacheEntry {
     response: cacheEntry.response
   };
 }
+
+export function isExpired({
+  cachedAt,
+  maxAgeMilliseconds
+}: {
+  cachedAt: Date;
+  maxAgeMilliseconds: number;
+}) {
+  if (maxAgeMilliseconds == null) {
+    return false;
+  }
+
+  const expiresAt = cachedAt.getTime() + maxAgeMilliseconds;
+
+  return new Date() >= new Date(expiresAt);
+}

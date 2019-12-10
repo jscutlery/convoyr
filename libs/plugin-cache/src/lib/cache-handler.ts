@@ -10,7 +10,7 @@ import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
-import { CacheEntry, createCacheEntry } from './cache-entry';
+import { CacheEntry, createCacheEntry, isExpired } from './cache-entry';
 import {
   createCacheMetadata,
   ResponseAndCacheMetadata
@@ -99,7 +99,12 @@ export class CacheHandler implements PluginHandler {
         /* Parse the cache entry. */
         const cacheEntry = createCacheEntry(JSON.parse(rawCacheEntry));
 
-        if (this._isCacheExpired(cacheEntry.createdAt)) {
+        if (
+          isExpired({
+            cachedAt: cacheEntry.createdAt,
+            maxAgeMilliseconds: this._maxAgeMilliseconds
+          })
+        ) {
           return EMPTY;
         }
 
