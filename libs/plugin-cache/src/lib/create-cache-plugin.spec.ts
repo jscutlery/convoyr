@@ -174,28 +174,6 @@ describe('CachePlugin', () => {
     })
   );
 
-  it('should throw if ttl is invalid', () => {
-    const createPlugin = () =>
-      createCachePlugin({
-        maxAge: 'kd' /* 👈 invalid ttl */
-      });
-
-    expect(createPlugin).toThrowError(
-      'InvalidTtlError: "kd" is not a valid ttl.'
-    );
-  });
-
-  it('should throw if ttl unit is invalid', () => {
-    const createPlugin = () =>
-      createCachePlugin({
-        maxAge: '1c' /* 👈 invalid ttl unit */
-      });
-
-    expect(createPlugin).toThrowError(
-      'InvalidTtlError: "1c" is not a valid ttl.'
-    );
-  });
-
   it(
     'should handle query string in store key',
     marbles(m => {
