@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "types": ["node", "jest"],
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
   "include": ["**/*.ts"]
