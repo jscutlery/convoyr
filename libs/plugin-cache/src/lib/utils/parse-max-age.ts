@@ -1,4 +1,4 @@
-import * as ms from 'ms';
+import ms from 'ms';
 
 export function invalidTtlError(ttl: string) {
   return new Error(
