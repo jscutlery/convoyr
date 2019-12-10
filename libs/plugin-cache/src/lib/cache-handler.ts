@@ -5,7 +5,6 @@ import {
   PluginHandlerArgs
 } from '@http-ext/core';
 import { HttpExtCacheResponse } from '@http-ext/plugin-cache';
-import { create } from 'domain';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
@@ -112,40 +111,6 @@ export class CacheHandler implements PluginHandler {
         };
       })
     );
-  }
-
-  private _checkCacheValidity(
-    cache: ResponseAndCacheMetadata
-  ): Observable<boolean> {
-    return defer(() => {
-      /* If no ttl set cache is always valid */
-      if (this._maxAgeMilliseconds === null) {
-        return of(true);
-      }
-
-      const { createdAt } = cache.cacheMetadata;
-      const isValid = this._isCacheExpired(new Date(createdAt)) === false;
-
-      return of(isValid);
-    });
-  }
-
-  private _clearCacheIfInvalid(request: HttpExtRequest) {
-    return (isCacheValid: boolean): void => {
-      if (!isCacheValid) {
-        this._storage.delete(this._getCacheKey(request));
-      }
-    };
-  }
-
-  private _isCacheExpired(createdAt: Date): boolean {
-    if (this._maxAgeMilliseconds == null) {
-      return false;
-    }
-
-    const expireAt = createdAt.getTime() + this._maxAgeMilliseconds;
-
-    return new Date() >= new Date(expireAt);
   }
 
   /* Create a unique key by request URI to retrieve cache later. */
