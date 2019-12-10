@@ -4,6 +4,7 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
+import { StorageAdapter } from '@http-ext/plugin-cache';
 import { advanceTo as advanceDateTo, clear as clearDate } from 'jest-date-mock';
 import { concat, EMPTY, from, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
@@ -90,11 +91,11 @@ describe('CachePlugin', () => {
 
   it('should cache only GET requests by default', () => {
     const cachePlugin = createCachePlugin();
-    const getRequest = { ...request, method: 'GET' as any };
-    const postRequest = { ...request, method: 'POST' as any };
-    const putRequest = { ...request, method: 'PUT' as any };
-    const patchRequest = { ...request, method: 'PATCH' as any };
-    const deleteRequest = { ...request, method: 'DELETE' as any };
+    const getRequest: HttpExtRequest = { ...request, method: 'GET' };
+    const postRequest: HttpExtRequest = { ...request, method: 'POST' };
+    const putRequest: HttpExtRequest = { ...request, method: 'PUT' };
+    const patchRequest: HttpExtRequest = { ...request, method: 'PATCH' };
+    const deleteRequest: HttpExtRequest = { ...request, method: 'DELETE' };
 
     expect(cachePlugin.condition({ request: getRequest })).toBe(true);
     expect(cachePlugin.condition({ request: postRequest })).toBe(false);
@@ -106,14 +107,15 @@ describe('CachePlugin', () => {
   it('should use given storage implementation to store cache', () => {
     const spyStorage = {
       get: jest.fn().mockReturnValue(EMPTY),
-      set: jest.fn()
+      set: jest.fn(),
+      delete: jest.fn()
     };
     const cachePlugin = createCachePlugin({
-      storage: spyStorage as any
+      storage: spyStorage as StorageAdapter
     });
     const next = () => of(response);
 
-    const handler$ = cachePlugin.handler.handle({ request, next }) as any;
+    const handler$ = cachePlugin.handler.handle({ request, next });
     handler$.subscribe();
 
     const cacheKey = spyStorage.set.mock.calls[0][0];
