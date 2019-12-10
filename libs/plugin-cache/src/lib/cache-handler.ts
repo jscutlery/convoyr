@@ -1,9 +1,11 @@
 import {
+  createResponse,
   HttpExtRequest,
   HttpExtResponse,
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
+import { HttpExtCacheResponseLegacy } from '@http-ext/plugin-cache';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import {
   map,
@@ -15,11 +17,8 @@ import {
 
 import { applyMetadata } from './apply-metadata';
 import { CacheEntry, createCacheEntry, isExpired } from './cache-entry';
-import {
-  createCacheMetadata,
-  ResponseAndCacheMetadata
-} from './cache-metadata';
-import { HttpExtCacheResponse } from './cache-response';
+import { createCacheMetadata } from './cache-metadata';
+import { HttpExtCacheResponseBody } from './cache-response';
 import { StorageAdapter } from './storage-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
 
@@ -43,7 +42,11 @@ export class CacheHandler implements PluginHandler {
   handle({
     request,
     next
-  }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
+  }: PluginHandlerArgs): Observable<
+    HttpExtResponse | HttpExtCacheResponseLegacy
+  > {
+    const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
+
     const fromNetwork$ = next({ request }).pipe(
       mergeMap(response => {
         /* Return response immediately but store in cache as side effect. */
@@ -59,11 +62,25 @@ export class CacheHandler implements PluginHandler {
       })
     );
 
-    const fromCache$ = defer(() => this._loadCache(request)).pipe(
+    const fromCache$: Observable<HttpExtResponse> = defer(() =>
+      this._loadCacheEntry(request)
+    ).pipe(
+      map(cacheEntry => {
+        const realBody = cacheEntry.response.body;
+        const body = shouldAddCacheMetadata
+          ? ({
+              cacheMetadata: createCacheMetadata(cacheEntry),
+              data: realBody
+            } as HttpExtCacheResponseBody)
+          : realBody;
+
+        return createResponse({
+          ...cacheEntry.response,
+          body
+        });
+      }),
       takeUntil(fromNetwork$)
     );
-
-    const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
     /* Order is important here because if we subscribe to fromCache$ first, it will subscribe to fromNetwork$
      * and `takeUntil` will immediately unsubscribe from it because the result is synchronous.
@@ -74,10 +91,7 @@ export class CacheHandler implements PluginHandler {
         source$: fromNetwork$,
         shouldAddCacheMetadata
       }),
-      applyMetadata({
-        source$: fromCache$,
-        shouldAddCacheMetadata
-      })
+      fromCache$
     );
   }
 
@@ -97,9 +111,7 @@ export class CacheHandler implements PluginHandler {
     );
   }
 
-  private _loadCache(
-    request: HttpExtRequest
-  ): Observable<ResponseAndCacheMetadata> {
+  private _loadCacheEntry(request: HttpExtRequest): Observable<CacheEntry> {
     return this._storage.get(this._getCacheKey(request)).pipe(
       mergeMap(rawCacheEntry => {
         /* There's no entry. */
@@ -121,12 +133,6 @@ export class CacheHandler implements PluginHandler {
         }
 
         return of(cacheEntry);
-      }),
-      map(cacheEntry => {
-        return {
-          response: cacheEntry.response,
-          cacheMetadata: createCacheMetadata(cacheEntry)
-        };
       })
     );
   }

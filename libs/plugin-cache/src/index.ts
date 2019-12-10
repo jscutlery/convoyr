@@ -5,4 +5,4 @@ export {
 export { LocalStorageAdapter } from './lib/storage-adapters/local-storage-adapter';
 export { MemoryStorageAdapter } from './lib/storage-adapters/memory-storage-adapter';
 export { StorageAdapter } from './lib/storage-adapters/storage-adapter';
-export { HttpExtCacheResponse } from './lib/cache-response';
+export { HttpExtCacheResponseLegacy } from './lib/cache-response';
