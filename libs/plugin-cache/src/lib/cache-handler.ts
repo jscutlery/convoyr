@@ -10,7 +10,7 @@ import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
-import { parseTtl } from './ttl';
+import { parseMaxAge } from './utils/parse-max-age';
 
 export interface HandlerOptions {
   addCacheMetadata: boolean;
@@ -26,7 +26,7 @@ export class CacheHandler implements PluginHandler {
   constructor({ addCacheMetadata, storage, maxAge }: HandlerOptions) {
     this._storage = storage;
     this._addCacheMetadata = addCacheMetadata;
-    this._maxAgeMilliseconds = parseTtl(maxAge);
+    this._maxAgeMilliseconds = parseMaxAge(maxAge);
   }
 
   handle({
