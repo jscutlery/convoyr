@@ -26,7 +26,7 @@ export function checkTtl(ttl: any): void {
 }
 
 export function parseTtl(ttl: any) {
-  if (ttl === null) {
+  if (ttl == null) {
     return null;
   }
   const UNIT_POS = ttl.length - 1;
@@ -38,7 +38,7 @@ export function parseTtl(ttl: any) {
 }
 
 export function parseTtlUnit(ttl: any): TtlUnit | null {
-  if (ttl === null) {
+  if (ttl == null) {
     return null;
   }
   const UNIT_POS = ttl.length - 1;
