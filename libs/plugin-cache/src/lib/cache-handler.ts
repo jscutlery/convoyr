@@ -14,9 +14,9 @@ import { invalidTtlError, parseTtl, parseTtlUnit, TtlUnit } from './ttl';
 import { addDays, addHours, addMinutes } from './utils/date';
 
 export interface HandlerOptions {
-  ttl: string | null;
   addCacheMetadata: boolean;
   storage: StorageAdapter;
+  ttl?: string;
 }
 
 export class CacheHandler implements PluginHandler {
