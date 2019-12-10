@@ -10,26 +10,23 @@ import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
-import { invalidTtlError, parseTtl, parseTtlUnit, TtlUnit } from './ttl';
-import { addDays, addHours, addMinutes } from './utils/date';
+import { parseTtl } from './ttl';
 
 export interface HandlerOptions {
   addCacheMetadata: boolean;
   storage: StorageAdapter;
-  ttl?: string;
+  maxAge?: string;
 }
 
 export class CacheHandler implements PluginHandler {
   private _addCacheMetadata: boolean;
   private _storage: StorageAdapter;
-  private _ttl: number | null = null;
-  private _ttlUnit: TtlUnit | null = null;
+  private _maxAgeMilliseconds?: number;
 
-  constructor({ addCacheMetadata, storage, ttl }: HandlerOptions) {
+  constructor({ addCacheMetadata, storage, maxAge }: HandlerOptions) {
     this._storage = storage;
     this._addCacheMetadata = addCacheMetadata;
-    this._ttl = parseTtl(ttl);
-    this._ttlUnit = parseTtlUnit(ttl);
+    this._maxAgeMilliseconds = parseTtl(maxAge);
   }
 
   handle({
@@ -98,7 +95,7 @@ export class CacheHandler implements PluginHandler {
   ): Observable<boolean> {
     return defer(() => {
       /* If no ttl set cache is always valid */
-      if (this._ttl === null) {
+      if (this._maxAgeMilliseconds === null) {
         return of(true);
       }
 
@@ -122,33 +119,9 @@ export class CacheHandler implements PluginHandler {
   }
 
   private _isCacheExpired(createdAt: Date): boolean {
-    const unit = this._ttlUnit;
-    const ttl = this._ttl;
-    const expireAt = this._getCacheExpiredAt({ createdAt, ttl, unit });
+    const expireAt = createdAt.getTime() + this._maxAgeMilliseconds;
 
-    return new Date() >= expireAt;
-  }
-
-  /* Retrieve expiration date from cache creation date and ttl */
-  private _getCacheExpiredAt({
-    createdAt,
-    ttl,
-    unit
-  }: {
-    createdAt: Date;
-    ttl: number;
-    unit: TtlUnit;
-  }): Date {
-    switch (unit) {
-      case 'd':
-        return addDays(ttl, createdAt);
-      case 'h':
-        return addHours(ttl, createdAt);
-      case 'm':
-        return addMinutes(ttl, createdAt);
-      default:
-        throw invalidTtlError(ttl);
-    }
+    return new Date() >= new Date(expireAt);
   }
 
   /* Create a unique key by request URI to retrieve cache later. */

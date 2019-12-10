@@ -146,7 +146,7 @@ describe('CachePlugin', () => {
 
       const cachePlugin = createCachePlugin({
         addCacheMetadata: false,
-        ttl: '1h'
+        maxAge: '1h'
       });
       const handler = cachePlugin.handler;
 
@@ -177,7 +177,7 @@ describe('CachePlugin', () => {
   it('should throw if ttl is invalid', () => {
     const createPlugin = () =>
       createCachePlugin({
-        ttl: 'kd' /* 👈 invalid ttl */
+        maxAge: 'kd' /* 👈 invalid ttl */
       });
 
     expect(createPlugin).toThrowError(
@@ -188,7 +188,7 @@ describe('CachePlugin', () => {
   it('should throw if ttl unit is invalid', () => {
     const createPlugin = () =>
       createCachePlugin({
-        ttl: '1c' /* 👈 invalid ttl unit */
+        maxAge: '1c' /* 👈 invalid ttl unit */
       });
 
     expect(createPlugin).toThrowError(

@@ -20,12 +20,6 @@ export function checkTtlUnit(unit: any): void {
   }
 }
 
-export function checkTtl(ttl: any): void {
-  if (!Number.isInteger(ttl)) {
-    throw invalidTtlError(ttl);
-  }
-}
-
 export function parseTtl(ttl: any) {
   if (ttl == null) {
     return null;
