@@ -1,3 +1,4 @@
+import * as ms from 'ms';
 export type TtlUnit = 'd' | 'h' | 'm';
 
 export function invalidTtlUnitError(unit: any) {
@@ -29,12 +30,14 @@ export function parseTtl(ttl: any) {
   if (ttl == null) {
     return null;
   }
-  const UNIT_POS = ttl.length - 1;
-  const rawTtl = parseInt(ttl.substring(0, UNIT_POS), 10);
 
-  checkTtl(rawTtl);
+  const ttlMicroseconds = ms(ttl);
 
-  return rawTtl;
+  if (ttlMicroseconds == null) {
+    throw invalidTtlError(ttl);
+  }
+
+  return ttlMicroseconds;
 }
 
 export function parseTtlUnit(ttl: any): TtlUnit | null {

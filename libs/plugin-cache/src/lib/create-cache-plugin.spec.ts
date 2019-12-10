@@ -181,7 +181,7 @@ describe('CachePlugin', () => {
       });
 
     expect(createPlugin).toThrowError(
-      'InvalidTtlError: null is not a valid ttl.'
+      'InvalidTtlError: "kd" is not a valid ttl.'
     );
   });
 
@@ -192,7 +192,7 @@ describe('CachePlugin', () => {
       });
 
     expect(createPlugin).toThrowError(
-      'InvalidTtlUnitError: "c" is not a valid unit.'
+      'InvalidTtlError: "1c" is not a valid ttl.'
     );
   });
 
