@@ -10,7 +10,10 @@ import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
 import { CacheEntry, createCacheEntry } from './cache-entry';
-import { ResponseAndCacheMetadata } from './cache-metadata';
+import {
+  createCacheMetadata,
+  ResponseAndCacheMetadata
+} from './cache-metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
 
@@ -95,12 +98,13 @@ export class CacheHandler implements PluginHandler {
         /* Parse the cache entry. */
         const cacheEntry = createCacheEntry(JSON.parse(rawCacheEntry));
 
-        return of({
+        return of(cacheEntry);
+      }),
+      map(cacheEntry => {
+        return {
           response: cacheEntry.response,
-          cacheMetadata: {
-            createdAt: cacheEntry.createdAt
-          }
-        } as ResponseAndCacheMetadata);
+          cacheMetadata: createCacheMetadata(cacheEntry)
+        };
       })
     );
   }
