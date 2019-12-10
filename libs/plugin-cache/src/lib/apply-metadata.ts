@@ -23,16 +23,3 @@ export const refineMetadata = ({
     data: response.body
   }
 });
-
-/* Conditionally add to response observable a metadata object */
-export function applyMetadata({
-  source$,
-  shouldAddCacheMetadata
-}: {
-  source$: Observable<ResponseAndCacheMetadata>;
-  shouldAddCacheMetadata: boolean;
-}): Observable<HttpExtResponse> {
-  return shouldAddCacheMetadata
-    ? source$.pipe(map(refineMetadata))
-    : source$.pipe(pluck('response'));
-}

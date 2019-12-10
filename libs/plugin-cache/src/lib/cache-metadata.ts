@@ -1,7 +1,7 @@
 import { HttpExtResponse } from '@http-ext/core';
 
 export interface CacheMetadataBase {
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 /* Adds computed fields like isFromCache. */
@@ -18,5 +18,11 @@ export function createCacheMetadata(args: CacheMetadataBase): CacheMetadata {
   return {
     createdAt: args.createdAt,
     isFromCache: true
+  };
+}
+
+export function createEmptyCacheMetadata(): CacheMetadata {
+  return {
+    isFromCache: false
   };
 }

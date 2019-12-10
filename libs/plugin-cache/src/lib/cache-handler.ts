@@ -15,9 +15,11 @@ import {
   takeUntil
 } from 'rxjs/operators';
 
-import { applyMetadata } from './apply-metadata';
 import { CacheEntry, createCacheEntry, isExpired } from './cache-entry';
-import { createCacheMetadata } from './cache-metadata';
+import {
+  createCacheMetadata,
+  createEmptyCacheMetadata
+} from './cache-metadata';
 import { HttpExtCacheResponseBody } from './cache-response';
 import { StorageAdapter } from './storage-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
@@ -47,7 +49,7 @@ export class CacheHandler implements PluginHandler {
   > {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
-    const fromNetwork$ = next({ request }).pipe(
+    const fromNetwork$: Observable<HttpExtResponse> = next({ request }).pipe(
       mergeMap(response => {
         /* Return response immediately but store in cache as side effect. */
         return merge(
@@ -55,7 +57,6 @@ export class CacheHandler implements PluginHandler {
           this._store(request, response).pipe(switchMapTo(EMPTY))
         );
       }),
-      map(response => ({ response })),
       shareReplay({
         refCount: true,
         bufferSize: 1
@@ -87,10 +88,21 @@ export class CacheHandler implements PluginHandler {
      * If fromNetwork$ is first, it will subscribe and the subscription will be shared with the `takeUntil`
      * thanks to shareReplay. */
     return merge(
-      applyMetadata({
-        source$: fromNetwork$,
-        shouldAddCacheMetadata
-      }),
+      fromNetwork$.pipe(
+        map(response => {
+          const body = shouldAddCacheMetadata
+            ? ({
+                cacheMetadata: createEmptyCacheMetadata(),
+                data: response.body
+              } as HttpExtCacheResponseBody)
+            : response.body;
+
+          return createResponse({
+            ...response,
+            body
+          });
+        })
+      ),
       fromCache$
     );
   }
