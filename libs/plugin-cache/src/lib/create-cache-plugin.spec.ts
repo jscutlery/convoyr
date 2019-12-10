@@ -219,15 +219,15 @@ describe('CachePlugin', () => {
       const response1$ = cachePlugin.handler.handle({
         request: requestA,
         next: nextFn
-      }) as any;
+      });
       const response2$ = cachePlugin.handler.handle({
         request: requestB,
         next: nextFn
-      }) as any;
+      });
       const response3$ = cachePlugin.handler.handle({
         request: requestA,
         next: nextFn
-      }) as any;
+      });
 
       const stream$ = concat(response1$, response2$, response3$);
       /*                           👇 Cache is fired here */
