@@ -29,7 +29,7 @@ describe('CachePlugin', () => {
     'should serve cache with metadata when hydrated',
     marbles(m => {
       const cachePlugin = createCachePlugin({ addCacheMetadata: true });
-      const handler = cachePlugin.handler as any;
+      const handler = cachePlugin.handler;
       const networkResponse = refineMetadata({ response });
       const cacheResponse = refineMetadata({
         response,
