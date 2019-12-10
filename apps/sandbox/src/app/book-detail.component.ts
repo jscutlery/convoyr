@@ -16,7 +16,7 @@ import { map, switchMap } from 'rxjs/operators';
   `
 })
 export class BookDetailComponent {
-  request$ = this._activatedRoute.paramMap.pipe(
+  response$ = this._activatedRoute.paramMap.pipe(
     map(paramMap => paramMap.get('bookId')),
     switchMap(bookId =>
       this._httpClient.get<WithCacheMetadata<any>>(
@@ -26,8 +26,8 @@ export class BookDetailComponent {
       )
     )
   );
-  book$ = this.request$.pipe(map(body => body.data.data));
-  isFromCache$ = this.request$.pipe(
+  book$ = this.response$.pipe(map(body => body.data.data));
+  isFromCache$ = this.response$.pipe(
     map(body => body.cacheMetadata.isFromCache)
   );
 

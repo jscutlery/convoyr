@@ -31,7 +31,12 @@ export class BookListComponent {
   constructor(private _httpClient: HttpClient) {
     const request$ = this._httpClient
       .get<WithCacheMetadata<any>>(
-        'https://www.googleapis.com/books/v1/volumes?q=extreme%20programming'
+        'https://www.googleapis.com/books/v1/volumes',
+        {
+          params: {
+            q: 'extreme programming'
+          }
+        }
       )
       .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
