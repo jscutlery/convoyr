@@ -49,12 +49,6 @@ export class CacheHandler implements PluginHandler {
     );
 
     const fromCache$ = defer(() => this._loadCache(request)).pipe(
-      mergeMap(cache =>
-        this._checkCacheValidity(cache).pipe(
-          tap(this._clearCacheIfInvalid(request)),
-          mergeMap(isCacheValid => (isCacheValid ? of(cache) : EMPTY))
-        )
-      ),
       takeUntil(fromNetwork$)
     );
 
@@ -99,6 +93,7 @@ export class CacheHandler implements PluginHandler {
         /* Parse the cache entry. */
         const cacheEntry = createCacheEntry(JSON.parse(rawCacheEntry));
 
+        /* Cache entry expired. */
         if (
           isExpired({
             cachedAt: cacheEntry.createdAt,
