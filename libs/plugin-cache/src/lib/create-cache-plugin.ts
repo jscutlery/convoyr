@@ -12,7 +12,7 @@ export function createCachePlugin({
   storage = new MemoryAdapter(),
   condition = matchMethod('GET'),
   ttl
-}: Partial<CachePluginOptions> = {}): HttpExtPlugin {
+}: Partial<CachePluginOptions> = {}) {
   return {
     condition,
     handler: new CacheHandler({ addCacheMetadata, storage, ttl })

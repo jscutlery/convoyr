@@ -5,9 +5,9 @@ import {
   HttpExtResponse
 } from '@http-ext/core';
 import { advanceTo as advanceDateTo, clear as clearDate } from 'jest-date-mock';
-import { concat, EMPTY, of } from 'rxjs';
+import { concat, EMPTY, from, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-import { delay } from 'rxjs/operators';
+import { concatAll, delay } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
 import { createCachePlugin } from './create-cache-plugin';
@@ -133,7 +133,7 @@ describe('CachePlugin', () => {
     );
   });
 
-  it('should unset cache when ttl expired', done => {
+  it('should unset cache when ttl expired', async () => {
     const spyStorage = new MemoryAdapter();
     spyStorage.get = jest.fn(spyStorage.get);
     spyStorage.set = jest.fn(spyStorage.set);
@@ -144,13 +144,13 @@ describe('CachePlugin', () => {
       addCacheMetadata: true,
       ttl: '1d'
     });
-    const handler = cachePlugin.handler as any;
+    const handler = cachePlugin.handler;
 
     /* Force both `_checkCacheIsExpired` and `_createCacheDate`. */
     advanceDateTo(new Date('2019-11-10T12:39:51.972Z'));
 
     /* Set an expired date to trigger a cache clean */
-    handler._getCacheExpiredAt = jest
+    handler['_getCacheExpiredAt'] = jest
       .fn()
       .mockReturnValue(new Date('2019-11-08T12:39:51.972Z'));
 
@@ -162,15 +162,10 @@ describe('CachePlugin', () => {
 
     /* @todo test mock calls to ensure cache is not served when expired. */
 
-    /* @todo check if there is a synchronous way to achieve this. */
-    concat(handlerA$, handlerB$).subscribe({
-      complete: () => {
-        expect(spyStorage.get).toHaveBeenCalledTimes(2);
-        expect(spyStorage.set).toHaveBeenCalledTimes(2);
-        expect(spyStorage.delete).toHaveBeenCalled();
-        done();
-      }
-    });
+    await concat(handlerA$, handlerB$).toPromise();
+    expect(spyStorage.get).toHaveBeenCalledTimes(2);
+    expect(spyStorage.set).toHaveBeenCalledTimes(2);
+    expect(spyStorage.delete).toHaveBeenCalled();
   });
 
   it('should throw if ttl is invalid', () => {
