@@ -6,9 +6,9 @@ import {
 } from '@http-ext/core';
 import { StorageAdapter } from '@http-ext/plugin-cache';
 import { advanceTo as advanceDateTo, clear as clearDate } from 'jest-date-mock';
-import { concat, EMPTY, from, of } from 'rxjs';
+import { concat, EMPTY, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-import { concatAll, delay } from 'rxjs/operators';
+import { delay } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
 import { createCachePlugin } from './create-cache-plugin';
@@ -104,7 +104,7 @@ describe('CachePlugin', () => {
     expect(cachePlugin.condition({ request: deleteRequest })).toBe(false);
   });
 
-  it('should use given storage implementation to store cache', () => {
+  it('should use given storage implementation to store cache', async () => {
     const spyStorage = {
       get: jest.fn().mockReturnValue(EMPTY),
       set: jest.fn(),
@@ -116,7 +116,7 @@ describe('CachePlugin', () => {
     const next = () => of(response);
 
     const handler$ = cachePlugin.handler.handle({ request, next });
-    handler$.subscribe();
+    await handler$.toPromise();
 
     const cacheKey = spyStorage.set.mock.calls[0][0];
     const cachedData = spyStorage.set.mock.calls[0][1];
