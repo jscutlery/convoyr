@@ -9,6 +9,7 @@ import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
+import { CacheEntry, createCacheEntry } from './cache-entry';
 import { ResponseAndCacheMetadata } from './cache-metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
@@ -17,11 +18,6 @@ export interface HandlerOptions {
   addCacheMetadata: boolean;
   storage: StorageAdapter;
   maxAge?: string;
-}
-
-export interface CacheEntry {
-  createdAt: Date;
-  response: HttpExtResponse;
 }
 
 export class CacheHandler implements PluginHandler {
@@ -91,20 +87,18 @@ export class CacheHandler implements PluginHandler {
   ): Observable<ResponseAndCacheMetadata> {
     return this._storage.get(this._getCacheKey(request)).pipe(
       mergeMap(rawCacheEntry => {
+        /* There's no entry. */
         if (rawCacheEntry == null) {
           return EMPTY;
         }
 
-        const cacheEntry: CacheEntry = JSON.parse(rawCacheEntry);
-
-        const createdAt = cacheEntry.createdAt
-          ? new Date(cacheEntry.createdAt)
-          : null;
+        /* Parse the cache entry. */
+        const cacheEntry = createCacheEntry(JSON.parse(rawCacheEntry));
 
         return of({
           response: cacheEntry.response,
           cacheMetadata: {
-            createdAt
+            createdAt: cacheEntry.createdAt
           }
         } as ResponseAndCacheMetadata);
       })
