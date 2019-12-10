@@ -9,8 +9,6 @@ import { concat, EMPTY, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { delay } from 'rxjs/operators';
 
-import { refineMetadata } from './apply-metadata';
-import { createCacheMetadata } from './cache-metadata';
 import { WithCacheMetadata } from './cache-response';
 import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
