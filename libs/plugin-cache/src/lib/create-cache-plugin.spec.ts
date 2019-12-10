@@ -10,7 +10,7 @@ import { marbles } from 'rxjs-marbles/jest';
 import { delay } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
-import { cachePlugin as createCachePlugin } from './plugin-cache';
+import { createCachePlugin } from './create-cache-plugin';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 
 describe('CachePlugin', () => {

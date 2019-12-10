@@ -7,7 +7,7 @@ export interface CachePluginOptions extends HandlerOptions {
   condition: RequestCondition;
 }
 
-export function cachePlugin({
+export function createCachePlugin({
   addCacheMetadata = false,
   storage = new MemoryAdapter(),
   condition = matchMethod('GET'),
