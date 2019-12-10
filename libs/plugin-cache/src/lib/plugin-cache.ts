@@ -1,6 +1,6 @@
 import { HttpExtPlugin, matchMethod, RequestCondition } from '@http-ext/core';
 
-import { CacheHandler, HandlerOptions } from './handler';
+import { CacheHandler, HandlerOptions } from './cache-handler';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
 
 export interface CachePluginOptions extends HandlerOptions {
