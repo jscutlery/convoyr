@@ -6,5 +6,6 @@ module.exports = {
     'jest-preset-angular/AngularSnapshotSerializer.js',
     'jest-preset-angular/HTMLCommentSerializer.js'
   ],
-  coverageReporters: ['html', 'lcov']
+  coverageReporters: ['html', 'lcov'],
+  setupFiles: ['jest-date-mock']
 };

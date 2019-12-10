@@ -4,13 +4,14 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
-import { concat, of, EMPTY } from 'rxjs';
+import { advanceTo as advanceDateTo, clear as clearDate } from 'jest-date-mock';
+import { concat, EMPTY, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
+import { delay } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
 import { cachePlugin as createCachePlugin } from './plugin-cache';
 import { MemoryAdapter } from './store-adapters/memory-adapter';
-import { LocalStorageAdapter } from './store-adapters/local-storage-adapter';
 
 describe('CachePlugin', () => {
   let request: HttpExtRequest;
@@ -21,31 +22,29 @@ describe('CachePlugin', () => {
     response = createResponse({ body: { answer: 42 } });
   });
 
+  afterEach(() => clearDate());
+
   it(
     'should serve cache with metadata when hydrated',
     marbles(m => {
-      const cachePlugin = createCachePlugin({
-        addCacheMetadata: true
-      });
-
-      /* @todo find a sexier way to test metadata */
+      const cachePlugin = createCachePlugin({ addCacheMetadata: true });
+      const handler = cachePlugin.handler as any;
       const networkResponse = refineMetadata({ response });
       const cacheResponse = refineMetadata({
         response,
         cacheMetadata: {
-          createdAt: '2019-11-13T12:39:51.972Z'
+          createdAt: '2019-12-14T12:39:51.972Z'
         }
       });
-      spyOn(Date.prototype, 'toISOString').and.returnValue(
-        '2019-11-13T12:39:51.972Z'
-      );
+      /* Force `_createCacheDate` to match given metadata */
+      advanceDateTo(new Date('2019-12-14T12:39:51.972Z'));
 
       /* Simulate final handler */
       const next = () => m.cold('-r|', { r: response });
 
       /* Run two requests with the same URL to fire cache response */
-      const requestA$ = cachePlugin.handler.handle({ request, next }) as any;
-      const requestB$ = cachePlugin.handler.handle({ request, next }) as any;
+      const requestA$ = handler.handle({ request, next });
+      const requestB$ = handler.handle({ request, next });
 
       /* Execute requests in order */
       const responses$ = concat(requestA$, requestB$);
@@ -114,8 +113,8 @@ describe('CachePlugin', () => {
     });
     const next = () => of(response);
 
-    const handler = cachePlugin.handler.handle({ request, next }) as any;
-    handler.subscribe();
+    const handler$ = cachePlugin.handler.handle({ request, next }) as any;
+    handler$.subscribe();
 
     const cacheKey = spyStorage.set.mock.calls[0][0];
     const cachedData = spyStorage.set.mock.calls[0][1];
@@ -131,6 +130,68 @@ describe('CachePlugin', () => {
           body: { answer: 42 }
         })
       })
+    );
+  });
+
+  it('should unset cache when ttl expired', done => {
+    const spyStorage = new MemoryAdapter();
+    spyStorage.get = jest.fn(spyStorage.get);
+    spyStorage.set = jest.fn(spyStorage.set);
+    spyStorage.delete = jest.fn(spyStorage.delete);
+
+    const cachePlugin = createCachePlugin({
+      storage: spyStorage as any,
+      addCacheMetadata: true,
+      ttl: '1d'
+    });
+    const handler = cachePlugin.handler as any;
+
+    /* Force both `_checkCacheIsExpired` and `_createCacheDate`. */
+    advanceDateTo(new Date('2019-11-10T12:39:51.972Z'));
+
+    /* Set an expired date to trigger a cache clean */
+    handler._getCacheExpiredAt = jest
+      .fn()
+      .mockReturnValue(new Date('2019-11-08T12:39:51.972Z'));
+
+    /* A delay is added to ensure the `next` handler emits *after* the cache was hit. */
+    const next = () => of(response).pipe(delay(0));
+
+    const handlerA$ = handler.handle({ request, next });
+    const handlerB$ = handler.handle({ request, next });
+
+    /* @todo test mock calls to ensure cache is not served when expired. */
+
+    /* @todo check if there is a synchronous way to achieve this. */
+    concat(handlerA$, handlerB$).subscribe({
+      complete: () => {
+        expect(spyStorage.get).toHaveBeenCalledTimes(2);
+        expect(spyStorage.set).toHaveBeenCalledTimes(2);
+        expect(spyStorage.delete).toHaveBeenCalled();
+        done();
+      }
+    });
+  });
+
+  it('should throw if ttl is invalid', () => {
+    const createPlugin = () =>
+      createCachePlugin({
+        ttl: 'kd' /* 👈 invalid ttl */
+      });
+
+    expect(createPlugin).toThrowError(
+      'InvalidTtlError: null is not a valid ttl.'
+    );
+  });
+
+  it('should throw if ttl unit is invalid', () => {
+    const createPlugin = () =>
+      createCachePlugin({
+        ttl: '1c' /* 👈 invalid ttl unit */
+      });
+
+    expect(createPlugin).toThrowError(
+      'InvalidTtlUnitError: "c" is not a valid unit.'
     );
   });
 

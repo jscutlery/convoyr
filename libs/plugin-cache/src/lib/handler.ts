@@ -4,14 +4,17 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { EMPTY, merge, Observable, of, defer } from 'rxjs';
+import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
+
 import { applyMetadata } from './apply-metadata';
 import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
-import { toString } from './to-string';
+import { invalidTtlError, parseTtl, parseTtlUnit, TtlUnit } from './ttl';
+import { addDays, addHours, addMinutes } from './utils/date';
 
 export interface HandlerOptions {
+  ttl: string | null;
   addCacheMetadata: boolean;
   storage: StorageAdapter;
 }
@@ -19,10 +22,14 @@ export interface HandlerOptions {
 export class CacheHandler implements PluginHandler {
   private _addCacheMetadata: boolean;
   private _storage: StorageAdapter;
+  private _ttl: number | null = null;
+  private _ttlUnit: TtlUnit | null = null;
 
-  constructor({ addCacheMetadata, storage }: HandlerOptions) {
+  constructor({ addCacheMetadata, storage, ttl }: HandlerOptions) {
     this._storage = storage;
     this._addCacheMetadata = addCacheMetadata;
+    this._ttl = parseTtl(ttl);
+    this._ttlUnit = parseTtlUnit(ttl);
   }
 
   handle({
@@ -38,8 +45,13 @@ export class CacheHandler implements PluginHandler {
       })
     );
 
-    const fromCache$ = defer(() => this._load(request)).pipe(
-      mergeMap(cacheData => (cacheData ? of(cacheData) : EMPTY)),
+    const fromCache$ = defer(() => this._loadCache(request)).pipe(
+      mergeMap(cache =>
+        this._checkCacheValidity(cache).pipe(
+          tap(this._clearCacheIfInvalid(request)),
+          mergeMap(isCacheValid => (isCacheValid ? of(cache) : EMPTY))
+        )
+      ),
       takeUntil(fromNetwork$)
     );
 
@@ -61,34 +73,90 @@ export class CacheHandler implements PluginHandler {
     );
   }
 
-  /* Store metadata belong cache if configuration tells so */
+  /* Store metadata belong cache. */
   private _store(request: HttpExtRequest, response: HttpExtResponse): void {
     const cache: ResponseAndCacheMetadata = {
       response,
-      cacheMetadata: { createdAt: new Date().toISOString() }
+      cacheMetadata: {
+        createdAt: this._createCacheDate()
+      }
     };
 
-    this._storage.set(this._getStoreKey(request), JSON.stringify(cache));
+    this._storage.set(this._getCacheKey(request), JSON.stringify(cache));
   }
 
-  private _load(
+  private _loadCache(
     request: HttpExtRequest
-  ): Observable<ResponseAndCacheMetadata | null> {
+  ): Observable<ResponseAndCacheMetadata> {
     return this._storage
-      .get(this._getStoreKey(request))
-      .pipe(map(cacheData => (cacheData ? JSON.parse(cacheData) : null)));
+      .get(this._getCacheKey(request))
+      .pipe(mergeMap(cache => (cache ? of(JSON.parse(cache)) : EMPTY)));
+  }
+
+  private _checkCacheValidity(
+    cache: ResponseAndCacheMetadata
+  ): Observable<boolean> {
+    return defer(() => {
+      /* If no ttl set cache is always valid */
+      if (this._ttl === null) {
+        return of(true);
+      }
+
+      const { createdAt } = cache.cacheMetadata;
+      const isValid = this._isCacheExpired(new Date(createdAt)) === false;
+
+      return of(isValid);
+    });
+  }
+
+  private _clearCacheIfInvalid(request: HttpExtRequest) {
+    return (isCacheValid: boolean): void => {
+      if (!isCacheValid) {
+        this._storage.delete(this._getCacheKey(request));
+      }
+    };
+  }
+
+  private _createCacheDate(): string {
+    return new Date().toISOString();
+  }
+
+  private _isCacheExpired(createdAt: Date): boolean {
+    const unit = this._ttlUnit;
+    const ttl = this._ttl;
+    const expireAt = this._getCacheExpiredAt({ createdAt, ttl, unit });
+
+    return new Date() >= expireAt;
+  }
+
+  /* Retrieve expiration date from cache creation date and ttl */
+  private _getCacheExpiredAt({
+    createdAt,
+    ttl,
+    unit
+  }: {
+    createdAt: Date;
+    ttl: number;
+    unit: TtlUnit;
+  }): Date {
+    switch (unit) {
+      case 'd':
+        return addDays(ttl, createdAt);
+      case 'h':
+        return addHours(ttl, createdAt);
+      case 'm':
+        return addMinutes(ttl, createdAt);
+      default:
+        throw invalidTtlError(ttl);
+    }
   }
 
   /* Create a unique key by request URI to retrieve cache later. */
-  private _getStoreKey(request: HttpExtRequest): string {
-    let key = request.url;
+  private _getCacheKey(request: HttpExtRequest): string {
+    const { params } = request;
+    const hasParams = Object.keys(params).length > 0;
 
-    const queryParams = Object.entries(request.params);
-    if (queryParams.length > 0) {
-      const suffix = queryParams.map(toString).join('_');
-      key += suffix;
-    }
-
-    return key;
+    /* Note that JSON.stringify is used to avoid browser only `encodeURIComponent()` */
+    return request.url + (hasParams ? JSON.stringify(request.params) : '');
   }
 }
