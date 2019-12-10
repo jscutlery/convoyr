@@ -16,6 +16,7 @@ import {
 
 import { CacheEntry, createCacheEntry, isExpired } from './cache-entry';
 import {
+  CacheMetadata,
   createCacheMetadata,
   createEmptyCacheMetadata
 } from './cache-metadata';
@@ -63,20 +64,13 @@ export class CacheHandler implements PluginHandler {
     const fromCache$: Observable<HttpExtResponse> = defer(() =>
       this._loadCacheEntry(request)
     ).pipe(
-      map(cacheEntry => {
-        const realBody = cacheEntry.response.body;
-        const body = shouldAddCacheMetadata
-          ? ({
-              cacheMetadata: createCacheMetadata(cacheEntry),
-              data: realBody
-            } as WithCacheMetadata)
-          : realBody;
-
-        return createResponse({
-          ...cacheEntry.response,
-          body
-        });
-      }),
+      map(cacheEntry =>
+        this._createResponseWithOptionalMetadata({
+          response: cacheEntry.response,
+          shouldAddCacheMetadata,
+          cacheMetadata: createCacheMetadata(cacheEntry)
+        })
+      ),
       takeUntil(fromNetwork$)
     );
 
@@ -86,19 +80,13 @@ export class CacheHandler implements PluginHandler {
      * thanks to shareReplay. */
     return merge(
       fromNetwork$.pipe(
-        map(response => {
-          const body = shouldAddCacheMetadata
-            ? ({
-                cacheMetadata: createEmptyCacheMetadata(),
-                data: response.body
-              } as WithCacheMetadata)
-            : response.body;
-
-          return createResponse({
-            ...response,
-            body
-          });
-        })
+        map(response =>
+          this._createResponseWithOptionalMetadata({
+            response,
+            shouldAddCacheMetadata,
+            cacheMetadata: createEmptyCacheMetadata()
+          })
+        )
       ),
       fromCache$
     );
@@ -155,6 +143,27 @@ export class CacheHandler implements PluginHandler {
     return JSON.stringify({
       u: request.url,
       p: hasParams ? request.params : undefined
+    });
+  }
+
+  private _createResponseWithOptionalMetadata({
+    response,
+    cacheMetadata,
+    shouldAddCacheMetadata
+  }: {
+    response: HttpExtResponse;
+    cacheMetadata: CacheMetadata;
+    shouldAddCacheMetadata: boolean;
+  }): HttpExtResponse | HttpExtCacheResponse {
+    const body = shouldAddCacheMetadata
+      ? ({
+          cacheMetadata,
+          data: response.body
+        } as WithCacheMetadata)
+      : response.body;
+    return createResponse({
+      ...response,
+      body
     });
   }
 }
