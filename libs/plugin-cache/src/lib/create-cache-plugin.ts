@@ -1,4 +1,4 @@
-import { HttpExtPlugin, matchMethod, RequestCondition } from '@http-ext/core';
+import { matchMethod, RequestCondition } from '@http-ext/core';
 
 import { CacheHandler, HandlerOptions } from './cache-handler';
 import { MemoryAdapter } from './store-adapters/memory-adapter';

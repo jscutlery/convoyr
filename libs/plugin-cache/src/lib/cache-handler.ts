@@ -4,11 +4,12 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
+import { HttpExtCacheResponse } from '@http-ext/plugin-cache';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import { map, mergeMap, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
-import { HttpExtCacheResponse, ResponseAndCacheMetadata } from './metadata';
+import { ResponseAndCacheMetadata } from './cache-metadata';
 import { StorageAdapter } from './store-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
 
@@ -24,13 +25,13 @@ export interface CacheEntry {
 }
 
 export class CacheHandler implements PluginHandler {
-  private _addCacheMetadata: boolean;
+  private _shouldAddCacheMetadata: boolean;
   private _storage: StorageAdapter;
   private _maxAgeMilliseconds?: number;
 
   constructor({ addCacheMetadata, storage, maxAge }: HandlerOptions) {
+    this._shouldAddCacheMetadata = addCacheMetadata;
     this._storage = storage;
-    this._addCacheMetadata = addCacheMetadata;
     this._maxAgeMilliseconds = parseMaxAge(maxAge);
   }
 
@@ -57,7 +58,7 @@ export class CacheHandler implements PluginHandler {
       takeUntil(fromNetwork$)
     );
 
-    const addCacheMetadata = this._addCacheMetadata;
+    const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
     /* Order is important here because if we subscribe to fromCache$ first, it will subscribe to fromNetwork$
      * and `takeUntil` will immediately unsubscribe from it because the result is synchronous.
@@ -66,11 +67,11 @@ export class CacheHandler implements PluginHandler {
     return merge(
       applyMetadata({
         source$: fromNetwork$,
-        addCacheMetadata
+        shouldAddCacheMetadata
       }),
       applyMetadata({
         source$: fromCache$,
-        addCacheMetadata
+        shouldAddCacheMetadata
       })
     );
   }
