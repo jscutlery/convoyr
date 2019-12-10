@@ -5,7 +5,7 @@ import {
   HttpExtResponse
 } from '@http-ext/core';
 import { StorageAdapter } from '@http-ext/plugin-cache';
-import { advanceTo as advanceDateTo, clear as clearDate } from 'jest-date-mock';
+import { advanceTo, clear as clearDate } from 'jest-date-mock';
 import { concat, EMPTY, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { delay } from 'rxjs/operators';
@@ -34,11 +34,11 @@ describe('CachePlugin', () => {
       const cacheResponse = refineMetadata({
         response,
         cacheMetadata: {
-          createdAt: '2019-12-14T12:39:51.972Z'
+          createdAt: '2019-01-01T00:00:00.000Z'
         }
       });
       /* Force `_createCacheDate` to match given metadata */
-      advanceDateTo(new Date('2019-12-14T12:39:51.972Z'));
+      advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
       /* Simulate final handler */
       const next = () => m.cold('-r|', { r: response });
@@ -149,7 +149,7 @@ describe('CachePlugin', () => {
     const handler = cachePlugin.handler;
 
     /* Force both `_checkCacheIsExpired` and `_createCacheDate`. */
-    advanceDateTo(new Date('2019-11-10T12:39:51.972Z'));
+    advanceTo(new Date('2019-11-10T12:39:51.972Z'));
 
     /* Set an expired date to trigger a cache clean */
     handler['_getCacheExpiredAt'] = jest
