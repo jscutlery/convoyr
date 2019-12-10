@@ -134,10 +134,6 @@ export class CacheHandler implements PluginHandler {
     };
   }
 
-  private _createCacheDate(): string {
-    return new Date().toISOString();
-  }
-
   private _isCacheExpired(createdAt: Date): boolean {
     const expireAt = createdAt.getTime() + this._maxAgeMilliseconds;
 
