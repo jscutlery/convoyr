@@ -8,7 +8,7 @@ import { StorageAdapter } from '@http-ext/plugin-cache';
 import { advanceTo, clear as clearDate } from 'jest-date-mock';
 import { concat, EMPTY, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-import { delay, finalize } from 'rxjs/operators';
+import { delay } from 'rxjs/operators';
 
 import { refineMetadata } from './apply-metadata';
 import { createCachePlugin } from './create-cache-plugin';
@@ -123,7 +123,7 @@ describe('CachePlugin', () => {
     const cachedData = spyStorage.set.mock.calls[0][1];
 
     expect(spyStorage.set).toBeCalledTimes(1);
-    expect(cacheKey).toBe('https://ultimate-answer.com');
+    expect(cacheKey).toBe('{"u":"https://ultimate-answer.com"}');
     expect(JSON.parse(cachedData)).toEqual(
       expect.objectContaining({
         cacheMetadata: {

@@ -130,6 +130,9 @@ export class CacheHandler implements PluginHandler {
     const hasParams = Object.keys(params).length > 0;
 
     /* Note that JSON.stringify is used to avoid browser only `encodeURIComponent()` */
-    return request.url + (hasParams ? JSON.stringify(request.params) : '');
+    return JSON.stringify({
+      u: request.url,
+      p: hasParams ? request.params : undefined
+    });
   }
 }
