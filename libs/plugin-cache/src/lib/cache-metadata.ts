@@ -4,7 +4,7 @@ export interface CacheMetadataBase {
   createdAt: Date;
 }
 
-/* Adds computed fileds like isFromCache. */
+/* Adds computed fields like isFromCache. */
 export interface CacheMetadata extends CacheMetadataBase {
   isFromCache: boolean;
 }

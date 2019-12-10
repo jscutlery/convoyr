@@ -4,7 +4,6 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
-import { StorageAdapter } from '@http-ext/plugin-cache';
 import { advanceTo, clear as clearDate } from 'jest-date-mock';
 import { concat, EMPTY, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';

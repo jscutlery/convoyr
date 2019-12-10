@@ -4,15 +4,13 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { HttpExtCacheResponse } from '@http-ext/plugin-cache';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import {
   map,
   mergeMap,
   shareReplay,
   switchMapTo,
-  takeUntil,
-  tap
+  takeUntil
 } from 'rxjs/operators';
 
 import { applyMetadata } from './apply-metadata';
@@ -21,6 +19,7 @@ import {
   createCacheMetadata,
   ResponseAndCacheMetadata
 } from './cache-metadata';
+import { HttpExtCacheResponse } from './cache-response';
 import { StorageAdapter } from './storage-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
 
