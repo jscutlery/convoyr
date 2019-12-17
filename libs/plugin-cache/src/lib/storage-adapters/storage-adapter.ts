@@ -2,6 +2,6 @@ import { Observable } from 'rxjs';
 
 export interface StorageAdapter {
   get(key: string): Observable<string>;
-  set(key: string, value: string): void;
-  delete(key: string): void;
+  set(key: string, value: string): Observable<void>;
+  delete(key: string): Observable<void>;
 }

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { WithCacheMetadata } from '@http-ext/plugin-cache';
 import { map, switchMap } from 'rxjs/operators';
-import { HttpExtCacheResponse } from '@http-ext/plugin-cache';
 
 @Component({
   template: `
@@ -16,18 +16,18 @@ import { HttpExtCacheResponse } from '@http-ext/plugin-cache';
   `
 })
 export class BookDetailComponent {
-  request$ = this._activatedRoute.paramMap.pipe(
+  response$ = this._activatedRoute.paramMap.pipe(
     map(paramMap => paramMap.get('bookId')),
     switchMap(bookId =>
-      this._httpClient.get<HttpExtCacheResponse<any>>(
+      this._httpClient.get<WithCacheMetadata<any>>(
         `https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(
           bookId
         )}`
       )
     )
   );
-  book$ = this.request$.pipe(map(body => body.data.data));
-  isFromCache$ = this.request$.pipe(
+  book$ = this.response$.pipe(map(body => body.data.data));
+  isFromCache$ = this.response$.pipe(
     map(body => body.cacheMetadata.isFromCache)
   );
 

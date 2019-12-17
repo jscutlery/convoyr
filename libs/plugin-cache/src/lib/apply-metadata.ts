@@ -1,10 +1,10 @@
 import { HttpExtResponse } from '@http-ext/core';
-import { Observable } from 'rxjs';
-import { map, pluck } from 'rxjs/operators';
 
-import { CacheMetadata, ResponseAndCacheMetadata } from './metadata';
+import { CacheMetadata, ResponseAndCacheMetadata } from './cache-metadata';
 
-/* Decorate metadata with additional flags */
+/**
+ * Adds computed fields like `isFromCache`.
+ */
 export const refineMetadata = ({
   cacheMetadata,
   response
@@ -21,16 +21,3 @@ export const refineMetadata = ({
     data: response.body
   }
 });
-
-/* Conditionally add to response observable a metadata object */
-export function applyMetadata({
-  source$,
-  addCacheMetadata
-}: {
-  source$: Observable<ResponseAndCacheMetadata>;
-  addCacheMetadata: boolean;
-}): Observable<HttpExtResponse> {
-  return addCacheMetadata
-    ? source$.pipe(map(refineMetadata))
-    : source$.pipe(pluck('response'));
-}
