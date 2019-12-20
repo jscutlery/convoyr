@@ -45,7 +45,7 @@ You can give a partial configuration object it will be merged with default value
 | `addCacheMetadata` | `boolean`              | `false`               |
 | `storage`          | `StorageAdapter`       | `new MemoryAdapter()` |
 | `condition`        | `RequestCondition`     | `matchMethod('GET')`  |
-| `maxAge`           | `string` | `undefined` | `undefined`           |
+| `maxAge`           | `string | undefined`   | `undefined`           |
 
 Here is an example passing a configuration object.
 
