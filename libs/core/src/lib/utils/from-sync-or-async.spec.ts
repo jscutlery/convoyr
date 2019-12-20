@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 
 import { fromSyncOrAsync } from './from-sync-or-async';
 
-describe('fromSyncOfAsync', () => {
+describe('fromSyncOrAsync', () => {
   it('should convert a string to an Observable of string', async () => {
     const string = await fromSyncOrAsync('42').toPromise();
     expect(string).toBe('42');
