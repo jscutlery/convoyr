@@ -40,12 +40,12 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property           | Type                   | Default value         |
-| ------------------ | ------------------     | --------------------- |
-| `addCacheMetadata` | `boolean`              | `false`               |
-| `storage`          | `StorageAdapter`       | `new MemoryAdapter()` |
-| `condition`        | `RequestCondition`     | `matchMethod('GET')`  |
-| `maxAge`           | `string | undefined`   | `undefined`           |
+| Property           | Type                    | Default value         |
+| ------------------ | ----------------------- |---------------------- |
+| `addCacheMetadata` | `boolean`               | `false`               |
+| `storage`          | `StorageAdapter`        | `new MemoryAdapter()` |
+| `condition`        | `RequestCondition`      | `matchMethod('GET')`  |
+| `maxAge`           | `string` or `undefined` | `undefined`           |
 
 Here is an example passing a configuration object.
 
@@ -109,7 +109,7 @@ To use an other storage than available ones (e.g. Redis) you need to implement t
 
 ### Max age
 
-To invalidate the cache in certain period of time you can provide a cache lifetime using the `maxAge` option.
+To invalidate the cache in certain period of time you can provide a cache lifetime using the `maxAge` option. If this option is not provided the cache will never expire.
 
 Here are some examples of supported formats.
 
