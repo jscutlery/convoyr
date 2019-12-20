@@ -51,6 +51,7 @@
     "@nrwl/angular": "^8.7.1",
     "core-js": "^3.0.0",
     "ms": "^2.1.2",
+    "object-sizeof": "^1.5.2",
     "rxjs": "~6.5.3",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

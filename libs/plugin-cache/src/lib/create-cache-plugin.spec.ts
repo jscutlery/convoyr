@@ -12,6 +12,10 @@ import { delay } from 'rxjs/operators';
 import { WithCacheMetadata } from './cache-response';
 import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
+import * as sizeof from 'object-sizeof';
+
+/* Hack to ignore the type error */
+const sizeInBytes = sizeof as any;
 
 function configureSpyStorage() {
   const spyStorage = new MemoryStorageAdapter();
@@ -127,8 +131,8 @@ describe('CachePlugin', () => {
   });
 
   it('should use given storage implementation to store cache', async () => {
-    const spyStorage = configureSpyStorage() as any;
-    const cachePlugin = createCachePlugin({ storage: spyStorage });
+    const storage = configureSpyStorage() as any;
+    const cachePlugin = createCachePlugin({ storage });
     const next = () => of(response);
 
     const handler$ = cachePlugin.handler.handle({ request, next });
@@ -137,10 +141,10 @@ describe('CachePlugin', () => {
 
     await handler$.toPromise();
 
-    const cacheKey = spyStorage.set.mock.calls[0][0];
-    const cachedData = spyStorage.set.mock.calls[0][1];
+    const cacheKey = storage.set.mock.calls[0][0];
+    const cachedData = storage.set.mock.calls[0][1];
 
-    expect(spyStorage.set).toBeCalledTimes(1);
+    expect(storage.set).toBeCalledTimes(1);
     expect(cacheKey).toBe('{"u":"https://ultimate-answer.com"}');
     expect(JSON.parse(cachedData)).toEqual(
       expect.objectContaining({
@@ -182,7 +186,33 @@ describe('CachePlugin', () => {
     })
   );
 
-  it.todo('should not set cache entry when storage outsized');
+  xit(
+    'should not set cache entry when storage outsized',
+    marbles(m => {
+      const storage = configureSpyStorage();
+      const cachePlugin = createCachePlugin({ maxSize: '1', storage });
+      const handler = cachePlugin.handler;
+
+      /* Use a big response (16008 bytes) that is over size limit */
+      const data = {
+        body: Array.from({ length: 1 }, () => ({ data: Math.random() }))
+      };
+
+      const size = sizeInBytes(data);
+
+      response = createResponse(data);
+      const next = () => m.cold('-r|', { r: response });
+
+      const requestA$ = handler.handle({ request, next });
+      const requestB$ = handler.handle({ request, next });
+
+      const stream$ = concat(requestA$, requestB$);
+
+      const expected$ = m.cold('-rr|', { r: response });
+
+      m.expect(stream$).toBeObservable(expected$);
+    })
+  );
 
   it(
     'should handle query string in store key',

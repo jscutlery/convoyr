@@ -28,17 +28,20 @@ export interface HandlerOptions {
   addCacheMetadata: boolean;
   storage: StorageAdapter;
   maxAge?: string;
+  maxSize?: string;
 }
 
 export class CacheHandler implements PluginHandler {
   private _shouldAddCacheMetadata: boolean;
   private _storage: StorageAdapter;
   private _maxAgeMilliseconds?: number;
+  private _maxSizeBytes?: number;
 
-  constructor({ addCacheMetadata, storage, maxAge }: HandlerOptions) {
+  constructor({ addCacheMetadata, storage, maxAge, maxSize }: HandlerOptions) {
     this._shouldAddCacheMetadata = addCacheMetadata;
     this._storage = storage;
     this._maxAgeMilliseconds = parseMaxAge(maxAge);
+    this._maxSizeBytes = parseInt(maxSize, 10); // @todo parse from pretty format, eg: 1MB to 1000000B
   }
 
   handle({
@@ -128,16 +131,6 @@ export class CacheHandler implements PluginHandler {
         ) {
           return EMPTY;
         }
-
-        // /* Cache outsized. */
-        // if (
-        //   isOutsize({
-        //     cachedAt: cacheEntry.createdAt,
-        //     maxAgeMilliseconds: this._maxAgeMilliseconds
-        //   })
-        // ) {
-        //   return EMPTY;
-        // }
 
         return of(cacheEntry);
       })

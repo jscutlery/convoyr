@@ -11,10 +11,11 @@ export function createCachePlugin({
   addCacheMetadata = false,
   storage = new MemoryStorageAdapter(),
   condition = matchMethod('GET'),
-  maxAge
+  maxAge,
+  maxSize
 }: Partial<CachePluginOptions> = {}) {
   return {
     condition,
-    handler: new CacheHandler({ addCacheMetadata, storage, maxAge })
+    handler: new CacheHandler({ addCacheMetadata, storage, maxAge, maxSize })
   };
 }
