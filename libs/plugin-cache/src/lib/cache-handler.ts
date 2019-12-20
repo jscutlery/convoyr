@@ -129,6 +129,16 @@ export class CacheHandler implements PluginHandler {
           return EMPTY;
         }
 
+        // /* Cache outsized. */
+        // if (
+        //   isOutsize({
+        //     cachedAt: cacheEntry.createdAt,
+        //     maxAgeMilliseconds: this._maxAgeMilliseconds
+        //   })
+        // ) {
+        //   return EMPTY;
+        // }
+
         return of(cacheEntry);
       })
     );

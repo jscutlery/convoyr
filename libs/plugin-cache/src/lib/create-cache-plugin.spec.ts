@@ -13,6 +13,15 @@ import { WithCacheMetadata } from './cache-response';
 import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
 
+function configureSpyStorage() {
+  const spyStorage = new MemoryStorageAdapter();
+  spyStorage.get = jest.fn(spyStorage.get);
+  spyStorage.set = jest.fn(spyStorage.set);
+  spyStorage.delete = jest.fn(spyStorage.delete);
+
+  return spyStorage;
+}
+
 describe('CachePlugin', () => {
   let request: HttpExtRequest;
   let response: HttpExtResponse;
@@ -118,14 +127,8 @@ describe('CachePlugin', () => {
   });
 
   it('should use given storage implementation to store cache', async () => {
-    const spyStorage = {
-      get: jest.fn().mockReturnValue(EMPTY),
-      set: jest.fn().mockReturnValue(of()),
-      delete: jest.fn().mockReturnValue(of())
-    };
-    const cachePlugin = createCachePlugin({
-      storage: spyStorage
-    });
+    const spyStorage = configureSpyStorage() as any;
+    const cachePlugin = createCachePlugin({ storage: spyStorage });
     const next = () => of(response);
 
     const handler$ = cachePlugin.handler.handle({ request, next });
@@ -150,17 +153,9 @@ describe('CachePlugin', () => {
   });
 
   it(
-    'should unset cache when ttl expired',
+    'should unset cache when maxAge expired',
     marbles(m => {
-      const spyStorage = new MemoryStorageAdapter();
-      spyStorage.get = jest.fn(spyStorage.get);
-      spyStorage.set = jest.fn(spyStorage.set);
-      spyStorage.delete = jest.fn(spyStorage.delete);
-
-      const cachePlugin = createCachePlugin({
-        addCacheMetadata: false,
-        maxAge: '1h'
-      });
+      const cachePlugin = createCachePlugin({ maxAge: '1h' });
       const handler = cachePlugin.handler;
 
       /* Fake date based on marbles test scheduler. */
@@ -186,6 +181,8 @@ describe('CachePlugin', () => {
       m.expect(responses$).toBeObservable(expected$);
     })
   );
+
+  it.todo('should not set cache entry when storage outsized');
 
   it(
     'should handle query string in store key',
