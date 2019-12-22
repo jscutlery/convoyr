@@ -12,10 +12,6 @@ import { delay } from 'rxjs/operators';
 import { WithCacheMetadata } from './cache-response';
 import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
-import * as sizeof from 'object-sizeof';
-
-/* Hack to ignore the type error */
-const sizeInBytes = sizeof as any;
 
 function configureSpyStorage() {
   const spyStorage = new MemoryStorageAdapter();
@@ -186,33 +182,25 @@ describe('CachePlugin', () => {
     })
   );
 
-  xit(
-    'should not set cache entry when storage outsized',
-    marbles(m => {
-      const storage = configureSpyStorage();
-      const cachePlugin = createCachePlugin({ maxSize: '1', storage });
-      const handler = cachePlugin.handler;
+  it('should not set cache entry when storage outsized', async () => {
+    const storage = configureSpyStorage();
+    const cachePlugin = createCachePlugin({ maxSize: '226', storage });
+    const handler = cachePlugin.handler;
 
-      /* Use a big response (16008 bytes) that is over size limit */
-      const data = {
-        body: Array.from({ length: 1 }, () => ({ data: Math.random() }))
-      };
+    /* Create a response (226 bytes) just in the limit */
+    const data = {
+      body: Array.from({ length: 10 }, () => ({ data: 'data' }))
+    };
 
-      const size = sizeInBytes(data);
+    response = createResponse(data);
+    const next = () => of(response);
 
-      response = createResponse(data);
-      const next = () => m.cold('-r|', { r: response });
+    await handler.handle({ request, next }).toPromise();
+    await handler.handle({ request, next }).toPromise();
 
-      const requestA$ = handler.handle({ request, next });
-      const requestB$ = handler.handle({ request, next });
-
-      const stream$ = concat(requestA$, requestB$);
-
-      const expected$ = m.cold('-rr|', { r: response });
-
-      m.expect(stream$).toBeObservable(expected$);
-    })
-  );
+    /* Second time cache should not be created */
+    expect(storage.set).toBeCalledTimes(1);
+  });
 
   it(
     'should handle query string in store key',

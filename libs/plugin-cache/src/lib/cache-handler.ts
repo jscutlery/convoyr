@@ -5,6 +5,7 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
+import * as sizeof from 'object-sizeof';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import {
   map,
@@ -24,6 +25,9 @@ import { HttpExtCacheResponse, WithCacheMetadata } from './cache-response';
 import { StorageAdapter } from './storage-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
 
+/* Hack to ignore type error */
+const sizeBytes = (sizeof as unknown) as (value: any) => number;
+
 export interface HandlerOptions {
   addCacheMetadata: boolean;
   storage: StorageAdapter;
@@ -36,12 +40,13 @@ export class CacheHandler implements PluginHandler {
   private _storage: StorageAdapter;
   private _maxAgeMilliseconds?: number;
   private _maxSizeBytes?: number;
+  private _totalSizeBytes = 0; // Not correct, need to get the whole cache size at init
 
   constructor({ addCacheMetadata, storage, maxAge, maxSize }: HandlerOptions) {
     this._shouldAddCacheMetadata = addCacheMetadata;
     this._storage = storage;
     this._maxAgeMilliseconds = parseMaxAge(maxAge);
-    this._maxSizeBytes = parseInt(maxSize, 10); // @todo parse from pretty format, eg: 1MB to 1000000B
+    this._maxSizeBytes = parseInt(maxSize, 10); // @todo parse from pretty format, eg: 1MB to 1000000B (& ignore if undefined)
   }
 
   handle({
@@ -100,15 +105,34 @@ export class CacheHandler implements PluginHandler {
     request: HttpExtRequest,
     response: HttpExtResponse
   ): Observable<void> {
-    const cacheEntry: CacheEntry = {
-      createdAt: new Date(),
-      response
-    };
+    return defer(() => {
+      this._incrementSizeBytes(response);
 
-    return this._storage.set(
-      this._getCacheKey(request),
-      JSON.stringify(cacheEntry)
-    );
+      if (
+        this._maxSizeBytes != null &&
+        this._totalSizeBytes > this._maxSizeBytes
+      ) {
+        return EMPTY;
+      }
+
+      const cacheEntry: CacheEntry = {
+        createdAt: new Date(),
+        response
+      };
+
+      return this._storage.set(
+        this._getCacheKey(request),
+        JSON.stringify(cacheEntry)
+      );
+    });
+  }
+
+  /* Increment total size in bytes (maybe should be done in the store to allow cross sessions) */
+  private _incrementSizeBytes(response: HttpExtResponse): void {
+    if (this._maxSizeBytes != null) {
+      const responseSizeBytes = sizeBytes(response);
+      this._totalSizeBytes += responseSizeBytes;
+    }
   }
 
   private _loadCacheEntry(request: HttpExtRequest): Observable<CacheEntry> {
@@ -142,7 +166,6 @@ export class CacheHandler implements PluginHandler {
     const { params } = request;
     const hasParams = Object.keys(params).length > 0;
 
-    /* Note that JSON.stringify is used to avoid browser only `encodeURIComponent()` */
     return JSON.stringify({
       u: request.url,
       p: hasParams ? request.params : undefined
