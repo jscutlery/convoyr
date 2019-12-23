@@ -2,7 +2,7 @@
 
 > A cache plugin for [HttpExt](https://github.com/jscutlery/http-ext).
 
-This plugin cache network requests using the `stale-while-revalidate` strategy. First the plugin returns the data from cache (stale), then sends the `GET` request (revalidate), and finally comes with fresh data again. This technique drastically improve UI reactivity.
+This plugin cache network requests using the *cache-then-network* strategy. First the plugin returns the data from cache, then sends the request, and finally comes with fresh data again. This technique drastically improve UI reactivity.
 
 ## Requirements
 
@@ -40,11 +40,12 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property           | Type               | Default value         |
-| ------------------ | ------------------ | --------------------- |
-| `addCacheMetadata` | `boolean`          | `false`               |
-| `storage`          | `StorageAdapter`   | `new MemoryAdapter()` |
-| `condition`        | `RequestCondition` | `matchMethod('GET')`  |
+| Property           | Type                    | Default value         |
+| ------------------ | ----------------------- |---------------------- |
+| `addCacheMetadata` | `boolean`               | `false`               |
+| `storage`          | `StorageAdapter`        | `new MemoryAdapter()` |
+| `condition`        | `RequestCondition`      | `matchMethod('GET')`  |
+| `maxAge`           | `string` or `undefined` | `undefined`           |
 
 Here is an example passing a configuration object.
 
@@ -57,7 +58,8 @@ import { LocalStorageAdapter } from '@http-ext/plugin-cache';
       plugins: [
         cachePlugin({
           addCacheMetadata: true,
-          storage: new LocalStorageAdapter()
+          storage: new LocalStorageAdapter(),
+          maxAge: '1d'
         })
       ]
     })
@@ -70,7 +72,9 @@ To know more about the `condition` property check-out the [conditional handling 
 
 ### Metadata
 
-You can add cache metadata to the response body. Be careful this option changes the body's shape and breaks existing code that need to access to the response body.
+You can add cache metadata to the response body and use it in the application. For example you can display something that showup that data are from cache.
+
+Be careful because this option changes the body's shape and breaks existing code that need to access to the response body.
 
 Here is an example showing a response body with `addCacheMetadata` set to `false` (default).
 
@@ -84,13 +88,13 @@ The same response body with `addCacheMetadata` set to `true`.
 {
   "data": { "answer": 42 },
   "cacheMetadata": {
-    "createdAt": "2019-11-24T16:41:19.537Z",
+    "createdAt": "2019-11-24T00:00:00.000Z",
     "isFromCache": true
   }
 }
 ```
 
-The response body is modified, data are moved in a dedicated object and cache metadata are added.
+Data are moved in a dedicated object and cache metadata are added.
 
 ### Available storage
 
@@ -101,11 +105,24 @@ To cache HTTP responses we need to use a storage. This plugin comes with two bui
 
 ### Custom storage
 
-You can add your own storage by implementing the following interface.
+To use an other storage than available ones (e.g. Redis) you need to implement the `StorageAdapter` interface and then pass it to the plugin configuration.
+
+### Max age
+
+To invalidate the cache in certain period of time you can provide a cache lifetime using the `maxAge` option. If this option is not provided the cache will never expire.
+
+Here are some examples of supported formats.
 
 ```ts
-interface StorageAdapter {
-  get(key: string): string;
-  set(key: string, value: string): void;
-}
+maxAge: '2 days'
+maxAge: '1d'
+maxAge: '10h'
+maxAge: '2.5 hrs'
+maxAge: '2h'
+maxAge: '1m'
+maxAge: '5s'
+maxAge: '1y'
+maxAge: '100'
 ```
+
+When no unit is specified, milliseconds are used by default.
