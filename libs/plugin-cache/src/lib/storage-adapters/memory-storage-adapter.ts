@@ -1,8 +1,10 @@
 import { Observable, of } from 'rxjs';
+
 import { StorageAdapter } from './storage-adapter';
 
 export class MemoryStorageAdapter implements StorageAdapter {
   private cache = new Map<string, string>();
+  private cacheSize = 0;
 
   get(key: string): Observable<string> {
     return of(this.cache.get(key));
@@ -13,7 +15,16 @@ export class MemoryStorageAdapter implements StorageAdapter {
     return of();
   }
 
-  delete(key): Observable<void> {
+  getSize() {
+    return of(this.cacheSize);
+  }
+
+  setSize(size: number): Observable<void> {
+    this.cacheSize = size;
+    return of();
+  }
+
+  delete(key: string): Observable<void> {
     this.cache.delete(key);
     return of();
   }

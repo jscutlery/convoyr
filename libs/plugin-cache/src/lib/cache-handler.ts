@@ -5,8 +5,7 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import * as sizeof from 'object-sizeof';
-import { defer, EMPTY, merge, Observable, of } from 'rxjs';
+import { defer, EMPTY, iif, merge, Observable, of, forkJoin } from 'rxjs';
 import {
   map,
   mergeMap,
@@ -15,7 +14,13 @@ import {
   takeUntil
 } from 'rxjs/operators';
 
-import { CacheEntry, createCacheEntry, isExpired } from './cache-entry';
+import {
+  CacheEntry,
+  calculateTotalCacheSizeInBytes,
+  createCacheEntry,
+  isCacheExpired,
+  isCacheOutsized
+} from './cache-entry';
 import {
   CacheMetadata,
   createCacheMetadata,
@@ -24,9 +29,7 @@ import {
 import { HttpExtCacheResponse, WithCacheMetadata } from './cache-response';
 import { StorageAdapter } from './storage-adapters/storage-adapter';
 import { parseMaxAge } from './utils/parse-max-age';
-
-/* Hack to ignore type error */
-const sizeBytes = (sizeof as unknown) as (value: any) => number;
+import { parseMaxSize } from './utils/parse-max-size';
 
 export interface HandlerOptions {
   addCacheMetadata: boolean;
@@ -39,14 +42,13 @@ export class CacheHandler implements PluginHandler {
   private _shouldAddCacheMetadata: boolean;
   private _storage: StorageAdapter;
   private _maxAgeMilliseconds?: number;
-  private _maxSizeBytes?: number;
-  private _totalSizeBytes = 0; // Not correct, need to get the whole cache size at init
+  private _maxSizeInBytes?: number;
 
   constructor({ addCacheMetadata, storage, maxAge, maxSize }: HandlerOptions) {
     this._shouldAddCacheMetadata = addCacheMetadata;
     this._storage = storage;
     this._maxAgeMilliseconds = parseMaxAge(maxAge);
-    this._maxSizeBytes = parseInt(maxSize, 10); // @todo parse from pretty format, eg: 1MB to 1000000B (& ignore if undefined)
+    this._maxSizeInBytes = parseMaxSize(maxSize);
   }
 
   handle({
@@ -54,13 +56,40 @@ export class CacheHandler implements PluginHandler {
     next
   }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
+    const hasCacheMaxSize = this._maxSizeInBytes != null;
+    const maxSizeInBytes = this._maxSizeInBytes;
 
     const fromNetwork$: Observable<HttpExtResponse> = next({ request }).pipe(
       mergeMap(response => {
         /* Return response immediately but store in cache as side effect. */
         return merge(
           of(response),
-          this._store(request, response).pipe(switchMapTo(EMPTY))
+          iif(
+            () => hasCacheMaxSize,
+            this._storage.getSize().pipe(
+              mergeMap(storageSize => {
+                const currentSizeInBytes = calculateTotalCacheSizeInBytes(
+                  response,
+                  storageSize
+                );
+
+                return merge(
+                  of(
+                    isCacheOutsized({
+                      currentSizeInBytes,
+                      maxSizeInBytes,
+                      response
+                    })
+                  ),
+                  this._storage.setSize(currentSizeInBytes)
+                );
+              }),
+              mergeMap(_isCacheOutsized =>
+                _isCacheOutsized ? EMPTY : this._store(request, response)
+              )
+            ),
+            this._store(request, response)
+          ).pipe(switchMapTo(EMPTY))
         );
       }),
       shareReplay({
@@ -106,15 +135,6 @@ export class CacheHandler implements PluginHandler {
     response: HttpExtResponse
   ): Observable<void> {
     return defer(() => {
-      this._incrementSizeBytes(response);
-
-      if (
-        this._maxSizeBytes != null &&
-        this._totalSizeBytes > this._maxSizeBytes
-      ) {
-        return EMPTY;
-      }
-
       const cacheEntry: CacheEntry = {
         createdAt: new Date(),
         response
@@ -125,14 +145,6 @@ export class CacheHandler implements PluginHandler {
         JSON.stringify(cacheEntry)
       );
     });
-  }
-
-  /* Increment total size in bytes (maybe should be done in the store to allow cross sessions) */
-  private _incrementSizeBytes(response: HttpExtResponse): void {
-    if (this._maxSizeBytes != null) {
-      const responseSizeBytes = sizeBytes(response);
-      this._totalSizeBytes += responseSizeBytes;
-    }
   }
 
   private _loadCacheEntry(request: HttpExtRequest): Observable<CacheEntry> {
@@ -148,7 +160,7 @@ export class CacheHandler implements PluginHandler {
 
         /* Cache entry expired. */
         if (
-          isExpired({
+          isCacheExpired({
             cachedAt: cacheEntry.createdAt,
             maxAgeMilliseconds: this._maxAgeMilliseconds
           })

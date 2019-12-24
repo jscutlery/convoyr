@@ -182,7 +182,7 @@ describe('CachePlugin', () => {
     })
   );
 
-  it('should not set cache entry when storage outsized', async () => {
+  fit('should not set cache entry when storage outsized', async () => {
     const storage = configureSpyStorage();
     const cachePlugin = createCachePlugin({ maxSize: '226', storage });
     const handler = cachePlugin.handler;
