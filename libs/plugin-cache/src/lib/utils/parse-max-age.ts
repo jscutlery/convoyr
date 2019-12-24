@@ -1,4 +1,5 @@
 import * as _ms from 'ms';
+
 /* @hack fixes "Cannot call a namespace (ms)" error. */
 const ms = _ms;
 
