@@ -63,8 +63,8 @@ export function isCacheOutsized({
   return false;
 }
 
-/* Calculate total cache size including given response */
-export function calculateTotalCacheSizeInBytes(
+/* Calculate total cache size */
+export function getTotalCacheSizeInBytes(
   response: HttpExtResponse,
   currentSizeInBytes: number
 ): number {

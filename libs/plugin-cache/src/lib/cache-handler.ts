@@ -5,18 +5,20 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { defer, EMPTY, iif, merge, Observable, of, forkJoin } from 'rxjs';
+import { defer, EMPTY, iif, merge, Observable, of } from 'rxjs';
 import {
   map,
   mergeMap,
+  mergeMapTo,
   shareReplay,
   switchMapTo,
-  takeUntil
+  takeUntil,
+  tap
 } from 'rxjs/operators';
 
 import {
   CacheEntry,
-  calculateTotalCacheSizeInBytes,
+  getTotalCacheSizeInBytes,
   createCacheEntry,
   isCacheExpired,
   isCacheOutsized
@@ -56,40 +58,13 @@ export class CacheHandler implements PluginHandler {
     next
   }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
-    const hasCacheMaxSize = this._maxSizeInBytes != null;
-    const maxSizeInBytes = this._maxSizeInBytes;
 
     const fromNetwork$: Observable<HttpExtResponse> = next({ request }).pipe(
       mergeMap(response => {
         /* Return response immediately but store in cache as side effect. */
         return merge(
           of(response),
-          iif(
-            () => hasCacheMaxSize,
-            this._storage.getSize().pipe(
-              mergeMap(storageSize => {
-                const currentSizeInBytes = calculateTotalCacheSizeInBytes(
-                  response,
-                  storageSize
-                );
-
-                return merge(
-                  of(
-                    isCacheOutsized({
-                      currentSizeInBytes,
-                      maxSizeInBytes,
-                      response
-                    })
-                  ),
-                  this._storage.setSize(currentSizeInBytes)
-                );
-              }),
-              mergeMap(_isCacheOutsized =>
-                _isCacheOutsized ? EMPTY : this._store(request, response)
-              )
-            ),
-            this._store(request, response)
-          ).pipe(switchMapTo(EMPTY))
+          this._store(request, response).pipe(switchMapTo(EMPTY))
         );
       }),
       shareReplay({
@@ -129,22 +104,60 @@ export class CacheHandler implements PluginHandler {
     );
   }
 
+  private _isCacheOutsized(response: HttpExtResponse): Observable<boolean> {
+    const hasCacheMaxSize = this._maxSizeInBytes != null;
+    const maxSizeInBytes = this._maxSizeInBytes;
+
+    return this._storage.getSize().pipe(
+      map(cacheSize => {
+        const currentSizeInBytes = getTotalCacheSizeInBytes(
+          response,
+          cacheSize
+        );
+
+        return (
+          hasCacheMaxSize &&
+          isCacheOutsized({
+            currentSizeInBytes,
+            maxSizeInBytes,
+            response
+          })
+        );
+      })
+    );
+  }
+
   /* Store metadata belong cache. */
   private _store(
     request: HttpExtRequest,
     response: HttpExtResponse
   ): Observable<void> {
-    return defer(() => {
+    const updateCacheSize$ = this._storage.getSize().pipe(
+      map(cacheSize => getTotalCacheSizeInBytes(response, cacheSize)),
+      mergeMap(totalCacheSize => this._storage.setSize(totalCacheSize))
+    );
+
+    const storeCache$ = defer(() => {
+      const key = this._getCacheKey(request);
       const cacheEntry: CacheEntry = {
         createdAt: new Date(),
         response
       };
+      const cache = JSON.stringify(cacheEntry);
 
-      return this._storage.set(
-        this._getCacheKey(request),
-        JSON.stringify(cacheEntry)
-      );
+      return this._storage.set(key, cache);
     });
+
+    return this._isCacheOutsized(response).pipe(
+      tap(console.log),
+      mergeMap(isOutsized =>
+        iif(
+          () => isOutsized,
+          EMPTY,
+          storeCache$.pipe(mergeMapTo(updateCacheSize$), tap(console.log))
+        )
+      )
+    );
   }
 
   private _loadCacheEntry(request: HttpExtRequest): Observable<CacheEntry> {
