@@ -6,16 +6,16 @@ export function invalidMaxSizeError(maxSize: any) {
   );
 }
 
-export function parseMaxSize(maxSize?: string) {
-  if (maxSize == null) {
+export function parseMaxSize(prettySize?: string) {
+  if (prettySize == null) {
     return null;
   }
 
-  const maxSizeInBytes = bytes(maxSize);
+  const sizeInBytes = bytes(prettySize);
 
-  // if (isNaN(maxSizeInBytes)) {
-  //   throw invalidMaxSizeError(maxSize);
-  // }
+  if (isNaN(sizeInBytes) || typeof sizeInBytes !== 'number') {
+    throw invalidMaxSizeError(prettySize);
+  }
 
-  return maxSizeInBytes;
+  return sizeInBytes;
 }
