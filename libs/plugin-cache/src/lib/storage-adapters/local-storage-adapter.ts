@@ -1,5 +1,4 @@
 import { EMPTY, Observable, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
 
 import { StorageAdapter } from './storage-adapter';
 

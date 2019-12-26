@@ -43,20 +43,20 @@ export function isCacheExpired({
 }
 
 export function isCacheOutsized({
-  currentSizeInBytes,
+  totalSizeInBytes,
   maxSizeInBytes
 }: {
   response: HttpExtResponse;
-  currentSizeInBytes: number;
+  totalSizeInBytes: number;
   maxSizeInBytes: number;
 }): boolean {
-  /* No max size given, cache is never outsized */
+  /* No max size given, cache will never become outsized */
   if (maxSizeInBytes == null) {
     return false;
   }
 
   /* And check if it fits the max size */
-  if (currentSizeInBytes > maxSizeInBytes) {
+  if (totalSizeInBytes > maxSizeInBytes) {
     return true;
   }
 

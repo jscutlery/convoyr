@@ -40,6 +40,8 @@ export interface HandlerOptions {
   maxSize?: string;
 }
 
+export type CacheHandlerResponse = HttpExtResponse | HttpExtCacheResponse;
+
 export class CacheHandler implements PluginHandler {
   private _shouldAddCacheMetadata: boolean;
   private _storage: StorageAdapter;
@@ -56,7 +58,7 @@ export class CacheHandler implements PluginHandler {
   handle({
     request,
     next
-  }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
+  }: PluginHandlerArgs): Observable<CacheHandlerResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
     const fromNetwork$: Observable<HttpExtResponse> = next({
@@ -112,15 +114,12 @@ export class CacheHandler implements PluginHandler {
 
     return this._storage.getSize().pipe(
       map(cacheSize => {
-        const currentSizeInBytes = getTotalCacheSizeInBytes(
-          response,
-          cacheSize
-        );
+        const totalSizeInBytes = getTotalCacheSizeInBytes(response, cacheSize);
 
         return (
           hasCacheMaxSize &&
           isCacheOutsized({
-            currentSizeInBytes,
+            totalSizeInBytes,
             maxSizeInBytes,
             response
           })
@@ -139,7 +138,7 @@ export class CacheHandler implements PluginHandler {
       mergeMap(totalCacheSize => this._storage.setSize(totalCacheSize))
     );
     const updateCache$ = this._createCacheEntry(request, response).pipe(
-      isEmpty() /* <- Triggers `next` fn to update cache size */,
+      isEmpty() /* Triggers `next` fn to update cache size */,
       mergeMapTo(updateCacheSize$)
     );
 
