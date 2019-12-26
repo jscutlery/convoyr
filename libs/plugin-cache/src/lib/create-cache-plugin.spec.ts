@@ -197,7 +197,10 @@ describe('CachePlugin', () => {
 
     await handler.handle({ request, next }).toPromise();
     await handler
-      .handle({ request: { ...request, url: 'lol' }, next })
+      .handle({
+        request: { ...request, url: 'https://an-other-url.com' },
+        next
+      })
       .toPromise();
 
     /* Second time cache should not be created */

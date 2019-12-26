@@ -1,4 +1,7 @@
-import * as bytes from 'bytes';
+import * as _bytes from 'bytes';
+
+/* @hack fixes "Cannot call a namespace (bytes)" error. */
+const bytes = _bytes;
 
 export function invalidMaxSizeError(maxSize: any) {
   return new Error(
