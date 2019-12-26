@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 
 import { StorageAdapter } from './storage-adapter';
 
@@ -12,20 +12,20 @@ export class MemoryStorageAdapter implements StorageAdapter {
 
   set(key: string, response: string): Observable<void> {
     this.cache.set(key, response);
-    return of();
+    return EMPTY;
   }
 
-  getSize() {
+  getSize(): Observable<number> {
     return of(this.cacheSize);
   }
 
   setSize(size: number): Observable<void> {
     this.cacheSize = size;
-    return of();
+    return EMPTY;
   }
 
   delete(key: string): Observable<void> {
     this.cache.delete(key);
-    return of();
+    return EMPTY;
   }
 }

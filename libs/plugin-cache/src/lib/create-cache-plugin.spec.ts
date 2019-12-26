@@ -182,9 +182,9 @@ describe('CachePlugin', () => {
     })
   );
 
-  fit('should not set cache entry when storage outsized', async () => {
+  it('should not set cache entry when storage outsized', async () => {
     const storage = configureSpyStorage();
-    const cachePlugin = createCachePlugin({ maxSize: '226Bytes', storage });
+    const cachePlugin = createCachePlugin({ maxSize: '226b', storage });
     const handler = cachePlugin.handler;
 
     /* Create a response (226 bytes) just in the limit */
@@ -196,7 +196,9 @@ describe('CachePlugin', () => {
     const next = () => of(response);
 
     await handler.handle({ request, next }).toPromise();
-    await handler.handle({ request, next }).toPromise();
+    await handler
+      .handle({ request: { ...request, url: 'lol' }, next })
+      .toPromise();
 
     /* Second time cache should not be created */
     expect(storage.set).toBeCalledTimes(1);

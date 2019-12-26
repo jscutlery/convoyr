@@ -7,19 +7,19 @@ import {
 } from '@http-ext/core';
 import { defer, EMPTY, iif, merge, Observable, of } from 'rxjs';
 import {
+  isEmpty,
   map,
   mergeMap,
   mergeMapTo,
   shareReplay,
   switchMapTo,
-  takeUntil,
-  tap
+  takeUntil
 } from 'rxjs/operators';
 
 import {
   CacheEntry,
-  getTotalCacheSizeInBytes,
   createCacheEntry,
+  getTotalCacheSizeInBytes,
   isCacheExpired,
   isCacheOutsized
 } from './cache-entry';
@@ -59,7 +59,9 @@ export class CacheHandler implements PluginHandler {
   }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
-    const fromNetwork$: Observable<HttpExtResponse> = next({ request }).pipe(
+    const fromNetwork$: Observable<HttpExtResponse> = next({
+      request
+    }).pipe(
       mergeMap(response => {
         /* Return response immediately but store in cache as side effect. */
         return merge(
@@ -136,8 +138,21 @@ export class CacheHandler implements PluginHandler {
       map(cacheSize => getTotalCacheSizeInBytes(response, cacheSize)),
       mergeMap(totalCacheSize => this._storage.setSize(totalCacheSize))
     );
+    const updateCache$ = this._createCacheEntry(request, response).pipe(
+      isEmpty() /* <- Triggers `next` fn to update cache size */,
+      mergeMapTo(updateCacheSize$)
+    );
 
-    const storeCache$ = defer(() => {
+    return this._isCacheOutsized(response).pipe(
+      mergeMap(isOutsized => iif(() => isOutsized, EMPTY, updateCache$))
+    );
+  }
+
+  private _createCacheEntry(
+    request: HttpExtRequest,
+    response: HttpExtResponse
+  ): Observable<void> {
+    return defer(() => {
       const key = this._getCacheKey(request);
       const cacheEntry: CacheEntry = {
         createdAt: new Date(),
@@ -147,17 +162,6 @@ export class CacheHandler implements PluginHandler {
 
       return this._storage.set(key, cache);
     });
-
-    return this._isCacheOutsized(response).pipe(
-      tap(console.log),
-      mergeMap(isOutsized =>
-        iif(
-          () => isOutsized,
-          EMPTY,
-          storeCache$.pipe(mergeMapTo(updateCacheSize$), tap(console.log))
-        )
-      )
-    );
   }
 
   private _loadCacheEntry(request: HttpExtRequest): Observable<CacheEntry> {
