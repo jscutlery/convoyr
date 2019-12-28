@@ -169,11 +169,11 @@ For new features or breaking changes [see the changelog](CHANGELOG.md).
       <p><strong>twitter: </strong><a href="https://twitter.com/yjaaidi">@yjaaidi</a></p>
     </td>
     <td align="center">
-      <a href="https://github.com/Edouardbozon" style="color: white">
-        <img src="https://github.com/Edouardbozon.png?s=150" width="150"/>
+      <a href="https://github.com/edbzn" style="color: white">
+        <img src="https://github.com/edbzn.png?s=150" width="150"/>
       </a>
       <p style="margin: 0;"><strong>Edouard Bozon</strong></p>
-      <p><strong>twitter: </strong><a href="https://twitter.com/edouardbozon">@edouardbozon</a></p>
+      <p><strong>twitter: </strong><a href="https://twitter.com/edouardbozon">@edbzn</a></p>
     </td>
   </tr>
 </table>
