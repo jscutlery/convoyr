@@ -28,7 +28,8 @@ export function fromNgRequest(
     method: request.method as HttpMethod,
     body: request.body,
     headers: fromNgClass(request.headers),
-    params: fromNgClass(request.params)
+    params: fromNgClass(request.params),
+    responseType: request.responseType
   });
 }
 
@@ -37,7 +38,8 @@ export function toNgRequest(
 ): HttpRequest<unknown> {
   const init = {
     headers: new HttpHeaders(request.headers),
-    params: new HttpParams({ fromObject: request.params })
+    params: new HttpParams({ fromObject: request.params }),
+    responseType: request.responseType
   };
 
   if (['POST', 'PUT', 'PATCH'].includes(request.method)) {
