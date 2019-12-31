@@ -10,7 +10,9 @@ export interface CachePluginOptions extends HandlerOptions {
 export function createCachePlugin({
   addCacheMetadata = false,
   storage = new MemoryStorageAdapter(),
-  condition = matchMethod('GET'),
+  condition = ({ request }) => {
+    return request.method === 'GET' && request.responseType === 'json';
+  },
   maxAge,
   maxSize
 }: Partial<CachePluginOptions> = {}) {
