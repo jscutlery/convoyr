@@ -16,6 +16,7 @@ describe('fromNgRequest', () => {
       method: 'POST',
       body: { data: 'hello world' },
       headers: { Authorization: 'token' },
+      responseType: 'json',
       params: {}
     });
   });
@@ -29,7 +30,8 @@ describe('fromNgRequest', () => {
       method: 'GET',
       body: null,
       headers: {},
-      params: { id: '1' }
+      params: { id: '1' },
+      responseType: 'json'
     });
   });
 });
@@ -41,6 +43,7 @@ describe('toNgRequest', () => {
       method: 'PUT',
       body: { data: { name: 'Jacques Chirac' } },
       headers: { Authorization: 'Bearer token' },
+      responseType: 'json',
       params: { id: '1' }
     };
 
@@ -61,6 +64,7 @@ describe('toNgRequest', () => {
       method: 'GET',
       body: null,
       headers: {},
+      responseType: 'json',
       params: {}
     };
 
