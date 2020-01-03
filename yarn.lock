@@ -2671,9 +2671,9 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
     color-convert "^1.9.0"
 
 ansi-styles@^4.1.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-4.2.0.tgz#5681f0dcf7ae5880a7841d8831c4724ed9cc0172"
-  integrity sha512-7kFQgnEaMdRtwf6uSfUnVr9gSGC7faurn+J/Mv90/W+iTtN0405/nLdopfMWwchyxhbGYl6TC4Sccn9TUkGAgg==
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-4.2.1.tgz#90ae75c424d008d2624c5bf29ead3177ebfcf359"
+  integrity sha512-9VGjrMsG1vePxcSweQsN20KY/c4zN0h9fLjqAbwbPfahM3t+NL+M9HC8xeXG2I8pX5NoamTGNuomEUFI7fcUjA==
   dependencies:
     "@types/color-name" "^1.1.1"
     color-convert "^2.0.1"
@@ -8046,10 +8046,17 @@ magic-string@0.25.3:
   dependencies:
     sourcemap-codec "^1.4.4"
 
-magic-string@0.25.4, magic-string@^0.25.0, magic-string@^0.25.2:
+magic-string@0.25.4:
   version "0.25.4"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.4.tgz#325b8a0a79fc423db109b77fd5a19183b7ba5143"
   integrity sha512-oycWO9nEVAP2RVPbIoDoA4Y7LFIJ3xRYov93gAyJhZkET1tNuB0u7uWkZS2LpBWTJUWnmau/To8ECWRC+jKNfw==
+  dependencies:
+    sourcemap-codec "^1.4.4"
+
+magic-string@^0.25.0, magic-string@^0.25.2:
+  version "0.25.5"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.5.tgz#694fa8c6b9a51d83cc4a72c5b6883a7cfa890e40"
+  integrity sha512-vIO/BOm9odBHBAGwv0gZPLJeO9IpwliiIc0uPeAW93rrFMJ/R3M665IAEfOU/IW3kD4S9AtEn76lfTn1Yif+9A==
   dependencies:
     sourcemap-codec "^1.4.4"
 
@@ -9183,17 +9190,10 @@ p-limit@^1.1.0:
   dependencies:
     p-try "^1.0.0"
 
-p-limit@^2.0.0:
+p-limit@^2.0.0, p-limit@^2.2.0, p-limit@^2.2.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.2.2.tgz#61279b67721f5287aa1c13a9a7fbbc48c9291b1e"
   integrity sha512-WGR+xHecKTr7EbUEhyLSh5Dube9JtdiG78ufaeLxTgpudf/20KqyMioIUZJAezlTIi6evxuoUs9YXc11cU+yzQ==
-  dependencies:
-    p-try "^2.0.0"
-
-p-limit@^2.2.0, p-limit@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.2.1.tgz#aa07a788cc3151c939b5131f63570f0dd2009537"
-  integrity sha512-85Tk+90UCVWvbDavCLKPOLC9vvY8OwEX/RtKF+/1OADJMVlFfEHOiMTPVyxg7mk/dKa+ipdHm0OUkTvCpMTuwg==
   dependencies:
     p-try "^2.0.0"
 
@@ -11575,9 +11575,9 @@ terser@4.4.2:
     source-map-support "~0.5.12"
 
 terser@^4.1.2, terser@^4.3.8, terser@^4.3.9:
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-4.4.3.tgz#401abc52b88869cf904412503b1eb7da093ae2f0"
-  integrity sha512-0ikKraVtRDKGzHrzkCv5rUNDzqlhmhowOBqC0XqUHFpW+vJ45+20/IFBcebwKfiS2Z9fJin6Eo+F1zLZsxi8RA==
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-4.5.1.tgz#63b52d6b6ce344aa6fedcd0ee06a695799eb50bd"
+  integrity sha512-lH9zLIbX8PRBEFCTvfHGCy0s9HEKnNso1Dx9swSopF3VUnFLB8DpQ61tHxoofovNC/sG0spajJM3EIIRSTByiQ==
   dependencies:
     commander "^2.20.0"
     source-map "~0.6.1"
