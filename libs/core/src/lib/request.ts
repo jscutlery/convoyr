@@ -1,5 +1,7 @@
 import { Headers } from './headers';
 
+export type ResponseType = 'arraybuffer' | 'blob' | 'json' | 'text';
+
 export type HttpMethod =
   | 'HEAD'
   | 'OPTIONS'
@@ -15,6 +17,7 @@ export interface HttpExtRequest<TBody = unknown> {
   readonly body: TBody | null;
   readonly headers: Headers;
   readonly params: { [key: string]: string | string[] };
+  readonly responseType: ResponseType;
 }
 
 export type RequestArgs<TBody> = { url: string } & Partial<
@@ -29,6 +32,7 @@ export function createRequest<TBody>(
     method: request.method || 'GET',
     body: request.body || null,
     headers: request.headers || {},
-    params: request.params || {}
+    params: request.params || {},
+    responseType: request.responseType || 'json'
   };
 }

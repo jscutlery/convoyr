@@ -1,7 +1,7 @@
-import { matchMethod, RequestCondition } from '@http-ext/core';
+import { RequestCondition } from '@http-ext/core';
 
 import { CacheHandler, HandlerOptions } from './cache-handler';
-import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
+import { MemoryStorage } from './storages/memory-storage';
 
 export interface CachePluginOptions extends HandlerOptions {
   condition: RequestCondition;
@@ -9,12 +9,13 @@ export interface CachePluginOptions extends HandlerOptions {
 
 export function createCachePlugin({
   addCacheMetadata = false,
-  storage = new MemoryStorageAdapter(),
-  condition = matchMethod('GET'),
-  maxAge
+  storage = new MemoryStorage({ maxSize: 100 }),
+  condition = ({ request }) => {
+    return request.method === 'GET' && request.responseType === 'json';
+  }
 }: Partial<CachePluginOptions> = {}) {
   return {
     condition,
-    handler: new CacheHandler({ addCacheMetadata, storage, maxAge })
+    handler: new CacheHandler({ addCacheMetadata, storage })
   };
 }

@@ -58,7 +58,8 @@ describe('HttpExtModule', () => {
       method: 'GET',
       body: null,
       headers: {},
-      params: {}
+      params: {},
+      responseType: 'json'
     });
     expect(typeof spyPlugin.handler.handle.mock.calls[0][0].next).toEqual(
       'function'

@@ -14,40 +14,40 @@ import {
   takeUntil
 } from 'rxjs/operators';
 
-import { CacheEntry, createCacheEntry, isExpired } from './cache-entry';
+import { CacheEntry, createCacheEntry } from './cache-entry';
 import {
   CacheMetadata,
   createCacheMetadata,
   createEmptyCacheMetadata
 } from './cache-metadata';
 import { HttpExtCacheResponse, WithCacheMetadata } from './cache-response';
-import { StorageAdapter } from './storage-adapters/storage-adapter';
-import { parseMaxAge } from './utils/parse-max-age';
+import { Storage } from './storages/storage';
 
 export interface HandlerOptions {
   addCacheMetadata: boolean;
-  storage: StorageAdapter;
-  maxAge?: string;
+  storage: Storage;
 }
+
+export type CacheHandlerResponse = HttpExtResponse | HttpExtCacheResponse;
 
 export class CacheHandler implements PluginHandler {
   private _shouldAddCacheMetadata: boolean;
-  private _storage: StorageAdapter;
-  private _maxAgeMilliseconds?: number;
+  private _storage: Storage;
 
-  constructor({ addCacheMetadata, storage, maxAge }: HandlerOptions) {
+  constructor({ addCacheMetadata, storage }: HandlerOptions) {
     this._shouldAddCacheMetadata = addCacheMetadata;
     this._storage = storage;
-    this._maxAgeMilliseconds = parseMaxAge(maxAge);
   }
 
   handle({
     request,
     next
-  }: PluginHandlerArgs): Observable<HttpExtResponse | HttpExtCacheResponse> {
+  }: PluginHandlerArgs): Observable<CacheHandlerResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
-    const fromNetwork$: Observable<HttpExtResponse> = next({ request }).pipe(
+    const fromNetwork$: Observable<HttpExtResponse> = next({
+      request
+    }).pipe(
       mergeMap(response => {
         /* Return response immediately but store in cache as side effect. */
         return merge(
@@ -62,7 +62,7 @@ export class CacheHandler implements PluginHandler {
     );
 
     const fromCache$: Observable<HttpExtResponse> = defer(() =>
-      this._loadCacheEntry(request)
+      this._load(request)
     ).pipe(
       map(cacheEntry =>
         this._createResponseWithOptionalMetadata({
@@ -97,18 +97,19 @@ export class CacheHandler implements PluginHandler {
     request: HttpExtRequest,
     response: HttpExtResponse
   ): Observable<void> {
-    const cacheEntry: CacheEntry = {
-      createdAt: new Date(),
-      response
-    };
+    return defer(() => {
+      const key = this._getCacheKey(request);
+      const cacheEntry = createCacheEntry({
+        createdAt: new Date(),
+        response
+      });
+      const cache = JSON.stringify(cacheEntry);
 
-    return this._storage.set(
-      this._getCacheKey(request),
-      JSON.stringify(cacheEntry)
-    );
+      return this._storage.set(key, cache);
+    });
   }
 
-  private _loadCacheEntry(request: HttpExtRequest): Observable<CacheEntry> {
+  private _load(request: HttpExtRequest): Observable<CacheEntry> {
     return this._storage.get(this._getCacheKey(request)).pipe(
       mergeMap(rawCacheEntry => {
         /* There's no entry. */
@@ -118,16 +119,6 @@ export class CacheHandler implements PluginHandler {
 
         /* Parse the cache entry. */
         const cacheEntry = createCacheEntry(JSON.parse(rawCacheEntry));
-
-        /* Cache entry expired. */
-        if (
-          isExpired({
-            cachedAt: cacheEntry.createdAt,
-            maxAgeMilliseconds: this._maxAgeMilliseconds
-          })
-        ) {
-          return EMPTY;
-        }
 
         return of(cacheEntry);
       })
@@ -139,7 +130,6 @@ export class CacheHandler implements PluginHandler {
     const { params } = request;
     const hasParams = Object.keys(params).length > 0;
 
-    /* Note that JSON.stringify is used to avoid browser only `encodeURIComponent()` */
     return JSON.stringify({
       u: request.url,
       p: hasParams ? request.params : undefined

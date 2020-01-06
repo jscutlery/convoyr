@@ -5,13 +5,21 @@ import {
   HttpExtResponse
 } from '@http-ext/core';
 import { advanceTo, clear as clearDate } from 'jest-date-mock';
-import { concat, EMPTY, of } from 'rxjs';
+import { concat, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-import { delay } from 'rxjs/operators';
 
 import { WithCacheMetadata } from './cache-response';
 import { createCachePlugin } from './create-cache-plugin';
-import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
+import { MemoryStorage } from './storages/memory-storage';
+
+function createMemoryStorageSpy() {
+  const spyStorage = new MemoryStorage();
+  spyStorage.get = jest.fn(spyStorage.get);
+  spyStorage.set = jest.fn(spyStorage.set);
+  spyStorage.delete = jest.fn(spyStorage.delete);
+
+  return spyStorage;
+}
 
 describe('CachePlugin', () => {
   let request: HttpExtRequest;
@@ -29,23 +37,6 @@ describe('CachePlugin', () => {
     marbles(m => {
       const cachePlugin = createCachePlugin({ addCacheMetadata: true });
       const handler = cachePlugin.handler;
-      const networkResponse = createResponse({
-        body: {
-          data: { answer: 42 },
-          cacheMetadata: {
-            isFromCache: false
-          }
-        } as WithCacheMetadata
-      });
-      const cacheResponse = createResponse({
-        body: {
-          data: { answer: 42 },
-          cacheMetadata: {
-            createdAt: new Date('2019-01-01T00:00:00.000Z'),
-            isFromCache: true
-          }
-        } as WithCacheMetadata
-      });
 
       /* Mock date. */
       advanceTo(new Date('2019-01-01T00:00:00.000Z'));
@@ -60,7 +51,27 @@ describe('CachePlugin', () => {
       /* Execute requests in order. */
       const responses$ = concat(requestA$, requestB$);
 
+      const networkResponse = createResponse({
+        body: {
+          data: { answer: 42 },
+          cacheMetadata: {
+            isFromCache: false
+          }
+        } as WithCacheMetadata
+      });
+
+      const cacheResponse = createResponse({
+        body: {
+          data: { answer: 42 },
+          cacheMetadata: {
+            createdAt: new Date('2019-01-01T00:00:00.000Z'),
+            isFromCache: true
+          }
+        } as WithCacheMetadata
+      });
+
       const values = { n: networkResponse, c: cacheResponse };
+
       /*                         👇 Second time cache is served first */
       const expected$ = m.cold('-ncn|', values);
 
@@ -88,9 +99,7 @@ describe('CachePlugin', () => {
     const cachePlugin = createCachePlugin();
 
     expect(cachePlugin.handler['_storage']).toBeDefined();
-    expect(cachePlugin.handler['_storage']).toBeInstanceOf(
-      MemoryStorageAdapter
-    );
+    expect(cachePlugin.handler['_storage']).toBeInstanceOf(MemoryStorage);
   });
 
   it('should use given request condition', () => {
@@ -118,14 +127,8 @@ describe('CachePlugin', () => {
   });
 
   it('should use given storage implementation to store cache', async () => {
-    const spyStorage = {
-      get: jest.fn().mockReturnValue(EMPTY),
-      set: jest.fn().mockReturnValue(of()),
-      delete: jest.fn().mockReturnValue(of())
-    };
-    const cachePlugin = createCachePlugin({
-      storage: spyStorage
-    });
+    const storage = createMemoryStorageSpy() as any;
+    const cachePlugin = createCachePlugin({ storage });
     const next = () => of(response);
 
     const handler$ = cachePlugin.handler.handle({ request, next });
@@ -134,10 +137,10 @@ describe('CachePlugin', () => {
 
     await handler$.toPromise();
 
-    const cacheKey = spyStorage.set.mock.calls[0][0];
-    const cachedData = spyStorage.set.mock.calls[0][1];
+    const cacheKey = storage.set.mock.calls[0][0];
+    const cachedData = storage.set.mock.calls[0][1];
 
-    expect(spyStorage.set).toBeCalledTimes(1);
+    expect(storage.set).toBeCalledTimes(1);
     expect(cacheKey).toBe('{"u":"https://ultimate-answer.com"}');
     expect(JSON.parse(cachedData)).toEqual(
       expect.objectContaining({
@@ -148,44 +151,6 @@ describe('CachePlugin', () => {
       })
     );
   });
-
-  it(
-    'should unset cache when ttl expired',
-    marbles(m => {
-      const spyStorage = new MemoryStorageAdapter();
-      spyStorage.get = jest.fn(spyStorage.get);
-      spyStorage.set = jest.fn(spyStorage.set);
-      spyStorage.delete = jest.fn(spyStorage.delete);
-
-      const cachePlugin = createCachePlugin({
-        addCacheMetadata: false,
-        maxAge: '1h'
-      });
-      const handler = cachePlugin.handler;
-
-      /* Fake date based on marbles test scheduler. */
-      const realDate = Date;
-      global.Date = jest.fn(() => new realDate(m.scheduler.now())) as any;
-
-      const next = () => m.cold('-r|', { r: response });
-
-      const requestA$ = handler.handle({ request, next });
-      const requestB$ = handler.handle({ request, next });
-
-      /* Wait an hour between the two calls. */
-      const responses$ = concat(
-        requestA$,
-        EMPTY.pipe(delay(3600 * 1000)),
-        requestB$
-      );
-
-      /* No response from cache as it expired...
-       *                                👇 */
-      const expected$ = m.cold('-r 3600s -r|', { r: response });
-
-      m.expect(responses$).toBeObservable(expected$);
-    })
-  );
 
   it(
     'should handle query string in store key',
