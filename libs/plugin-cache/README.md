@@ -11,7 +11,13 @@ The plugin requires `@http-ext/core` and `@http-ext/angular` to be installed.
 ## Installation
 
 ```bash
-yarn add @http-ext/plugin-cache
+yarn add @http-ext/core @http-ext/plugin-cache lru-cache
+```
+
+or 
+
+```
+npm install @http-ext/core @http-ext/plugin-cache lru-cache
 ```
 
 ## Usage
@@ -20,7 +26,7 @@ The whole configuration object is optional.
 
 ```ts
 import { HttpExtModule } from '@http-ext/angular';
-import { cachePlugin } from '@http-ext/plugin-cache';
+import { createCachePlugin } from '@http-ext/plugin-cache';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +34,7 @@ import { cachePlugin } from '@http-ext/plugin-cache';
     BrowserModule,
     HttpClientModule,
     HttpExtModule.forRoot({
-      plugins: [cachePlugin()]
+      plugins: [createCachePlugin()]
     })
   ],
   bootstrap: [AppComponent]
@@ -94,7 +100,32 @@ The same response body with `addCacheMetadata` set to `true`.
 
 Data are moved in a dedicated object and cache metadata are added.
 
+### `MemoryStorage`
+
+#### `MemoryStorage` options
+
+| Property           | Type                    | Default value         |
+| ------------------ | ----------------------- |---------------------- |
+| `maxSize`          | `number`                | `100`                 |
+
+
+#### `MemoryStorage` max size
+
+Default's storage size of the `MemoryStorage` is 100 requests.
+Above this limit, the least recently used response will be removed to free some space.
+
+`MemoryStorage` max size can be configured when initializing the storage and the cache plugin.
+
+```ts
+HttpExtModule.forRoot({
+  plugins: [
+    createCachePlugin({
+      storage: new MemoryStorage({ maxSize: 2000 })
+    })
+  ]
+})
+```
+
 ### Custom storage
 
-To use an other storage than available ones (e.g. Redis) you need to implement the `Storage` interface and then pass it to the plugin configuration.
-`
+You can use any other kind of storage (e.g. Redis) by implementing the `Storage` interface.

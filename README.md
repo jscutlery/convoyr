@@ -46,7 +46,7 @@ yarn add @http-ext/core @http-ext/angular @http-ext/plugin-cache
 
 ```ts
 import { HttpExtModule } from '@http-ext/angular';
-import { cachePlugin } from '@http-ext/plugin-cache';
+import { createCachePlugin } from '@http-ext/plugin-cache';
 
 @NgModule({
   declarations: [AppComponent],
@@ -54,7 +54,7 @@ import { cachePlugin } from '@http-ext/plugin-cache';
     BrowserModule,
     HttpClientModule,
     HttpExtModule.forRoot({
-      plugins: [cachePlugin()]
+      plugins: [createCachePlugin()]
     })
   ],
   bootstrap: [AppComponent]
@@ -185,3 +185,4 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 ## License
 
 This project is MIT licensed.
+`
