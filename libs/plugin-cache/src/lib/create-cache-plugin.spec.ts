@@ -12,7 +12,7 @@ import { WithCacheMetadata } from './cache-response';
 import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorage } from './storages/memory-storage';
 
-function configureSpyStorage() {
+function createMemoryStorageSpy() {
   const spyStorage = new MemoryStorage();
   spyStorage.get = jest.fn(spyStorage.get);
   spyStorage.set = jest.fn(spyStorage.set);
@@ -37,23 +37,6 @@ describe('CachePlugin', () => {
     marbles(m => {
       const cachePlugin = createCachePlugin({ addCacheMetadata: true });
       const handler = cachePlugin.handler;
-      const networkResponse = createResponse({
-        body: {
-          data: { answer: 42 },
-          cacheMetadata: {
-            isFromCache: false
-          }
-        } as WithCacheMetadata
-      });
-      const cacheResponse = createResponse({
-        body: {
-          data: { answer: 42 },
-          cacheMetadata: {
-            createdAt: new Date('2019-01-01T00:00:00.000Z'),
-            isFromCache: true
-          }
-        } as WithCacheMetadata
-      });
 
       /* Mock date. */
       advanceTo(new Date('2019-01-01T00:00:00.000Z'));
@@ -68,7 +51,27 @@ describe('CachePlugin', () => {
       /* Execute requests in order. */
       const responses$ = concat(requestA$, requestB$);
 
+      const networkResponse = createResponse({
+        body: {
+          data: { answer: 42 },
+          cacheMetadata: {
+            isFromCache: false
+          }
+        } as WithCacheMetadata
+      });
+
+      const cacheResponse = createResponse({
+        body: {
+          data: { answer: 42 },
+          cacheMetadata: {
+            createdAt: new Date('2019-01-01T00:00:00.000Z'),
+            isFromCache: true
+          }
+        } as WithCacheMetadata
+      });
+
       const values = { n: networkResponse, c: cacheResponse };
+
       /*                         👇 Second time cache is served first */
       const expected$ = m.cold('-ncn|', values);
 
@@ -124,7 +127,7 @@ describe('CachePlugin', () => {
   });
 
   it('should use given storage implementation to store cache', async () => {
-    const storage = configureSpyStorage() as any;
+    const storage = createMemoryStorageSpy() as any;
     const cachePlugin = createCachePlugin({ storage });
     const next = () => of(response);
 
