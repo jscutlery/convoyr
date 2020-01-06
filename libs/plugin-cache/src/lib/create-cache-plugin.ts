@@ -1,6 +1,7 @@
 import { RequestCondition } from '@http-ext/core';
+
 import { CacheHandler, HandlerOptions } from './cache-handler';
-import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
+import { MemoryStorage } from './storages/memory-storage';
 
 export interface CachePluginOptions extends HandlerOptions {
   condition: RequestCondition;
@@ -8,7 +9,7 @@ export interface CachePluginOptions extends HandlerOptions {
 
 export function createCachePlugin({
   addCacheMetadata = false,
-  storage = new MemoryStorageAdapter(),
+  storage = new MemoryStorage(),
   condition = ({ request }) => {
     return request.method === 'GET' && request.responseType === 'json';
   }

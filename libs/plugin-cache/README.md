@@ -43,14 +43,13 @@ You can give a partial configuration object it will be merged with default value
 | Property           | Type                    | Default value         |
 | ------------------ | ----------------------- |---------------------- |
 | `addCacheMetadata` | `boolean`               | `false`               |
-| `storage`          | `StorageAdapter`        | `new MemoryAdapter()` |
+| `storage`          | `Storage`               | `new MemoryStorage()` |
 | `condition`        | `RequestCondition`      | `matchMethod('GET')`  |
-| `maxAge`           | `string` or `undefined` | `undefined`           |
 
 Here is an example passing a configuration object.
 
 ```ts
-import { LocalStorageAdapter } from '@http-ext/plugin-cache';
+import { MemoryStorage } from '@http-ext/plugin-cache';
 
 @NgModule({
   imports: [
@@ -58,8 +57,7 @@ import { LocalStorageAdapter } from '@http-ext/plugin-cache';
       plugins: [
         cachePlugin({
           addCacheMetadata: true,
-          storage: new LocalStorageAdapter(),
-          maxAge: '1d'
+          storage: new MemoryStorage()
         })
       ]
     })
@@ -96,33 +94,7 @@ The same response body with `addCacheMetadata` set to `true`.
 
 Data are moved in a dedicated object and cache metadata are added.
 
-### Available storage
-
-To cache HTTP responses we need to use a storage. This plugin comes with two built-in storage:
-
-- `LocalStorageAdapter` that persists the cache between user's sessions.
-- `MemoryAdapter` that looses its cache between user's sessions.
-
 ### Custom storage
 
-To use an other storage than available ones (e.g. Redis) you need to implement the `StorageAdapter` interface and then pass it to the plugin configuration.
-
-### Max age
-
-To invalidate the cache in certain period of time you can provide a cache lifetime using the `maxAge` option. If this option is not provided the cache will never expire.
-
-Here are some examples of supported formats.
-
-```ts
-maxAge: '2 days'
-maxAge: '1d'
-maxAge: '10h'
-maxAge: '2.5 hrs'
-maxAge: '2h'
-maxAge: '1m'
-maxAge: '5s'
-maxAge: '1y'
-maxAge: '100'
-```
-
-When no unit is specified, milliseconds are used by default.
+To use an other storage than available ones (e.g. Redis) you need to implement the `Storage` interface and then pass it to the plugin configuration.
+`

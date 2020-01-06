@@ -5,16 +5,15 @@ import {
   HttpExtResponse
 } from '@http-ext/core';
 import { advanceTo, clear as clearDate } from 'jest-date-mock';
-import { concat, EMPTY, of } from 'rxjs';
+import { concat, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-import { delay } from 'rxjs/operators';
 
 import { WithCacheMetadata } from './cache-response';
 import { createCachePlugin } from './create-cache-plugin';
-import { MemoryStorageAdapter } from './storage-adapters/memory-storage-adapter';
+import { MemoryStorage } from './storages/memory-storage';
 
 function configureSpyStorage() {
-  const spyStorage = new MemoryStorageAdapter();
+  const spyStorage = new MemoryStorage();
   spyStorage.get = jest.fn(spyStorage.get);
   spyStorage.set = jest.fn(spyStorage.set);
   spyStorage.delete = jest.fn(spyStorage.delete);
@@ -97,9 +96,7 @@ describe('CachePlugin', () => {
     const cachePlugin = createCachePlugin();
 
     expect(cachePlugin.handler['_storage']).toBeDefined();
-    expect(cachePlugin.handler['_storage']).toBeInstanceOf(
-      MemoryStorageAdapter
-    );
+    expect(cachePlugin.handler['_storage']).toBeInstanceOf(MemoryStorage);
   });
 
   it('should use given request condition', () => {

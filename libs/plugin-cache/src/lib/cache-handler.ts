@@ -13,6 +13,7 @@ import {
   switchMapTo,
   takeUntil
 } from 'rxjs/operators';
+
 import { CacheEntry, createCacheEntry } from './cache-entry';
 import {
   CacheMetadata,
@@ -20,18 +21,18 @@ import {
   createEmptyCacheMetadata
 } from './cache-metadata';
 import { HttpExtCacheResponse, WithCacheMetadata } from './cache-response';
-import { StorageAdapter } from './storage-adapters/storage-adapter';
+import { Storage } from './storages/storage';
 
 export interface HandlerOptions {
   addCacheMetadata: boolean;
-  storage: StorageAdapter;
+  storage: Storage;
 }
 
 export type CacheHandlerResponse = HttpExtResponse | HttpExtCacheResponse;
 
 export class CacheHandler implements PluginHandler {
   private _shouldAddCacheMetadata: boolean;
-  private _storage: StorageAdapter;
+  private _storage: Storage;
 
   constructor({ addCacheMetadata, storage }: HandlerOptions) {
     this._shouldAddCacheMetadata = addCacheMetadata;
