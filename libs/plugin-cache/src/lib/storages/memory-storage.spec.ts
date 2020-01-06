@@ -11,7 +11,7 @@ describe('MemoryStorage', () => {
     return await memoryStorage.set(key, value).toPromise();
   }
 
-  describe('with size of 1', () => {
+  describe('with maxSize of 1', () => {
     beforeEach(() => {
       memoryStorage = new MemoryStorage({
         maxSize: 1
@@ -23,7 +23,7 @@ describe('MemoryStorage', () => {
       expect(await get('Key A')).toEqual('Value A');
     });
 
-    xit('🚧 should remove old entry when maxSize is reached', async () => {
+    xit('🚧 should remove the oldest entry when maxSize is reached', async () => {
       await set('Key A', 'Value A');
 
       /* Adding this entry should remove the previous entry. */
@@ -31,6 +31,18 @@ describe('MemoryStorage', () => {
 
       expect(await get('Key A')).toEqual(undefined);
       expect(await get('Key B')).toEqual('Value B');
+    });
+
+    describe('with maxSize of 2', () => {
+      beforeEach(() => {
+        memoryStorage = new MemoryStorage({
+          maxSize: 2
+        });
+      });
+
+      it.todo(
+        '🚧 should remove the least recently used entry when maxSize is reached'
+      );
     });
   });
 
