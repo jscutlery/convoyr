@@ -56,6 +56,10 @@ describe('MemoryStorage', () => {
     });
   });
 
+  describe('with maxSize of human readable bytes', () => {
+    it.todo('🚧 should remove least recently used');
+  });
+
   describe('with maxAge', () => {
     it.todo('🚧 should remove old entry when outdated');
   });
