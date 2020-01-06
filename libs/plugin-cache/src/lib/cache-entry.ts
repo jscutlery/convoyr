@@ -1,8 +1,4 @@
 import { HttpExtResponse } from '@http-ext/core';
-import * as sizeof from 'object-sizeof';
-
-/* Hack to ignore type error */
-const sizeInBytes = (sizeof as unknown) as (value: any) => number;
 
 export interface CacheEntry {
   createdAt: Date;
@@ -24,50 +20,4 @@ export function createCacheEntry(cacheEntry: CacheEntryArgs): CacheEntry {
     createdAt,
     response: cacheEntry.response
   };
-}
-
-export function isCacheExpired({
-  cachedAt,
-  maxAgeMilliseconds
-}: {
-  cachedAt: Date;
-  maxAgeMilliseconds: number;
-}) {
-  if (maxAgeMilliseconds == null) {
-    return false;
-  }
-
-  const expiresAt = cachedAt.getTime() + maxAgeMilliseconds;
-
-  return new Date() >= new Date(expiresAt);
-}
-
-export function isCacheOutsized({
-  totalSizeInBytes,
-  maxSizeInBytes
-}: {
-  response: HttpExtResponse;
-  totalSizeInBytes: number;
-  maxSizeInBytes: number;
-}): boolean {
-  /* No max size given, cache will never become outsized */
-  if (maxSizeInBytes == null) {
-    return false;
-  }
-
-  /* And check if it fits the max size */
-  if (totalSizeInBytes > maxSizeInBytes) {
-    return true;
-  }
-
-  return false;
-}
-
-/* Calculate total cache size */
-export function getTotalCacheSizeInBytes(
-  response: HttpExtResponse,
-  currentSizeInBytes: number
-): number {
-  const responseSizeInBytes = sizeInBytes(response);
-  return currentSizeInBytes + responseSizeInBytes;
 }

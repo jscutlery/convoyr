@@ -6,9 +6,6 @@
   "repository": "git@github.com:jscutlery/http-ext.git",
   "peerDependencies": {
     "@http-ext/core": "^0.1.0",
-    "ms": "^2.1.2",
-    "rxjs": "^6.5.3",
-    "object-sizeof": "^1.5.2",
-    "bytes": "^3.1.0"
+    "rxjs": "^6.5.3"
   }
 }
