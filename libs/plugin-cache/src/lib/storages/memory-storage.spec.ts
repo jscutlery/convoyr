@@ -32,19 +32,31 @@ describe('MemoryStorage', () => {
       expect(await get('Key A')).toEqual(undefined);
       expect(await get('Key B')).toEqual('Value B');
     });
+  });
 
-    describe('with maxSize of 2', () => {
-      beforeEach(() => {
-        memoryStorage = new MemoryStorage({
-          maxSize: 2
-        });
+  describe('with maxSize of 2', () => {
+    beforeEach(() => {
+      memoryStorage = new MemoryStorage({
+        maxSize: 2
       });
+    });
 
-      it.todo(
-        '🚧 should remove the least recently used entry when maxSize is reached'
-      );
+    it('should remove the least recently used entry when maxSize is reached', async () => {
+      await set('Key A', 'Value A');
+      await set('Key B', 'Value B');
+
+      /* Even if A is the oldest, B is the least recently used as we just retrieved A. */
+      get('Key A');
+
+      await set('Key C', 'Value C');
+
+      expect(await get('Key A')).toBe('Value A');
+      expect(await get('Key B')).toBe(undefined);
+      expect(await get('Key C')).toBe('Value C');
     });
   });
 
-  it.todo('🚧 should remove old entry when outdated');
+  describe('with maxAge', () => {
+    it.todo('🚧 should remove old entry when outdated');
+  });
 });
