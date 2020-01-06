@@ -23,7 +23,7 @@ describe('MemoryStorage', () => {
       expect(await get('Key A')).toEqual('Value A');
     });
 
-    xit('🚧 should remove the oldest entry when maxSize is reached', async () => {
+    it('🚧 should remove the oldest entry when maxSize is reached', async () => {
       await set('Key A', 'Value A');
 
       /* Adding this entry should remove the previous entry. */

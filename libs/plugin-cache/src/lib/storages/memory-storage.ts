@@ -1,3 +1,4 @@
+import * as LRU from 'lru-cache';
 import { EMPTY, Observable, of } from 'rxjs';
 
 import { Storage } from './storage';
@@ -7,11 +8,12 @@ export interface StorageArgs {
 }
 
 export class MemoryStorage implements Storage {
-  private _cache = new Map<string, string>();
-  private _maxSize?: number;
+  private _cache: LRU<string, string>;
 
   constructor({ maxSize }: StorageArgs = {}) {
-    this._maxSize = maxSize;
+    this._cache = new LRU<string, string>({
+      max: maxSize
+    });
   }
 
   get(key: string): Observable<string> {
@@ -24,7 +26,7 @@ export class MemoryStorage implements Storage {
   }
 
   delete(key: string): Observable<void> {
-    this._cache.delete(key);
+    this._cache.del(key);
     return EMPTY;
   }
 }
