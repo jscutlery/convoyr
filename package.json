@@ -26,7 +26,7 @@
     "format:check": "nx format:check",
     "limbo": "tools/limbo.sh",
     "merge-into-master": "tools/merge-into-master.sh",
-    "publish:libs": "run-s \"affected:build --prod --all\" _publish:*",
+    "publish:libs": "run-s _lerna:version \"affected:build --prod --all\" _publish:*",
     "update": "ng update @nrwl/workspace",
     "update:check": "ng update",
     "workspace-schematic": "nx workspace-schematic",
