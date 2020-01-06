@@ -5,24 +5,15 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { defer, EMPTY, iif, merge, Observable, of } from 'rxjs';
+import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import {
-  isEmpty,
   map,
   mergeMap,
-  mergeMapTo,
   shareReplay,
   switchMapTo,
   takeUntil
 } from 'rxjs/operators';
-
-import {
-  CacheEntry,
-  createCacheEntry,
-  getTotalCacheSizeInBytes,
-  isCacheExpired,
-  isCacheOutsized
-} from './cache-entry';
+import { CacheEntry, createCacheEntry } from './cache-entry';
 import {
   CacheMetadata,
   createCacheMetadata,
@@ -30,14 +21,10 @@ import {
 } from './cache-metadata';
 import { HttpExtCacheResponse, WithCacheMetadata } from './cache-response';
 import { StorageAdapter } from './storage-adapters/storage-adapter';
-import { parseMaxAge } from './utils/parse-max-age';
-import { parseMaxSize } from './utils/parse-max-size';
 
 export interface HandlerOptions {
   addCacheMetadata: boolean;
   storage: StorageAdapter;
-  maxAge?: string;
-  maxSize?: string;
 }
 
 export type CacheHandlerResponse = HttpExtResponse | HttpExtCacheResponse;
@@ -45,14 +32,10 @@ export type CacheHandlerResponse = HttpExtResponse | HttpExtCacheResponse;
 export class CacheHandler implements PluginHandler {
   private _shouldAddCacheMetadata: boolean;
   private _storage: StorageAdapter;
-  private _maxAgeMilliseconds?: number;
-  private _maxSizeInBytes?: number;
 
-  constructor({ addCacheMetadata, storage, maxAge, maxSize }: HandlerOptions) {
+  constructor({ addCacheMetadata, storage }: HandlerOptions) {
     this._shouldAddCacheMetadata = addCacheMetadata;
     this._storage = storage;
-    this._maxAgeMilliseconds = parseMaxAge(maxAge);
-    this._maxSizeInBytes = parseMaxSize(maxSize);
   }
 
   handle({
@@ -78,7 +61,7 @@ export class CacheHandler implements PluginHandler {
     );
 
     const fromCache$: Observable<HttpExtResponse> = defer(() =>
-      this._loadCacheEntry(request)
+      this._load(request)
     ).pipe(
       map(cacheEntry =>
         this._createResponseWithOptionalMetadata({
@@ -108,62 +91,24 @@ export class CacheHandler implements PluginHandler {
     );
   }
 
-  private _isCacheOutsized(response: HttpExtResponse): Observable<boolean> {
-    const hasCacheMaxSize = this._maxSizeInBytes != null;
-    const maxSizeInBytes = this._maxSizeInBytes;
-
-    return this._storage.getSize().pipe(
-      map(cacheSize => {
-        const totalSizeInBytes = getTotalCacheSizeInBytes(response, cacheSize);
-
-        return (
-          hasCacheMaxSize &&
-          isCacheOutsized({
-            totalSizeInBytes,
-            maxSizeInBytes,
-            response
-          })
-        );
-      })
-    );
-  }
-
   /* Store metadata belong cache. */
   private _store(
     request: HttpExtRequest,
     response: HttpExtResponse
   ): Observable<void> {
-    const updateCacheSize$ = this._storage.getSize().pipe(
-      map(cacheSize => getTotalCacheSizeInBytes(response, cacheSize)),
-      mergeMap(totalCacheSize => this._storage.setSize(totalCacheSize))
-    );
-    const updateCache$ = this._createCacheEntry(request, response).pipe(
-      isEmpty() /* Triggers `next` fn to update cache size */,
-      mergeMapTo(updateCacheSize$)
-    );
-
-    return this._isCacheOutsized(response).pipe(
-      mergeMap(isOutsized => iif(() => isOutsized, EMPTY, updateCache$))
-    );
-  }
-
-  private _createCacheEntry(
-    request: HttpExtRequest,
-    response: HttpExtResponse
-  ): Observable<void> {
     return defer(() => {
       const key = this._getCacheKey(request);
-      const cacheEntry: CacheEntry = {
+      const cacheEntry = createCacheEntry({
         createdAt: new Date(),
         response
-      };
+      });
       const cache = JSON.stringify(cacheEntry);
 
       return this._storage.set(key, cache);
     });
   }
 
-  private _loadCacheEntry(request: HttpExtRequest): Observable<CacheEntry> {
+  private _load(request: HttpExtRequest): Observable<CacheEntry> {
     return this._storage.get(this._getCacheKey(request)).pipe(
       mergeMap(rawCacheEntry => {
         /* There's no entry. */
@@ -173,16 +118,6 @@ export class CacheHandler implements PluginHandler {
 
         /* Parse the cache entry. */
         const cacheEntry = createCacheEntry(JSON.parse(rawCacheEntry));
-
-        /* Cache entry expired. */
-        if (
-          isCacheExpired({
-            cachedAt: cacheEntry.createdAt,
-            maxAgeMilliseconds: this._maxAgeMilliseconds
-          })
-        ) {
-          return EMPTY;
-        }
 
         return of(cacheEntry);
       })

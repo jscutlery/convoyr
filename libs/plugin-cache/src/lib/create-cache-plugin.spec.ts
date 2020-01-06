@@ -153,61 +153,6 @@ describe('CachePlugin', () => {
   });
 
   it(
-    'should unset cache when maxAge expired',
-    marbles(m => {
-      const cachePlugin = createCachePlugin({ maxAge: '1h' });
-      const handler = cachePlugin.handler;
-
-      /* Fake date based on marbles test scheduler. */
-      const realDate = Date;
-      global.Date = jest.fn(() => new realDate(m.scheduler.now())) as any;
-
-      const next = () => m.cold('-r|', { r: response });
-
-      const requestA$ = handler.handle({ request, next });
-      const requestB$ = handler.handle({ request, next });
-
-      /* Wait an hour between the two calls. */
-      const responses$ = concat(
-        requestA$,
-        EMPTY.pipe(delay(3600 * 1000)),
-        requestB$
-      );
-
-      /* No response from cache as it expired...
-       *                                👇 */
-      const expected$ = m.cold('-r 3600s -r|', { r: response });
-
-      m.expect(responses$).toBeObservable(expected$);
-    })
-  );
-
-  it('should not set cache entry when storage outsized', async () => {
-    const storage = configureSpyStorage();
-    const cachePlugin = createCachePlugin({ maxSize: '226b', storage });
-    const handler = cachePlugin.handler;
-
-    /* Create a response (226 bytes) just in the limit */
-    const data = {
-      body: Array.from({ length: 10 }, () => ({ data: 'data' }))
-    };
-
-    response = createResponse(data);
-    const next = () => of(response);
-
-    await handler.handle({ request, next }).toPromise();
-    await handler
-      .handle({
-        request: { ...request, url: 'https://an-other-url.com' },
-        next
-      })
-      .toPromise();
-
-    /* Second time cache should not be created */
-    expect(storage.set).toBeCalledTimes(1);
-  });
-
-  it(
     'should handle query string in store key',
     marbles(m => {
       const cachePlugin = createCachePlugin();

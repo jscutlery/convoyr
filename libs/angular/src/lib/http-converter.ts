@@ -12,7 +12,7 @@ import {
   HttpMethod
 } from '@http-ext/core';
 
-function fromNgClass(
+export function fromNgClass(
   ngClass: HttpHeaders | HttpParams
 ): { [key: string]: string } {
   return ngClass
