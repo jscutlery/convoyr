@@ -2,20 +2,29 @@ import { EMPTY, Observable, of } from 'rxjs';
 
 import { Storage } from './storage';
 
-export class MemoryStorage implements Storage {
-  private cache = new Map<string, string>();
+export interface StorageArgs {
+  maxSize?: number;
+}
 
-  get(key: string): Observable<string> {
-    return of(this.cache.get(key));
+export class MemoryStorage implements Storage {
+  private _cache = new Map<string, string>();
+  private _maxSize?: number;
+
+  constructor({ maxSize }: StorageArgs = {}) {
+    this._maxSize = maxSize;
   }
 
-  set(key: string, response: string): Observable<void> {
-    this.cache.set(key, response);
+  get(key: string): Observable<string> {
+    return of(this._cache.get(key));
+  }
+
+  set(key: string, value: string): Observable<void> {
+    this._cache.set(key, value);
     return EMPTY;
   }
 
   delete(key: string): Observable<void> {
-    this.cache.delete(key);
+    this._cache.delete(key);
     return EMPTY;
   }
 }

@@ -65,6 +65,7 @@
     "@nrwl/jest": "8.9.0",
     "@nrwl/workspace": "8.9.0",
     "@types/jest": "24.0.25",
+    "@types/lru-cache": "^5.1.0",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.2.0",
     "cypress": "3.8.1",
