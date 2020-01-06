@@ -1,37 +1,64 @@
+import { LayoutModule } from '@angular/cdk/layout';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpExtModule } from '@http-ext/angular';
-import { createCachePlugin } from '@http-ext/plugin-cache';
+import { createCachePlugin, MemoryStorage } from '@http-ext/plugin-cache';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BookDetailComponent } from './book-detail.component';
-import { BookListComponent } from './book-list.component';
+import { BikeDetailComponent } from './bike-detail/bike-detail.component';
+import { BikeSearchComponent } from './bike-search/bike-search.component';
+import { BikeComponent } from './bike/bike.component';
 import { loggerPlugin } from './http/logger-plugin';
-
-export const routes: Routes = [
-  {
-    path: '',
-    component: BookListComponent
-  },
-  {
-    path: 'book/:bookId',
-    component: BookDetailComponent
-  }
-];
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
-  declarations: [AppComponent, BookDetailComponent, BookListComponent],
+  declarations: [
+    AppComponent,
+    NavComponent,
+    BikeDetailComponent,
+    BikeSearchComponent,
+    BikeComponent
+  ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    LayoutModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FlexLayoutModule,
+    ReactiveFormsModule,
+    FormsModule,
     HttpExtModule.forRoot({
-      plugins: [loggerPlugin(), createCachePlugin({ addCacheMetadata: true })]
-    }),
-    RouterModule.forRoot(routes)
+      plugins: [
+        loggerPlugin(),
+        createCachePlugin({
+          addCacheMetadata: false,
+          storage: new MemoryStorage({ maxSize: 2000 })
+        })
+      ]
+    })
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

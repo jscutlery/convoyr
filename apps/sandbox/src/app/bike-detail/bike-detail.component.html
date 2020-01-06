@@ -1,0 +1,15 @@
+<a [routerLink]="['/bikes']" mat-button>BACK</a>
+<article *ngIf="bike$ | async as bike" class="container">
+  <http-ext-bike [bike]="bike"></http-ext-bike>
+  <ul class="details">
+    <li>
+      Price <strong>{{ bike.price }}&euro;</strong>
+    </li>
+    <li>
+      Color <strong>{{ bike.color }}</strong>
+    </li>
+    <li>
+      Type <strong>{{ bike.type }}</strong>
+    </li>
+  </ul>
+</article>

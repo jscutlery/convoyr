@@ -21,7 +21,10 @@
               "apps/sandbox/src/favicon.ico",
               "apps/sandbox/src/assets"
             ],
-            "styles": ["apps/sandbox/src/styles.css"],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "apps/sandbox/src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {

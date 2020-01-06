@@ -1,0 +1,20 @@
+a {
+  margin: 8px;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+ul {
+  padding: 16px;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  margin-top: 6px;
+  border-bottom: 1px gray dotted;
+}
