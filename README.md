@@ -185,4 +185,3 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 ## License
 
 This project is MIT licensed.
-`
