@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/jscutlery/http-ext/compare/v0.1.1...v1.0.0) (2020-01-06)
+
+
+### Features
+
+* **plugin-cache:** ✅ add maxSize to MemoryStorage ([f7eb752](https://github.com/jscutlery/http-ext/commit/f7eb75250b189d9398070574e6b19a9f5a36aa38))
+* ✅  handle plugin-cache request condition ([9e1bff6](https://github.com/jscutlery/http-ext/commit/9e1bff644d3b4cb4b52ec2e20bb793fa050f7517))
+
+
+* feat!: :white_check_mark: use an object as plugin handler ([47a5e9f](https://github.com/jscutlery/http-ext/commit/47a5e9f87d9c4256578a005d77516cb2d7034327))
+
+
+### BREAKING CHANGES
+
+* the plugin handler become an object
+
+
+
+
+
 ## [0.1.1](https://github.com/jscutlery/http-ext/compare/v0.1.0...v0.1.1) (2019-11-20)
 
 

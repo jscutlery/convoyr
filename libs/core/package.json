@@ -1,6 +1,6 @@
 {
   "name": "@http-ext/core",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "license": "MIT",
   "private": false,
   "repository": "git@github.com:jscutlery/http-ext.git",

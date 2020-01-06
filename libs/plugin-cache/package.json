@@ -1,12 +1,12 @@
 {
   "name": "@http-ext/plugin-cache",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "license": "MIT",
   "private": false,
   "repository": "git@github.com:jscutlery/http-ext.git",
   "peerDependencies": {
     "@http-ext/core": "^0.1.0",
-    "rxjs": "^6.5.3",
-    "lru-cache": "^5.1.1"
+    "lru-cache": "^5.1.1",
+    "rxjs": "^6.5.3"
   }
 }
