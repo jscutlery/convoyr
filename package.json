@@ -56,7 +56,6 @@
     "@nrwl/angular": "^8.7.1",
     "core-js": "^3.0.0",
     "json-server": "^0.15.1",
-    "lru-cache": "^5.1.1",
     "rxjs": "~6.5.3",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
