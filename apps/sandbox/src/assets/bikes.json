@@ -1,0 +1,214 @@
+{
+  "bikes": [
+    {
+      "id": "e802ccda-db66-4ac9-ae16-ae1eee9e0ee0",
+      "name": "Montana",
+      "color": "red",
+      "price": 621,
+      "type": "electric"
+    },
+    {
+      "id": "839f27c5-7435-4492-9616-c3da814191b0",
+      "name": "Palau",
+      "color": "orange",
+      "price": 344,
+      "type": "city"
+    },
+    {
+      "id": "3b9bb3ea-7595-44da-8544-b49f37b2f7b0",
+      "name": "Hawaii",
+      "color": "blue",
+      "price": 350,
+      "type": "mtb"
+    },
+    {
+      "id": "2c74dae3-81a6-4f82-9f8a-6e4d369f6bfb",
+      "name": "Kentucky",
+      "color": "pink",
+      "price": 783,
+      "type": "mtb"
+    },
+    {
+      "id": "aba115d2-23e7-4e32-9127-2c015fa48960",
+      "name": "Micronesia",
+      "color": "orange",
+      "price": 208,
+      "type": "mtb"
+    },
+    {
+      "id": "0aa519e6-3a85-4f65-9085-f1f676e40c44",
+      "name": "Nevada",
+      "color": "blue",
+      "price": 305,
+      "type": "mtb"
+    },
+    {
+      "id": "2d42af46-b914-4f77-8d46-6330a419520d",
+      "name": "South Dakota",
+      "color": "orange",
+      "price": 664,
+      "type": "kids"
+    },
+    {
+      "id": "1cde846b-2386-4479-8727-81346f658fd8",
+      "name": "Michigan",
+      "color": "pink",
+      "price": 771,
+      "type": "kids"
+    },
+    {
+      "id": "526f1857-25f9-4ba8-b59c-7396e6b4e1b3",
+      "name": "Minnesota",
+      "color": "orange",
+      "price": 465,
+      "type": "city"
+    },
+    {
+      "id": "3bd10a6f-40d1-4713-b7dc-e40929f95eb4",
+      "name": "Arizona",
+      "color": "blue",
+      "price": 771,
+      "type": "city"
+    },
+    {
+      "id": "f7e41b33-d315-4929-bab8-cd7ddedc9295",
+      "name": "Louisiana",
+      "color": "green",
+      "price": 264,
+      "type": "kids"
+    },
+    {
+      "id": "d5718d6e-3ee8-46f5-a775-25c2310930de",
+      "name": "American Samoa",
+      "color": "pink",
+      "price": 130,
+      "type": "city"
+    },
+    {
+      "id": "40a40005-7c00-4810-87a9-5609a8c42e1d",
+      "name": "Guam",
+      "color": "orange",
+      "price": 112,
+      "type": "mtb"
+    },
+    {
+      "id": "64aea0d9-42a8-4c7b-96e2-6bec39f950ad",
+      "name": "Maine",
+      "color": "red",
+      "price": 1391,
+      "type": "electric"
+    },
+    {
+      "id": "21f6b58a-585c-474d-9fce-ff44f65210bd",
+      "name": "Virginia",
+      "color": "blue",
+      "price": 1555,
+      "type": "city"
+    },
+    {
+      "id": "105f79bc-6c79-40f8-8ba1-edaffda39ba4",
+      "name": "Wisconsin",
+      "color": "orange",
+      "price": 1840,
+      "type": "city"
+    },
+    {
+      "id": "02849037-8f31-4392-81b9-dfb61c25d328",
+      "name": "North Carolina",
+      "color": "green",
+      "price": 439,
+      "type": "city"
+    },
+    {
+      "id": "e497a358-a719-4a19-b075-01a671aa5693",
+      "name": "Iowa",
+      "color": "green",
+      "price": 892,
+      "type": "kids"
+    },
+    {
+      "id": "61cc8611-b59e-4cd2-bb7c-668b6ca0730b",
+      "name": "South Carolina",
+      "color": "green",
+      "price": 334,
+      "type": "electric"
+    },
+    {
+      "id": "2eb97c8f-2c43-4444-8102-a9a6df60e66f",
+      "name": "Alabama",
+      "color": "green",
+      "price": 1637,
+      "type": "mtb"
+    },
+    {
+      "id": "c68ae778-3caa-486f-8011-fd2833682f68",
+      "name": "Oklahoma",
+      "color": "green",
+      "price": 387,
+      "type": "city"
+    },
+    {
+      "id": "545428d8-9d67-47be-830a-7cccdd0bdb4e",
+      "name": "Northern Mariana Islands",
+      "color": "pink",
+      "price": 217,
+      "type": "kids"
+    },
+    {
+      "id": "035e057d-f4ca-42bc-964e-84778f7be622",
+      "name": "Georgia",
+      "color": "orange",
+      "price": 1560,
+      "type": "city"
+    },
+    {
+      "id": "4ac6ce20-aef7-447f-ad48-315e8fd17057",
+      "name": "Marshall Islands",
+      "color": "orange",
+      "price": 945,
+      "type": "kids"
+    },
+    {
+      "id": "b282fed8-aaae-4436-aceb-6a4823f97d91",
+      "name": "Delaware",
+      "color": "red",
+      "price": 1198,
+      "type": "mtb"
+    },
+    {
+      "id": "a593473b-35e6-4220-9261-f5783f186fcc",
+      "name": "Washington",
+      "color": "green",
+      "price": 1661,
+      "type": "electric"
+    },
+    {
+      "id": "48ae7aa5-6794-4c00-a324-cc49f5e41386",
+      "name": "Illinois",
+      "color": "green",
+      "price": 123,
+      "type": "electric"
+    },
+    {
+      "id": "1a65814e-8a12-4d2d-9673-957c5c5cb9c9",
+      "name": "North Dakota",
+      "color": "blue",
+      "price": 1885,
+      "type": "kids"
+    },
+    {
+      "id": "ee49b6f0-e316-4be1-bb70-6f25c29f3521",
+      "name": "New Mexico",
+      "color": "red",
+      "price": 1327,
+      "type": "mtb"
+    },
+    {
+      "id": "edceca9e-a321-4af8-b869-58b85d51bbfe",
+      "name": "New Hampshire",
+      "color": "pink",
+      "price": 256,
+      "type": "city"
+    }
+  ]
+}

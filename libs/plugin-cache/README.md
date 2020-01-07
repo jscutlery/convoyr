@@ -2,7 +2,7 @@
 
 > A cache plugin for [HttpExt](https://github.com/jscutlery/http-ext).
 
-This plugin cache network requests using the *cache-then-network* strategy. First the plugin returns the data from cache, then sends the request, and finally comes with fresh data again. This technique drastically improve UI reactivity.
+This plugin cache network requests using the _cache-then-network_ strategy. First the plugin returns the data from cache, then sends the request, and finally comes with fresh data again. This technique drastically improve UI reactivity.
 
 ## Requirements
 
@@ -11,13 +11,13 @@ The plugin requires `@http-ext/core` and `@http-ext/angular` to be installed.
 ## Installation
 
 ```bash
-yarn add @http-ext/core @http-ext/plugin-cache lru-cache
+yarn add @http-ext/plugin-cache
 ```
 
-or 
+or
 
-```
-npm install @http-ext/core @http-ext/plugin-cache lru-cache
+```bash
+npm install @http-ext/plugin-cache
 ```
 
 ## Usage
@@ -46,11 +46,11 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property           | Type                    | Default value         |
-| ------------------ | ----------------------- |---------------------- |
-| `addCacheMetadata` | `boolean`               | `false`               |
-| `storage`          | `Storage`               | `new MemoryStorage()` |
-| `condition`        | `RequestCondition`      | `matchMethod('GET')`  |
+| Property           | Type               | Default value         |
+| ------------------ | ------------------ | --------------------- |
+| `addCacheMetadata` | `boolean`          | `false`               |
+| `storage`          | `Storage`          | `new MemoryStorage()` |
+| `condition`        | `RequestCondition` | `matchMethod('GET')`  |
 
 Here is an example passing a configuration object.
 
@@ -104,10 +104,9 @@ Data are moved in a dedicated object and cache metadata are added.
 
 #### `MemoryStorage` options
 
-| Property           | Type                    | Default value         |
-| ------------------ | ----------------------- |---------------------- |
-| `maxSize`          | `number`                | `100`                 |
-
+| Property  | Type     | Default value |
+| --------- | -------- | ------------- |
+| `maxSize` | `number` | `100`         |
 
 #### `MemoryStorage` max size
 
@@ -123,7 +122,7 @@ HttpExtModule.forRoot({
       storage: new MemoryStorage({ maxSize: 2000 })
     })
   ]
-})
+});
 ```
 
 ### Custom storage

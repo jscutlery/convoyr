@@ -5,8 +5,10 @@
   "private": false,
   "repository": "git@github.com:jscutlery/http-ext.git",
   "peerDependencies": {
-    "@http-ext/core": "^0.1.0",
-    "lru-cache": "^5.1.1",
+    "@http-ext/core": "^1.0.0",
     "rxjs": "^6.5.3"
+  },
+  "dependencies": {
+    "lru-cache": "^5.1.1"
   }
 }

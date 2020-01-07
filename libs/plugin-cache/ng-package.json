@@ -4,8 +4,8 @@
   "lib": {
     "entryFile": "src/index.ts",
     "umdModuleIds": {
-      "@http-ext/core": "@http-ext/core",
-      "ms": "ms"
+      "@http-ext/core": "@http-ext/core"
     }
-  }
+  },
+  "whitelistedNonPeerDependencies": ["lru-cache"]
 }
