@@ -55,7 +55,7 @@ You can give a partial configuration object it will be merged with default value
 Here is an example passing a configuration object.
 
 ```ts
-import { MemoryStorage } from '@http-ext/plugin-cache';
+import { createCachePlugin, MemoryStorage } from '@http-ext/plugin-cache';
 
 @NgModule({
   imports: [
