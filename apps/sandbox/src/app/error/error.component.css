@@ -1,0 +1,7 @@
+div[fxLayout] {
+  height: 100%;
+}
+
+button {
+  margin-right: 8px;
+}
