@@ -272,6 +272,60 @@
         }
       },
       "schematics": {}
+    },
+    "sandbox-api": {
+      "root": "apps/sandbox-api",
+      "sourceRoot": "apps/sandbox-api/src",
+      "projectType": "application",
+      "prefix": "sandbox-api",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/sandbox-api",
+            "main": "apps/sandbox-api/src/main.ts",
+            "tsConfig": "apps/sandbox-api/tsconfig.app.json",
+            "assets": ["apps/sandbox-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/sandbox-api/src/environments/environment.ts",
+                  "with": "apps/sandbox-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "sandbox-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/sandbox-api/tsconfig.app.json",
+              "apps/sandbox-api/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/sandbox-api/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/sandbox-api/jest.config.js",
+            "tsConfig": "apps/sandbox-api/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

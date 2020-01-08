@@ -25,6 +25,9 @@
     },
     "plugin-retry": {
       "tags": []
+    },
+    "sandbox-api": {
+      "tags": []
     }
   }
 }
