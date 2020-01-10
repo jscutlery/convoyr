@@ -3239,6 +3239,11 @@ babylon@^6.18.0:
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
   integrity sha512-q/UEjfGJ2Cm3oKV71DJz9d25TPnq5rhBVL2Q4fA5wcC3jcrdn7+SssEybFIxwAvvP+YCsCYNKughoF33GxgycQ==
 
+backoff-rxjs@^6.3.3:
+  version "6.3.3"
+  resolved "https://registry.yarnpkg.com/backoff-rxjs/-/backoff-rxjs-6.3.3.tgz#224b97495202a307abad8698e5006a722ec4c657"
+  integrity sha512-+NfPlA9GYB+6gFk7wDTsUMUecqHLmikt/yfUmddPPUNT9DzmU/p31CTsZT4b3S2g46q87fP34gwPJsZ66Eyedg==
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"

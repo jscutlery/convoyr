@@ -1,8 +1,14 @@
 {
   "name": "@http-ext/plugin-retry",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": false,
+  "repository": "git@github.com:jscutlery/http-ext.git",
   "peerDependencies": {
-    "@angular/common": "^8.2.11",
-    "@angular/core": "^8.2.11"
+    "@http-ext/core": "^1.0.0",
+    "rxjs": "^6.5.3"
+  },
+  "dependencies": {
+    "backoff-rxjs": "^6.3.3"
   }
 }
