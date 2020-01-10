@@ -250,6 +250,11 @@
           "options": {
             "tsConfig": "libs/plugin-retry/tsconfig.lib.json",
             "project": "libs/plugin-retry/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/plugin-retry/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
