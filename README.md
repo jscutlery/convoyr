@@ -43,6 +43,12 @@ This project is a monorepo that includes the following packages.
 yarn add @http-ext/core @http-ext/angular @http-ext/plugin-cache @http-ext/plugin-retry
 ```
 
+or
+
+```bash
+npm install @http-ext/core @http-ext/angular @http-ext/plugin-cache @http-ext/plugin-retry
+```
+
 2. Import the module and define plugins you want to use.
 
 ```ts
