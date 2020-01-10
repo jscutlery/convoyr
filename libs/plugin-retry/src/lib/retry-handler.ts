@@ -5,7 +5,6 @@ import {
 } from '@http-ext/core';
 import { retryBackoff } from 'backoff-rxjs';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 export interface HandlerOptions {
   initialIntervalMs: number;
