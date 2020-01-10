@@ -238,6 +238,40 @@
         }
       },
       "schematics": {}
+    },
+    "plugin-retry": {
+      "projectType": "library",
+      "root": "libs/plugin-retry",
+      "sourceRoot": "libs/plugin-retry/src",
+      "prefix": "http-ext",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/plugin-retry/tsconfig.lib.json",
+            "project": "libs/plugin-retry/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/plugin-retry/tsconfig.lib.json",
+              "libs/plugin-retry/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/plugin-retry/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/plugin-retry/jest.config.js",
+            "tsConfig": "libs/plugin-retry/tsconfig.spec.json",
+            "setupFile": "libs/plugin-retry/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {

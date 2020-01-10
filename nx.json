@@ -22,6 +22,9 @@
     },
     "angular": {
       "tags": []
+    },
+    "plugin-retry": {
+      "tags": []
     }
   }
 }

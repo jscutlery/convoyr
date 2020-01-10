@@ -13,6 +13,7 @@
     "test:angular": "ng test angular --watch",
     "test:core": "ng test core --watch",
     "test:plugin-cache": "ng test plugin-cache --watch",
+    "test:plugin-retry": "ng test plugin-retry --watch",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e",
     "affected:apps": "nx affected:apps",
@@ -38,6 +39,7 @@
     "_publish:angular": "yarn _publish dist/libs/angular",
     "_publish:core": "yarn _publish dist/libs/core",
     "_publish:plugin-cache": "yarn _publish dist/libs/plugin-cache",
+    "_publish:plugin-retry": "yarn _publish dist/libs/plugin-retry",
     "_lerna:version": "lerna version --no-push --conventional-commits"
   },
   "private": true,
@@ -88,6 +90,7 @@
     "rxjs-marbles": "^5.0.3",
     "ts-jest": "24.3.0",
     "ts-node": "~8.5.2",
+    "tsickle": "^0.37.0",
     "tslint": "~5.20.0",
     "typescript": "~3.6.0"
   },

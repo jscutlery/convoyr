@@ -29,6 +29,7 @@ jobs:
           yarn ng build core --prod
           yarn ng build angular --prod
           yarn ng build plugin-cache --prod
+          yarn ng build plugin-retry --prod
           yarn ng build sandbox --prod
   test:
     runs-on: ubuntu-latest
@@ -56,6 +57,7 @@ jobs:
           yarn ng test core --code-coverage
           yarn ng test angular --code-coverage
           yarn ng test plugin-cache --code-coverage
+          yarn ng test plugin-retry --code-coverage
           yarn ng test sandbox --code-coverage
 
       - name: Upload coverage to Codecov

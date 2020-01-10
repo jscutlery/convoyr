@@ -61,7 +61,7 @@ import { MemoryStorage } from '@http-ext/plugin-cache';
   imports: [
     HttpExtModule.forRoot({
       plugins: [
-        cachePlugin({
+        createCachePlugin({
           addCacheMetadata: true,
           storage: new MemoryStorage()
         })

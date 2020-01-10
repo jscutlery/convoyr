@@ -33,13 +33,14 @@ This project is a monorepo that includes the following packages.
 | [@http-ext/core](./libs/core)                 | Core module    | Extensibility         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
 | [@http-ext/angular](./libs/angular)           | Angular module | Angular compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
 | [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Fast and reactive UI  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
+| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Network resilience    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
 
 ## Quick start
 
 1. Install packages inside your project.
 
 ```bash
-yarn add @http-ext/core @http-ext/angular @http-ext/plugin-cache
+yarn add @http-ext/core @http-ext/angular @http-ext/plugin-cache @http-ext/plugin-retry
 ```
 
 2. Import the module and define plugins you want to use.
@@ -47,6 +48,7 @@ yarn add @http-ext/core @http-ext/angular @http-ext/plugin-cache
 ```ts
 import { HttpExtModule } from '@http-ext/angular';
 import { createCachePlugin } from '@http-ext/plugin-cache';
+import { createRetryPlugin } from '@http-ext/plugin-retry';
 
 @NgModule({
   declarations: [AppComponent],
@@ -54,15 +56,13 @@ import { createCachePlugin } from '@http-ext/plugin-cache';
     BrowserModule,
     HttpClientModule,
     HttpExtModule.forRoot({
-      plugins: [createCachePlugin()]
+      plugins: [createCachePlugin(), createRetryPlugin()]
     })
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
 ```
-
-More documentation about [@http-ext/plugin-cache](./libs/plugin-cache).
 
 ## Custom plugin
 
