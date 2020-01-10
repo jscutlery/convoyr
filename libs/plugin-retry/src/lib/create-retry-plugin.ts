@@ -1,4 +1,4 @@
-import { RequestCondition } from '@http-ext/core';
+import { HttpExtResponse, RequestCondition } from '@http-ext/core';
 
 import { HandlerOptions, RetryHandler } from './retry-handler';
 
@@ -8,12 +8,18 @@ export interface RetryPluginOptions extends HandlerOptions {
 
 export function createRetryPlugin({
   condition = () => true,
-  initialInterval = 200, // 100 ms
-  maxInterval = 60 * 1000, // 1 min
-  maxRetries = 10
+  initialIntervalMs = 200, // 100 ms
+  maxIntervalMs = 60 * 1000, // 1 min
+  maxRetries = 10,
+  shouldRetry = (response: HttpExtResponse) => response.status !== 404
 }: Partial<RetryPluginOptions> = {}) {
   return {
     condition,
-    handler: new RetryHandler({ initialInterval, maxInterval, maxRetries })
+    handler: new RetryHandler({
+      initialIntervalMs,
+      maxIntervalMs,
+      maxRetries,
+      shouldRetry
+    })
   };
 }

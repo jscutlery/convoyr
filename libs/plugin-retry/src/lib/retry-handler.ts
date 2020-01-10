@@ -3,20 +3,32 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { retryBackoff, RetryBackoffConfig } from 'backoff-rxjs';
+import { retryBackoff } from 'backoff-rxjs';
 import { Observable } from 'rxjs';
 
-export type HandlerOptions = RetryBackoffConfig;
+export interface HandlerOptions {
+  initialIntervalMs: number;
+  maxIntervalMs: number;
+  maxRetries: number;
+  shouldRetry: (response: HttpExtResponse) => boolean;
+}
 
 export class RetryHandler implements PluginHandler {
-  private _initialInterval: number;
-  private _maxInterval: number;
+  private _initialIntervalMs: number;
+  private _maxIntervalMs: number;
   private _maxRetries: number;
+  private _shouldRetry: (response: HttpExtResponse) => boolean;
 
-  constructor({ initialInterval, maxInterval, maxRetries }: HandlerOptions) {
-    this._initialInterval = initialInterval;
-    this._maxInterval = maxInterval;
+  constructor({
+    initialIntervalMs,
+    maxIntervalMs,
+    maxRetries,
+    shouldRetry
+  }: HandlerOptions) {
+    this._initialIntervalMs = initialIntervalMs;
+    this._maxIntervalMs = maxIntervalMs;
     this._maxRetries = maxRetries;
+    this._shouldRetry = shouldRetry;
   }
 
   handle({
@@ -25,12 +37,10 @@ export class RetryHandler implements PluginHandler {
   }: PluginHandlerArgs): Observable<HttpExtResponse<unknown>> {
     return next({ request }).pipe(
       retryBackoff({
-        initialInterval: this._initialInterval,
-        maxInterval: this._maxInterval,
+        initialInterval: this._initialIntervalMs,
+        maxInterval: this._maxIntervalMs,
         maxRetries: this._maxRetries,
-        shouldRetry: (response: HttpExtResponse) => {
-          return response.status !== 404;
-        }
+        shouldRetry: this._shouldRetry
       })
     );
   }

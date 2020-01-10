@@ -22,7 +22,7 @@ describe('CachePlugin', () => {
     'should retry requests with back-off strategy',
     marbles(m => {
       const cachePlugin = createRetryPlugin({
-        initialInterval: 1,
+        initialIntervalMs: 1,
         maxRetries: 2
       });
       const { handler } = cachePlugin;
