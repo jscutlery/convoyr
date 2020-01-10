@@ -2,7 +2,7 @@
 
 > A retry plugin for [HttpExt](https://github.com/jscutlery/http-ext).
 
-This plugin retries network requests using a configurable interval back-off strategy.
+This plugin retries network requests using a configurable back-off strategy.
 
 ## Requirements
 
@@ -46,9 +46,13 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property           | Type      | Default value |
-| ------------------ | --------- | ------------- |
-| `addCacheMetadata` | `boolean` | `false`       |
+| Property            | Type                  | Default value                         |
+| ------------------- | --------------------- | ------------------------------------- |
+| `initialIntervalMs` | `number`              | `200`                                 |
+| `maxIntervalMs`     | `number`              | `60000`                               |
+| `maxRetries`        | `number`              | `10`                                  |
+| `shouldRetry`       | `response => boolean` | `response => response.status !== 404` |
+| `condition`         | `RequestCondition`    | `() => true`                          |
 
 Here is an example passing a configuration object.
 
@@ -58,7 +62,13 @@ import { MemoryStorage } from '@http-ext/plugin-cache';
 @NgModule({
   imports: [
     HttpExtModule.forRoot({
-      plugins: [createRetryPlugin({})]
+      plugins: [
+        createRetryPlugin({
+          initialIntervalMs: 1000,
+          maxIntervalMs: 120000, // 2 min
+          maxRetries: 15
+        })
+      ]
     })
   ]
 })

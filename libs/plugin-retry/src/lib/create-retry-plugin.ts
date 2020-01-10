@@ -8,7 +8,7 @@ export interface RetryPluginOptions extends HandlerOptions {
 
 export function createRetryPlugin({
   condition = () => true,
-  initialIntervalMs = 200, // 100 ms
+  initialIntervalMs = 200,
   maxIntervalMs = 60 * 1000, // 1 min
   maxRetries = 10,
   shouldRetry = (response: HttpExtResponse) => response.status !== 404
