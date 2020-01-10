@@ -5,6 +5,7 @@ import {
 } from '@http-ext/core';
 import { retryBackoff } from 'backoff-rxjs';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export interface HandlerOptions {
   initialIntervalMs: number;
@@ -31,10 +32,7 @@ export class RetryHandler implements PluginHandler {
     this._shouldRetry = shouldRetry;
   }
 
-  handle({
-    request,
-    next
-  }: PluginHandlerArgs): Observable<HttpExtResponse<unknown>> {
+  handle({ request, next }: PluginHandlerArgs): Observable<HttpExtResponse> {
     return next({ request }).pipe(
       retryBackoff({
         initialInterval: this._initialIntervalMs,

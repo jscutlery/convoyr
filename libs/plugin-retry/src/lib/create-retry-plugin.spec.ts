@@ -4,12 +4,11 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
-import { throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
 import { createRetryPlugin } from './create-retry-plugin';
 
-describe('CachePlugin', () => {
+describe('RetryPlugin', () => {
   let request: HttpExtRequest;
   let response: HttpExtResponse;
 
@@ -19,13 +18,13 @@ describe('CachePlugin', () => {
   });
 
   it(
-    'should retry requests with back-off strategy',
+    'should retry handler with back-off strategy',
     marbles(m => {
-      const cachePlugin = createRetryPlugin({
+      const retryPlugin = createRetryPlugin({
         initialIntervalMs: 1,
-        maxRetries: 2
+        maxRetries: 3
       });
-      const { handler } = cachePlugin;
+      const { handler } = retryPlugin;
 
       /* Create an error response for coherence */
       response = {
@@ -35,10 +34,10 @@ describe('CachePlugin', () => {
       };
 
       /* Simulate failure response */
-      const next = () => throwError(response);
+      const next = () => m.cold('-#', undefined, response);
 
       const source$ = handler.handle({ request, next });
-      const expected$ = m.cold('---#', undefined, response);
+      const expected$ = m.cold('-----------#', undefined, response);
 
       m.expect(source$).toBeObservable(expected$);
     })
