@@ -46,13 +46,13 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property            | Type                  | Default value                         |
-| ------------------- | --------------------- | ------------------------------------- |
-| `initialIntervalMs` | `number`              | `200`                                 |
-| `maxIntervalMs`     | `number`              | `60000`                               |
-| `maxRetries`        | `number`              | `10`                                  |
-| `shouldRetry`       | `response => boolean` | `response => response.status !== 404` |
-| `condition`         | `RequestCondition`    | `() => true`                          |
+| Property            | Type                  | Default value   |
+| ------------------- | --------------------- | --------------- |
+| `initialIntervalMs` | `number`              | `200`           |
+| `maxIntervalMs`     | `number`              | `60000`         |
+| `maxRetries`        | `number`              | `10`            |
+| `shouldRetry`       | `response => boolean` | `isServerError` |
+| `condition`         | `RequestCondition`    | `() => true`    |
 
 Here is an example passing a configuration object.
 

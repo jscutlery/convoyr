@@ -1,5 +1,6 @@
-import { HttpExtResponse, RequestCondition } from '@http-ext/core';
+import { RequestCondition } from '@http-ext/core';
 
+import { isServerError } from './is-server-error';
 import { HandlerOptions, RetryHandler } from './retry-handler';
 
 export interface RetryPluginOptions extends HandlerOptions {
@@ -11,7 +12,7 @@ export function createRetryPlugin({
   initialIntervalMs = 200,
   maxIntervalMs = 60 * 1000, // 1 min
   maxRetries = 10,
-  shouldRetry = (response: HttpExtResponse) => response.status !== 404
+  shouldRetry = isServerError
 }: Partial<RetryPluginOptions> = {}) {
   return {
     condition,
