@@ -20,20 +20,20 @@
 
 ## Philosophy
 
-HttpExt is a **reactive** and **extensible** library built on the top of HTTP. The main building block is a **plugin** which is a simple object that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in plugin collection to start as fast as possible.
+HttpExt is a reactive and extensible library built on the top of the Angular `HttpClient`. The main building block is a **plugin** which is a simple object that let you intercept network communications in a fancy way.
 
-For now this library only supports the Angular's `HttpClient` but it's planned to support the [Axios client](https://github.com/axios/axios) to run HttpExt both on the browser and the server.
+The goal is to provide useful behaviors to **extend the power of HTTP**. You can create your own plugin or directly use the built-in plugin collection to start as fast as possible.
 
 ## Ecosystem
 
 This project is a monorepo that includes the following packages.
 
-| Name                                          | Description    | Goal                  | Size                                                                   |
-| --------------------------------------------- | -------------- | --------------------- | ---------------------------------------------------------------------- |
-| [@http-ext/core](./libs/core)                 | Core module    | Extensibility         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
-| [@http-ext/angular](./libs/angular)           | Angular module | Angular compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
-| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Fast and reactive UI  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
-| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Network resilience    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
+| Name                                          | Description    | Goal                       | Size                                                                   |
+| --------------------------------------------- | -------------- | -------------------------- | ---------------------------------------------------------------------- |
+| [@http-ext/core](./libs/core)                 | Core module    | Generic plugins handler    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
+| [@http-ext/angular](./libs/angular)           | Angular module | `HttpClient` compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
+| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Fast and reactive UI       | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
+| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Network resilience         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
 
 ## Quick start
 
@@ -72,25 +72,26 @@ export class AppModule {}
 
 ## Custom plugin
 
-A Plugin is a plain object that implement the `HttpExtPlugin` interface. This object exposes the following properties:
+A plugin is the main piece in HttpExt, it lets you intercept network requests and add your custom logic on the top. Its form is a plain object that implement the `HttpExtPlugin` interface. This object exposes the following properties:
 
-- The `condition` for conditional handling.
-- The `handler` that encapsulates the plugin logic.
+- The `condition` function for conditional request handling.
+- The `handler` object that encapsulates the plugin logic.
 
 ```ts
 import { HttpExtPlugin } from '@http-ext/core';
 import { LoggerHandler } from './handler';
 
-export function loggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): HttpExtPlugin {
   return {
+    condition: ({ request }) => request.url.includes('api.github.com')
     handler: new LoggerHandler()
   };
 }
 ```
 
-Note that the condition is optional. Learn more about [conditional handling](https://github.com/jscutlery/http-ext#conditional-handling).
+In this example the handler will be executed only if the URL includes `api.github.com`. Note that the condition function is optional. Learn more about [conditional handling](https://github.com/jscutlery/http-ext#conditional-handling).
 
-The `PluginHandler` interface provides a way to access and manipulate both `HttpExtRequest` and `HttpExtResponse` objects.
+The handler is where all the plugin logic is put. It needs to implement the `PluginHandler` interface and it let you access both `HttpExtRequest` and `HttpExtResponse` objects.
 
 ```ts
 import { PluginHandler } from '@http-ext/core';
@@ -111,7 +112,7 @@ export class LoggerHandler implements PluginHandler {
 }
 ```
 
-The response is accessible through piping the `next` function. Here you can transform the response event stream as well.
+The response is accessible through piping the `next` function. Here you can transform the response stream as well.
 
 ### Conditional handling
 
@@ -129,7 +130,7 @@ export function loggerPlugin(): HttpExtPlugin {
 }
 ```
 
-The `condition` is optional, if not provided the plugin will handle **all requests** executed through the HTTP client. It's important to think about which requests the plugin should be bound.
+The `condition` function is optional, if it's not provided the plugin will handle **all requests** executed through the HTTP client. It's important to think about which requests the plugin should be bound.
 
 > Imagine you want to build an authentication plugin that add the authorization token to the request headers and you forget to add conditional handling. The token will potentially leak to other insecure origins which obviously result in a serious security issue.
 
