@@ -4,8 +4,7 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
-import { VirtualTimeScheduler } from 'rxjs';
-import { configure, marbles } from 'rxjs-marbles/jest';
+import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
 
 import { createRetryPlugin } from './create-retry-plugin';
