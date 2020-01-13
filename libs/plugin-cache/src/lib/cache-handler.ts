@@ -98,7 +98,7 @@ export class CacheHandler implements PluginHandler {
     response: HttpExtResponse
   ): Observable<void> {
     return defer(() => {
-      const key = this._getCacheKey(request);
+      const key = this._serializeCacheKey(request);
       const cacheEntry = createCacheEntry({
         createdAt: new Date(),
         response
@@ -110,7 +110,7 @@ export class CacheHandler implements PluginHandler {
   }
 
   private _load(request: HttpExtRequest): Observable<CacheEntry> {
-    return this._storage.get(this._getCacheKey(request)).pipe(
+    return this._storage.get(this._serializeCacheKey(request)).pipe(
       mergeMap(rawCacheEntry => {
         /* There's no entry. */
         if (rawCacheEntry == null) {
@@ -126,7 +126,7 @@ export class CacheHandler implements PluginHandler {
   }
 
   /* Create a unique key by request URI to retrieve cache later. */
-  private _getCacheKey(request: HttpExtRequest): string {
+  private _serializeCacheKey(request: HttpExtRequest): string {
     const { params } = request;
     const hasParams = Object.keys(params).length > 0;
 
