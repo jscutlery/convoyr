@@ -1,7 +1,5 @@
 import { RequestCondition } from '@http-ext/core';
-
-import { isServerError } from './predicates/is-server-error';
-import { isServerOrUnknownError } from './predicates/is-server-or-unknown-error.spec';
+import { isServerOrUnknownError } from './predicates/is-server-or-unknown-error';
 import { HandlerOptions, RetryHandler } from './retry-handler';
 
 export interface RetryPluginOptions extends HandlerOptions {

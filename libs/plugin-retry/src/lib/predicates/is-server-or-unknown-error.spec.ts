@@ -1,17 +1,5 @@
 import { createResponse, HttpExtResponse } from '@http-ext/core';
-import { RetryPredicate } from '@http-ext/plugin-retry';
-import { isServerError } from './is-server-error';
-import { isUnknownError } from './is-unknown-error';
-
-export const or = <TArgs extends any[]>(
-  ...predicates: ((...args: TArgs) => boolean)[]
-) => (...args: TArgs) => {
-  return predicates.some(predicate => predicate(...args));
-};
-
-export const isServerOrUnknownError: RetryPredicate = response => {
-  return or(isServerError, isUnknownError)(response);
-};
+import { isServerOrUnknownError } from './is-server-or-unknown-error';
 
 describe.each<[HttpExtResponse, boolean]>([
   [

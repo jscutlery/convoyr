@@ -1,7 +1,7 @@
 import { EMPTY } from 'rxjs';
 
 import { createRetryPlugin } from './create-retry-plugin';
-import { isServerOrUnknownError } from './predicates/is-server-or-unknown-error.spec';
+import { isServerOrUnknownError } from './predicates/is-server-or-unknown-error';
 import { RetryHandler } from './retry-handler';
 
 jest.mock('./retry-handler');
