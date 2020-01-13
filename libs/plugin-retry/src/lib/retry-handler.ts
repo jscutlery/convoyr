@@ -10,14 +10,16 @@ export interface HandlerOptions {
   initialIntervalMs: number;
   maxIntervalMs: number;
   maxRetries: number;
-  shouldRetry: (response: HttpExtResponse) => boolean;
+  shouldRetry: RetryPredicate;
 }
+
+export type RetryPredicate = (response: HttpExtResponse) => boolean;
 
 export class RetryHandler implements PluginHandler {
   private _initialIntervalMs: number;
   private _maxIntervalMs: number;
   private _maxRetries: number;
-  private _shouldRetry: (response: HttpExtResponse) => boolean;
+  private _shouldRetry: RetryPredicate;
 
   constructor({
     initialIntervalMs,
