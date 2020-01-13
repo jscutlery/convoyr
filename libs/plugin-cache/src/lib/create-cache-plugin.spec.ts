@@ -4,7 +4,7 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
-import { advanceTo, clear as clearDate } from 'jest-date-mock';
+import { advanceTo, clear } from 'jest-date-mock';
 import { concat, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 
@@ -30,7 +30,7 @@ describe('CachePlugin', () => {
     response = createResponse({ body: { answer: 42 } });
   });
 
-  afterEach(() => clearDate());
+  afterEach(() => clear());
 
   it(
     'should serve cache with metadata when hydrated',
