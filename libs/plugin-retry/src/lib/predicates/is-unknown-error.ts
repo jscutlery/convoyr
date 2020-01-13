@@ -1,5 +1,3 @@
-import { HttpExtResponse } from '@http-ext/core';
+import { RetryPredicate } from '@http-ext/plugin-retry';
 
-export function isUnknownError(response: HttpExtResponse): boolean {
-  return response.status === 0;
-}
+export const isUnknownError: RetryPredicate = response => response.status === 0;

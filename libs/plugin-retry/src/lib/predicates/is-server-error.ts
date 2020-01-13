@@ -1,5 +1,3 @@
-import { HttpExtResponse } from '@http-ext/core';
+import { RetryPredicate } from '@http-ext/plugin-retry';
 
-export function isServerError(response: HttpExtResponse): boolean {
-  return response.status >= 500;
-}
+export const isServerError: RetryPredicate = response => response.status >= 500;
