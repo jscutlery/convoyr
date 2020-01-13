@@ -7,7 +7,6 @@ import {
 import { marbles } from 'rxjs-marbles/jest';
 
 import { createRetryPlugin } from './create-retry-plugin';
-import { isServerError } from './is-server-error';
 
 describe('RetryPlugin', () => {
   let request: HttpExtRequest;
@@ -16,21 +15,6 @@ describe('RetryPlugin', () => {
   beforeEach(() => {
     request = createRequest({ url: 'https://ultimate-answer.com' });
     response = createResponse({ body: { answer: 42 } });
-  });
-
-  it('should create the retry handler with default options', () => {
-    const spyRetryPlugin = jest.fn(createRetryPlugin);
-
-    expect(spyRetryPlugin()).toEqual(
-      expect.objectContaining({
-        handler: {
-          _initialInterval: 200,
-          _maxInterval: 60000,
-          _maxRetries: 10,
-          _shouldRetry: isServerError
-        }
-      })
-    );
   });
 
   it(
