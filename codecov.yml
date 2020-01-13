@@ -12,6 +12,9 @@ coverage:
       plugin-cache:
         target: 90%
         flags: plugin-cache
+      plugin-retry:
+        target: 90%
+        flags: plugin-retry
     patch:
       default:
         enabled: no
@@ -30,3 +33,6 @@ flags:
   plugin-cache:
     paths:
       - libs/plugin-cache/src
+  plugin-retry:
+    paths:
+      - libs/plugin-retry/src

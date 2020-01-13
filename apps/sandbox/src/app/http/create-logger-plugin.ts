@@ -1,6 +1,6 @@
 import { HttpExtPlugin } from '@http-ext/core';
 
-export function loggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): HttpExtPlugin {
   return {
     handler: {
       handle({ request, next }) {
