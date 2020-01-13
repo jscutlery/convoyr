@@ -15,7 +15,7 @@ export function createResponse<TBody>(
 ): HttpExtResponse {
   return {
     body: response.body,
-    status: response.status || 200,
+    status: response.status == null ? 200 : response.status,
     statusText: response.statusText || 'OK',
     headers: response.headers || {}
   };
