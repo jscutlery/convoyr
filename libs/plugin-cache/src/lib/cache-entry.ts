@@ -11,13 +11,8 @@ export interface CacheEntryArgs {
 }
 
 export function createCacheEntry(cacheEntry: CacheEntryArgs): CacheEntry {
-  /* Create a date object. */
-  const createdAt = cacheEntry.createdAt
-    ? new Date(cacheEntry.createdAt)
-    : null;
-
   return {
-    createdAt,
+    createdAt: new Date(cacheEntry.createdAt),
     response: cacheEntry.response
   };
 }
