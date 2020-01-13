@@ -185,33 +185,6 @@ For new features or breaking changes [see the changelog](CHANGELOG.md).
   </tr>
 </table>
 
-## Contributing
-
-### Add a new plugin
-
-Meanwhile we provide a schematic for this, here are the steps to follow when adding a new plugin:
-
-1. Generate library
-```sh
-ng g @nrwl/angular:lib --publishable plugin-xyz
-```
-
-2. Codecov setup by adding the following to codecov.yml
-```yaml
-coverage:
-  status:
-    project:
-      plugin-xyz:
-        target: 90%
-        flags: plugin-xyz
-flags:
-  plugin-xyz:
-    paths:
-      - libs/plugin-xyz/src
-```
-
-🚧 Work In Progress 🚧
-
 ## Contributors
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
