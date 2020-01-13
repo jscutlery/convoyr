@@ -20,9 +20,7 @@
 
 ## Philosophy
 
-HttpExt is a reactive and extensible library built on the top of the Angular `HttpClient`. The main building block is a **plugin** which is a simple object that let you intercept network communications in a fancy way.
-
-The goal is to provide useful behaviors to **extend the power of HTTP**. You can create your own plugin or directly use the built-in plugin collection to start as fast as possible.
+HttpExt is a reactive and extensible library built on the top of the Angular `HttpClient`. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in plugin collection to start as fast as possible.
 
 ## Ecosystem
 
@@ -119,11 +117,11 @@ The response is accessible through piping the `next` function. Here you can tran
 The `condition` function checks for each request if the plugin handler should be executed.
 
 ```ts
-export function loggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): HttpExtPlugin {
   return {
     /* Here you can access the request object and decide which request you need to handle */
-    condition({ request }) {
-      return request.method === 'GET' && request.url.includes('books');
+    condition: ({ request }) => {
+      return request.method === 'GET' && request.url.includes('api.github.com');
     },
     handler: new LoggerHandler()
   };
@@ -185,9 +183,13 @@ For new features or breaking changes [see the changelog](CHANGELOG.md).
   </tr>
 </table>
 
+## Contributing
+
+See our [contributing guide](./CONTRIBUTING.md) before starting. Contributions of any kind welcome!
+
 ## Contributors
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 
 ## License
 
