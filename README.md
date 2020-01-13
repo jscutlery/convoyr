@@ -191,6 +191,13 @@ See our [contributing guide](./CONTRIBUTING.md) before starting. Contributions o
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 ## License
 
 This project is MIT licensed.
