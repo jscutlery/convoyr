@@ -193,12 +193,21 @@ Meanwhile we provide a schematic for this, here are the steps to follow when add
 
 1. Generate library
 ```sh
-ng g @nrwl/angular:lib --publishable plugin-x
+ng g @nrwl/angular:lib --publishable plugin-xyz
 ```
 
 2. Codecov setup by adding the following to codecov.yml
 ```yaml
-TODO
+coverage:
+  status:
+    project:
+      plugin-xyz:
+        target: 90%
+        flags: plugin-xyz
+flags:
+  plugin-xyz:
+    paths:
+      - libs/plugin-xyz/src
 ```
 
 🚧 Work In Progress 🚧
