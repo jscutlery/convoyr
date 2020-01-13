@@ -27,19 +27,28 @@ describe('RetryPlugin', () => {
       const { handler } = retryPlugin;
 
       /* Create an error response for coherence */
-      response = {
+      const errorResponse = {
         ...response,
         status: 500,
         statusText: 'Internal Server Error'
       };
 
       /* Simulate failure response */
-      const next = () => m.cold('-#', undefined, response);
-
-      const source$ = handler.handle({ request, next });
-      const expected$ = m.cold('-----------#', undefined, response);
+      const errorResponse$ = m.cold('-#', undefined, errorResponse);
+      const source$ = handler.handle({ request, next: () => errorResponse$ });
+      const expected$ = m.cold('-----------#', undefined, errorResponse);
 
       m.expect(source$).toBeObservable(expected$);
+      m.expect(errorResponse$).toHaveSubscriptions([
+        /* First try. */
+        '^!',
+        /* First retry after 1ms which makes it happen in frame 2 : 1 (response delay) + 1. */
+        '--^!',
+        /* Second retry after 2ms which makes it happen in frame 5 : 2 + 1 (response delay) + 2. */
+        '-----^!',
+        /* Third retry after 4ms which makes it happen in frame 10 : 5 + 1 (response delay) + 4. */
+        '----------^!'
+      ]);
     })
   );
 
