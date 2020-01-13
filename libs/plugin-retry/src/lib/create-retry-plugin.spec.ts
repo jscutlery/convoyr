@@ -47,11 +47,11 @@ describe('RetryPlugin', () => {
       m.expect(errorResponse$).toHaveSubscriptions([
         /* First try. */
         '^!',
-        /* First retry after 100ms which makes it happen in frame 2 : 100ms (error response delay) + 100ms. */
+        /* First retry after 100ms which makes it happen in frame 2 (200ms): 100ms (error response delay) + 100ms. */
         '--^!',
-        /* Second retry after 200ms which makes it happen in frame 5 : 200ms + 100ms (response delay) + 200ms. */
+        /* Second retry after 200ms which makes it happen in frame 5 (500ms): 200ms + 100ms (response delay) + 200ms. */
         '-----^!',
-        /* Third retry after 400ms which makes it happen in frame 10 : 500ms + 100ms (response delay) + 400ms. */
+        /* Third retry after 400ms which makes it happen in frame 10 (1s): 500ms + 100ms (response delay) + 400ms. */
         '----------^!'
       ]);
     })
