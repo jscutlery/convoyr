@@ -5,6 +5,7 @@ import {
 } from '@http-ext/core';
 import { retryBackoff } from 'backoff-rxjs';
 import { Observable } from 'rxjs';
+import { RetryPredicate } from './predicates/retry-predicate';
 
 export interface HandlerOptions {
   /**
@@ -18,8 +19,6 @@ export interface HandlerOptions {
   maxRetries: number;
   shouldRetry: RetryPredicate;
 }
-
-export type RetryPredicate = (response: HttpExtResponse) => boolean;
 
 export class RetryHandler implements PluginHandler {
   private _initialInterval: number;

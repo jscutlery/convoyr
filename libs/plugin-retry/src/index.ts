@@ -2,4 +2,4 @@ export {
   RetryPluginOptions,
   createRetryPlugin
 } from './lib/create-retry-plugin';
-export { RetryPredicate } from './lib/retry-handler';
+export { RetryPredicate } from './lib/predicates/retry-predicate';
