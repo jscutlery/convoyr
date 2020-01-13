@@ -24,8 +24,8 @@ describe('RetryPlugin', () => {
     expect(spyRetryPlugin()).toEqual(
       expect.objectContaining({
         handler: {
-          _initialIntervalMs: 200,
-          _maxIntervalMs: 60000,
+          _initialInterval: 200,
+          _maxInterval: 60000,
           _maxRetries: 10,
           _shouldRetry: isServerError
         }
@@ -37,7 +37,7 @@ describe('RetryPlugin', () => {
     'should retry the handler with back-off strategy when a server error occurs',
     marbles(m => {
       const retryPlugin = createRetryPlugin({
-        initialIntervalMs: 1,
+        initialInterval: 1,
         maxRetries: 3
       });
       const { handler } = retryPlugin;
@@ -63,7 +63,7 @@ describe('RetryPlugin', () => {
     'should not retry the handler when no server error occurs',
     marbles(m => {
       const retryPlugin = createRetryPlugin({
-        initialIntervalMs: 1,
+        initialInterval: 1,
         maxRetries: 3
       });
       const { handler } = retryPlugin;
