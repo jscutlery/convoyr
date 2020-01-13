@@ -139,7 +139,7 @@ A `Matcher` is a declarative way to do conditional handling. It's a safer approa
 ```ts
 import { matchOrigin } from '@http-ext/core';
 
-export function loggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): HttpExtPlugin {
   return {
     condition: matchOrigin('https://secure-origin.com'),
     handler: new LoggerHandler()
