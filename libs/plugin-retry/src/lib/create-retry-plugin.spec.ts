@@ -18,7 +18,7 @@ describe('RetryPlugin', () => {
   });
 
   it(
-    'should retry handler with back-off strategy',
+    'should retry the handler with back-off strategy when a server error occurs',
     marbles(m => {
       const retryPlugin = createRetryPlugin({
         initialIntervalMs: 1,
@@ -44,7 +44,7 @@ describe('RetryPlugin', () => {
   );
 
   it(
-    'should not retry 404 response by default',
+    'should not retry the handler when no server error occurs',
     marbles(m => {
       const retryPlugin = createRetryPlugin({
         initialIntervalMs: 1,

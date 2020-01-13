@@ -2,7 +2,7 @@
 
 > A retry plugin for [HttpExt](https://github.com/jscutlery/http-ext).
 
-This plugin retries network requests using a configurable back-off strategy.
+This plugin retries failed network requests using a configurable back-off strategy.
 
 ## Requirements
 
@@ -46,13 +46,13 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property            | Type                  | Default value   |
-| ------------------- | --------------------- | --------------- |
-| `initialIntervalMs` | `number`              | `200`           |
-| `maxIntervalMs`     | `number`              | `60000`         |
-| `maxRetries`        | `number`              | `10`            |
-| `shouldRetry`       | `response => boolean` | `isServerError` |
-| `condition`         | `RequestCondition`    | `() => true`    |
+| Property            | Type                  | Default value   | Description                                                       |
+| ------------------- | --------------------- | --------------- | ----------------------------------------------------------------- |
+| `initialIntervalMs` | `number`              | `200`           | Duration before the first retry                                   |
+| `maxIntervalMs`     | `number`              | `60000`         | Maximum time span before retrying                                 |
+| `maxRetries`        | `number`              | `10`            | Maximum number of retries                                         |
+| `shouldRetry`       | `response => boolean` | `isServerError` | Predicate function to know which failed request should be retried |
+| `condition`         | `RequestCondition`    | `() => true`    | Predicate function to know which request the plugin should handle |
 
 Here is an example passing a configuration object.
 
@@ -65,8 +65,10 @@ import { MemoryStorage } from '@http-ext/plugin-cache';
       plugins: [
         createRetryPlugin({
           initialIntervalMs: 1000,
-          maxIntervalMs: 120000, // 2 min
-          maxRetries: 15
+          maxIntervalMs: 120000,
+          maxRetries: 15,
+          shouldRetry: response => response.status !== 404,
+          condition: ({ request }) => request.url.includes('api.github.com')
         })
       ]
     })
