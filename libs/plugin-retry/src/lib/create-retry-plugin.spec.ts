@@ -4,7 +4,9 @@ import {
   HttpExtRequest,
   HttpExtResponse
 } from '@http-ext/core';
-import { marbles } from 'rxjs-marbles/jest';
+import { VirtualTimeScheduler } from 'rxjs';
+import { configure, marbles } from 'rxjs-marbles/jest';
+import { TestScheduler } from 'rxjs/testing';
 
 import { createRetryPlugin } from './create-retry-plugin';
 
@@ -20,8 +22,11 @@ describe('RetryPlugin', () => {
   it(
     'should retry the handler with back-off strategy when a server error occurs',
     marbles(m => {
+      /* Setting every frame duration to 100ms. */
+      TestScheduler['frameTimeFactor'] = 100;
+
       const retryPlugin = createRetryPlugin({
-        initialInterval: 1,
+        initialInterval: 100,
         maxRetries: 3
       });
       const { handler } = retryPlugin;
@@ -42,11 +47,11 @@ describe('RetryPlugin', () => {
       m.expect(errorResponse$).toHaveSubscriptions([
         /* First try. */
         '^!',
-        /* First retry after 1ms which makes it happen in frame 2 : 1 (response delay) + 1. */
+        /* First retry after 100ms which makes it happen in frame 2 : 100ms (error response delay) + 100ms. */
         '--^!',
-        /* Second retry after 2ms which makes it happen in frame 5 : 2 + 1 (response delay) + 2. */
+        /* Second retry after 200ms which makes it happen in frame 5 : 200ms + 100ms (response delay) + 200ms. */
         '-----^!',
-        /* Third retry after 4ms which makes it happen in frame 10 : 5 + 1 (response delay) + 4. */
+        /* Third retry after 400ms which makes it happen in frame 10 : 500ms + 100ms (response delay) + 400ms. */
         '----------^!'
       ]);
     })
