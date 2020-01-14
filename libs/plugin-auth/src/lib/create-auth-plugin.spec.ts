@@ -1,6 +1,7 @@
 import { createRequest } from '@http-ext/core';
 import { from } from 'rxjs';
 import { marbles } from 'rxjs-marbles';
+
 import { createAuthPlugin } from './create-auth-plugin';
 
 describe('AuthPlugin', () => {
