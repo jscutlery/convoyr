@@ -4,9 +4,8 @@ import { of, from } from 'rxjs';
 import { createAuthPlugin } from './create-auth-plugin';
 
 describe('AuthPlugin', () => {
-  it('🚧 should add bearer token to each request', async () => {
+  it('should add bearer token to each request', async () => {
     const token$ = of('TOKEN');
-
     const authPlugin = createAuthPlugin({
       token: token$
     });
@@ -18,12 +17,7 @@ describe('AuthPlugin', () => {
       .fn()
       .mockReturnValue(of(createResponse({ status: 200, statusText: 'Ok' })));
 
-    await handler
-      .handle({
-        request,
-        next
-      })
-      .toPromise();
+    await handler.handle({ request, next }).toPromise();
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith({
