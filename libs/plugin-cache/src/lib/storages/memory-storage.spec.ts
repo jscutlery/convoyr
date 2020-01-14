@@ -11,7 +11,7 @@ describe('MemoryStorage', () => {
     return await memoryStorage.set(key, value).toPromise();
   }
 
-  function getPrivateLruCache(memoryStorage: MemoryStorage) {
+  function getPrivateLruCache() {
     return memoryStorage['_lruCache'];
   }
 
@@ -21,7 +21,7 @@ describe('MemoryStorage', () => {
     });
 
     it('should pass the right configuration to LRU', () => {
-      const lruCache = getPrivateLruCache(memoryStorage);
+      const lruCache = getPrivateLruCache();
       expect(lruCache.max).toEqual(100);
       expect(lruCache.lengthCalculator('VALUE')).toEqual(1);
     });
@@ -77,6 +77,12 @@ describe('MemoryStorage', () => {
       memoryStorage = new MemoryStorage({
         maxSize: '10 Bytes'
       });
+    });
+
+    it('should pass the right configuration to LRU', () => {
+      const lruCache = getPrivateLruCache();
+      expect(lruCache.max).toEqual(10);
+      expect(lruCache.lengthCalculator('VALUE')).toEqual(5);
     });
 
     it('should remove least recently used', async () => {
