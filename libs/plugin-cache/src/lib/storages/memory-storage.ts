@@ -1,7 +1,7 @@
 import bufferFrom from 'buffer-from';
 import bytes from 'bytes';
 import LRU from 'lru-cache';
-import { EMPTY, Observable, of } from 'rxjs';
+import { defer, EMPTY, Observable, of } from 'rxjs';
 
 import { Storage } from './storage';
 
@@ -17,17 +17,23 @@ export class MemoryStorage implements Storage {
   }
 
   get(key: string): Observable<string> {
-    return of(this._lruCache.get(key));
+    return defer(() => {
+      return of(this._lruCache.get(key));
+    });
   }
 
   set(key: string, value: string): Observable<void> {
-    this._lruCache.set(key, value);
-    return EMPTY;
+    return defer(() => {
+      this._lruCache.set(key, value);
+      return EMPTY;
+    });
   }
 
   delete(key: string): Observable<void> {
-    this._lruCache.del(key);
-    return EMPTY;
+    return defer(() => {
+      this._lruCache.del(key);
+      return EMPTY;
+    });
   }
 
   private _createLru({ maxSize }: { maxSize: number | string }) {
