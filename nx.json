@@ -12,7 +12,10 @@
       "tags": []
     },
     "sandbox": {
-      "tags": []
+      "tags": [],
+      "implicitDependencies": [
+        "sandbox-api"
+      ]
     },
     "core": {
       "tags": []
