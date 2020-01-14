@@ -1,12 +1,8 @@
 import * as bytes from 'bytes';
 import * as LRU from 'lru-cache';
-import * as size from 'object-sizeof';
 import { EMPTY, Observable, of } from 'rxjs';
 
 import { Storage } from './storage';
-
-// Dirty hack to ignore types error
-const sizeOf = (size as unknown) as (v: any) => number;
 
 export interface StorageArgs {
   maxSize?: number | string;
@@ -22,9 +18,9 @@ export function configureLRU(
     return {
       max: bytes(maxSize),
 
-      // Length is based on the size of the cache in bytes
+      // Length is based on the size in bytes
       length(cache) {
-        return sizeOf(cache);
+        return Buffer.from(cache).length;
       }
     };
   }

@@ -59,11 +59,21 @@ describe('MemoryStorage', () => {
   describe('with maxSize of human readable bytes', () => {
     beforeEach(() => {
       memoryStorage = new MemoryStorage({
-        maxSize: '100KB'
+        maxSize: '10 Bytes'
       });
     });
 
-    it.todo('should remove least recently used');
+    it('should remove least recently used', async () => {
+      const cache = 'cache'; // This is 5 bytes length
+
+      await set('Key A', cache);
+      await set('Key B', cache);
+      await set('Key C', cache);
+
+      expect(await get('Key A')).toBe(undefined);
+      expect(await get('Key B')).toBe('cache');
+      expect(await get('Key C')).toBe('cache');
+    });
   });
 
   describe('with maxAge', () => {
