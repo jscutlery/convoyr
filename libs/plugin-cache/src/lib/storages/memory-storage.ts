@@ -1,9 +1,13 @@
-import * as bufferFrom from 'buffer-from';
-import * as bytes from 'bytes';
+import * as bufferFrom_ from 'buffer-from';
+import * as bytes_ from 'bytes';
 import * as LRU from 'lru-cache';
 import { EMPTY, Observable, of } from 'rxjs';
 
 import { Storage } from './storage';
+
+/* @hack fix ERROR: Cannot call a namespace ('bufferFrom') */
+const bufferFrom = bufferFrom_;
+const bytes: (value: number | string, options?) => number = bytes_;
 
 export interface StorageArgs {
   maxSize?: number | string;
