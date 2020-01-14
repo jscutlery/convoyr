@@ -11,6 +11,22 @@ describe('MemoryStorage', () => {
     return await memoryStorage.set(key, value).toPromise();
   }
 
+  function getPrivateLruCache(memoryStorage: MemoryStorage) {
+    return memoryStorage['_lruCache'];
+  }
+
+  describe('with default maxSize', () => {
+    beforeEach(() => {
+      memoryStorage = new MemoryStorage();
+    });
+
+    it('should pass the right configuration to LRU', () => {
+      const lruCache = getPrivateLruCache(memoryStorage);
+      expect(lruCache.max).toEqual(100);
+      expect(lruCache.lengthCalculator('VALUE')).toEqual(1);
+    });
+  });
+
   describe('with maxSize of 1', () => {
     beforeEach(() => {
       memoryStorage = new MemoryStorage({
