@@ -28,6 +28,9 @@
     },
     "sandbox-api": {
       "tags": []
+    },
+    "plugin-auth": {
+      "tags": []
     }
   }
 }
