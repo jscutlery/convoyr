@@ -1,10 +1,7 @@
-import { createRequest, HttpExtPlugin } from '@http-ext/core';
-import { from, of } from 'rxjs';
+import { createRequest } from '@http-ext/core';
+import { from } from 'rxjs';
 import { marbles } from 'rxjs-marbles';
-
-function createAuthPlugin(args): HttpExtPlugin {
-  throw new Error('🚧 work in progress!');
-}
+import { createAuthPlugin } from './create-auth-plugin';
 
 describe('AuthPlugin', () => {
   xit(
