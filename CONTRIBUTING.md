@@ -53,16 +53,7 @@ and build architect configuration for production in `angular.json`
 }
 ```
 
-4. Setup CI in `ci.yml`
-```
-yarn ng build plugin-auth --prod
-```
-
-```
-yarn ng test plugin-auth --code-coverage
-```
-
-5. Codecov setup by adding the following to codecov.yml
+4. Codecov setup by adding the following to codecov.yml
 ```yaml
 coverage:
   status:
