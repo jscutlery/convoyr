@@ -1,4 +1,4 @@
-import bufferFrom from 'buffer-from';
+import * as bufferFrom from 'buffer-from';
 import * as bytes from 'bytes';
 import * as LRU from 'lru-cache';
 import { EMPTY, Observable, of } from 'rxjs';
