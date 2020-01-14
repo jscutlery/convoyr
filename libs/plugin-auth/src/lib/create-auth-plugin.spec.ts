@@ -1,28 +1,43 @@
-import { advanceTo } from 'jest-date-mock';
-import { createRequest, createResponse } from '@http-ext/core';
+import { AuthHandler } from './auth-handler';
+import {
+  createRequest,
+  createResponse,
+  HttpExtPlugin,
+  HttpExtRequest,
+  PluginHandler,
+  HttpExtResponse
+} from '@http-ext/core';
+import { concat, of, Observable } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-import { of, from, concat, defer } from 'rxjs';
-
+import { shareReplay } from 'rxjs/operators';
 import { createAuthPlugin } from './create-auth-plugin';
-import { delay, shareReplay } from 'rxjs/operators';
+
+export function createPluginTester({ handler }: { handler: PluginHandler }) {
+  const next = jest
+    .fn()
+    .mockReturnValue(of(createResponse({ status: 200, statusText: 'Ok' })));
+  return {
+    next,
+    handle({ request }: { request: HttpExtRequest }) {
+      return handler.handle({ request, next }) as Observable<HttpExtResponse>;
+    }
+  };
+}
 
 describe('AuthPlugin', () => {
   it('should add bearer token to each request', async () => {
     const token$ = of('TOKEN');
-    const { handler } = createAuthPlugin({
-      token: token$
+
+    const pluginTester = createPluginTester({
+      handler: new AuthHandler({ token: token$ })
     });
 
     const request = createRequest({ url: '/somewhere' });
 
-    const next = jest
-      .fn()
-      .mockReturnValue(of(createResponse({ status: 200, statusText: 'Ok' })));
+    await pluginTester.handle({ request }).toPromise();
 
-    await handler.handle({ request, next }).toPromise();
-
-    expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith({
+    expect(pluginTester.next).toHaveBeenCalledTimes(1);
+    expect(pluginTester.next).toHaveBeenCalledWith({
       request: expect.objectContaining({
         url: '/somewhere',
         headers: {
