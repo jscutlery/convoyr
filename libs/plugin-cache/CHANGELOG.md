@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/jscutlery/http-ext/compare/v1.0.0...v1.1.0) (2020-01-14)
+
+
+### Bug Fixes
+
+* **plugin-cache:** 🐞 fix build dependencies ([01c8377](https://github.com/jscutlery/http-ext/commit/01c83775382dbffc9c60526f772e29d59c88be8d))
+* **plugin-cache:** 🐞 handle `undefined` maxSize ([5de2e60](https://github.com/jscutlery/http-ext/commit/5de2e60a6bdf086db21877059367361ad0bf3725))
+* **plugin-cache:** 🐞 use `bufferFrom` polyfill ([25a98b5](https://github.com/jscutlery/http-ext/commit/25a98b506d1ab6ff4f77e89d5b9aeb39e32ce324))
+
+
+### Features
+
+* **plugin-cache:** ✅ handle human readable bytes `maxSize` ([ebf2bdc](https://github.com/jscutlery/http-ext/commit/ebf2bdcb4d0e2f040f9af9ffa8f15758828d94cd))
+
+
+
+
+
 # [1.0.0](https://github.com/jscutlery/http-ext/compare/v0.1.1...v1.0.0) (2020-01-06)
 
 
