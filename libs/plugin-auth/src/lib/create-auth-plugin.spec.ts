@@ -30,7 +30,10 @@ describe('AuthPlugin', () => {
 
       expect(next).toHaveBeenCalledWith({
         request: {
-          url: '/somewhere'
+          url: '/somewhere',
+          headers: {
+            Authorization: 'Bearer TOKEN'
+          }
         }
       });
     })
