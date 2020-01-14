@@ -61,24 +61,26 @@ describe('AuthPlugin', () => {
       const token$ = m
         .hot('x-a-b-c', tokens)
         .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
-      const { handler } = createAuthPlugin({
-        token: token$
+
+      const pluginTester = createPluginTester({
+        handler: new AuthHandler({ token: token$ })
       });
 
       const request = createRequest({ url: '/somewhere' });
       const response = createResponse({ status: 200, statusText: 'Ok' });
       const response$ = m.cold('r|', { r: response });
-      const next = jest.fn().mockReturnValue(response$);
 
-      const source$ = concat(wait$, handler.handle({ request, next }));
+      pluginTester.next.mockReturnValue(response$);
+
+      const source$ = concat(wait$, pluginTester.handle({ request }));
 
       m.expect(token$).toBeObservable('         x-a-b-c', tokens);
       m.expect(source$).toBeObservable('        -----b|', { b: response });
       m.expect(response$).toHaveSubscriptions(['-----^!']);
       m.flush();
 
-      expect(next).toHaveBeenCalledTimes(1);
-      expect(next).toHaveBeenCalledWith({
+      expect(pluginTester.next).toHaveBeenCalledTimes(1);
+      expect(pluginTester.next).toHaveBeenCalledWith({
         request: expect.objectContaining({
           headers: {
             Authorization: 'Bearer TOKEN_B'
