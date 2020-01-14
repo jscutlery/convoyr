@@ -27,6 +27,7 @@ ng g @nrwl/angular:lib --publishable plugin-xyz
 
 2. Disable IVy for production (until Angular 10 is here)
 Add `tsconfig.lib.prod.json`
+
 ```
 {
   "extends": "./tsconfig.lib.json",
@@ -35,7 +36,9 @@ Add `tsconfig.lib.prod.json`
   }
 }
 ```
+
 and build architect configuration for production in `angular.json`
+
 ```
 {
   "configurations": {
@@ -46,11 +49,13 @@ and build architect configuration for production in `angular.json`
 }
 ```
 
-3. Add test script to `package.json`
+3. Add test & publish script to `package.json`
+
 ```json
 {
   "scripts": {
-    "test:plugin-auth": "ng test plugin-xyz --watch"
+    "test:plugin-xyz": "ng test plugin-xyz --watch",
+    "_publish:plugin-xyz": "yarn _publish dist/libs/plugin-xyz"
   }
 }
 ```

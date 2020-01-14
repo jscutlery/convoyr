@@ -1,5 +1,16 @@
-import { HttpExtPlugin } from '@http-ext/core';
+import { HttpExtPlugin, RequestCondition } from '@http-ext/core';
 
-export function createAuthPlugin(args): HttpExtPlugin {
-  throw new Error('🚧 work in progress!');
+import { AuthHandler, HandlerOptions } from './auth-handler';
+
+export interface AuthPluginOptions extends HandlerOptions {
+  condition?: RequestCondition;
+}
+
+export function createAuthPlugin({ condition, token }: AuthPluginOptions) {
+  return {
+    condition,
+    handler: new AuthHandler({
+      token
+    })
+  };
 }

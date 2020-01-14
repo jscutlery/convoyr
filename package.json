@@ -41,6 +41,7 @@
     "_publish:core": "yarn _publish dist/libs/core",
     "_publish:plugin-cache": "yarn _publish dist/libs/plugin-cache",
     "_publish:plugin-retry": "yarn _publish dist/libs/plugin-retry",
+    "_publish:plugin-auth": "yarn _publish dist/libs/plugin-auth",
     "_lerna:version": "lerna version --no-push --conventional-commits",
     "contributors:add": "all-contributors add"
   },
