@@ -104,14 +104,13 @@ Data are moved in a dedicated object and cache metadata are added.
 
 #### `MemoryStorage` options
 
-| Property  | Type     | Default value |
-| --------- | -------- | ------------- |
-| `maxSize` | `number` | `100`         |
+| Property  | Type              | Default value |
+| --------- | ----------------- | ------------- |
+| `maxSize` | `number | string` | `100`         |
 
 #### `MemoryStorage` max size
 
-Default's storage size of the `MemoryStorage` is 100 requests.
-Above this limit, the least recently used response will be removed to free some space.
+Default's storage size of the `MemoryStorage` is 100 requests. Above this limit, the least recently used response will be removed to free some space.
 
 `MemoryStorage` max size can be configured when initializing the storage and the cache plugin.
 
@@ -124,6 +123,27 @@ HttpExtModule.forRoot({
   ]
 });
 ```
+
+The `maxSize` can also be configured using human readable bytes format if a `string` is passed, for example:
+
+```ts
+HttpExtModule.forRoot({
+  plugins: [
+    createCachePlugin({
+      storage: new MemoryStorage({ maxSize: '2000 b' })
+    })
+  ]
+});
+```
+
+Supported units and abbreviations are as follows and are case-insensitive:
+
+- `b` for bytes
+- `kb` for kilobytes
+- `mb` for megabytes
+- `gb` for gigabytes
+- `tb` for terabytes
+- `pb` for petabytes
 
 ### Custom storage
 
