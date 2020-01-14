@@ -6,11 +6,17 @@ function createAuthPlugin(args) {
 
 describe('AuthPlugin', () => {
   it('🚧 should add bearer token to each request', () => {
-    const token$ = from(['TOKEN_1', 'TOKEN_2']);
+    const token$ = of('TOKEN');
 
     const authPlugin = createAuthPlugin({
       token: token$
     });
+  });
+
+  it('🚧 should grab the first token value only and run request once', () => {
+    const token$ = from(['TOKEN_1', 'TOKEN_2']);
+
+    // @todo
   });
 
   it.todo('🚧 should call onUnauthorized callback on 401 response');
