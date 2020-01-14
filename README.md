@@ -32,7 +32,7 @@ This project is a monorepo that includes the following packages.
 | [@http-ext/angular](./libs/angular)           | Angular module        | `HttpClient` compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
 | [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin          | Fast and reactive UI       | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
 | [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin          | Network resilience         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
-| [@http-ext/plugin-retry](./libs/plugin-retry) | Authentication plugin | Authentication made easy   | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
+| [@http-ext/plugin-auth](./libs/plugin-auth)   | Authentication plugin | Authentication made easy   | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
 
 ## Quick start
 
