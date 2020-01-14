@@ -1,3 +1,4 @@
+import bufferFrom from 'buffer-from';
 import * as bytes from 'bytes';
 import * as LRU from 'lru-cache';
 import { EMPTY, Observable, of } from 'rxjs';
@@ -20,7 +21,7 @@ export function configureLRU(
 
       /* Length is based on the size in bytes */
       length(cache) {
-        return Buffer.from(cache).length;
+        return bufferFrom(cache).length;
       }
     };
   }
