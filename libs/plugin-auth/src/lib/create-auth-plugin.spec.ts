@@ -32,28 +32,35 @@ describe('AuthPlugin', () => {
     });
   });
 
-  xit(
-    '🚧 should grab the last token value only and run request once',
+  it(
+    'should grab the last token value only and run request once',
     marbles(m => {
-      const wait$ = m.cold('----|');
-      const token$ = m.hot('-a-b-c', {
+      const wait$ = m.cold('-----|');
+      const tokens = {
+        x: null,
         a: 'TOKEN_A',
         b: 'TOKEN_B',
         c: 'TOKEN_C'
-      });
+      };
+      /* Simulate state management with shareReplay. */
+      const token$ = m
+        .hot('x-a-b-c', tokens)
+        .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
       const { handler } = createAuthPlugin({
         token: token$
       });
 
       const request = createRequest({ url: '/somewhere' });
       const response = createResponse({ status: 200, statusText: 'Ok' });
-      const response$ = m.cold('-r|', { r: response });
+      const response$ = m.cold('r|', { r: response });
       const next = jest.fn().mockReturnValue(response$);
 
       const source$ = concat(wait$, handler.handle({ request, next }));
 
-      m.expect(source$).toBeObservable('        ------b|', { b: response });
-      m.expect(response$).toHaveSubscriptions(['-----^-!']);
+      m.expect(token$).toBeObservable('         x-a-b-c', tokens);
+      m.expect(source$).toBeObservable('        -----b|', { b: response });
+      m.expect(response$).toHaveSubscriptions(['-----^!']);
+      m.flush();
 
       expect(next).toHaveBeenCalledTimes(1);
       expect(next).toHaveBeenCalledWith({
