@@ -64,7 +64,7 @@ describe('MemoryStorage', () => {
     });
 
     it('should remove least recently used', async () => {
-      const cache = 'cache'; // This is 5 bytes length
+      const cache = 'cache'; /* This is 5 bytes length */
 
       await set('Key A', cache);
       await set('Key B', cache);

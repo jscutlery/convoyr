@@ -11,21 +11,21 @@ export interface StorageArgs {
 export function configureLRU(
   options: StorageArgs
 ): LRU.Options<string, string> {
-  const { maxSize } = options;
+  const { maxSize = 100 } = options;
 
-  // Handle human readable format
+  /* Handle human readable format */
   if (typeof maxSize === 'string') {
     return {
       max: bytes(maxSize),
 
-      // Length is based on the size in bytes
+      /* Length is based on the size in bytes */
       length(cache) {
         return Buffer.from(cache).length;
       }
     };
   }
 
-  // Otherwise it's a "count like" max size
+  /* Otherwise it's a "count like" max size */
   return {
     max: maxSize
   };
