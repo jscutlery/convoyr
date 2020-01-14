@@ -23,7 +23,25 @@ Meanwhile we provide a schematic for this, here are the steps to follow when add
 ng g @nrwl/angular:lib --publishable plugin-xyz
 ```
 
-2. Codecov setup by adding the following to codecov.yml
+2. Add test script to package.json
+```json
+{
+  "scripts": {
+    "test:plugin-auth": "ng test plugin-xyz --watch"
+  }
+}
+```
+
+3. Setup CI in ci.yml
+```
+yarn ng build plugin-auth --prod
+```
+
+```
+yarn ng test plugin-auth --code-coverage
+```
+
+4. Codecov setup by adding the following to codecov.yml
 ```yaml
 coverage:
   status:

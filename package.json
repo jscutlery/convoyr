@@ -12,6 +12,7 @@
     "test": "ng test",
     "test:angular": "ng test angular --watch",
     "test:core": "ng test core --watch",
+    "test:plugin-auth": "ng test plugin-auth --watch",
     "test:plugin-cache": "ng test plugin-cache --watch",
     "test:plugin-retry": "ng test plugin-retry --watch",
     "lint": "nx workspace-lint && ng lint",
