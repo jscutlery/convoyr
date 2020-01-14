@@ -5,6 +5,7 @@ import {
 } from '@http-ext/core';
 import { Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
+import { setHeader } from './set-header';
 
 export interface HandlerOptions {
   token: Observable<string>;
@@ -21,12 +22,10 @@ export class AuthHandler implements PluginHandler {
     return this._token$.pipe(
       first(),
       map(token =>
-        createRequest({
-          ...request,
-          headers: {
-            ...request.headers,
-            Authorization: `Bearer ${token}`
-          }
+        setHeader({
+          request,
+          key: 'Authorization',
+          value: `Bearer ${token}`
         })
       ),
       switchMap(_request => next({ request: _request }))
