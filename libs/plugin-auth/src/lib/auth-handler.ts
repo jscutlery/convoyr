@@ -3,8 +3,8 @@ import {
   PluginHandler,
   PluginHandlerArgs
 } from '@http-ext/core';
-import { Observable, of } from 'rxjs';
-import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { Observable, of, defer } from 'rxjs';
+import { first, map, switchMap, withLatestFrom, tap } from 'rxjs/operators';
 import { setHeader } from './set-header';
 
 export interface HandlerOptions {
@@ -19,13 +19,18 @@ export class AuthHandler implements PluginHandler {
   }
 
   handle({ request: originalRequest, next }: PluginHandlerArgs) {
-    return of(originalRequest).pipe(
-      withLatestFrom(this._token$),
-      first() /* `first()` used to ensure a value is emitted */,
-      map(([request, token]) =>
-        setHeader({ request, key: 'Authorization', value: `Bearer ${token}` })
-      ),
-      switchMap(request => next({ request }))
-    );
+    return defer(() => {
+      return this._token$.pipe(
+        first(),
+        map(token =>
+          setHeader({
+            request: originalRequest,
+            key: 'Authorization',
+            value: `Bearer ${token}`
+          })
+        ),
+        switchMap(request => next({ request }))
+      );
+    });
   }
 }
