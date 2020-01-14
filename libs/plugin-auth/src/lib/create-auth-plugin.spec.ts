@@ -1,41 +1,40 @@
-import { createRequest } from '@http-ext/core';
-import { from } from 'rxjs';
-import { marbles } from 'rxjs-marbles';
+import { createRequest, createResponse } from '@http-ext/core';
+import { of, from } from 'rxjs';
 
 import { createAuthPlugin } from './create-auth-plugin';
 
 describe('AuthPlugin', () => {
-  xit(
-    '🚧 should add bearer token to each request',
-    marbles(m => {
-      const token$ = m.cold('-t|', { t: 'TOKEN' });
+  it('🚧 should add bearer token to each request', async () => {
+    const token$ = of('TOKEN');
 
-      const authPlugin = createAuthPlugin({
-        token: token$
-      });
-      const { handler } = authPlugin;
+    const authPlugin = createAuthPlugin({
+      token: token$
+    });
+    const { handler } = authPlugin;
 
-      const request = createRequest({
-        url: '/somewhere'
-      });
+    const request = createRequest({ url: '/somewhere' });
 
-      const next = jest.fn();
+    const next = jest
+      .fn()
+      .mockReturnValue(of(createResponse({ status: 200, statusText: 'Ok' })));
 
-      handler.handle({
+    await handler
+      .handle({
         request,
         next
-      });
+      })
+      .toPromise();
 
-      expect(next).toHaveBeenCalledWith({
-        request: {
-          url: '/somewhere',
-          headers: {
-            Authorization: 'Bearer TOKEN'
-          }
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith({
+      request: expect.objectContaining({
+        url: '/somewhere',
+        headers: {
+          Authorization: 'Bearer TOKEN'
         }
-      });
-    })
-  );
+      })
+    });
+  });
 
   xit('🚧 should grab the first token value only and run request once', () => {
     const token$ = from(['TOKEN_1', 'TOKEN_2']);
