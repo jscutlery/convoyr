@@ -57,7 +57,13 @@ describe('MemoryStorage', () => {
   });
 
   describe('with maxSize of human readable bytes', () => {
-    it.todo('🚧 should remove least recently used');
+    beforeEach(() => {
+      memoryStorage = new MemoryStorage({
+        maxSize: '100KB'
+      });
+    });
+
+    it.todo('should remove least recently used');
   });
 
   describe('with maxAge', () => {
