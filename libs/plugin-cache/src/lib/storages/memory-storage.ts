@@ -9,10 +9,10 @@ export interface StorageArgs {
   maxSize?: number | string;
 }
 
-export function configureLRU(
+export function _createLruOptions(
   options: StorageArgs
 ): LRU.Options<string, string> {
-  const { maxSize = 100 } = options;
+  const { maxSize } = options;
 
   /* Handle human readable format */
   if (typeof maxSize === 'string') {
@@ -20,8 +20,8 @@ export function configureLRU(
       max: bytes(maxSize),
 
       /* Length is based on the size in bytes */
-      length(cache) {
-        return bufferFrom(cache).length;
+      length(value) {
+        return bufferFrom(value).length;
       }
     };
   }
@@ -33,23 +33,23 @@ export function configureLRU(
 }
 
 export class MemoryStorage implements Storage {
-  private _cache: LRU<string, string>;
+  private _lruCache: LRU<string, string>;
 
-  constructor({ maxSize }: StorageArgs = {}) {
-    this._cache = new LRU<string, string>(configureLRU({ maxSize }));
+  constructor({ maxSize = 100 }: StorageArgs = {}) {
+    this._lruCache = new LRU<string, string>(_createLruOptions({ maxSize }));
   }
 
   get(key: string): Observable<string> {
-    return of(this._cache.get(key));
+    return of(this._lruCache.get(key));
   }
 
   set(key: string, value: string): Observable<void> {
-    this._cache.set(key, value);
+    this._lruCache.set(key, value);
     return EMPTY;
   }
 
   delete(key: string): Observable<void> {
-    this._cache.del(key);
+    this._lruCache.del(key);
     return EMPTY;
   }
 }
