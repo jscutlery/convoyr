@@ -28,8 +28,8 @@ jobs:
         run: |
           # @todo use affected:build --base=origin/master but as we are using publishable libraries,
           # our libs like plugins depend on the core which should be built first and present in dist. 
-          yarn ng build angular --prod
           yarn ng build core --prod
+          yarn ng build angular --prod
           yarn ng build plugin-auth --prod
           yarn ng build plugin-cache --prod
           yarn ng build plugin-retry --prod
