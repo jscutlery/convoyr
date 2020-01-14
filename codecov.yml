@@ -3,12 +3,15 @@ coverage:
   round: down
   status:
     project:
-      core:
-        flags: core
-        target: 90%
       angular:
         target: 90%
         flags: angular
+      core:
+        flags: core
+        target: 90%
+      plugin-auth:
+        target: 90%
+        flags: plugin-auth
       plugin-cache:
         target: 90%
         flags: plugin-cache
@@ -24,12 +27,15 @@ coverage:
         enabled: no
         if_not_found: success
 flags:
-  core:
-    paths:
-      - libs/core/src
   angular:
     paths:
       - libs/angular/src
+  core:
+    paths:
+      - libs/core/src
+  plugin-auth:
+    paths:
+      - libs/plugin-auth/src
   plugin-cache:
     paths:
       - libs/plugin-cache/src
