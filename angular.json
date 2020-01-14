@@ -331,6 +331,45 @@
           }
         }
       }
+    },
+    "plugin-auth": {
+      "projectType": "library",
+      "root": "libs/plugin-auth",
+      "sourceRoot": "libs/plugin-auth/src",
+      "prefix": "http-ext",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/plugin-auth/tsconfig.lib.json",
+            "project": "libs/plugin-auth/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/plugin-auth/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/plugin-auth/tsconfig.lib.json",
+              "libs/plugin-auth/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/plugin-auth/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/plugin-auth/jest.config.js",
+            "tsConfig": "libs/plugin-auth/tsconfig.spec.json",
+            "setupFile": "libs/plugin-auth/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {

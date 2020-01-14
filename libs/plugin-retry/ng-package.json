@@ -4,7 +4,8 @@
   "lib": {
     "entryFile": "src/index.ts",
     "umdModuleIds": {
-      "@http-ext/core": "@http-ext/core"
+      "@http-ext/core": "@http-ext/core",
+      "backoff-rxjs": "backoff-rxjs"
     }
   },
   "whitelistedNonPeerDependencies": ["backoff-rxjs"]

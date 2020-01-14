@@ -11,6 +11,22 @@ describe('MemoryStorage', () => {
     return await memoryStorage.set(key, value).toPromise();
   }
 
+  function getPrivateLruCache() {
+    return memoryStorage['_lruCache'];
+  }
+
+  describe('with default maxSize', () => {
+    beforeEach(() => {
+      memoryStorage = new MemoryStorage();
+    });
+
+    it('should pass the right configuration to LRU', () => {
+      const lruCache = getPrivateLruCache();
+      expect(lruCache.max).toEqual(100);
+      expect(lruCache.lengthCalculator('VALUE')).toEqual(1);
+    });
+  });
+
   describe('with maxSize of 1', () => {
     beforeEach(() => {
       memoryStorage = new MemoryStorage({
@@ -57,7 +73,29 @@ describe('MemoryStorage', () => {
   });
 
   describe('with maxSize of human readable bytes', () => {
-    it.todo('🚧 should remove least recently used');
+    beforeEach(() => {
+      memoryStorage = new MemoryStorage({
+        maxSize: '10 Bytes'
+      });
+    });
+
+    it('should pass the right configuration to LRU', () => {
+      const lruCache = getPrivateLruCache();
+      expect(lruCache.max).toEqual(10);
+      expect(lruCache.lengthCalculator('VALUE')).toEqual(5);
+    });
+
+    it('should remove least recently used', async () => {
+      const cache = 'cache'; /* This is 5 bytes length */
+
+      await set('Key A', cache);
+      await set('Key B', cache);
+      await set('Key C', cache);
+
+      expect(await get('Key A')).toBe(undefined);
+      expect(await get('Key B')).toBe('cache');
+      expect(await get('Key C')).toBe('cache');
+    });
   });
 
   describe('with maxAge', () => {

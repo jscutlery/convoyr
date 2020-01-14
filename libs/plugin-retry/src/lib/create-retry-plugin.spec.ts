@@ -1,9 +1,4 @@
-import {
-  createRequest,
-  createResponse,
-  HttpExtRequest,
-  HttpExtResponse
-} from '@http-ext/core';
+import { createRequest, HttpExtRequest, createResponse } from '@http-ext/core';
 import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
 
@@ -11,11 +6,9 @@ import { createRetryPlugin } from './create-retry-plugin';
 
 describe('RetryPlugin', () => {
   let request: HttpExtRequest;
-  let response: HttpExtResponse;
 
   beforeEach(() => {
     request = createRequest({ url: 'https://ultimate-answer.com' });
-    response = createResponse({ body: { answer: 42 } });
   });
 
   it(
@@ -30,12 +23,11 @@ describe('RetryPlugin', () => {
       });
       const { handler } = retryPlugin;
 
-      /* Create an error response for coherence */
-      const errorResponse = {
-        ...response,
+      /* Create an error response */
+      const errorResponse = createResponse({
         status: 500,
         statusText: 'Internal Server Error'
-      };
+      });
 
       /* Simulate failure response */
       const errorResponse$ = m.cold('-#', undefined, errorResponse);
@@ -65,20 +57,19 @@ describe('RetryPlugin', () => {
       });
       const { handler } = retryPlugin;
 
-      /* Create an error response for coherence */
-      response = {
-        ...response,
+      /* Create a 404 response */
+      const errorResponse = createResponse({
         status: 404,
         statusText: 'Resource not found'
-      };
+      });
 
       /* Simulate failure response */
-      const next = () => m.cold('-#', undefined, response);
-
-      const source$ = handler.handle({ request, next });
-      const expected$ = m.cold('-#', undefined, response);
+      const errorResponse$ = m.cold('-#', undefined, errorResponse);
+      const source$ = handler.handle({ request, next: () => errorResponse$ });
+      const expected$ = m.cold('-#', undefined, errorResponse);
 
       m.expect(source$).toBeObservable(expected$);
+      m.expect(errorResponse$).toHaveSubscriptions(['^!']);
     })
   );
 });

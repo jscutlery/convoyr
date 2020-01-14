@@ -1,32 +1,63 @@
-import * as LRU from 'lru-cache';
-import { EMPTY, Observable, of } from 'rxjs';
+import bufferFrom from 'buffer-from';
+import bytes from 'bytes';
+import LRU from 'lru-cache';
+import { defer, EMPTY, Observable, of } from 'rxjs';
 
 import { Storage } from './storage';
 
 export interface StorageArgs {
-  maxSize?: number;
+  maxSize?: number | string;
 }
 
 export class MemoryStorage implements Storage {
-  private _cache: LRU<string, string>;
+  private _lruCache: LRU<string, string>;
 
-  constructor({ maxSize }: StorageArgs = {}) {
-    this._cache = new LRU<string, string>({
-      max: maxSize
-    });
+  constructor({ maxSize = 100 }: StorageArgs = {}) {
+    this._lruCache = this._createLru({ maxSize });
   }
 
   get(key: string): Observable<string> {
-    return of(this._cache.get(key));
+    return defer(() => {
+      return of(this._lruCache.get(key));
+    });
   }
 
   set(key: string, value: string): Observable<void> {
-    this._cache.set(key, value);
-    return EMPTY;
+    return defer(() => {
+      this._lruCache.set(key, value);
+      return EMPTY;
+    });
   }
 
   delete(key: string): Observable<void> {
-    this._cache.del(key);
-    return EMPTY;
+    return defer(() => {
+      this._lruCache.del(key);
+      return EMPTY;
+    });
+  }
+
+  private _createLru({ maxSize }: { maxSize: number | string }) {
+    return new LRU<string, string>(this._createLruOptions({ maxSize }));
+  }
+
+  private _createLruOptions(options: StorageArgs): LRU.Options<string, string> {
+    const { maxSize } = options;
+
+    /* Handle human readable format */
+    if (typeof maxSize === 'string') {
+      return {
+        max: bytes(maxSize),
+
+        /* Length is based on the size in bytes */
+        length(value) {
+          return bufferFrom(value).length;
+        }
+      };
+    }
+
+    /* Otherwise it's a "count like" max size */
+    return {
+      max: maxSize
+    };
   }
 }

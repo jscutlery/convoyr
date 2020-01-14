@@ -5,8 +5,10 @@
     "entryFile": "src/index.ts",
     "umdModuleIds": {
       "@http-ext/core": "@http-ext/core",
-      "lru-cache": "LRU"
+      "lru-cache": "LRU",
+      "buffer-from": "buffer-from",
+      "bytes": "bytes"
     }
   },
-  "whitelistedNonPeerDependencies": ["lru-cache"]
+  "whitelistedNonPeerDependencies": ["lru-cache", "buffer-from", "bytes"]
 }
