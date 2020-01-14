@@ -343,6 +343,11 @@
           "options": {
             "tsConfig": "libs/plugin-auth/tsconfig.lib.json",
             "project": "libs/plugin-auth/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/plugin-auth/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
