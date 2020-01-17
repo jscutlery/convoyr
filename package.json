@@ -66,6 +66,9 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "8.3.5",
+    "@commitlint/config-angular": "^8.3.4",
+    "@commitlint/config-conventional": "^8.3.4",
     "@angular-devkit/build-angular": "~0.900.0-rc.2",
     "@angular-devkit/build-ng-packagr": "~0.900.0-rc.2",
     "@angular/cli": "9.0.0-rc.8",
@@ -106,6 +109,7 @@
   ],
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
   },
