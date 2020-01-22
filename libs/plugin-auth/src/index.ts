@@ -1,1 +1,1 @@
-export { createAuthPlugin } from './lib/create-auth-plugin';
+export { createAuthPlugin, AuthPluginOptions } from './lib/create-auth-plugin';

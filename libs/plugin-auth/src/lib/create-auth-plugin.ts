@@ -1,4 +1,4 @@
-import { HttpExtPlugin, RequestCondition } from '@http-ext/core';
+import { RequestCondition } from '@http-ext/core';
 
 import { AuthHandler, HandlerOptions } from './auth-handler';
 
