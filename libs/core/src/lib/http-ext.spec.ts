@@ -1,9 +1,9 @@
+import { _createSpyPlugin } from '@http-ext/core/testing';
 import { of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
 import { createRequest } from './request';
 import { createResponse } from './response';
-import { _createSpyPlugin } from './testing';
 
 describe('HttpExt', () => {
   it('should handle multiple plugins', () => {

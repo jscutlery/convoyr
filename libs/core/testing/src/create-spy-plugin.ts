@@ -1,4 +1,4 @@
-import { HttpExtRequest } from '../request';
+import { HttpExtRequest } from '@http-ext/core';
 
 /* A plugin handle that just calls through the next plugin.*/
 export function _createSpyPlugin(
