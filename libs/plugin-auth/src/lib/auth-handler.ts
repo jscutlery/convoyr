@@ -1,10 +1,7 @@
-import {
-  createRequest,
-  PluginHandler,
-  PluginHandlerArgs
-} from '@http-ext/core';
-import { Observable, of, defer } from 'rxjs';
-import { first, map, switchMap, withLatestFrom, tap } from 'rxjs/operators';
+import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
+import { defer, Observable } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
+
 import { setHeader } from './set-header';
 
 export interface HandlerOptions {

@@ -1,16 +1,15 @@
-import { AuthHandler } from './auth-handler';
 import {
   createRequest,
   createResponse,
-  HttpExtPlugin,
   HttpExtRequest,
-  PluginHandler,
-  HttpExtResponse
+  HttpExtResponse,
+  PluginHandler
 } from '@http-ext/core';
-import { concat, of, Observable } from 'rxjs';
+import { concat, Observable, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';
-import { createAuthPlugin } from './create-auth-plugin';
+
+import { AuthHandler } from './auth-handler';
 
 export function createPluginTester({ handler }: { handler: PluginHandler }) {
   const next = jest
