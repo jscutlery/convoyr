@@ -89,5 +89,27 @@ describe('AuthPlugin', () => {
     })
   );
 
-  it.todo('🚧 should call onUnauthorized callback on 401 response');
+  xit('should call onUnauthorized callback on 401 response', () => {
+    const token$ = of('TOKEN');
+    const onUnauthorizedSpy = jest.fn();
+
+    const pluginTester = createPluginTester({
+      handler: new AuthHandler({
+        token: token$,
+        onUnauthorized: onUnauthorizedSpy
+      } as any)
+    });
+
+    const response = createResponse({
+      status: 401,
+      statusText: 'Unauthorized'
+    });
+    const response$ = of(response);
+
+    pluginTester.next.mockReturnValue(response$);
+
+    expect(onUnauthorizedSpy).toBeCalledWith(
+      expect.objectContaining({ response })
+    );
+  });
 });
