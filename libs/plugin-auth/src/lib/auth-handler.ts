@@ -1,18 +1,22 @@
 import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
 import { defer, Observable } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { first, map, switchMap, tap } from 'rxjs/operators';
 
+import { OnUnauthorized } from './on-unauthorized';
 import { setHeader } from './set-header';
 
 export interface HandlerOptions {
   token: Observable<string>;
+  onUnauthorized?: OnUnauthorized;
 }
 
 export class AuthHandler implements PluginHandler {
   private _token$: Observable<string>;
+  private _onUnauthorized: OnUnauthorized;
 
-  constructor({ token }: HandlerOptions) {
+  constructor({ token, onUnauthorized }: HandlerOptions) {
     this._token$ = token;
+    this._onUnauthorized = onUnauthorized;
   }
 
   handle({ request: originalRequest, next }: PluginHandlerArgs) {
@@ -26,7 +30,13 @@ export class AuthHandler implements PluginHandler {
             value: `Bearer ${token}`
           })
         ),
-        switchMap(request => next({ request }))
+        switchMap(request => next({ request })),
+        tap(response => {
+          if (response.status === 401) {
+            /* tslint:disable-next-line: no-unused-expression */
+            this._onUnauthorized && this._onUnauthorized(response);
+          }
+        })
       );
     });
   }

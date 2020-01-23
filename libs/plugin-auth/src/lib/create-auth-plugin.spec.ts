@@ -15,6 +15,7 @@ export function createPluginTester({ handler }: { handler: PluginHandler }) {
   const next = jest
     .fn()
     .mockReturnValue(of(createResponse({ status: 200, statusText: 'Ok' })));
+
   return {
     next,
     handle({ request }: { request: HttpExtRequest }) {
@@ -89,5 +90,30 @@ describe('AuthPlugin', () => {
     })
   );
 
-  it.todo('🚧 should call onUnauthorized callback on 401 response');
+  it('should call onUnauthorized callback on 401 response', async () => {
+    const token$ = of('TOKEN');
+    const onUnauthorizedSpy = jest.fn();
+
+    const pluginTester = createPluginTester({
+      handler: new AuthHandler({
+        token: token$,
+        onUnauthorized: onUnauthorizedSpy
+      })
+    });
+
+    const request = createRequest({ url: '/somewhere' });
+    const unauthorizedResponse = createResponse({
+      status: 401,
+      statusText: 'Unauthorized'
+    });
+
+    pluginTester.next.mockReturnValue(of(unauthorizedResponse));
+
+    await pluginTester.handle({ request }).toPromise();
+
+    expect(pluginTester.next).toBeCalled();
+    expect(onUnauthorizedSpy).toBeCalledWith(
+      expect.objectContaining(unauthorizedResponse)
+    );
+  });
 });
