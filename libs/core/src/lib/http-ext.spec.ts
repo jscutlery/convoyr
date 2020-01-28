@@ -1,4 +1,9 @@
-import { createSpyPlugin } from '@http-ext/core/testing';
+/**
+ * @hack relative import of `createSpyPlugin`:
+ *   If we import `@http-ext/core/testing`, it fails building the core library.
+ *   Somehow, `http-ext.spec.ts` is considered part of `@http-ext/core` by ng-packagr and creates an import loop between core and core/testing.
+ */
+import { createSpyPlugin } from '../../testing/src/index';
 import { of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
