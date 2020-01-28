@@ -1,1 +1,1 @@
-export { _createSpyPlugin } from './lib/create-spy-plugin';
+export { createSpyPlugin } from './lib/create-spy-plugin';
