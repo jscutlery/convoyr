@@ -4,7 +4,7 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { _createSpyPlugin } from '@http-ext/core/testing';
+import { createSpyPlugin } from '@http-ext/core/testing';
 
 import { HttpExtModule } from './http-ext.module';
 
@@ -12,7 +12,7 @@ describe('HttpExtModule', () => {
   let spyPlugin;
 
   beforeEach(() => {
-    spyPlugin = _createSpyPlugin();
+    spyPlugin = createSpyPlugin();
 
     TestBed.configureTestingModule({
       imports: [

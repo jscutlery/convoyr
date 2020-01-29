@@ -1,4 +1,9 @@
-import { _createSpyPlugin } from '@http-ext/core/testing';
+/**
+ * @hack relative import of `createSpyPlugin`:
+ *   If we import `@http-ext/core/testing`, it fails building the core library.
+ *   Somehow, `http-ext.spec.ts` is considered part of `@http-ext/core` by ng-packagr and creates an import loop between core and core/testing.
+ */
+import { createSpyPlugin } from '../../testing/src/index';
 import { of } from 'rxjs';
 
 import { HttpExt } from './http-ext';
@@ -7,8 +12,8 @@ import { createResponse } from './response';
 
 describe('HttpExt', () => {
   it('should handle multiple plugins', () => {
-    const pluginA = _createSpyPlugin();
-    const pluginB = _createSpyPlugin();
+    const pluginA = createSpyPlugin();
+    const pluginB = createSpyPlugin();
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
 
     const request = createRequest({
@@ -67,10 +72,10 @@ describe('HttpExt', () => {
   });
 
   it('should conditionally handle plugins', () => {
-    const pluginA = _createSpyPlugin(req =>
+    const pluginA = createSpyPlugin(req =>
       req.url.startsWith('https://answer-to-the-ultimate-question-of-life.com/')
     );
-    const pluginB = _createSpyPlugin(req =>
+    const pluginB = createSpyPlugin(req =>
       req.url.startsWith('https://something-else-that-do-not-match.com/')
     );
     const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
@@ -108,7 +113,7 @@ describe('HttpExt', () => {
   });
 
   it('should throw when a plugin condition returns an invalid value', () => {
-    const plugin = _createSpyPlugin(() => '' as any /* 👈🏻 invalid condition */);
+    const plugin = createSpyPlugin(() => '' as any /* 👈🏻 invalid condition */);
     const httpExt = new HttpExt({ plugins: [plugin] });
     const request = createRequest({
       url: 'https://test.com/'
