@@ -92,7 +92,7 @@ describe('HttpExtModule', () => {
 
     afterEach(() => httpController.verify());
 
-    xit('🚧 should handle http request', () => {
+    it('should handle http request', () => {
       const observer = jest.fn();
 
       httpClient
