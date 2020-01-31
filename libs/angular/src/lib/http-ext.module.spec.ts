@@ -5,6 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { createSpyPlugin } from '@http-ext/core/testing';
+import { _HTTP_EXT_CONFIG } from './http-ext.interceptor';
 
 import { HttpExtModule } from './http-ext.module';
 
@@ -135,10 +136,13 @@ describe('HttpExtModule', () => {
       });
     });
 
-    let httpClient: HttpClient;
-    beforeEach(() => (httpClient = TestBed.inject(HttpClient)));
+    it('should handle http request', () => {
+      const config = {};
+      configFn.mockReturnValue(config);
 
-    xit('🚧 should handle http request', () => {
+      /* Injecting config triggers the config factory. */
+      expect(TestBed.inject(_HTTP_EXT_CONFIG)).toEqual(config);
+
       expect(configFn).toHaveBeenCalledTimes(1);
       expect(configFn).toHaveBeenCalledWith(service);
     });
