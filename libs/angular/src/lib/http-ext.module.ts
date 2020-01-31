@@ -11,7 +11,7 @@ export type HttpExtModuleArgs =
   | HttpExtConfig
   | {
       deps?: unknown[];
-      config: () => HttpExtConfig;
+      config: (...args: unknown[]) => HttpExtConfig;
     };
 
 @NgModule({})
@@ -24,6 +24,7 @@ export class HttpExtModule {
           provide: _HTTP_EXT_CONFIG,
           ...('config' in args
             ? {
+                deps: args.deps,
                 useFactory: args.config
               }
             : {
