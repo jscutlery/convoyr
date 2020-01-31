@@ -76,7 +76,9 @@ describe('HttpExtModule', () => {
         imports: [
           HttpClientTestingModule,
           HttpExtModule.forRoot({
-            plugins: [spyPlugin]
+            config: () => ({
+              plugins: [spyPlugin]
+            })
           })
         ]
       });
