@@ -107,4 +107,37 @@ describe('HttpExtModule', () => {
       expect(spyPlugin.handler.handle).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('with dynamic config and dependency injection', () => {
+    class Service {}
+
+    let configFn: jest.Mock;
+    let service: Service;
+
+    beforeEach(() => {
+      configFn = jest.fn();
+      service = new Service();
+
+      TestBed.configureTestingModule({
+        providers: [
+          {
+            provide: Service,
+            useValue: service
+          }
+        ],
+        imports: [
+          HttpClientTestingModule,
+          HttpExtModule.forRoot({
+            deps: [Service],
+            config: configFn
+          })
+        ]
+      });
+    });
+
+    xit('🚧 should handle http request', () => {
+      expect(configFn).toHaveBeenCalledTimes(1);
+      expect(configFn).toHaveBeenCalledWith(service);
+    });
+  });
 });

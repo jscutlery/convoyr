@@ -10,6 +10,7 @@ import {
 export type HttpExtModuleArgs =
   | HttpExtConfig
   | {
+      deps?: unknown[];
       config: () => HttpExtConfig;
     };
 
