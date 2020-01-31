@@ -135,6 +135,9 @@ describe('HttpExtModule', () => {
       });
     });
 
+    let httpClient: HttpClient;
+    beforeEach(() => (httpClient = TestBed.inject(HttpClient)));
+
     xit('🚧 should handle http request', () => {
       expect(configFn).toHaveBeenCalledTimes(1);
       expect(configFn).toHaveBeenCalledWith(service);
