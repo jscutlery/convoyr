@@ -2373,7 +2373,7 @@
     minimist "^1.2.0"
     strip-json-comments "2.0.1"
 
-"@nrwl/workspace@^9.0.2":
+"@nrwl/workspace@9.0.2":
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-9.0.2.tgz#3f83aa14c4bf1d9c5b9b633c334c3ee559f6b7d3"
   integrity sha512-sqtY9fdsYbPJHri8jvCh9QVxZVOUtEN+ockgGFOo4eOXcAGIajZKdnc+qohcvMJSl32XBOlUlgfgXSB8apgHPg==
