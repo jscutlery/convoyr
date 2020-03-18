@@ -5,8 +5,8 @@
   "private": false,
   "repository": "git@github.com:jscutlery/http-ext.git",
   "peerDependencies": {
-    "@angular/common": ">= 9.0.6",
-    "@angular/core": ">= 9.0.6",
+    "@angular/common": ">= 9.0.7",
+    "@angular/core": ">= 9.0.7",
     "@http-ext/core": "^1.0.0",
     "rxjs": "^6.5.3"
   }
