@@ -11900,9 +11900,9 @@ run-queue@^1.0.0, run-queue@^1.0.3:
     aproba "^1.1.1"
 
 rxjs-marbles@^5.0.3:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/rxjs-marbles/-/rxjs-marbles-5.0.5.tgz#374aa289f5488b6c6a99d7d164d96a8db1df40e1"
-  integrity sha512-Ni1AAVdq28CEIZaAQpD2+WhoaaRQ7FOObLVf26rc7g7S/QEc6GmfoG8lZicyy2KKxsExhJzTnyUCcLBG28/0zA==
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/rxjs-marbles/-/rxjs-marbles-5.0.6.tgz#e8e71df3b82b49603555f017f2fd3d8c359c4c24"
+  integrity sha512-VEcWhSR2QwgmpOh4iL/8BtSqXwnfSsM9JjCVVG/NXbHOuPIzLQ/RJpgvdt0eHixP5mjLof2VODVR62XRCdOqgA==
   dependencies:
     fast-equals "^2.0.0"
 
