@@ -89,7 +89,7 @@
     "dotenv": "8.2.0",
     "eslint": "6.8.0",
     "husky": "^4.0.0",
-    "jest": "25.1.0",
+    "jest": "25.2.3",
     "jest-date-mock": "^1.0.7",
     "jest-preset-angular": "7.1.1",
     "lerna": "^3.17.0",
