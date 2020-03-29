@@ -78,7 +78,7 @@
     "@nrwl/express": "^8.11.0",
     "@nrwl/jest": "8.11.0",
     "@nrwl/node": "8.11.0",
-    "@nrwl/workspace": "9.0.2",
+    "@nrwl/workspace": "9.1.4",
     "@types/express": "4.17.0",
     "@types/jest": "25.1.4",
     "@types/lru-cache": "^5.1.0",
