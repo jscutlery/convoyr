@@ -33,8 +33,7 @@ export class AuthHandler implements PluginHandler {
         switchMap(request => next({ request })),
         tap(response => {
           if (response.status === 401) {
-            /* tslint:disable-next-line: no-unused-expression */
-            this._onUnauthorized && this._onUnauthorized(response);
+            this?._onUnauthorized(response);
           }
         })
       );

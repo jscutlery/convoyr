@@ -4,4 +4,4 @@ export { matchOrigin, matchMethod } from './lib/matchers';
 export { HttpExt } from './lib/http-ext';
 export { NextFn } from './lib/request-handler';
 export { HttpExtRequest, createRequest, HttpMethod } from './lib/request';
-export { HttpExtResponse, createResponse } from './lib/response';
+export { HttpExtResponse, createResponse, ResponseArgs } from './lib/response';

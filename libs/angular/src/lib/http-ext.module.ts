@@ -1,22 +1,35 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { HttpExtPlugin } from '@http-ext/core';
 
-import { _HTTP_EXT_CONFIG, HttpExtInterceptor } from './http-ext.interceptor';
+import {
+  _HTTP_EXT_CONFIG,
+  HttpExtConfig,
+  HttpExtInterceptor
+} from './http-ext.interceptor';
+
+export type HttpExtModuleArgs =
+  | HttpExtConfig
+  | {
+      deps?: unknown[];
+      config: (...args: unknown[]) => HttpExtConfig;
+    };
 
 @NgModule({})
 export class HttpExtModule {
-  static forRoot({
-    plugins
-  }: {
-    plugins: HttpExtPlugin[];
-  }): ModuleWithProviders<HttpExtModule> {
+  static forRoot(args: HttpExtModuleArgs): ModuleWithProviders<HttpExtModule> {
     return {
       ngModule: HttpExtModule,
       providers: [
         {
           provide: _HTTP_EXT_CONFIG,
-          useValue: { plugins }
+          ...('config' in args
+            ? {
+                deps: args.deps,
+                useFactory: args.config
+              }
+            : {
+                useValue: args
+              })
         },
         {
           provide: HTTP_INTERCEPTORS,

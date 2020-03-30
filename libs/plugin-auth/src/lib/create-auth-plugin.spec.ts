@@ -1,28 +1,10 @@
-import {
-  createRequest,
-  createResponse,
-  HttpExtRequest,
-  HttpExtResponse,
-  PluginHandler
-} from '@http-ext/core';
-import { concat, Observable, of } from 'rxjs';
+import { createRequest, createResponse } from '@http-ext/core';
+import { createPluginTester } from '@http-ext/core/testing';
+import { concat, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';
 
 import { AuthHandler } from './auth-handler';
-
-export function createPluginTester({ handler }: { handler: PluginHandler }) {
-  const next = jest
-    .fn()
-    .mockReturnValue(of(createResponse({ status: 200, statusText: 'Ok' })));
-
-  return {
-    next,
-    handle({ request }: { request: HttpExtRequest }) {
-      return handler.handle({ request, next }) as Observable<HttpExtResponse>;
-    }
-  };
-}
 
 describe('AuthPlugin', () => {
   it('should add bearer token to each request', async () => {
