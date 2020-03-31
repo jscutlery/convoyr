@@ -9,6 +9,10 @@ import { throwIfInvalidPluginCondition } from './throw-invalid-plugin-condition'
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
 
+export function invalidHandleRequestConditionError() {
+  return new Error('"shouldHandleRequest" should be a function.');
+}
+
 export class HttpExt {
   private _plugins: HttpExtPlugin[];
 
@@ -86,7 +90,7 @@ export class HttpExt {
     const shouldHandleRequest = plugin.shouldHandleRequest || plugin.condition;
 
     if (shouldHandleRequest != null && !isFunction(shouldHandleRequest)) {
-      throw new Error('"shouldHandleRequest" should be a function.');
+      throw invalidHandleRequestConditionError();
     }
 
     if (shouldHandleRequest == null) {
