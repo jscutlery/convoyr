@@ -10,10 +10,6 @@ export type RequestCondition = ({
 }) => boolean | Promise<boolean> | Observable<boolean>;
 
 export interface HttpExtPlugin {
-  /**
-   * @deprecated use {@Link HttpExtPlugin.shouldHandleRequest} instead.
-   */
-  condition?: RequestCondition;
   shouldHandleRequest?: RequestCondition;
   handler: PluginHandler;
 }

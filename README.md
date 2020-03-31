@@ -82,7 +82,7 @@ import { LoggerHandler } from './handler';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
-    condition: ({ request }) => request.url.includes('api.github.com')
+    shouldHandleRequest: ({ request }) => request.url.includes('api.github.com')
     handler: new LoggerHandler()
   };
 }
@@ -121,7 +121,7 @@ The `condition` function checks for each request if the plugin handler should be
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
     /* Here you can access the request object and decide which request you need to handle */
-    condition: ({ request }) => {
+    shouldHandleRequest: ({ request }) => {
       return request.method === 'GET' && request.url.includes('api.github.com');
     },
     handler: new LoggerHandler()
@@ -142,7 +142,7 @@ import { matchOrigin } from '@http-ext/core';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
-    condition: matchOrigin('https://secure-origin.com'),
+    shouldHandleRequest: matchOrigin('https://secure-origin.com'),
     handler: new LoggerHandler()
   };
 }

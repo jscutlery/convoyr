@@ -87,16 +87,17 @@ export class HttpExt {
     request: HttpExtRequest;
     plugin: HttpExtPlugin;
   }): Observable<boolean> {
-    const shouldHandleRequest = plugin.shouldHandleRequest || plugin.condition;
-
-    if (shouldHandleRequest != null && !isFunction(shouldHandleRequest)) {
+    if (
+      plugin.shouldHandleRequest != null &&
+      !isFunction(plugin.shouldHandleRequest)
+    ) {
       throw invalidHandleRequestConditionError();
     }
 
-    if (shouldHandleRequest == null) {
+    if (plugin.shouldHandleRequest == null) {
       return of(true);
     }
 
-    return fromSyncOrAsync(shouldHandleRequest({ request }));
+    return fromSyncOrAsync(plugin.shouldHandleRequest({ request }));
   }
 }

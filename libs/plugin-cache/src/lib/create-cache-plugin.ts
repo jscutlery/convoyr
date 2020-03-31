@@ -4,18 +4,18 @@ import { CacheHandler, HandlerOptions } from './cache-handler';
 import { MemoryStorage } from './storages/memory-storage';
 
 export interface CachePluginOptions extends HandlerOptions {
-  condition: RequestCondition;
+  shouldHandleRequest: RequestCondition;
 }
 
 export function createCachePlugin({
   addCacheMetadata = false,
   storage = new MemoryStorage({ maxSize: 100 }),
-  condition = ({ request }) => {
+  shouldHandleRequest = ({ request }) => {
     return request.method === 'GET' && request.responseType === 'json';
   }
 }: Partial<CachePluginOptions> = {}) {
   return {
-    condition,
+    shouldHandleRequest,
     handler: new CacheHandler({ addCacheMetadata, storage })
   };
 }

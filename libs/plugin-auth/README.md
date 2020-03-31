@@ -42,7 +42,7 @@ import { createAuthPlugin } from '@http-ext/plugin-auth';
       deps: [AuthService],
       config: (authService: AuthService) =>
         createAuthPlugin({
-          condition: matchOrigin('https://secure-origin.com'),
+          shouldHandleRequest: matchOrigin('https://secure-origin.com'),
           token: authService.getToken(), // Returns an Observable<string>.
           onUnauthorized: () => authService.markTokenExpired()
         })

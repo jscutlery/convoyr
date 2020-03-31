@@ -104,9 +104,11 @@ describe('CachePlugin', () => {
 
   it('should use given request condition', () => {
     const spyCondition = jest.fn().mockReturnValue(true);
-    const cachePlugin = createCachePlugin({ condition: spyCondition });
+    const cachePlugin = createCachePlugin({
+      shouldHandleRequest: spyCondition
+    });
 
-    cachePlugin.condition({ request });
+    cachePlugin.shouldHandleRequest({ request });
 
     expect(spyCondition).toHaveBeenCalledWith({ request });
   });
@@ -119,11 +121,19 @@ describe('CachePlugin', () => {
     const patchRequest: HttpExtRequest = { ...request, method: 'PATCH' };
     const deleteRequest: HttpExtRequest = { ...request, method: 'DELETE' };
 
-    expect(cachePlugin.condition({ request: getRequest })).toBe(true);
-    expect(cachePlugin.condition({ request: postRequest })).toBe(false);
-    expect(cachePlugin.condition({ request: putRequest })).toBe(false);
-    expect(cachePlugin.condition({ request: patchRequest })).toBe(false);
-    expect(cachePlugin.condition({ request: deleteRequest })).toBe(false);
+    expect(cachePlugin.shouldHandleRequest({ request: getRequest })).toBe(true);
+    expect(cachePlugin.shouldHandleRequest({ request: postRequest })).toBe(
+      false
+    );
+    expect(cachePlugin.shouldHandleRequest({ request: putRequest })).toBe(
+      false
+    );
+    expect(cachePlugin.shouldHandleRequest({ request: patchRequest })).toBe(
+      false
+    );
+    expect(cachePlugin.shouldHandleRequest({ request: deleteRequest })).toBe(
+      false
+    );
   });
 
   it('should use given storage implementation to store cache', async () => {
