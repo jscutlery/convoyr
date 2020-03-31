@@ -83,12 +83,16 @@ export class HttpExt {
     request: HttpExtRequest;
     plugin: HttpExtPlugin;
   }): Observable<boolean> {
-    if (!isFunction(plugin.shouldHandleRequest || plugin.condition)) {
+    const shouldHandleRequest = plugin.shouldHandleRequest || plugin.condition;
+
+    if (shouldHandleRequest != null && !isFunction(shouldHandleRequest)) {
+      throw new Error('"shouldHandleRequest" should be a function.');
+    }
+
+    if (shouldHandleRequest == null) {
       return of(true);
     }
 
-    return fromSyncOrAsync(
-      (plugin.shouldHandleRequest || plugin.condition)({ request })
-    );
+    return fromSyncOrAsync(shouldHandleRequest({ request }));
   }
 }
