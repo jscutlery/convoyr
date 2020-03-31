@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/jscutlery/http-ext/compare/v1.1.0...v1.2.0) (2020-03-31)
+
+
+### Features
+
+* **angular:** ✅ use dynamic configuration ([5ab1596](https://github.com/jscutlery/http-ext/commit/5ab1596cc1099e2a78158a9af9ec94ae83943ce4))
+* **core:** ✅ deprecate `condition` in favor of `shouldHandleRequest` ([11b7fbb](https://github.com/jscutlery/http-ext/commit/11b7fbb9b818b15699c3c441245b3a299c6f4851))
+* **plugin-auth:** ✅ add auth plugin: add onUnauthorized callback ([f9f25be](https://github.com/jscutlery/http-ext/commit/f9f25bed1650b603d987c5088a909fe27fc1e1e6))
+
+
+
+
+
 # [1.1.0](https://github.com/jscutlery/http-ext/compare/v1.0.0...v1.1.0) (2020-01-14)
 
 

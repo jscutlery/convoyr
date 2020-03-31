@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/jscutlery/http-ext/compare/v1.1.0...v1.2.0) (2020-03-31)
+
+
+### Features
+
+* **core:** ✅ deprecate `condition` in favor of `shouldHandleRequest` ([11b7fbb](https://github.com/jscutlery/http-ext/commit/11b7fbb9b818b15699c3c441245b3a299c6f4851))
+
+
+
+
+
 # [1.1.0](https://github.com/jscutlery/http-ext/compare/v1.0.0...v1.1.0) (2020-01-14)
 
 **Note:** Version bump only for package @http-ext/core

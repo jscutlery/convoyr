@@ -29,10 +29,10 @@ This project is a monorepo that includes the following packages.
 | Name                                          | Description           | Goal                       | Size                                                                   |
 | --------------------------------------------- | --------------------- | -------------------------- | ---------------------------------------------------------------------- |
 | [@http-ext/core](./libs/core)                 | Core module           | Generic plugins handler    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
-| [@http-ext/angular](./libs/angular)           | Angular module        | `HttpClient` compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
+| [@http-ext/angular](./libs/angular)           | Angular module        | HttpClient compatibility   | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
+| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin           | Auth made easy             | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
 | [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin          | Fast and reactive UI       | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
 | [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin          | Network resilience         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
-| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin           | Auth made easy             | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
 
 ## Quick start
 
@@ -82,7 +82,7 @@ import { LoggerHandler } from './handler';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
-    condition: ({ request }) => request.url.includes('api.github.com')
+    shouldHandleRequest: ({ request }) => request.url.includes('api.github.com')
     handler: new LoggerHandler()
   };
 }
@@ -121,7 +121,7 @@ The `condition` function checks for each request if the plugin handler should be
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
     /* Here you can access the request object and decide which request you need to handle */
-    condition: ({ request }) => {
+    shouldHandleRequest: ({ request }) => {
       return request.method === 'GET' && request.url.includes('api.github.com');
     },
     handler: new LoggerHandler()
@@ -142,7 +142,7 @@ import { matchOrigin } from '@http-ext/core';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
-    condition: matchOrigin('https://secure-origin.com'),
+    shouldHandleRequest: matchOrigin('https://secure-origin.com'),
     handler: new LoggerHandler()
   };
 }

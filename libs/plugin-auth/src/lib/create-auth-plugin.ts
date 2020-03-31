@@ -3,16 +3,16 @@ import { RequestCondition } from '@http-ext/core';
 import { AuthHandler, HandlerOptions } from './auth-handler';
 
 export interface AuthPluginOptions extends HandlerOptions {
-  condition?: RequestCondition;
+  shouldHandleRequest?: RequestCondition;
 }
 
 export function createAuthPlugin({
-  condition,
+  shouldHandleRequest,
   token,
   onUnauthorized
 }: AuthPluginOptions) {
   return {
-    condition,
+    shouldHandleRequest,
     handler: new AuthHandler({
       token,
       onUnauthorized

@@ -68,7 +68,7 @@ import { MemoryStorage } from '@http-ext/plugin-cache';
           maxIntervalMs: 120000,
           maxRetries: 15,
           shouldRetry: response => response.status !== 404,
-          condition: ({ request }) => request.url.includes('api.github.com')
+          shouldHandleRequest: ({ request }) => request.url.includes('api.github.com')
         })
       ]
     })
