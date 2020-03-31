@@ -1,4 +1,4 @@
-import bufferFrom from 'buffer-from';
+import { Buffer } from 'buffer';
 import bytes from 'bytes';
 import LRU from 'lru-cache';
 import { defer, EMPTY, Observable, of } from 'rxjs';
@@ -50,7 +50,7 @@ export class MemoryStorage implements Storage {
 
         /* Length is based on the size in bytes */
         length(value) {
-          return bufferFrom(value).length;
+          return Buffer.from(value).length;
         }
       };
     }

@@ -9,7 +9,7 @@
     "rxjs": "^6.5.3"
   },
   "dependencies": {
-    "buffer-from": "^1.1.1",
+    "buffer": "^5.5.0",
     "bytes": "^3.1.0",
     "lru-cache": "^5.1.1"
   }
