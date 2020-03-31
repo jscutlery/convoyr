@@ -6,9 +6,9 @@
     "umdModuleIds": {
       "@http-ext/core": "@http-ext/core",
       "lru-cache": "LRU",
-      "buffer-from": "buffer-from",
+      "buffer": "buffer",
       "bytes": "bytes"
     }
   },
-  "whitelistedNonPeerDependencies": ["lru-cache", "buffer-from", "bytes"]
+  "whitelistedNonPeerDependencies": ["lru-cache", "buffer", "bytes"]
 }
