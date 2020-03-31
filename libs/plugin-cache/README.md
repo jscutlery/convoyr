@@ -46,11 +46,11 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property           | Type               | Default value         | Description                                                        |
-| ------------------ | ------------------ | --------------------- | ------------------------------------------------------------------ |
-| `addCacheMetadata` | `boolean`          | `false`               | Add cache metadata to the response body.                           |
-| `storage`          | `Storage`          | `new MemoryStorage()` | Storage used to store the cache.                                   |
-| `condition`        | `RequestCondition` | `matchMethod('GET')`  | Predicate function to know which request the plugin should handle. |
+| Property             | Type               | Default value         | Description                                                        |
+| -------------------- | ------------------ | --------------------- | ------------------------------------------------------------------ |
+| `addCacheMetadata`   | `boolean`          | `false`               | Add cache metadata to the response body.                           |
+| `storage`            | `Storage`          | `new MemoryStorage()` | Storage used to store the cache.                                   |
+| `shouldHandleRequest`| `RequestCondition` | `matchMethod('GET')`  | Predicate function to know which request the plugin should handle. |
 
 Here is an example passing a configuration object.
 
@@ -72,7 +72,7 @@ import { createCachePlugin, MemoryStorage } from '@http-ext/plugin-cache';
 export class AppModule {}
 ```
 
-To know more about the `condition` property check-out the [conditional handling section](https://github.com/jscutlery/http-ext#conditional-handling).
+To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/http-ext#conditional-handling).
 
 ### Metadata
 

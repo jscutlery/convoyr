@@ -46,13 +46,13 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property            | Type               | Default value   | Description                                                        |
-| ------------------- | ------------------ | --------------- | ------------------------------------------------------------------ |
-| `initialIntervalMs` | `number`           | `200`           | Duration before the first retry.                                   |
-| `maxIntervalMs`     | `number`           | `60000`         | Maximum time span before retrying.                                 |
-| `maxRetries`        | `number`           | `10`            | Maximum number of retries.                                         |
-| `shouldRetry`       | `RetryPredicate`   | `isServerError` | Predicate function to know which failed request should be retried. |
-| `condition`         | `RequestCondition` | `() => true`    | Predicate function to know which request the plugin should handle. |
+| Property             | Type               | Default value   | Description                                                        |
+| -------------------- | ------------------ | --------------- | ------------------------------------------------------------------ |
+| `initialIntervalMs`  | `number`           | `200`           | Duration before the first retry.                                   |
+| `maxIntervalMs`      | `number`           | `60000`         | Maximum time span before retrying.                                 |
+| `maxRetries`         | `number`           | `10`            | Maximum number of retries.                                         |
+| `shouldRetry`        | `RetryPredicate`   | `isServerError` | Predicate function to know which failed request should be retried. |
+| `shouldHandleRequest`| `RequestCondition` | `() => true`    | Predicate function to know which request the plugin should handle. |
 
 Here is an example passing a configuration object.
 

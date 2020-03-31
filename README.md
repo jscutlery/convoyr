@@ -73,7 +73,7 @@ export class AppModule {}
 
 A plugin is the main piece in HttpExt, it lets you intercept network requests and add your custom logic on the top. Its form is a plain object that implement the `HttpExtPlugin` interface. This object exposes the following properties:
 
-- The `condition` function for conditional request handling.
+- The `shouldHandleRequest` function for conditional request handling.
 - The `handler` object that encapsulates the plugin logic.
 
 ```ts
@@ -115,7 +115,7 @@ The response is accessible through piping the `next` function. Here you can tran
 
 ### Conditional handling
 
-The `condition` function checks for each request if the plugin handler should be executed.
+The `shouldHandleRequest` function checks for each request if the plugin handler should be executed.
 
 ```ts
 export function createLoggerPlugin(): HttpExtPlugin {
@@ -129,7 +129,7 @@ export function createLoggerPlugin(): HttpExtPlugin {
 }
 ```
 
-The `condition` function is optional, if it's not provided the plugin will handle **all requests** executed through the HTTP client. It's important to think about which requests the plugin should be bound.
+The `shouldHandleRequest` function is optional, if it's not provided the plugin will handle **all requests** executed through the HTTP client. It's important to think about which requests the plugin should be bound.
 
 > Imagine you want to build an authentication plugin that add the authorization token to the request headers and you forget to add conditional handling. The token will potentially leak to other insecure origins which obviously result in a serious security issue.
 
