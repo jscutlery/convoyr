@@ -1,19 +1,18 @@
 import * as express from 'express';
 import { readFileSync } from 'fs';
+import * as cors from 'cors';
 
 const app = express();
 
-app.get('/api/bikes', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  const rawBikes = readFileSync(__dirname + '/assets/bikes.json', 'utf8');
+app.use(cors());
 
-  // @todo query
+app.get('/api/bikes', (req, res) => {
+  const rawBikes = readFileSync(__dirname + '/assets/bikes.json', 'utf8');
 
   res.json(JSON.parse(rawBikes));
 });
 
 app.get('/api/bikes/:bikeId', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
   const rawBikes = readFileSync(__dirname + '/assets/bikes.json', 'utf8');
   const { bikes } = JSON.parse(rawBikes);
   const bike = bikes.find(_bike => _bike.id === req.params.bikeId);
@@ -21,7 +20,6 @@ app.get('/api/bikes/:bikeId', (req, res) => {
 });
 
 app.get('/api/error', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
   res.sendStatus(500);
 });
 

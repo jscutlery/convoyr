@@ -14,8 +14,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpExtModule } from '@http-ext/angular';
-import { createCachePlugin } from '@http-ext/plugin-cache';
+import { createAuthPlugin } from '@http-ext/plugin-auth';
+import { createCachePlugin, MemoryStorage } from '@http-ext/plugin-cache';
 import { createRetryPlugin } from '@http-ext/plugin-retry';
+import { of } from 'rxjs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -53,7 +55,14 @@ import { NavComponent } from './nav/nav.component';
     ReactiveFormsModule,
     FormsModule,
     HttpExtModule.forRoot({
-      plugins: [createLoggerPlugin(), createRetryPlugin(), createCachePlugin()]
+      plugins: [
+        createLoggerPlugin(),
+        createRetryPlugin(),
+        createCachePlugin(),
+        createAuthPlugin({
+          token: of('token')
+        })
+      ]
     })
   ],
   bootstrap: [AppComponent]
