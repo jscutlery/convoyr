@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/jscutlery/http-ext/compare/v1.0.0...v2.0.0) (2020-04-01)
+
+
+### Bug Fixes
+
+* **plugin-cache:** 🐞 fix build dependencies ([01c8377](https://github.com/jscutlery/http-ext/commit/01c83775382dbffc9c60526f772e29d59c88be8d))
+* **plugin-cache:** 🐞 fix undefined global `Buffer` object ([9e753e5](https://github.com/jscutlery/http-ext/commit/9e753e5bd650c3ccdbbc28e80893a2f11e75df5c))
+* **plugin-cache:** 🐞 handle `undefined` maxSize ([5de2e60](https://github.com/jscutlery/http-ext/commit/5de2e60a6bdf086db21877059367361ad0bf3725))
+* **plugin-cache:** 🐞 use `bufferFrom` polyfill ([25a98b5](https://github.com/jscutlery/http-ext/commit/25a98b506d1ab6ff4f77e89d5b9aeb39e32ce324))
+* **plugin-cache:** 🐞 whitelist buffer package ([954ed61](https://github.com/jscutlery/http-ext/commit/954ed61572d74a833075093b10dbe630113a2a3d))
+
+
+### Features
+
+* ✅ rename `condition` to `shouldHandleRequest` ([9e93b5d](https://github.com/jscutlery/http-ext/commit/9e93b5d20e4c3cb0ef94b5b6a1440565b685b6c7))
+* **angular:** ✅ use dynamic configuration ([5ab1596](https://github.com/jscutlery/http-ext/commit/5ab1596cc1099e2a78158a9af9ec94ae83943ce4))
+* **core:** ✅ deprecate `condition` in favor of `shouldHandleRequest` ([11b7fbb](https://github.com/jscutlery/http-ext/commit/11b7fbb9b818b15699c3c441245b3a299c6f4851))
+* **plugin-auth:** ✅ add auth plugin: add onUnauthorized callback ([f9f25be](https://github.com/jscutlery/http-ext/commit/f9f25bed1650b603d987c5088a909fe27fc1e1e6))
+* **plugin-cache:** ✅ handle human readable bytes `maxSize` ([ebf2bdc](https://github.com/jscutlery/http-ext/commit/ebf2bdcb4d0e2f040f9af9ffa8f15758828d94cd))
+* **plugin-retry:** ✅ add plugin-retry ([1317aaf](https://github.com/jscutlery/http-ext/commit/1317aaf601484224a1f6adb6f3c33038ae4d807a))
+
+
+### BREAKING CHANGES
+
+* rename `condition` to `shouldHandleRequest`
+
+Co-authored-by: Edouard Bozon <bozonedouard@gmail.com>
+
+
+
+
+
 # [1.2.0](https://github.com/jscutlery/http-ext/compare/v1.1.0...v1.2.0) (2020-03-31)
 
 
