@@ -7,7 +7,7 @@
   "peerDependencies": {
     "@angular/common": ">= 9.1.0",
     "@angular/core": ">= 9.1.0",
-    "@http-ext/core": "^1.0.0",
-    "rxjs": "^6.5.3"
+    "@http-ext/core": "^2.0.0",
+    "rxjs": "^6.5.4"
   }
 }
