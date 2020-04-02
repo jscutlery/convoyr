@@ -1,5 +1,6 @@
 <div align="center">
-  <h1>HttpExt</h1>
+  <img width="130" src="https://github.com/jscutlery/http-ext/blob/logo/logo.png?raw=true" alt="http-ext logo" />
+  <hr>
   <a href="https://github.com/jscutlery/http-ext/actions" rel="nofollow">
     <img src="https://github.com/jscutlery/http-ext/workflows/Build%20&%20Test/badge.svg" />
   </a>
@@ -20,7 +21,7 @@
 
 ## Philosophy
 
-HttpExt is a reactive and extensible library built on the top of the Angular `HttpClient`. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can create your own plugin or directly use the built-in plugin collection to start as fast as possible.
+HttpExt is a reactive and extensible library built on the top of HTTP. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can directly use the built-in plugin collection to start as fast as possible or create your own plugin.
 
 ## Ecosystem
 
