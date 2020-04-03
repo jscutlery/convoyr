@@ -82,7 +82,7 @@
     "@nrwl/node": "9.2.1",
     "@nrwl/workspace": "9.2.1",
     "@types/express": "4.17.4",
-    "@types/jest": "25.1.5",
+    "@types/jest": "25.2.1",
     "@types/lru-cache": "^5.1.0",
     "@types/node": "^13.9.5",
     "all-contributors-cli": "^6.12.0",
