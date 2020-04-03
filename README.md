@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="130" src="https://github.com/jscutlery/http-ext/blob/logo/logo.png?raw=true" alt="http-ext logo" />
+  <img width="130" src="https://github.com/jscutlery/http-ext/blob/master/logo.png?raw=true" alt="http-ext logo" />
   <hr>
   <a href="https://github.com/jscutlery/http-ext/actions" rel="nofollow">
     <img src="https://github.com/jscutlery/http-ext/workflows/Build%20&%20Test/badge.svg" />
