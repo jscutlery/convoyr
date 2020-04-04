@@ -5,3 +5,7 @@ div[fxLayout] {
 button {
   margin-right: 8px;
 }
+
+pre {
+  min-height: 245px;
+}
