@@ -46,15 +46,17 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property             | Type               | Default value   | Description                                                        |
-| -------------------- | ------------------ | --------------- | ------------------------------------------------------------------ |
-| `initialIntervalMs`  | `number`           | `200`           | Duration before the first retry.                                   |
-| `maxIntervalMs`      | `number`           | `60000`         | Maximum time span before retrying.                                 |
-| `maxRetries`         | `number`           | `10`            | Maximum number of retries.                                         |
-| `shouldRetry`        | `RetryPredicate`   | `isServerError` | Predicate function to know which failed request should be retried. |
-| `shouldHandleRequest`| `RequestCondition` | `() => true`    | Predicate function to know which request the plugin should handle. |
+| Property              | Type               | Default value            | Description                                                        |
+| --------------------- | ------------------ | ------------------------ | ------------------------------------------------------------------ |
+| `initialIntervalMs`   | `number`           | `300`                    | Duration before the first retry.                                   |
+| `maxIntervalMs`       | `number`           | `10_000`                 | Maximum time span before retrying.                                 |
+| `maxRetries`          | `number`           | `3`                      | Maximum number of retries.                                         |
+| `shouldRetry`         | `RetryPredicate`   | `isServerOrUnknownError` | Predicate function to know which failed request should be retried. |
+| `shouldHandleRequest` | `RequestCondition` | `() => true`             | Predicate function to know which request the plugin should handle. |
 
 Here is an example passing a configuration object.
+
+Keep in mind that HTTP error is not emitted while the plugin is retrying. In the following example the HTTP error will be emitted after 10 retries, then the observable completes.
 
 ```ts
 import { MemoryStorage } from '@http-ext/plugin-cache';
@@ -64,11 +66,12 @@ import { MemoryStorage } from '@http-ext/plugin-cache';
     HttpExtModule.forRoot({
       plugins: [
         createRetryPlugin({
-          initialIntervalMs: 1000,
-          maxIntervalMs: 120000,
-          maxRetries: 15,
+          initialIntervalMs: 500,
+          maxIntervalMs: 20_000,
+          maxRetries: 10,
           shouldRetry: response => response.status !== 404,
-          shouldHandleRequest: ({ request }) => request.url.includes('api.github.com')
+          shouldHandleRequest: ({ request }) =>
+            request.url.includes('api.github.com')
         })
       ]
     })

@@ -8,16 +8,16 @@ export interface RetryPluginOptions extends HandlerOptions {
 
 /**
  * @param shouldHandleRequest
- * @param initialInterval defaults to 200ms
- * @param maxInterval defaults to 1min
- * @param maxRetries defaults to 10
+ * @param initialInterval defaults to 300ms
+ * @param maxInterval defaults to 10s
+ * @param maxRetries defaults to 3
  * @param shouldRetry defaults to server error: 5xx
  */
 export function createRetryPlugin({
   shouldHandleRequest = () => true,
-  initialInterval = 200,
-  maxInterval = 60000, // 1 min
-  maxRetries = 10,
+  initialInterval = 300,
+  maxInterval = 10_000,
+  maxRetries = 3,
   shouldRetry = isServerOrUnknownError
 }: Partial<RetryPluginOptions> = {}) {
   return {
