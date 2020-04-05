@@ -15,3 +15,17 @@
   top: 0;
   z-index: 1;
 }
+
+.logo {
+  width: 42px;
+  margin-right: 8px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand strong {
+  margin-right: 4px;
+}
