@@ -16,18 +16,25 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async"
-      >
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
       <span class="brand">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          *ngIf="isHandset$ | async"
+        >
+          <mat-icon check_circle="menu">menu</mat-icon>
+        </button>
         <img class="logo" src="/assets/logo.svg" alt="http-ext logo" />
         <strong>Http-ext</strong>demo
+      </span>
+      <span
+        class="signed-in"
+        *ngIf="isAuthenticated$ | async as isAuthenticated"
+      >
+        <img src="/assets/verified_user.svg" />
+        <span>You're signed in.</span>
       </span>
     </mat-toolbar>
     <ng-content></ng-content>

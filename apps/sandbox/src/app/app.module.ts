@@ -28,6 +28,7 @@ import { ErrorComponent } from './error/error.component';
 import { createLoggerPlugin } from './http/create-logger-plugin';
 import { NavComponent } from './nav/nav.component';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -57,14 +58,19 @@ import { SignInComponent } from './sign-in/sign-in.component';
     ReactiveFormsModule,
     FormsModule,
     HttpExtModule.forRoot({
-      plugins: [
-        createLoggerPlugin(),
-        createRetryPlugin(),
-        createCachePlugin(),
-        createAuthPlugin({
-          token: of('token')
-        })
-      ]
+      deps: [AuthService],
+      config(auth: AuthService) {
+        return {
+          plugins: [
+            createLoggerPlugin(),
+            createRetryPlugin(),
+            createCachePlugin(),
+            createAuthPlugin({
+              token: auth.token$
+            })
+          ]
+        };
+      }
     })
   ],
   bootstrap: [AppComponent]
