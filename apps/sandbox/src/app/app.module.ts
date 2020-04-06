@@ -27,6 +27,7 @@ import { BikeComponent } from './bike/bike.component';
 import { ErrorComponent } from './error/error.component';
 import { createLoggerPlugin } from './http/create-logger-plugin';
 import { NavComponent } from './nav/nav.component';
+import { SignInComponent } from './sign-in/sign-in.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { NavComponent } from './nav/nav.component';
     BikeDetailComponent,
     BikeSearchComponent,
     BikeComponent,
-    ErrorComponent
+    ErrorComponent,
+    SignInComponent
   ],
   imports: [
     BrowserModule,
