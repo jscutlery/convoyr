@@ -1,6 +1,6 @@
 import { createRequest, createResponse } from '@http-ext/core';
 import { createPluginTester } from '@http-ext/core/testing';
-import { concat, of } from 'rxjs';
+import { concat, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';
 
@@ -89,15 +89,19 @@ describe('AuthPlugin', () => {
       statusText: 'Unauthorized'
     });
 
-    pluginTester.next.mockReturnValue(of(unauthorizedResponse));
+    pluginTester.next.mockReturnValue(throwError(unauthorizedResponse));
 
-    try {
-      await pluginTester.handle({ request }).toPromise();
-    } catch {
-      expect(pluginTester.next).toBeCalled();
-      expect(onUnauthorizedSpy).toBeCalledWith(
-        expect.objectContaining(unauthorizedResponse)
-      );
-    }
+    const observer = {
+      next: jest.fn(),
+      error: jest.fn()
+    };
+    pluginTester.handle({ request }).subscribe(observer);
+
+    expect(observer.next).not.toHaveBeenCalled();
+    expect(observer.error).toHaveBeenCalledTimes(1);
+    expect(observer.error).toHaveBeenCalledWith(unauthorizedResponse);
+    expect(onUnauthorizedSpy).toBeCalledWith(
+      expect.objectContaining(unauthorizedResponse)
+    );
   });
 });
