@@ -2,13 +2,15 @@
   "version": "2.0.1",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "packages": [
-    "libs/*"
-  ],
+  "packages": ["libs/*"],
   "command": {
+    "version": {
+      "allowBranch": "master",
+      "message": "chore(release): 📍 publish %s"
+    },
     "publish": {
       "conventionalCommits": true,
-      "registry": "https://npm.pkg.github.com"
+      "allowBranch": "master"
     }
   }
 }
