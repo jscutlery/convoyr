@@ -15,9 +15,9 @@ describe('RetryPlugin', () => {
     mockRetryHandler.mockReturnValue(EMPTY);
 
     expect(RetryHandler).toHaveBeenCalledWith({
-      initialInterval: 200,
-      maxInterval: 60000,
-      maxRetries: 10,
+      initialInterval: 300,
+      maxInterval: 10000,
+      maxRetries: 3,
       shouldRetry: isServerOrUnknownError
     });
   });
