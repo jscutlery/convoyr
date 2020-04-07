@@ -1,6 +1,6 @@
 import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
-import { defer, Observable, of, throwError } from 'rxjs';
-import { first, map, switchMap, tap, catchError } from 'rxjs/operators';
+import { defer, Observable, throwError } from 'rxjs';
+import { catchError, first, map, switchMap } from 'rxjs/operators';
 
 import { OnUnauthorized } from './on-unauthorized';
 import { setHeader } from './set-header';
