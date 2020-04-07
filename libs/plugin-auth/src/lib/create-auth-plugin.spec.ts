@@ -91,11 +91,13 @@ describe('AuthPlugin', () => {
 
     pluginTester.next.mockReturnValue(of(unauthorizedResponse));
 
-    await pluginTester.handle({ request }).toPromise();
-
-    expect(pluginTester.next).toBeCalled();
-    expect(onUnauthorizedSpy).toBeCalledWith(
-      expect.objectContaining(unauthorizedResponse)
-    );
+    try {
+      await pluginTester.handle({ request }).toPromise();
+    } catch {
+      expect(pluginTester.next).toBeCalled();
+      expect(onUnauthorizedSpy).toBeCalledWith(
+        expect.objectContaining(unauthorizedResponse)
+      );
+    }
   });
 });

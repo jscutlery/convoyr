@@ -1,6 +1,6 @@
 import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
-import { defer, Observable } from 'rxjs';
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { defer, Observable, of } from 'rxjs';
+import { first, map, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { OnUnauthorized } from './on-unauthorized';
 import { setHeader } from './set-header';
@@ -31,11 +31,13 @@ export class AuthHandler implements PluginHandler {
           })
         ),
         switchMap(request => next({ request })),
-        tap(response => {
+        catchError(response => {
           if (response.status === 401) {
             /* tslint:disable-next-line: no-unused-expression */
             this._onUnauthorized && this._onUnauthorized(response);
           }
+
+          return of(response);
         })
       );
     });
