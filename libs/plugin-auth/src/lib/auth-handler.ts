@@ -1,5 +1,5 @@
 import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
-import { defer, Observable, throwError } from 'rxjs';
+import { defer, Observable, throwError, forkJoin, of } from 'rxjs';
 import { catchError, first, map, switchMap } from 'rxjs/operators';
 
 import { OnUnauthorized } from './on-unauthorized';
@@ -30,11 +30,11 @@ export class AuthHandler implements PluginHandler {
             value: `Bearer ${token}`
           })
         ),
-        switchMap(request => next({ request })),
-        catchError(response => {
+        switchMap(request => forkJoin([of(request), next({ request })])),
+        catchError(([request, response]) => {
           if (response.status === 401) {
             /* tslint:disable-next-line: no-unused-expression */
-            this._onUnauthorized && this._onUnauthorized(response);
+            this._onUnauthorized && this._onUnauthorized({ request, response });
           }
 
           return throwError(response);

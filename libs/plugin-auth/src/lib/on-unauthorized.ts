@@ -1,3 +1,9 @@
-import { HttpExtResponse } from '@http-ext/core';
+import { HttpExtResponse, HttpExtRequest } from '@http-ext/core';
 
-export type OnUnauthorized = (response: HttpExtResponse) => void;
+export type OnUnauthorized = ({
+  request,
+  response
+}: {
+  request: HttpExtRequest;
+  response: HttpExtResponse;
+}) => void;
