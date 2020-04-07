@@ -1,5 +1,5 @@
 import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
-import { defer, Observable, of } from 'rxjs';
+import { defer, Observable, of, throwError } from 'rxjs';
 import { first, map, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { OnUnauthorized } from './on-unauthorized';
@@ -37,7 +37,7 @@ export class AuthHandler implements PluginHandler {
             this._onUnauthorized && this._onUnauthorized(response);
           }
 
-          return of(response);
+          return throwError(response);
         })
       );
     });
