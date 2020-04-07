@@ -4,8 +4,6 @@
   "automerge": true,
   "automergeType": "branch",
   "baseBranches": ["master"],
-  "semanticCommits": true,
-  "semanticCommitScope": "deps",
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
@@ -13,5 +11,5 @@
     "schedule": ["before 5am"]
   },
   "rangeStrategy": "update-lockfile",
-  "commitMessage": "{{{commitMessagePrefix}}} 📦 {{{commitMessageAction}}} {{{commitMessageTopic}}} {{{commitMessageExtra}}} {{{commitMessageSuffix}}}"
+  "commitMessage": "📦 {{{commitMessageAction}}} {{{commitMessageTopic}}} {{{commitMessageExtra}}} {{{commitMessageSuffix}}}"
 }

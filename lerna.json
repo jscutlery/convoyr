@@ -6,7 +6,7 @@
   "command": {
     "version": {
       "allowBranch": "master",
-      "message": "chore(release): 📍 publish %s"
+      "message": "🚀 release %s"
     },
     "publish": {
       "conventionalCommits": true,
