@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/jscutlery/http-ext/compare/v2.0.0...v2.0.1) (2020-04-07)
+
+
+### Bug Fixes
+
+* **plugin-auth:** 🐞 fix `onUnauthorized` function call ([fc4b030](https://github.com/jscutlery/http-ext/commit/fc4b030c1872bc6b3f4fd5ced3748099aa2e7f9e))
+
+
+### Features
+
+* **sandbox:** ✅ add auth example ([e41e199](https://github.com/jscutlery/http-ext/commit/e41e199020b40ebbe4d8970cf31d1687394bdfc0))
+
+
+
+
+
 # [2.0.0](https://github.com/jscutlery/http-ext/compare/v1.0.0...v2.0.0) (2020-04-01)
 
 
