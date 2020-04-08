@@ -10,7 +10,7 @@ describe('AuthPlugin', () => {
   it.each([null, undefined])(
     'should not add bearer token if token is %s',
     async (token: string) => {
-      const token$ = from([token]);
+      const token$ = of(token);
 
       const pluginTester = createPluginTester({
         handler: new AuthHandler({ token: token$ })
