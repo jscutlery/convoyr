@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/jscutlery/http-ext/compare/v2.0.1...v2.0.2) (2020-04-08)
+
+
+### Bug Fixes
+
+* **plugin-auth:** 🐞 forward error instead of silently fail ([135db10](https://github.com/jscutlery/http-ext/commit/135db100e52e451dc7fe4e216af1fb14af9034ea))
+
+
+
+
+
 ## [2.0.1](https://github.com/jscutlery/http-ext/compare/v2.0.0...v2.0.1) (2020-04-07)
 
 

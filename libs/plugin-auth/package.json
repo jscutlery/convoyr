@@ -1,6 +1,6 @@
 {
   "name": "@http-ext/plugin-auth",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "peerDependencies": {
     "@http-ext/core": "^2.0.0",
     "rxjs": "^6.5.4"
