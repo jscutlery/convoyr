@@ -8,7 +8,11 @@ import { AuthHandler } from './auth-handler';
 
 describe('AuthPlugin', () => {
   it('should add bearer token to each request', async () => {
-    const token$ = of('TOKEN');
+    /**
+     * The first `undefined` value ensure that the Authorization header
+     * isn't set with a nullish value and leads in a "Bearer undefined".
+     */
+    const token$ = of(undefined, 'TOKEN');
 
     const pluginTester = createPluginTester({
       handler: new AuthHandler({ token: token$ })
