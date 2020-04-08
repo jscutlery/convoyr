@@ -43,7 +43,7 @@ export class SignInComponent implements OnInit {
       .subscribe({
         next: response => {
           this.auth.signIn(response.token);
-          this.router.navigate(['/']);
+          this.router.navigate(['users']);
         },
         error: response => (this.error = response.error)
       });

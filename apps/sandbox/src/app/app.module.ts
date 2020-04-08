@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +30,7 @@ import { ErrorComponent } from './error/error.component';
 import { createLoggerPlugin } from './http/create-logger-plugin';
 import { NavComponent } from './nav/nav.component';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
     BikeSearchComponent,
     BikeComponent,
     ErrorComponent,
-    SignInComponent
+    SignInComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
@@ -54,12 +57,13 @@ import { SignInComponent } from './sign-in/sign-in.component';
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
     FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
     HttpExtModule.forRoot({
-      deps: [AuthService, Router],
-      config(auth: AuthService, router: Router) {
+      deps: [AuthService, Router, MatSnackBar],
+      config(auth: AuthService, router: Router, snackBar: MatSnackBar) {
         return {
           plugins: [
             createLoggerPlugin(),
@@ -67,9 +71,13 @@ import { SignInComponent } from './sign-in/sign-in.component';
             createRetryPlugin(),
             createAuthPlugin({
               token: auth.token$,
-              onUnauthorized: () => {
+              onUnauthorized: async () => {
                 auth.signOut();
-                router.navigate(['/']);
+                if (await router.navigate(['/'])) {
+                  snackBar.open("Nop! You've been redirect to home.", 'ok', {
+                    duration: 3000
+                  });
+                }
               }
             })
           ]

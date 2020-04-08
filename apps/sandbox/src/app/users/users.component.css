@@ -1,0 +1,8 @@
+a {
+  margin: 8px;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
