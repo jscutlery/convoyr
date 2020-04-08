@@ -5,8 +5,10 @@
   "packages": ["libs/*"],
   "command": {
     "version": {
-      "allowBranch": "master",
-      "message": "🚀 release %s"
+      "conventionalCommits": true,
+      "forcePublish": true,
+      "message": "🚀 release %s",
+      "allowBranch": "master"
     },
     "publish": {
       "conventionalCommits": true,
