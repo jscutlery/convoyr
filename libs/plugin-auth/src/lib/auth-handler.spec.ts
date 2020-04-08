@@ -31,7 +31,9 @@ describe('AuthPlugin', () => {
   );
 
   it('should add bearer token to each request', async () => {
-    const token$ = of('TOKEN');
+    /* Providing an observable with a replay buffer containing an old token
+     * Let's make sure we are using the latest available token. */
+    const token$ = of('OLD_TOKEN', 'TOKEN');
 
     const pluginTester = createPluginTester({
       handler: new AuthHandler({ token: token$ })
