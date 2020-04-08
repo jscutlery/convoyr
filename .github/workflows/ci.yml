@@ -84,7 +84,7 @@ jobs:
 
       - name: Test
         run: |
-          yarn nx affected:test --base=origin/master --code-coverage
+          yarn nx affected:test --base=refs/tags/latest --code-coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.2
