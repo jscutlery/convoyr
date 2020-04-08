@@ -35,6 +35,32 @@ jobs:
           yarn ng build plugin-retry --prod
           yarn ng build sandbox --prod
 
+  e2e:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node13.6.0-chrome80-ff72
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: actions/setup-node@v1
+
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: Install
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: E2E
+        run: |
+          yarn run-p --race "start:api" "affected:e2e --base=refs/tags/latest --headless --parallel"
+
   test:
     runs-on: ubuntu-latest
     steps:
