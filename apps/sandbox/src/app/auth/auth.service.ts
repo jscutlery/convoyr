@@ -16,7 +16,7 @@ export class AuthService {
 
   readonly isAuthenticated$ = this._token.pipe(map(token => token != null));
 
-  signIn(token: string): void {
+  setToken(token: string): void {
     this._token.next(token);
   }
 

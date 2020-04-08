@@ -7,13 +7,13 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class IsSignedInGuard implements CanActivate {
-  constructor(private _auth: AuthService, private _router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   canActivate() {
-    return this._auth.isSignedIn$.pipe(
+    return this.auth.isSignedIn$.pipe(
       first(),
       map(isSignedIn => {
-        return isSignedIn ? true : this._router.createUrlTree(['/signin']);
+        return isSignedIn ? true : this.router.createUrlTree(['/signin']);
       })
     );
   }

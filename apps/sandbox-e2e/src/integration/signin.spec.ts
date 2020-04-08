@@ -1,9 +1,17 @@
-import { getGreeting } from '../support/app.po';
+import { signIn } from '../support/signin.po';
 
-describe('sandbox', () => {
+describe('signin', () => {
   before(() => cy.visit('/'));
 
-  it('should land on signin', () => {
+  it('should be landing page', () => {
     cy.url().should('include', '/signin');
+  });
+
+  describe('when signed in', () => {
+    before(() => signIn());
+
+    it('should redirect to bikes', () => {
+      cy.url().should('include', '/bikes');
+    });
   });
 });

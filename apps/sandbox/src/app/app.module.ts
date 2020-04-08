@@ -29,7 +29,7 @@ import { BikeCardModule } from './bike/bike-card.component';
 import { ErrorComponent } from './error/error.component';
 import { createLoggerPlugin } from './http/create-logger-plugin';
 import { NavComponent } from './nav/nav.component';
-import { SignInComponent } from './sign-in/sign-in.component';
+import { SigninModule } from './signin/signin.component';
 import { UsersComponent } from './users/users.component';
 
 @NgModule({
@@ -38,12 +38,12 @@ import { UsersComponent } from './users/users.component';
     NavComponent,
     BikeSearchComponent,
     ErrorComponent,
-    SignInComponent,
     UsersComponent
   ],
   imports: [
     BikeCardModule,
     BikeDetailModule,
+    SigninModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -74,7 +74,7 @@ import { UsersComponent } from './users/users.component';
               onUnauthorized: async () => {
                 auth.signOut();
                 if (await router.navigate(['/'])) {
-                  snackBar.open('Nop! You\'ve been redirect to home.', 'ok', {
+                  snackBar.open("Nop! You've been redirect to home.", 'ok', {
                     duration: 3000
                   });
                 }
@@ -87,5 +87,4 @@ import { UsersComponent } from './users/users.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
