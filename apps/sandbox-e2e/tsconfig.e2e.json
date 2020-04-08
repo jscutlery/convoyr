@@ -4,5 +4,8 @@
     "sourceMap": false,
     "outDir": "../../dist/out-tsc"
   },
-  "include": ["src/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../../node_modules/@types/jest/index.d.ts"
+  ]
 }

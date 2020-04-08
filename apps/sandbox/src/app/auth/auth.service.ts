@@ -12,6 +12,8 @@ export class AuthService {
     return this._token.asObservable();
   }
 
+  isSignedIn$ = this.token$.pipe(map(token => token != null));
+
   readonly isAuthenticated$ = this._token.pipe(map(token => token != null));
 
   signIn(token: string): void {
