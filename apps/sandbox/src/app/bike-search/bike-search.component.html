@@ -9,10 +9,10 @@
   </mat-form-field>
 </div>
 <div fxLayout="row wrap" fxLayoutAlign="space-around">
-  <http-ext-bike
+  <http-ext-bike-card
     class="bike"
     *ngFor="let bike of bikes"
     [bike]="bike"
     [routerLink]="['/bikes', bike.id]"
-  ></http-ext-bike>
+  ></http-ext-bike-card>
 </div>

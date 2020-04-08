@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,9 +23,9 @@ import { createRetryPlugin } from '@http-ext/plugin-retry';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './auth/auth.service';
-import { BikeDetailComponent } from './bike-detail/bike-detail.component';
+import { BikeDetailModule } from './bike-detail/bike-detail.component';
 import { BikeSearchComponent } from './bike-search/bike-search.component';
-import { BikeComponent } from './bike/bike.component';
+import { BikeCardModule } from './bike/bike-card.component';
 import { ErrorComponent } from './error/error.component';
 import { createLoggerPlugin } from './http/create-logger-plugin';
 import { NavComponent } from './nav/nav.component';
@@ -36,14 +36,14 @@ import { UsersComponent } from './users/users.component';
   declarations: [
     AppComponent,
     NavComponent,
-    BikeDetailComponent,
     BikeSearchComponent,
-    BikeComponent,
     ErrorComponent,
     SignInComponent,
     UsersComponent
   ],
   imports: [
+    BikeCardModule,
+    BikeDetailModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -74,7 +74,7 @@ import { UsersComponent } from './users/users.component';
               onUnauthorized: async () => {
                 auth.signOut();
                 if (await router.navigate(['/'])) {
-                  snackBar.open("Nop! You've been redirect to home.", 'ok', {
+                  snackBar.open('Nop! You\'ve been redirect to home.', 'ok', {
                     duration: 3000
                   });
                 }
@@ -87,4 +87,5 @@ import { UsersComponent } from './users/users.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}
