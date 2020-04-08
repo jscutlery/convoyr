@@ -17,8 +17,8 @@
 }
 
 .logo {
-  width: 42px;
-  margin-right: 8px;
+  width: 32px;
+  margin-right: 10px;
 }
 
 .brand {
@@ -27,13 +27,17 @@
 }
 
 .brand strong {
-  margin-right: 4px;
+  margin-right: 6px;
 }
 
 .signed-in {
   font-size: 14px;
   display: flex;
   align-items: center;
+}
+
+.signed-in img {
+  margin-right: 6px;
 }
 
 mat-toolbar {

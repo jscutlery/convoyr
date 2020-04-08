@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Bike } from '../bike/bike';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'http-ext-bike-search',

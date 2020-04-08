@@ -17,4 +17,8 @@ export class AuthService {
   signIn(token: string): void {
     this._token.next(token);
   }
+
+  signOut(): void {
+    this._token.next(undefined);
+  }
 }

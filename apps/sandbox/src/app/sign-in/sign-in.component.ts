@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { AuthService } from '../auth.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import { environment } from '../../environments/environment';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'http-ext-sign-in',
@@ -36,7 +37,7 @@ export class SignInComponent implements OnInit {
     this.error = undefined;
     this.http
       .post<{ token: string }>(
-        environment.apiBaseUrl + '/sign-in',
+        environment.apiBaseUrl + '/token',
         this.form.value
       )
       .subscribe({
