@@ -8,7 +8,7 @@ import { AuthHandler } from './auth-handler';
 
 describe('AuthPlugin', () => {
   it('should add bearer token to each request', async () => {
-    const token$ = of('TOKEN');
+    const token$ = of(undefined, 'TOKEN');
 
     const pluginTester = createPluginTester({
       handler: new AuthHandler({ token: token$ })
