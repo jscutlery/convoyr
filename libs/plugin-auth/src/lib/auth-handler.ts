@@ -1,6 +1,6 @@
 import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
-import { defer, Observable, throwError } from 'rxjs';
-import { catchError, first, map, switchMap, filter } from 'rxjs/operators';
+import { defer, Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { OnUnauthorized } from './on-unauthorized';
 import { setHeader } from './set-header';
@@ -21,16 +21,20 @@ export class AuthHandler implements PluginHandler {
 
   handle({ request: originalRequest, next }: PluginHandlerArgs) {
     return defer(() => {
-      return this._token$.pipe(
-        filter(token => token != null),
-        first(),
-        map(token =>
-          setHeader({
-            request: originalRequest,
+      return of(originalRequest).pipe(
+        withLatestFrom(this._token$),
+        map(([request, token]) => {
+          /* Don't add header if token is null or undefined. */
+          if (token == null) {
+            return request;
+          }
+
+          return setHeader({
+            request,
             key: 'Authorization',
             value: `Bearer ${token}`
-          })
-        ),
+          });
+        }),
         switchMap(request => next({ request })),
         catchError(response => {
           if (response.status === 401) {

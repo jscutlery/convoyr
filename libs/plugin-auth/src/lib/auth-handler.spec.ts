@@ -1,18 +1,39 @@
 import { createRequest, createResponse } from '@http-ext/core';
 import { createPluginTester } from '@http-ext/core/testing';
-import { concat, of, throwError } from 'rxjs';
+import { concat, from, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';
 
 import { AuthHandler } from './auth-handler';
 
 describe('AuthPlugin', () => {
+  it.each([null, undefined])(
+    'should not add bearer token if token is %s',
+    async (token: string) => {
+      const token$ = of(token);
+
+      const pluginTester = createPluginTester({
+        handler: new AuthHandler({ token: token$ })
+      });
+
+      const request = createRequest({ url: '/somewhere' });
+
+      await pluginTester.handle({ request }).toPromise();
+
+      expect(pluginTester.next).toHaveBeenCalledTimes(1);
+      expect(pluginTester.next).toHaveBeenCalledWith({
+        request: expect.objectContaining({
+          url: '/somewhere',
+          headers: {}
+        })
+      });
+    }
+  );
+
   it('should add bearer token to each request', async () => {
-    /**
-     * The first `undefined` value ensure that the Authorization header
-     * isn't set with a nullish value and leads in a "Bearer undefined".
-     */
-    const token$ = of(undefined, 'TOKEN');
+    /* Providing an observable with a replay buffer containing an old token
+     * Let's make sure we are using the latest available token. */
+    const token$ = of('OLD_TOKEN', 'TOKEN');
 
     const pluginTester = createPluginTester({
       handler: new AuthHandler({ token: token$ })
