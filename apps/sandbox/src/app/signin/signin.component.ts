@@ -94,7 +94,7 @@ export class SigninComponent {
     this.error = undefined;
     this.http
       .post<{ token: string }>(
-        environment.apiBaseUrl + '/sign-in',
+        `${environment.apiBaseUrl}/tokens`,
         this.form.value
       )
       .subscribe({
