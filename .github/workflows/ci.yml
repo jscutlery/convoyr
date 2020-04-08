@@ -59,7 +59,7 @@ jobs:
 
       - name: E2E
         run: |
-          yarn run-p --race "start:api" "affected:e2e --base=origin/master --headless --parallel"
+          yarn run-p --race "start:api" "affected:e2e --base=refs/tags/latest --headless --parallel"
 
   test:
     runs-on: ubuntu-latest
