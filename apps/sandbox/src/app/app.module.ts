@@ -8,10 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
@@ -28,19 +25,19 @@ import { BikeSearchComponent } from './bike-search/bike-search.component';
 import { BikeCardModule } from './bike/bike-card.component';
 import { ErrorComponent } from './error/error.component';
 import { createLoggerPlugin } from './http/create-logger-plugin';
-import { NavComponent } from './nav/nav.component';
+import { NavModule } from './nav/nav.component';
 import { SigninModule } from './signin/signin.component';
 import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavComponent,
     BikeSearchComponent,
     ErrorComponent,
     UsersComponent
   ],
   imports: [
+    NavModule,
     BikeCardModule,
     BikeDetailModule,
     SigninModule,
@@ -50,11 +47,8 @@ import { UsersComponent } from './users/users.component';
     BrowserAnimationsModule,
     LayoutModule,
     MatCardModule,
-    MatToolbarModule,
     MatButtonModule,
-    MatSidenavModule,
     MatIconModule,
-    MatListModule,
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
