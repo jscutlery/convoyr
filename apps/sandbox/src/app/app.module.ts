@@ -74,9 +74,13 @@ import { UsersComponent } from './users/users.component';
               onUnauthorized: async () => {
                 auth.signOut();
                 if (await router.navigate(['/'])) {
-                  snackBar.open("Nop! You've been redirect to home.", 'ok', {
-                    duration: 3000
-                  });
+                  snackBar.open(
+                    "Nop! You've been redirect to signin form.",
+                    'ok',
+                    {
+                      duration: 3000
+                    }
+                  );
                 }
               }
             })

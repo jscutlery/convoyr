@@ -33,7 +33,7 @@ import { AuthService } from '../auth/auth.service';
       </mat-form-field>
       <button
         data-role="signin-submit-button"
-        mat-button
+        mat-raised-button
         color="primary"
         type="submit"
         (click)="signIn()"
