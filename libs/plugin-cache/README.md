@@ -46,11 +46,11 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property             | Type               | Default value         | Description                                                        |
-| -------------------- | ------------------ | --------------------- | ------------------------------------------------------------------ |
-| `addCacheMetadata`   | `boolean`          | `false`               | Add cache metadata to the response body.                           |
-| `storage`            | `Storage`          | `new MemoryStorage()` | Storage used to store the cache.                                   |
-| `shouldHandleRequest`| `RequestCondition` | `matchMethod('GET')`  | Predicate function to know which request the plugin should handle. |
+| Property              | Type               | Default value                                                 | Description                                                        |
+| --------------------- | ------------------ | ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `addCacheMetadata`    | `boolean`          | `false`                                                       | Add cache metadata to the response body.                           |
+| `storage`             | `Storage`          | `new MemoryStorage()`                                         | Storage used to store the cache.                                   |
+| `shouldHandleRequest` | `RequestCondition` | `request.method === 'GET' && request.responseType === 'json'` | Predicate function to know which request the plugin should handle. |
 
 Here is an example passing a configuration object.
 
