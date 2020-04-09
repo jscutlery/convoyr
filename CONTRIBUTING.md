@@ -4,19 +4,19 @@ The JSCutlery team develops using techniques like Timeboxed TDD and TCR (Test &&
 
 We use emojis for commits categorization:
 
-| Type             | Example | When |
-| ---------------- | ------- | ------------- |
-| Work In Progress | `🚧 add craziness` | This is the commit message when working on a feature. Same message can be reused while working on the feature. |
+| Type             | Example                                | When                                                                                                                         |
+| ---------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Work In Progress | `wip(plugin-cache): 🚧 do craziness`   | This is the commit message when working on a feature. Same message can be reused while working on the feature.               |
 | Feature          | `feat(plugin-cache): ✅ add craziness` | This is the final commit when the feature is finished and you want it to appear in the changelog. It can be an empty commit. |
-| Fix              | `fix(plugin-cache): 🐞 fix craziness` | Anything that fixes a user facing bug. |
-| Docs             | `📝 add docs` | Documentation |
-| Anything else    | `🛠 rename stuff` | This applies to all changes that don't bring new features or fix user facing bugs |
+| Fix              | `fix(plugin-cache): 🐞 fix craziness`  | Anything that fixes a user facing bug.                                                                                       |
+| Anything else    | `chore(plugin-cache): 🛠 rename stuff` | This applies to all changes that don't bring new features or fix user facing bugs.                                           |
+| Docs             | `docs(plugin-cache): 📝 add docs`      | Documentation                                                                                                                |
 
-* `feat`s' and `fix`s' scopes can only be package names like `feat(core,plugin-cache):`, or no scope at all *(i.e. `feat:`)* if it affects everything 
+- Each commit type can be scoped by package name like `feat(core,plugin-cache):`, or no scope at all _(i.e. `feat:`)_ if it affects everything
 
-* We don't care about `chore` conventional commit as they don't appear in the changelogs and we don't use them in any tools.
+- The `wip` type is allowed to be compliant with TCR
 
-* Breaking changes should add `!` or a `BREAKING CHANGE: ...` line in the body of the commit message with the explanation next to it.
+- Breaking changes should add `!` or a `BREAKING CHANGE: ...` line in the body of the commit message with the explanation next to it.
 
 Cf. https://www.conventionalcommits.org/
 
@@ -25,12 +25,13 @@ Cf. https://www.conventionalcommits.org/
 Meanwhile we provide a schematic for this, here are the steps to follow when adding a new plugin:
 
 1. Generate library
+
 ```sh
 ng g @nrwl/angular:lib --publishable plugin-xyz
 ```
 
 2. Disable IVy for production (until Angular 10 is here)
-Add `tsconfig.lib.prod.json`
+   Add `tsconfig.lib.prod.json`
 
 ```
 {
@@ -65,6 +66,7 @@ and build architect configuration for production in `angular.json`
 ```
 
 4. Codecov setup by adding the following to codecov.yml
+
 ```yaml
 coverage:
   status:
