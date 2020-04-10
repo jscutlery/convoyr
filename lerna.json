@@ -7,7 +7,7 @@
     "version": {
       "conventionalCommits": true,
       "forcePublish": true,
-      "message": "release: 🚀 %s",
+      "message": "release: 🚀 publish %s",
       "allowBranch": "master"
     },
     "publish": {
