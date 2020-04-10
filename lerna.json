@@ -2,14 +2,12 @@
   "version": "2.0.2",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "packages": [
-    "libs/*"
-  ],
+  "packages": ["libs/*"],
   "command": {
     "version": {
       "conventionalCommits": true,
       "forcePublish": true,
-      "message": "🚀 release %s",
+      "message": "release: 🚀 %s",
       "allowBranch": "master"
     },
     "publish": {
