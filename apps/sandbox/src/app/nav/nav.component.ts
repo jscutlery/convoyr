@@ -52,6 +52,9 @@ import { AuthService } from '../auth/auth.service';
           >
             <img class="authorized" src="/assets/verified_user.svg" />
             <span>Welcome home</span>
+            <button mat-button (click)="markTokenAsExpired()">
+              Mark token as expired
+            </button>
           </span>
           <ng-template #signInLink>
             <a mat-raised-button routerLink="/signin">Sign in</a>
@@ -101,6 +104,10 @@ import { AuthService } from '../auth/auth.service';
         align-items: center;
       }
 
+      .signed-in button {
+        margin-left: 8px;
+      }
+
       .authorized {
         margin-right: 6px;
       }
@@ -110,14 +117,14 @@ import { AuthService } from '../auth/auth.service';
         align-items: center;
         justify-content: space-between;
       }
-    `
-  ]
+    `,
+  ],
 })
 export class NavComponent {
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
-      map(result => result.matches),
+      map((result) => result.matches),
       shareReplay()
     );
 
@@ -127,6 +134,10 @@ export class NavComponent {
     private breakpointObserver: BreakpointObserver,
     private auth: AuthService
   ) {}
+
+  markTokenAsExpired(): void {
+    this.auth.setToken('EXPIRED');
+  }
 }
 
 @NgModule({
@@ -139,7 +150,7 @@ export class NavComponent {
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    RouterModule
-  ]
+    RouterModule,
+  ],
 })
 export class NavModule {}

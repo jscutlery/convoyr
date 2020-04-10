@@ -34,7 +34,7 @@ import { UsersComponent } from './users/users.component';
     AppComponent,
     BikeSearchComponent,
     ErrorComponent,
-    UsersComponent
+    UsersComponent,
   ],
   imports: [
     NavModule,
@@ -66,23 +66,24 @@ import { UsersComponent } from './users/users.component';
             createAuthPlugin({
               token: auth.token$,
               onUnauthorized: async () => {
-                auth.signOut();
-                if (await router.navigate(['/'])) {
+                auth.setToken(undefined);
+
+                if (await router.navigate(['/signin'])) {
                   snackBar.open(
                     "Nop! You've been redirect to signin form.",
                     'ok',
                     {
-                      duration: 3000
+                      duration: 3000,
                     }
                   );
                 }
-              }
-            })
-          ]
+              },
+            }),
+          ],
         };
-      }
-    })
+      },
+    }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
