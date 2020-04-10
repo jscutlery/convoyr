@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'http-ext-error',
   templateUrl: './error.component.html',
-  styleUrls: ['./error.component.css']
+  styleUrls: ['./error.component.css'],
 })
 export class ErrorComponent implements OnInit, OnDestroy {
   subscription: Subscription;
@@ -26,15 +26,8 @@ export class ErrorComponent implements OnInit, OnDestroy {
     this.subscription = this.http
       .get<any>(environment.apiBaseUrl + '/server-error')
       .subscribe({
-        error: response => (this.error = response.error)
+        error: (response) => (this.error = response.error),
       });
-  }
-
-  getUnauthorizedError(): void {
-    this.clear();
-    this.subscription = this.http
-      .get<any>(environment.apiBaseUrl + '/unauthorized-error')
-      .subscribe({ error: response => (this.error = response.error) });
   }
 
   private clear(): void {

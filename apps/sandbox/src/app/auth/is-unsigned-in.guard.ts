@@ -4,16 +4,16 @@ import { first, map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IsUnsignedInGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
   canActivate() {
-    return this.auth.isSignedIn$.pipe(
+    return this.auth.isAuthenticated$.pipe(
       first(),
-      map(isSignedIn => {
-        return isSignedIn ? this.router.createUrlTree(['/']) : true;
+      map((isAuthenticated) => {
+        return isAuthenticated ? this.router.createUrlTree(['/']) : true;
       })
     );
   }
