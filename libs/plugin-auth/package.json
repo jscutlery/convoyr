@@ -1,6 +1,9 @@
 {
   "name": "@http-ext/plugin-auth",
   "version": "2.1.0",
+  "license": "MIT",
+  "private": false,
+  "repository": "git@github.com:jscutlery/http-ext.git",
   "peerDependencies": {
     "@http-ext/core": "^2.0.0",
     "rxjs": "^6.5.4"
