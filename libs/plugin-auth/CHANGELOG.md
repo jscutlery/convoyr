@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/jscutlery/http-ext/compare/v2.0.1...v2.1.0) (2020-04-11)
+
+
+### Bug Fixes
+
+* **plugin-auth:** 🐞 don't send token if null or undefined ([b9eacd5](https://github.com/jscutlery/http-ext/commit/b9eacd585cb06b36d8e9e21cdf79a07c16a9258d))
+* **plugin-auth:** 🐞 fix token nullish stream value ([afb73d7](https://github.com/jscutlery/http-ext/commit/afb73d70fcf38fd3bdcc4bf4aae8e036e8c7fb57))
+* **plugin-auth:** 🐞 forward error instead of silently fail ([135db10](https://github.com/jscutlery/http-ext/commit/135db100e52e451dc7fe4e216af1fb14af9034ea))
+
+
+### Features
+
+* **plugin-auth:** ✅ make sure we are always using the latest token ([e1e313d](https://github.com/jscutlery/http-ext/commit/e1e313d1e1a1361cbcf78fac08c99dc7eaa42705))
+
+
+
+
+
 ## [2.0.2](https://github.com/jscutlery/http-ext/compare/v2.0.1...v2.0.2) (2020-04-08)
 
 

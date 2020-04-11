@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/jscutlery/http-ext/compare/v2.0.1...v2.1.0) (2020-04-11)
+
+
+### Bug Fixes
+
+* **plugin-auth:** 🐞 don't send token if null or undefined ([b9eacd5](https://github.com/jscutlery/http-ext/commit/b9eacd585cb06b36d8e9e21cdf79a07c16a9258d))
+* **plugin-auth:** 🐞 fix token nullish stream value ([afb73d7](https://github.com/jscutlery/http-ext/commit/afb73d70fcf38fd3bdcc4bf4aae8e036e8c7fb57))
+* **plugin-auth:** 🐞 forward error instead of silently fail ([135db10](https://github.com/jscutlery/http-ext/commit/135db100e52e451dc7fe4e216af1fb14af9034ea))
+* **sandbox:** 🐞 fix routing ([cf8acb2](https://github.com/jscutlery/http-ext/commit/cf8acb2a0b6c1b0c76ccf079ae3a1ee1f0f96bf1))
+* **sandbox:** 🐞 fix tokens endpoint url ([9f4b423](https://github.com/jscutlery/http-ext/commit/9f4b4237e47f3e63609c3522859961b02ed11f7f))
+
+
+### Features
+
+* **plugin-auth:** ✅ make sure we are always using the latest token ([e1e313d](https://github.com/jscutlery/http-ext/commit/e1e313d1e1a1361cbcf78fac08c99dc7eaa42705))
+* **sandbox:** ✅ add IsSignedIn guard ([af84e1e](https://github.com/jscutlery/http-ext/commit/af84e1e5af66f2145c000ed027aaabd5f54204ca))
+* **sandbox:** ✅ add mark token as expired ([d20e45a](https://github.com/jscutlery/http-ext/commit/d20e45a28bd7194f80df12f5e178fd810b8c2aab))
+* **sandbox:** ✅ redirect to bikes after signin ([db1a1d3](https://github.com/jscutlery/http-ext/commit/db1a1d32cab9126d841451fd199c12f297d25251))
+* **sandbox:** ✅ redirect to signin if unauthenticated ([5085a9c](https://github.com/jscutlery/http-ext/commit/5085a9c069ebb1c79cd6a39835c73352764b82d9))
+
+
+
+
+
 ## [2.0.2](https://github.com/jscutlery/http-ext/compare/v2.0.1...v2.0.2) (2020-04-08)
 
 

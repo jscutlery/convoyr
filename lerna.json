@@ -1,9 +1,14 @@
 {
-  "version": "2.0.2",
+  "version": "2.1.0",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "packages": ["libs/*"],
-  "ignoreChanges": ["**/apps/**", "**/*.md"],
+  "packages": [
+    "libs/*"
+  ],
+  "ignoreChanges": [
+    "**/apps/**",
+    "**/*.md"
+  ],
   "command": {
     "version": {
       "conventionalCommits": true,
