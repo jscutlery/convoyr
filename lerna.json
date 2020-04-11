@@ -3,6 +3,7 @@
   "npmClient": "yarn",
   "useWorkspaces": true,
   "packages": ["libs/*"],
+  "ignoreChanges": ["**/apps/**", "**/*.md"],
   "command": {
     "version": {
       "conventionalCommits": true,
