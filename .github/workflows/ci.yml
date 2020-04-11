@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: |
           # @todo use affected:build --base=origin/master but as we are using publishable libraries,
-          # our libs like plugins depend on the core which should be built first and present in dist. 
+          # our libs like plugins depend on the core which should be built first and present in dist.
           yarn ng build core --prod
           yarn ng build angular --prod
           yarn ng build plugin-auth --prod
@@ -38,6 +38,8 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     container: cypress/browsers:node13.6.0-chrome80-ff72
+    env:
+      CYPRESS_CACHE_FOLDER: .cypress-cache
     steps:
       - uses: actions/checkout@v1
 
@@ -46,7 +48,9 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v1
         with:
-          path: node_modules
+          path: |
+            node_modules
+            .cypress-cache
           key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.OS }}-build-${{ env.cache-name }}-
