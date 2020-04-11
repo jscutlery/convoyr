@@ -31,7 +31,7 @@
     "limbo": "tools/limbo.sh",
     "tcr": "yarn affected:test --uncommitted && git recommit || git reset --hard",
     "merge-into-master": "tools/merge-into-master.sh",
-    "publish:libs": "run-s _lerna:version \"affected:build --prod --all\" _publish:*",
+    "publish:libs": "run-s _lerna:version \"affected:build --prod --all\" && git push --follow-tags && _publish:*",
     "update": "ng update @nrwl/workspace",
     "update:check": "ng update",
     "workspace-schematic": "nx workspace-schematic",
