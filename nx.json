@@ -13,9 +13,7 @@
     },
     "sandbox": {
       "tags": [],
-      "implicitDependencies": [
-        "sandbox-api"
-      ]
+      "implicitDependencies": ["sandbox-api"]
     },
     "core": {
       "tags": []
@@ -33,6 +31,9 @@
       "tags": []
     },
     "plugin-auth": {
+      "tags": []
+    },
+    "axios": {
       "tags": []
     }
   }

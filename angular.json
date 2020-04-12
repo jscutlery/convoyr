@@ -371,6 +371,46 @@
         }
       },
       "schematics": {}
+    },
+    "axios": {
+      "projectType": "library",
+      "root": "libs/axios",
+      "sourceRoot": "libs/axios/src",
+      "prefix": "http-ext",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/axios/tsconfig.lib.json",
+            "project": "libs/axios/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/axios/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/axios/tsconfig.lib.json",
+              "libs/axios/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/axios/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/axios/jest.config.js",
+            "tsConfig": "libs/axios/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/axios/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {

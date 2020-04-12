@@ -21,7 +21,8 @@
       "@http-ext/core/testing": ["libs/core/testing/src/index.ts"],
       "@http-ext/plugin-auth": ["libs/plugin-auth/src/index.ts"],
       "@http-ext/plugin-cache": ["libs/plugin-cache/src/index.ts"],
-      "@http-ext/plugin-retry": ["libs/plugin-retry/src/index.ts"]
+      "@http-ext/plugin-retry": ["libs/plugin-retry/src/index.ts"],
+      "@http-ext/axios": ["libs/axios/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
