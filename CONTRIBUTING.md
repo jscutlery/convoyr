@@ -9,7 +9,7 @@ We use emojis for commits categorization:
 | Work In Progress | `wip(plugin-cache): 🚧 do craziness`   | This is the commit message when working on a feature. Same message can be reused while working on the feature.               |
 | Feature          | `feat(plugin-cache): ✅ add craziness` | This is the final commit when the feature is finished and you want it to appear in the changelog. It can be an empty commit. |
 | Fix              | `fix(plugin-cache): 🐞 fix craziness`  | Anything that fixes a user facing bug.                                                                                       |
-| Anything else    | `chore(plugin-cache): 🛠 rename stuff` | This applies to all changes that don't bring new features or fix user facing bugs.                                           |
+| Anything else    | `chore(plugin-cache): 🛠 rename stuff` | This applies to all changes that don't bring new features or fix user facing bugs.                                          |
 | Docs             | `docs(plugin-cache): 📝 add docs`      | Documentation                                                                                                                |
 
 - Each commit type can be scoped by package name like `feat(core,plugin-cache):`, or no scope at all _(i.e. `feat:`)_ if it affects everything
@@ -30,31 +30,7 @@ Meanwhile we provide a schematic for this, here are the steps to follow when add
 ng g @nrwl/angular:lib --publishable plugin-xyz
 ```
 
-2. Disable IVy for production (until Angular 10 is here)
-   Add `tsconfig.lib.prod.json`
-
-```
-{
-  "extends": "./tsconfig.lib.json",
-  "angularCompilerOptions": {
-    "enableIvy": false
-  }
-}
-```
-
-and build architect configuration for production in `angular.json`
-
-```
-{
-  "configurations": {
-    "production": {
-      "tsConfig": "libs/plugin-xyz/tsconfig.lib.prod.json"
-    }
-  }
-}
-```
-
-3. Add test & publish script to `package.json`
+2. Add test & publish script to `package.json`
 
 ```json
 {
@@ -65,7 +41,7 @@ and build architect configuration for production in `angular.json`
 }
 ```
 
-4. Codecov setup by adding the following to codecov.yml
+3. Codecov setup by adding the following to codecov.yml
 
 ```yaml
 coverage:
@@ -78,6 +54,15 @@ flags:
   plugin-xyz:
     paths:
       - libs/plugin-xyz/src
+```
+
+4. Add library coverage-reporter in `jest.config.js`
+
+
+```json
+{
+  coverageReporters: ['html', 'lcov']
+}
 ```
 
 🚧 Work In Progress 🚧
