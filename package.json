@@ -89,7 +89,7 @@
     "@types/node": "^13.9.5",
     "all-contributors-cli": "^6.12.0",
     "codelyzer": "^5.2.2",
-    "cypress": "4.3.0",
+    "cypress": "4.4.0",
     "dotenv": "8.2.0",
     "eslint": "6.8.0",
     "husky": "^4.0.0",
