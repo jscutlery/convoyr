@@ -13,16 +13,20 @@ export function invalidHandleRequestConditionError() {
   return new Error('"shouldHandleRequest" should be a function.');
 }
 
+export interface HttpExtConfig {
+  plugins: HttpExtPlugin[];
+}
+
 export class HttpExt {
   private _plugins: HttpExtPlugin[];
 
-  constructor({ plugins }: { plugins: HttpExtPlugin[] }) {
+  constructor({ plugins }: HttpExtConfig) {
     this._plugins = plugins;
   }
 
   handle({
     request,
-    httpHandler
+    httpHandler,
   }: {
     request: HttpExtRequest;
     httpHandler: NextFn;
@@ -30,14 +34,14 @@ export class HttpExt {
     return this._handle({
       request,
       plugins: this._plugins,
-      httpHandler
+      httpHandler,
     });
   }
 
   private _handle({
     request,
     plugins,
-    httpHandler
+    httpHandler,
   }: {
     request: HttpExtRequest;
     plugins: HttpExtPlugin[];
@@ -53,11 +57,11 @@ export class HttpExt {
     /**
      * Calls next plugins recursively.
      */
-    const next: NextFn = args => {
+    const next: NextFn = (args) => {
       const response = this._handle({
         request: args.request,
         plugins: plugins.slice(1),
-        httpHandler
+        httpHandler,
       });
       return fromSyncOrAsync(response);
     };
@@ -67,7 +71,7 @@ export class HttpExt {
      */
     return this._shouldHandle({ request, plugin }).pipe(
       mergeMap(throwIfInvalidPluginCondition),
-      mergeMap(shouldHandle => {
+      mergeMap((shouldHandle) => {
         if (shouldHandle === false) {
           return next({ request });
         }
@@ -82,7 +86,7 @@ export class HttpExt {
    */
   private _shouldHandle({
     request,
-    plugin
+    plugin,
   }: {
     request: HttpExtRequest;
     plugin: HttpExtPlugin;
