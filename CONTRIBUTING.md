@@ -54,18 +54,26 @@ and build architect configuration for production in `angular.json`
 }
 ```
 
-3. Add test & publish script to `package.json`
+3. Add test script to `package.json`
 
 ```json
 {
   "scripts": {
     "test:plugin-xyz": "ng test plugin-xyz --watch",
-    "_publish:plugin-xyz": "yarn _publish dist/libs/plugin-xyz"
   }
 }
 ```
 
-4. Codecov setup by adding the following to codecov.yml
+4. Update `tools/release.js`
+
+```js
+const libraries = [
+  'core',
+  'plugin-xyz',
+];
+```
+
+5. Codecov setup by adding the following to codecov.yml
 
 ```yaml
 coverage:
