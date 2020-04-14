@@ -74,4 +74,10 @@ flags:
       - libs/plugin-xyz/src
 ```
 
+5. Update `tools/release.js` script to build the plugin.
+
+```js
+execSync('ng build plugin-xyz --prod')
+```
+
 🚧 Work In Progress 🚧

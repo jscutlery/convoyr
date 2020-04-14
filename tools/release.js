@@ -8,7 +8,11 @@ const execSync = (command) => exec(command, { stdio: 'inherit' });
 execSync('lerna version --no-push --conventional-commits --yes');
 
 /* Build all libraries */
-execSync('nx affected:build --prod --all');
+execSync('ng build core --prod');
+execSync('ng build angular --prod');
+execSync('ng build plugin-auth --prod');
+execSync('ng build plugin-retry --prod');
+execSync('ng build plugin-cache --prod');
 
 /* Publish to NPM */
 execSync('yarn workspaces run publish --non-interactive --access public');
