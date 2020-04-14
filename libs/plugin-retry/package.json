@@ -4,6 +4,9 @@
   "license": "MIT",
   "private": false,
   "repository": "git@github.com:jscutlery/http-ext.git",
+  "scripts": {
+    "publish": "yarn publish ../../dist/libs/plugin-retry"
+  },
   "peerDependencies": {
     "@http-ext/core": "^2.0.0",
     "rxjs": "^6.5.4"

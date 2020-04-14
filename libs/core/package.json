@@ -4,6 +4,9 @@
   "license": "MIT",
   "private": false,
   "repository": "git@github.com:jscutlery/http-ext.git",
+  "scripts": {
+    "publish": "yarn publish ../../dist/libs/core"
+  },
   "peerDependencies": {
     "rxjs": "^6.5.4"
   }
