@@ -30,28 +30,23 @@ Meanwhile we provide a schematic for this, here are the steps to follow when add
 ng g @nrwl/angular:lib --publishable plugin-xyz
 ```
 
-2. Disable IVy for production (until Angular 10 is here)
-   Add `tsconfig.lib.prod.json`
+2. Setup `libs/plugin-xyz/package.json`
 
-```
+```json
 {
-  "extends": "./tsconfig.lib.json",
-  "angularCompilerOptions": {
-    "enableIvy": false
+  "name": "@http-ext/plugin-xyz",
+  "version": "2.1.0",
+  "license": "MIT",
+  "private": false,
+  "repository": "git@github.com:jscutlery/http-ext.git",
+  "scripts": {
+    "publish": "yarn publish ../../dist/libs/plugin-xyz"
+  },
+  "peerDependencies": {
+    "@http-ext/core": "^2.0.0",
   }
 }
-```
 
-and build architect configuration for production in `angular.json`
-
-```
-{
-  "configurations": {
-    "production": {
-      "tsConfig": "libs/plugin-xyz/tsconfig.lib.prod.json"
-    }
-  }
-}
 ```
 
 3. Add test script to `package.json`
@@ -64,16 +59,7 @@ and build architect configuration for production in `angular.json`
 }
 ```
 
-4. Update `tools/release.js`
-
-```js
-const libraries = [
-  'core',
-  'plugin-xyz',
-];
-```
-
-5. Codecov setup by adding the following to codecov.yml
+4. Codecov setup by adding the following to codecov.yml
 
 ```yaml
 coverage:
