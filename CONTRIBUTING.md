@@ -30,37 +30,31 @@ Meanwhile we provide a schematic for this, here are the steps to follow when add
 ng g @nrwl/angular:lib --publishable plugin-xyz
 ```
 
-2. Disable IVy for production (until Angular 10 is here)
-   Add `tsconfig.lib.prod.json`
+2. Setup `libs/plugin-xyz/package.json`
 
-```
+```json
 {
-  "extends": "./tsconfig.lib.json",
-  "angularCompilerOptions": {
-    "enableIvy": false
+  "name": "@http-ext/plugin-xyz",
+  "version": "2.1.0",
+  "license": "MIT",
+  "private": false,
+  "repository": "git@github.com:jscutlery/http-ext.git",
+  "scripts": {
+    "publish": "yarn publish ../../dist/libs/plugin-xyz"
+  },
+  "peerDependencies": {
+    "@http-ext/core": "^2.0.0",
   }
 }
-```
-
-and build architect configuration for production in `angular.json`
 
 ```
-{
-  "configurations": {
-    "production": {
-      "tsConfig": "libs/plugin-xyz/tsconfig.lib.prod.json"
-    }
-  }
-}
-```
 
-3. Add test & publish script to `package.json`
+3. Add test script to `package.json`
 
 ```json
 {
   "scripts": {
     "test:plugin-xyz": "ng test plugin-xyz --watch",
-    "_publish:plugin-xyz": "yarn _publish dist/libs/plugin-xyz"
   }
 }
 ```
@@ -78,6 +72,12 @@ flags:
   plugin-xyz:
     paths:
       - libs/plugin-xyz/src
+```
+
+5. Update `tools/release.js` script to build the plugin.
+
+```js
+execSync('ng build plugin-xyz --prod')
 ```
 
 🚧 Work In Progress 🚧

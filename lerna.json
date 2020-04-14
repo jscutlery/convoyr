@@ -6,7 +6,6 @@
   "command": {
     "version": {
       "conventionalCommits": true,
-      "forcePublish": true,
       "message": "release: 🚀 publish %s",
       "allowBranch": "master"
     },
