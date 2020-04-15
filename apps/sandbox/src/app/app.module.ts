@@ -27,10 +27,9 @@ import { RetryModule } from './retry/retry.component';
 import { createLoggerPlugin } from './http/create-logger-plugin';
 import { NavModule } from './nav/nav.component';
 import { SigninModule } from './signin/signin.component';
-import { UsersComponent } from './users/users.component';
 
 @NgModule({
-  declarations: [AppComponent, BikeSearchComponent, UsersComponent],
+  declarations: [AppComponent, BikeSearchComponent],
   imports: [
     NavModule,
     BikeCardModule,

@@ -7,7 +7,6 @@ import { BikeDetailComponent } from './bike-detail/bike-detail.component';
 import { BikeSearchComponent } from './bike-search/bike-search.component';
 import { RetryComponent } from './retry/retry.component';
 import { SigninComponent } from './signin/signin.component';
-import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'bikes' },
@@ -22,7 +21,6 @@ const routes: Routes = [
     children: [
       { path: 'bikes', component: BikeSearchComponent },
       { path: 'bikes/:bikeId', component: BikeDetailComponent },
-      { path: 'users', component: UsersComponent },
       { path: 'retry', component: RetryComponent },
     ],
   },

@@ -27,7 +27,6 @@ import { AuthService } from '../auth/auth.service';
         <mat-toolbar>Menu</mat-toolbar>
         <mat-nav-list *ngIf="isAuthenticated$ | async">
           <a mat-list-item routerLink="/bikes">Bikes</a>
-          <a mat-list-item routerLink="/users">Users</a>
           <a mat-list-item routerLink="/retry">Retry</a>
         </mat-nav-list>
       </mat-sidenav>
