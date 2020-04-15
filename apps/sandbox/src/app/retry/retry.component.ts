@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'http-ext-error',
+  selector: 'http-ext-retry',
   template: `
     <div class="container" fxLayout="column" fxLayoutAlign="center center">
       <div class="tip">
@@ -55,7 +55,7 @@ import { environment } from '../../environments/environment';
     `,
   ],
 })
-export class ErrorComponent implements OnDestroy {
+export class RetryComponent implements OnDestroy {
   subscription: Subscription;
 
   loading = false;
@@ -85,8 +85,8 @@ export class ErrorComponent implements OnDestroy {
 }
 
 @NgModule({
-  declarations: [ErrorComponent],
-  exports: [ErrorComponent],
+  declarations: [RetryComponent],
+  exports: [RetryComponent],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -94,4 +94,4 @@ export class ErrorComponent implements OnDestroy {
     MatProgressSpinnerModule,
   ],
 })
-export class ErrorModule {}
+export class RetryModule {}

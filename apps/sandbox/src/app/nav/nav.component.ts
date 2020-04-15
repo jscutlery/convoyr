@@ -22,13 +22,13 @@ import { AuthService } from '../auth/auth.service';
         fixedInViewport
         [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'"
-        [opened]="(isHandset$ | async) === false"
+        [opened]="(isHandset$ | async) === false && (isAuthenticated$ | async)"
       >
         <mat-toolbar>Menu</mat-toolbar>
-        <mat-nav-list>
+        <mat-nav-list *ngIf="isAuthenticated$ | async">
           <a mat-list-item routerLink="/bikes">Bikes</a>
           <a mat-list-item routerLink="/users">Users</a>
-          <a mat-list-item routerLink="/error">Errors</a>
+          <a mat-list-item routerLink="/retry">Retry</a>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
