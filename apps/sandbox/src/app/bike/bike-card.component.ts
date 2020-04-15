@@ -4,9 +4,10 @@ import {
   Component,
   Input,
   NgModule,
-  OnChanges
+  OnChanges,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+
 import { Bike } from './bike';
 
 @Component({
@@ -30,8 +31,8 @@ import { Bike } from './bike';
         min-width: 300px;
         object-fit: cover;
       }
-    `
-  ]
+    `,
+  ],
 })
 export class BikeCardComponent implements OnChanges {
   @Input() bike: Bike;
@@ -47,6 +48,6 @@ export class BikeCardComponent implements OnChanges {
 @NgModule({
   declarations: [BikeCardComponent],
   exports: [BikeCardComponent],
-  imports: [CommonModule, MatCardModule]
+  imports: [CommonModule, MatCardModule],
 })
 export class BikeCardModule {}
