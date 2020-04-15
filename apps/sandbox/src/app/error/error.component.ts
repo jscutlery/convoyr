@@ -1,16 +1,44 @@
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
+import { Subscription } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'http-ext-error',
-  templateUrl: './error.component.html',
-  styleUrls: ['./error.component.css'],
+  template: `
+    <div fxLayout="column" fxLayoutAlign="center center">
+      Error:
+      <pre><code>{{ error | json }}</code></pre>
+      <div>
+        <button mat-button type="button" (click)="getServerError()">
+          Throw 500 Server Error
+        </button>
+      </div>
+    </div>
+  `,
+  styles: [
+    `
+      div[fxLayout] {
+        height: 100%;
+      }
+
+      button {
+        margin-right: 8px;
+      }
+
+      pre {
+        min-height: 100px;
+      }
+    `,
+  ],
 })
 export class ErrorComponent implements OnInit, OnDestroy {
   subscription: Subscription;
+
   error: any = {};
 
   constructor(private http: HttpClient) {}
@@ -35,3 +63,10 @@ export class ErrorComponent implements OnInit, OnDestroy {
     this.subscription?.unsubscribe();
   }
 }
+
+@NgModule({
+  declarations: [ErrorComponent],
+  exports: [ErrorComponent],
+  imports: [CommonModule, MatButtonModule, FlexLayoutModule],
+})
+export class ErrorModule {}

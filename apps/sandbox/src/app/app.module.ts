@@ -23,24 +23,20 @@ import { AuthService } from './auth/auth.service';
 import { BikeDetailModule } from './bike-detail/bike-detail.component';
 import { BikeSearchComponent } from './bike-search/bike-search.component';
 import { BikeCardModule } from './bike/bike-card.component';
-import { ErrorComponent } from './error/error.component';
+import { ErrorModule } from './error/error.component';
 import { createLoggerPlugin } from './http/create-logger-plugin';
 import { NavModule } from './nav/nav.component';
 import { SigninModule } from './signin/signin.component';
 import { UsersComponent } from './users/users.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BikeSearchComponent,
-    ErrorComponent,
-    UsersComponent,
-  ],
+  declarations: [AppComponent, BikeSearchComponent, UsersComponent],
   imports: [
     NavModule,
     BikeCardModule,
     BikeDetailModule,
     SigninModule,
+    ErrorModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
