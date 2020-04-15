@@ -1,28 +1,38 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgModule, OnDestroy } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Subscription } from 'rxjs';
-
 import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'http-ext-error',
   template: `
-    <div fxLayout="column" fxLayoutAlign="center center">
-      Error:
-      <pre><code>{{ error | json }}</code></pre>
-      <div>
-        <button mat-button type="button" (click)="getServerError()">
-          Throw 500 Server Error
-        </button>
+    <div class="container" fxLayout="column" fxLayoutAlign="center center">
+      <div class="tip">
+        Open developer tools network panel to see HTTP retries.
       </div>
+      <div>
+        <div fxLayout="column" fxLayoutAlign="center center">
+          {{ loading ? 'Fetching...' : 'Error:' }}
+          <div class="loader" *ngIf="loading; else error_message">
+            <mat-spinner [diameter]="50"></mat-spinner>
+          </div>
+          <ng-template #error_message>
+            <pre class="error-message"><code>{{ error | json }}</code></pre>
+          </ng-template>
+        </div>
+      </div>
+      <button mat-raised-button type="button" (click)="getServerError()">
+        Throw 500 Server Error
+      </button>
     </div>
   `,
   styles: [
     `
-      div[fxLayout] {
+      .container {
         height: 100%;
       }
 
@@ -30,43 +40,58 @@ import { environment } from '../../environments/environment';
         margin-right: 8px;
       }
 
-      pre {
-        min-height: 100px;
+      .error-message,
+      .loader {
+        height: 100px;
+        padding: 10px;
+        margin: 10px;
+      }
+
+      .tip {
+        margin-bottom: 40px;
+        font-size: 13px;
+        font-style: italic;
       }
     `,
   ],
 })
-export class ErrorComponent implements OnInit, OnDestroy {
+export class ErrorComponent implements OnDestroy {
   subscription: Subscription;
+
+  loading = false;
 
   error: any = {};
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
-    this.clear();
+    this.error = {};
+    this.loading = false;
   }
 
   getServerError(): void {
-    this.clear();
+    this.error = {};
+    this.loading = true;
+    this.subscription?.unsubscribe();
     this.subscription = this.http
       .get<any>(environment.apiBaseUrl + '/server-error')
       .subscribe({
-        error: (response) => (this.error = response.error),
+        error: (response) => {
+          this.error = response.error;
+          this.loading = false;
+        },
       });
-  }
-
-  private clear(): void {
-    this.error = {};
-    this.subscription?.unsubscribe();
   }
 }
 
 @NgModule({
   declarations: [ErrorComponent],
   exports: [ErrorComponent],
-  imports: [CommonModule, MatButtonModule, FlexLayoutModule],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    FlexLayoutModule,
+    MatProgressSpinnerModule,
+  ],
 })
 export class ErrorModule {}
