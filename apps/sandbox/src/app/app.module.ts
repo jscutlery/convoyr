@@ -44,18 +44,16 @@ import { SigninModule } from './signin/signin.component';
             createRetryPlugin(),
             createAuthPlugin({
               token: auth.token$,
-              onUnauthorized: async () => {
+              onUnauthorized: () => {
                 auth.setToken(undefined);
-
-                if (await router.navigate(['/signin'])) {
-                  snackBar.open(
-                    "Nop! You've been redirect to signin form.",
-                    'ok',
-                    {
-                      duration: 3000,
-                    }
-                  );
-                }
+                router.navigate(['/signin']);
+                snackBar.open(
+                  "Unauthorized response handled. You've been redirect to the signin form.",
+                  'ok',
+                  {
+                    duration: 12000,
+                  }
+                );
               },
             }),
           ],

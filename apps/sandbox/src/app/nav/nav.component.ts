@@ -2,15 +2,15 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { AuthService } from '../auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'http-ext-nav',
@@ -40,24 +40,18 @@ import { AuthService } from '../auth/auth.service';
               (click)="drawer.toggle()"
               *ngIf="isHandset$ | async"
             >
-              <mat-icon check_circle="menu">menu</mat-icon>
+              Menu
             </button>
             <img class="logo" src="/assets/logo.svg" alt="http-ext logo" />
             <strong>Http-ext</strong>demo
           </span>
-          <span
-            class="signed-in"
-            *ngIf="isAuthenticated$ | async; else signInLink"
-          >
+          <span class="signed-in" *ngIf="isAuthenticated$ | async">
             <img class="authorized" src="/assets/verified_user.svg" />
             <span>Welcome home</span>
-            <button mat-button (click)="markTokenAsExpired()">
+            <button mat-raised-button (click)="markTokenAsExpired()">
               Mark token as expired
             </button>
           </span>
-          <ng-template #signInLink>
-            <a mat-raised-button routerLink="/signin">Sign in</a>
-          </ng-template>
         </mat-toolbar>
         <ng-content></ng-content>
       </mat-sidenav-content>
@@ -131,11 +125,24 @@ export class NavComponent {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private auth: AuthService
+    private auth: AuthService,
+    private snackbar: MatSnackBar,
+    private router: Router
   ) {}
 
   markTokenAsExpired(): void {
     this.auth.setToken('EXPIRED');
+    const snackbar = this.snackbar.open(
+      'The next HTTP request will trigger an Unauthorized error response.',
+      'Navigate',
+      { duration: 12000 }
+    );
+
+    snackbar
+      .onAction()
+      .subscribe(() =>
+        this.router.navigate(['bikes/', 'e802ccda-db66-4ac9-ae16-ae1eee9e0ee0'])
+      );
   }
 }
 
@@ -147,7 +154,6 @@ export class NavComponent {
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
-    MatIconModule,
     MatListModule,
     RouterModule,
   ],
