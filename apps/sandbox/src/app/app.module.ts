@@ -1,13 +1,5 @@
-import { LayoutModule } from '@angular/cdk/layout';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,35 +13,27 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './auth/auth.service';
 import { BikeDetailModule } from './bike-detail/bike-detail.component';
-import { BikeSearchComponent } from './bike-search/bike-search.component';
+import { BikeSearchModule } from './bike-search/bike-search.component';
 import { BikeCardModule } from './bike/bike-card.component';
-import { RetryModule } from './retry/retry.component';
 import { createLoggerPlugin } from './http/create-logger-plugin';
 import { NavModule } from './nav/nav.component';
+import { RetryModule } from './retry/retry.component';
 import { SigninModule } from './signin/signin.component';
 
 @NgModule({
-  declarations: [AppComponent, BikeSearchComponent],
+  declarations: [AppComponent],
   imports: [
     NavModule,
     BikeCardModule,
     BikeDetailModule,
     SigninModule,
     RetryModule,
+    BikeSearchModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    LayoutModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatSnackBarModule,
-    FlexLayoutModule,
-    ReactiveFormsModule,
-    FormsModule,
     HttpExtModule.forRoot({
       deps: [AuthService, Router, MatSnackBar],
       config(auth: AuthService, router: Router, snackBar: MatSnackBar) {

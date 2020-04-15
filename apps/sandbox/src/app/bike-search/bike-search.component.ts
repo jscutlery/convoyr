@@ -1,16 +1,54 @@
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Bike } from '../bike/bike';
+import { BikeCardModule } from '../bike/bike-card.component';
 
 @Component({
   selector: 'http-ext-bike-search',
-  templateUrl: './bike-search.component.html',
-  styleUrls: ['./bike-search.component.css']
+  template: `
+    <div fxLayout="row" fxLayoutAlign="center">
+      <mat-form-field appearance="outline">
+        <input
+          [formControl]="searchControl"
+          matInput
+          type="search"
+          placeholder="Search"
+        />
+      </mat-form-field>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="space-around">
+      <http-ext-bike-card
+        class="bike"
+        *ngFor="let bike of bikes"
+        [bike]="bike"
+        [routerLink]="['/bikes', bike.id]"
+      ></http-ext-bike-card>
+    </div>
+  `,
+  styles: [
+    `
+      .bike {
+        cursor: pointer;
+        min-width: 200px;
+        max-width: 300px;
+        margin: 10px;
+      }
+
+      mat-form-field {
+        margin-top: 8px;
+      }
+    `,
+  ],
 })
 export class BikeSearchComponent implements OnInit, OnDestroy {
   bikes: Bike[] = [];
@@ -24,11 +62,11 @@ export class BikeSearchComponent implements OnInit, OnDestroy {
     this._subscription = this.searchControl.valueChanges
       .pipe(
         startWith(''),
-        switchMap(query =>
+        switchMap((query) =>
           this.http.get<{ bikes: Bike[] }>(environment.apiBaseUrl + '/bikes', {
             params: {
-              q: query
-            }
+              q: query,
+            },
           })
         )
       )
@@ -39,3 +77,18 @@ export class BikeSearchComponent implements OnInit, OnDestroy {
     this._subscription.unsubscribe();
   }
 }
+
+@NgModule({
+  declarations: [BikeSearchComponent],
+  exports: [BikeSearchComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FlexLayoutModule,
+    BikeCardModule,
+  ],
+})
+export class BikeSearchModule {}
