@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v1
 
       - name: Cache node_modules
-        uses: actions/cache@v1
+        uses: actions/cache@master
         with:
           path: node_modules
           key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/setup-node@v1
 
       - name: Cache node_modules
-        uses: actions/cache@v1
+        uses: actions/cache@master
         with:
           path: |
             node_modules
