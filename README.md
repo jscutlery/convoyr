@@ -21,7 +21,7 @@
 
 ## Philosophy
 
-HttpExt is a reactive library built on the top of the Angular HTTP client. The goal is to provide useful behaviors to extend the power of the HTTP client without the boilerplate required by interceptors. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. You can directly use the built-in [plugin collection](./#ecosystem) to start as fast as possible or [create your own plugin](./#custom-plugin).
+HttpExt is a reactive library built on the top of the Angular HTTP client. The goal is to provide useful behaviors to extend the power of the HTTP client without the boilerplate required by interceptors. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. You can directly use the built-in [plugin collection](https://github.com/jscutlery/http-ext#ecosystem) to start as fast as possible or [create your own plugin](https://github.com/jscutlery/http-ext#custom-plugin).
 
 Checkout the [demo app code](./apps/sandbox) for a concrete example.
 
@@ -31,11 +31,11 @@ This project is a monorepo that includes the following packages.
 
 | Name                                          | Description    | Goal                     | Size                                                                   |
 | --------------------------------------------- | -------------- | ------------------------ | ---------------------------------------------------------------------- |
-| [@http-ext/core](./libs/core)                 | Core module    | Generic plugins handler  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
+| [@http-ext/core](./libs/core)                 | Core           | Plugins handler          | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
 | [@http-ext/angular](./libs/angular)           | Angular module | HttpClient compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
-| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin    | Auth made easy           | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
-| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Fast and reactive UI     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
-| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Network resilience       | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
+| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin    | Authenticate requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
+| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Cache REST resources     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
+| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Retry failed requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
 
 ## Quick start
 
