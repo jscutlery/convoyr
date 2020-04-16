@@ -21,40 +21,52 @@
 
 ## Philosophy
 
-HttpExt is a reactive and extensible library built on the top of HTTP. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. The goal is to provide useful behaviors to extend the power of HTTP. You can directly use the built-in plugin collection to start as fast as possible or create your own plugin.
+HttpExt is a reactive library built on the top of the Angular HTTP client. The goal is to provide useful behaviors to extend the power of the HTTP client without the boilerplate required by interceptors. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. You can directly use the built-in [plugin collection](./#ecosystem) to start as fast as possible or [create your own plugin](./#custom-plugin).
+
+Checkout the [demo app code](./apps/sandbox) for example.
 
 ## Ecosystem
 
 This project is a monorepo that includes the following packages.
 
-| Name                                          | Description           | Goal                       | Size                                                                   |
-| --------------------------------------------- | --------------------- | -------------------------- | ---------------------------------------------------------------------- |
-| [@http-ext/core](./libs/core)                 | Core module           | Generic plugins handler    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
-| [@http-ext/angular](./libs/angular)           | Angular module        | HttpClient compatibility   | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
-| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin           | Auth made easy             | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
-| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin          | Fast and reactive UI       | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
-| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin          | Network resilience         | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
+| Name                                          | Description    | Goal                     | Size                                                                   |
+| --------------------------------------------- | -------------- | ------------------------ | ---------------------------------------------------------------------- |
+| [@http-ext/core](./libs/core)                 | Core module    | Generic plugins handler  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
+| [@http-ext/angular](./libs/angular)           | Angular module | HttpClient compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
+| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin    | Auth made easy           | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
+| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Fast and reactive UI     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
+| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Network resilience       | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
 
 ## Quick start
 
-1. Install packages inside your project.
+1. Install core packages inside your project.
 
 ```bash
-yarn add @http-ext/core @http-ext/angular @http-ext/plugin-cache @http-ext/plugin-retry
+yarn add @http-ext/core @http-ext/angular
+
+# or
+
+npm install @http-ext/core @http-ext/angular
 ```
 
-or
+2. Install plugins packages.
 
 ```bash
-npm install @http-ext/core @http-ext/angular @http-ext/plugin-cache @http-ext/plugin-retry
+yarn add @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
+
+# or
+
+install install @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
 ```
 
-2. Import the module and define plugins you want to use.
+3. Import the module and define plugins you want to use.
 
 ```ts
 import { HttpExtModule } from '@http-ext/angular';
 import { createCachePlugin } from '@http-ext/plugin-cache';
 import { createRetryPlugin } from '@http-ext/plugin-retry';
+import { createRetryPlugin } from '@http-ext/plugin-auth';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -62,10 +74,21 @@ import { createRetryPlugin } from '@http-ext/plugin-retry';
     BrowserModule,
     HttpClientModule,
     HttpExtModule.forRoot({
-      plugins: [createCachePlugin(), createRetryPlugin()]
-    })
+      deps: [AuthService],
+      config(authService: AuthService) {
+        return {
+          plugins: [
+            createCachePlugin(),
+            createRetryPlugin(),
+            createAuthPlugin({
+              token: authService.getToken(),
+            }),
+          ],
+        };
+      },
+    }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -100,12 +123,12 @@ import { tap } from 'rxjs/operators';
 export class LoggerHandler implements PluginHandler {
   handle({ request, next }) {
     /* Here you can access the request. */
-    console.log(`[${request.method}] ${request.url}`);
+    console.log(`${request.method} ${request.url}`);
 
     /* By piping the next function you can manipulate the response. */
     return next({ request }).pipe(
-      tap(response => {
-        console.log(`[${response.status}] ${request.url}`);
+      tap((response) => {
+        console.log(`${response.status} ${request.url}`);
       })
     );
   }
@@ -125,7 +148,7 @@ export function createLoggerPlugin(): HttpExtPlugin {
     shouldHandleRequest: ({ request }) => {
       return request.method === 'GET' && request.url.includes('api.github.com');
     },
-    handler: new LoggerHandler()
+    handler: new LoggerHandler(),
   };
 }
 ```
@@ -144,7 +167,7 @@ import { matchOrigin } from '@http-ext/core';
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
     shouldHandleRequest: matchOrigin('https://secure-origin.com'),
-    handler: new LoggerHandler()
+    handler: new LoggerHandler(),
   };
 }
 ```
