@@ -23,7 +23,7 @@
 
 HttpExt is a reactive library built on the top of the Angular HTTP client. The goal is to provide useful behaviors to extend the power of the HTTP client without the boilerplate required by interceptors. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. You can directly use the built-in [plugin collection](./#ecosystem) to start as fast as possible or [create your own plugin](./#custom-plugin).
 
-Checkout the [demo app code](./apps/sandbox) for example.
+Checkout the [demo app code](./apps/sandbox) for a concrete example.
 
 ## Ecosystem
 
@@ -56,7 +56,7 @@ yarn add @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
 
 # or
 
-install install @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
+npm install @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
 ```
 
 3. Import the module and define plugins you want to use.
