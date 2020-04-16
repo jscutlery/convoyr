@@ -5,7 +5,7 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,7 +15,7 @@ import { environment } from '../../environments/environment';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
-  selector: 'http-ext-sign-in',
+  selector: 'app-sign-in',
   template: `
     <form [formGroup]="form" class="form">
       <mat-form-field class="field">
@@ -70,14 +70,14 @@ import { AuthService } from '../auth/auth.service';
       .error {
         margin-top: 45px;
       }
-    `
-  ]
+    `,
+  ],
 })
 export class SigninComponent {
   error: any;
   form = new FormGroup({
     login: new FormControl('demo', [Validators.required]),
-    password: new FormControl('demo', [Validators.required])
+    password: new FormControl('demo', [Validators.required]),
   });
 
   constructor(
@@ -98,11 +98,11 @@ export class SigninComponent {
         this.form.value
       )
       .subscribe({
-        next: response => {
+        next: (response) => {
           this.auth.setToken(response.token);
           this.router.navigate(['/']);
         },
-        error: response => (this.error = response.error)
+        error: (response) => (this.error = response.error),
       });
   }
 }
@@ -115,7 +115,7 @@ export class SigninComponent {
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
-  ]
+    MatButtonModule,
+  ],
 })
 export class SigninModule {}

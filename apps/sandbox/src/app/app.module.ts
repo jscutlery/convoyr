@@ -46,7 +46,7 @@ import { SigninModule } from './signin/signin.component';
               token: auth.token$,
               onUnauthorized: () => {
                 auth.setToken(undefined);
-                router.navigate(['/signin']);
+                router.navigate(['signin']);
                 snackBar.open(
                   "Unauthorized response handled. You've been redirect to the signin form.",
                   'ok',

@@ -13,7 +13,7 @@ import { AuthService } from '../auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'http-ext-nav',
+  selector: 'app-nav',
   template: `
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav
@@ -141,7 +141,7 @@ export class NavComponent {
     snackbar
       .onAction()
       .subscribe(() =>
-        this.router.navigate(['bikes/', 'e802ccda-db66-4ac9-ae16-ae1eee9e0ee0'])
+        this.router.navigate(['bikes', 'e802ccda-db66-4ac9-ae16-ae1eee9e0ee0'])
       );
   }
 }

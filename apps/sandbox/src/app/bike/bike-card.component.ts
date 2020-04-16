@@ -12,7 +12,7 @@ import { Bike } from './bike';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'http-ext-bike-card',
+  selector: 'app-bike-card',
   template: `
     <mat-card>
       <mat-card-header>

@@ -7,7 +7,7 @@
       "schematics": {},
       "root": "apps/sandbox",
       "sourceRoot": "apps/sandbox/src",
-      "prefix": "http-ext",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",

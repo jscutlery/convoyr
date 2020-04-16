@@ -10,11 +10,11 @@ import { BikeCardModule } from '../bike/bike-card.component';
 import { environment } from './../../environments/environment';
 
 @Component({
-  selector: 'http-ext-bike-detail',
+  selector: 'app-bike-detail',
   template: `
     <a [routerLink]="['/bikes']" mat-button>BACK</a>
     <article *ngIf="bike$ | async as bike" class="container">
-      <http-ext-bike-card [bike]="bike"></http-ext-bike-card>
+      <app-bike-card [bike]="bike"></app-bike-card>
       <ul class="details">
         <li>
           Price <strong>{{ bike.price }}&euro;</strong>
@@ -50,13 +50,13 @@ import { environment } from './../../environments/environment';
         margin-top: 6px;
         border-bottom: 1px gray dotted;
       }
-    `
-  ]
+    `,
+  ],
 })
 export class BikeDetailComponent {
   bike$ = this.route.paramMap.pipe(
-    map(paramMap => paramMap.get('bikeId')),
-    switchMap(bikeId =>
+    map((paramMap) => paramMap.get('bikeId')),
+    switchMap((bikeId) =>
       this.httpClient.get<Bike>(
         `${environment.apiBaseUrl}/bikes/${encodeURIComponent(bikeId)}`
       )
@@ -69,6 +69,6 @@ export class BikeDetailComponent {
 @NgModule({
   declarations: [BikeDetailComponent],
   exports: [BikeDetailComponent],
-  imports: [CommonModule, RouterModule, BikeCardModule, MatButtonModule]
+  imports: [CommonModule, RouterModule, BikeCardModule, MatButtonModule],
 })
 export class BikeDetailModule {}

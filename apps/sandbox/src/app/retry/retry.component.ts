@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'http-ext-retry',
+  selector: 'app-retry',
   template: `
     <div class="container" fxLayout="column" fxLayoutAlign="center center">
       <div class="tip">

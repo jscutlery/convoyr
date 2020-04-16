@@ -14,7 +14,7 @@ import { Bike } from '../bike/bike';
 import { BikeCardModule } from '../bike/bike-card.component';
 
 @Component({
-  selector: 'http-ext-bike-search',
+  selector: 'app-bike-search',
   template: `
     <div fxLayout="row" fxLayoutAlign="center">
       <mat-form-field appearance="outline">
@@ -27,12 +27,12 @@ import { BikeCardModule } from '../bike/bike-card.component';
       </mat-form-field>
     </div>
     <div fxLayout="row wrap" fxLayoutAlign="space-around">
-      <http-ext-bike-card
+      <app-bike-card
         class="bike"
         *ngFor="let bike of bikes"
         [bike]="bike"
         [routerLink]="['/bikes', bike.id]"
-      ></http-ext-bike-card>
+      ></app-bike-card>
     </div>
   `,
   styles: [
