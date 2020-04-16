@@ -26,7 +26,7 @@ jobs:
 
       - name: Build
         run: |
-          yarn nx affected:build --with-deps --prod --base=tags/latest
+          yarn nx affected:build --with-deps --prod --base=refs/tags/latest
 
   e2e:
     runs-on: ubuntu-latest
