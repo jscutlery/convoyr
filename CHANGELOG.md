@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/jscutlery/http-ext/compare/v2.1.0...v2.1.1) (2020-04-16)
+
+
+### Bug Fixes
+
+* 📦 update angular monorepo to v9.1.2 ([a5a5b8f](https://github.com/jscutlery/http-ext/commit/a5a5b8f3688f98122d3e53167d3a975f076d80f8))
+* 📦 update angularmaterial monorepo to v9.2.1 ([332b8f2](https://github.com/jscutlery/http-ext/commit/332b8f2aa625d8d6ec2d9642adcb07a89070e79f))
+
+
+
+
+
 # [2.1.0](https://github.com/jscutlery/http-ext/compare/v2.0.1...v2.1.0) (2020-04-11)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/jscutlery/http-ext/compare/v2.1.0...v2.1.1) (2020-04-16)
+
+**Note:** Version bump only for package @http-ext/plugin-retry
+
+
+
+
+
 # [2.1.0](https://github.com/jscutlery/http-ext/compare/v2.0.1...v2.1.0) (2020-04-11)
 
 **Note:** Version bump only for package @http-ext/plugin-retry
