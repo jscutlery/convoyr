@@ -2,7 +2,7 @@ import {
   createRequest,
   createResponse,
   HttpExtRequest,
-  HttpExtResponse
+  HttpExtResponse,
 } from '@http-ext/core';
 import { advanceTo, clear } from 'jest-date-mock';
 import { concat, of } from 'rxjs';
@@ -34,7 +34,7 @@ describe('CachePlugin', () => {
 
   it(
     'should serve cache with metadata when hydrated',
-    marbles(m => {
+    marbles((m) => {
       const cachePlugin = createCachePlugin({ addCacheMetadata: true });
       const handler = cachePlugin.handler;
 
@@ -55,9 +55,9 @@ describe('CachePlugin', () => {
         body: {
           data: { answer: 42 },
           cacheMetadata: {
-            isFromCache: false
-          }
-        } as WithCacheMetadata
+            isFromCache: false,
+          },
+        } as WithCacheMetadata,
       });
 
       const cacheResponse = createResponse({
@@ -65,9 +65,9 @@ describe('CachePlugin', () => {
           data: { answer: 42 },
           cacheMetadata: {
             createdAt: new Date('2019-01-01T00:00:00.000Z'),
-            isFromCache: true
-          }
-        } as WithCacheMetadata
+            isFromCache: true,
+          },
+        } as WithCacheMetadata,
       });
 
       const values = { n: networkResponse, c: cacheResponse };
@@ -83,7 +83,7 @@ describe('CachePlugin', () => {
     const cachePlugin = createCachePlugin();
     const cacheResponse = cachePlugin.handler.handle({
       request,
-      next: () => of(response)
+      next: () => of(response),
     });
     const spyObserver = jest.fn();
 
@@ -105,35 +105,12 @@ describe('CachePlugin', () => {
   it('should use given request condition', () => {
     const spyCondition = jest.fn().mockReturnValue(true);
     const cachePlugin = createCachePlugin({
-      shouldHandleRequest: spyCondition
+      shouldHandleRequest: spyCondition,
     });
 
     cachePlugin.shouldHandleRequest({ request });
 
     expect(spyCondition).toHaveBeenCalledWith({ request });
-  });
-
-  it('should cache only GET requests by default', () => {
-    const cachePlugin = createCachePlugin();
-    const getRequest: HttpExtRequest = { ...request, method: 'GET' };
-    const postRequest: HttpExtRequest = { ...request, method: 'POST' };
-    const putRequest: HttpExtRequest = { ...request, method: 'PUT' };
-    const patchRequest: HttpExtRequest = { ...request, method: 'PATCH' };
-    const deleteRequest: HttpExtRequest = { ...request, method: 'DELETE' };
-
-    expect(cachePlugin.shouldHandleRequest({ request: getRequest })).toBe(true);
-    expect(cachePlugin.shouldHandleRequest({ request: postRequest })).toBe(
-      false
-    );
-    expect(cachePlugin.shouldHandleRequest({ request: putRequest })).toBe(
-      false
-    );
-    expect(cachePlugin.shouldHandleRequest({ request: patchRequest })).toBe(
-      false
-    );
-    expect(cachePlugin.shouldHandleRequest({ request: deleteRequest })).toBe(
-      false
-    );
   });
 
   it('should use given storage implementation to store cache', async () => {
@@ -156,50 +133,50 @@ describe('CachePlugin', () => {
       expect.objectContaining({
         createdAt: '2019-01-01T00:00:00.000Z',
         response: expect.objectContaining({
-          body: { answer: 42 }
-        })
+          body: { answer: 42 },
+        }),
       })
     );
   });
 
   it(
     'should handle query string in store key',
-    marbles(m => {
+    marbles((m) => {
       const cachePlugin = createCachePlugin();
       const nextFn = jest.fn().mockImplementation(({ request: _request }) => {
         return {
           a: m.cold('-n|', { n: createResponse({ body: { answer: 'A' } }) }),
-          b: m.cold('-n|', { n: createResponse({ body: { answer: 'B' } }) })
+          b: m.cold('-n|', { n: createResponse({ body: { answer: 'B' } }) }),
         }[_request.params.q];
       });
 
       const requestA = createRequest({
         url: 'https://ultimate-answer.com',
-        params: { q: 'a' }
+        params: { q: 'a' },
       });
       const requestB = createRequest({
         url: 'https://ultimate-answer.com',
-        params: { q: 'b' }
+        params: { q: 'b' },
       });
 
       const response1$ = cachePlugin.handler.handle({
         request: requestA,
-        next: nextFn
+        next: nextFn,
       });
       const response2$ = cachePlugin.handler.handle({
         request: requestB,
-        next: nextFn
+        next: nextFn,
       });
       const response3$ = cachePlugin.handler.handle({
         request: requestA,
-        next: nextFn
+        next: nextFn,
       });
 
       const stream$ = concat(response1$, response2$, response3$);
       /*                           👇 Cache is fired here */
       const expected$ = m.cold('-a-baa|', {
         a: createResponse({ body: { answer: 'A' } }),
-        b: createResponse({ body: { answer: 'B' } })
+        b: createResponse({ body: { answer: 'B' } }),
       });
       m.expect(stream$).toBeObservable(expected$);
     })

@@ -34,10 +34,10 @@ import { createCachePlugin } from '@http-ext/plugin-cache';
     BrowserModule,
     HttpClientModule,
     HttpExtModule.forRoot({
-      plugins: [createCachePlugin()]
-    })
+      plugins: [createCachePlugin()],
+    }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -46,11 +46,11 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property              | Type               | Default value                                                 | Description                                                        |
-| --------------------- | ------------------ | ------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `addCacheMetadata`    | `boolean`          | `false`                                                       | Add cache metadata to the response body.                           |
-| `storage`             | `Storage`          | `new MemoryStorage()`                                         | Storage used to store the cache.                                   |
-| `shouldHandleRequest` | `RequestCondition` | `request.method === 'GET' && request.responseType === 'json'` | Predicate function to know which request the plugin should handle. |
+| Property              | Type               | Default value                    | Description                                                        |
+| --------------------- | ------------------ | -------------------------------- | ------------------------------------------------------------------ |
+| `addCacheMetadata`    | `boolean`          | `false`                          | Add cache metadata to the response body.                           |
+| `storage`             | `Storage`          | `new MemoryStorage()`            | Storage used to store the cache.                                   |
+| `shouldHandleRequest` | `RequestCondition` | `isGetMethodAndJsonResponseType` | Predicate function to know which request the plugin should handle. |
 
 Here is an example passing a configuration object.
 
@@ -63,11 +63,11 @@ import { createCachePlugin, MemoryStorage } from '@http-ext/plugin-cache';
       plugins: [
         createCachePlugin({
           addCacheMetadata: true,
-          storage: new MemoryStorage()
-        })
-      ]
-    })
-  ]
+          storage: new MemoryStorage(),
+        }),
+      ],
+    }),
+  ],
 })
 export class AppModule {}
 ```
@@ -118,9 +118,9 @@ Default's storage size of the `MemoryStorage` is 100 requests. Above this limit,
 HttpExtModule.forRoot({
   plugins: [
     createCachePlugin({
-      storage: new MemoryStorage({ maxSize: 2000 })
-    })
-  ]
+      storage: new MemoryStorage({ maxSize: 2000 }),
+    }),
+  ],
 });
 ```
 
@@ -130,9 +130,9 @@ The `maxSize` can also be configured using human readable bytes format if a `str
 HttpExtModule.forRoot({
   plugins: [
     createCachePlugin({
-      storage: new MemoryStorage({ maxSize: '2000 b' })
-    })
-  ]
+      storage: new MemoryStorage({ maxSize: '2000 b' }),
+    }),
+  ],
 });
 ```
 
