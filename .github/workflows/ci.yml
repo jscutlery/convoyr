@@ -6,12 +6,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - uses: actions/setup-node@v1
 
       - name: Cache node_modules
-        uses: actions/cache@master
+        uses: actions/cache@v1
         with:
           path: node_modules
           key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
@@ -34,12 +34,12 @@ jobs:
     env:
       CYPRESS_CACHE_FOLDER: .cypress-cache
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - uses: actions/setup-node@v1
 
       - name: Cache node_modules
-        uses: actions/cache@master
+        uses: actions/cache@v1
         with:
           path: |
             node_modules
@@ -61,7 +61,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - uses: actions/setup-node@v1
 

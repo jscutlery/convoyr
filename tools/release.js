@@ -11,7 +11,7 @@ execSync('lerna version --no-push --conventional-commits --yes');
 execSync('yarn nx affected:build --all --with-deps --prod');
 
 /* Publish to NPM */
-execSync('yarn workspaces run publish --non-interactive --access public');
+execSync('yarn workspaces run publish --access public --tag latest');
 
-/* Update `latest` tag and push to GitHub */
-execSync('git tag -d latest && git tag latest && git push --follow-tags');
+/* Push to GitHub */
+execSync('git push --follow-tags');
