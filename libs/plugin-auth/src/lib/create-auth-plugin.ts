@@ -9,13 +9,13 @@ export interface AuthPluginOptions extends HandlerOptions {
 export function createAuthPlugin({
   shouldHandleRequest,
   token,
-  onUnauthorized
+  onUnauthorized,
 }: AuthPluginOptions) {
   return {
     shouldHandleRequest,
     handler: new AuthHandler({
       token,
-      onUnauthorized
-    })
+      onUnauthorized,
+    }),
   };
 }

@@ -3,6 +3,7 @@
 > A auth plugin for [HttpExt](https://github.com/jscutlery/http-ext).
 
 This plugin takes care of handling authorization by:
+
 - adding the `Authorization` header with the given token automatically for each request matching a custom condition,
 - triggering a custom token expiration logic on `401 Unauthorized` http responses.
 
@@ -44,11 +45,11 @@ import { createAuthPlugin } from '@http-ext/plugin-auth';
         createAuthPlugin({
           shouldHandleRequest: matchOrigin('https://secure-origin.com'),
           token: authService.getToken(), // Returns an Observable<string>.
-          onUnauthorized: () => authService.markTokenExpired()
-        })
-    })
+          onUnauthorized: () => authService.markTokenExpired(),
+        }),
+    }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -57,10 +58,10 @@ export class AppModule {}
 
 You can give a partial configuration object it will be merged with default values.
 
-| Property             | Type                 | Required | Default value                          | Description                                                                                  |
-| -------------------- | -------------------- | ---------| ---------------------------------------| -------------------------------------------------------------------------------------------- |
-| `token`              | `Observable<string>` | Yes      | `undefined`                            | The bearer token that will be added to every matching request in the `Authorization` header. |
-| `onUnauthorized`     | `OnUnauthorized`     | No       | `undefined`                            | A function executed when an unauthorized response is thrown.                                 |
-| `shouldHandleRequest`| `RequestCondition`   | No       | `matchOrigin('https://my-origin.com')` | Predicate function to know which request the plugin should handle.                           |
+| Property              | Type                 | Required | Default value | Description                                                                                  |
+| --------------------- | -------------------- | -------- | ------------- | -------------------------------------------------------------------------------------------- |
+| `token`               | `Observable<string>` | Yes      | `undefined`   | The bearer token that will be added to every matching request in the `Authorization` header. |
+| `onUnauthorized`      | `OnUnauthorized`     | No       | `undefined`   | A function executed when an unauthorized response is thrown.                                 |
+| `shouldHandleRequest` | `RequestCondition`   | No       | `undefined`   | Predicate function to know which request the plugin should handle.                           |
 
 To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/http-ext#conditional-handling).
