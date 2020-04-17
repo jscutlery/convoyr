@@ -1,1 +1,1 @@
-export * from './lib/plugin-normalizer.module';
+export * from './lib/create-plugin-normalizer';
