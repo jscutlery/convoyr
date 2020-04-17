@@ -9,5 +9,8 @@
   },
   "peerDependencies": {
     "@http-ext/core": "^2.1.1"
+  },
+  "dependencies": {
+    "normalizr": "^3.6.0"
   }
 }

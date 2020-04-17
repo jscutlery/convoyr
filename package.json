@@ -15,6 +15,7 @@
     "test:plugin-auth": "ng test plugin-auth --watch",
     "test:plugin-cache": "ng test plugin-cache --watch",
     "test:plugin-retry": "ng test plugin-retry --watch",
+    "test:plugin-normalizer": "ng test plugin-normalizer --watch",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e",
     "affected:apps": "nx affected:apps",
