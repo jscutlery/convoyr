@@ -8,9 +8,7 @@
     "publish": "yarn publish ../../dist/libs/plugin-normalizer"
   },
   "peerDependencies": {
-    "@http-ext/core": "^2.1.1"
-  },
-  "dependencies": {
+    "@http-ext/core": "^2.1.1",
     "normalizr": "^3.6.0"
   }
 }

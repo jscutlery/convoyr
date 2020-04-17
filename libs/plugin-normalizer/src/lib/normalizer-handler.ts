@@ -26,7 +26,7 @@ export class NormalizerHandler implements PluginHandler {
           return response;
         }
 
-        return normalize(response, schema);
+        return { ...response, body: normalize(response.body, schema) };
       })
     );
   }

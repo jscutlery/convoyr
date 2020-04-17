@@ -1,9 +1,9 @@
+import { createRequest, createResponse } from '@http-ext/core';
 import { createPluginTester } from '@http-ext/core/testing';
 import { schema } from 'normalizr';
+import { of } from 'rxjs';
 
 import { NormalizerHandler } from './normalizer-handler';
-import { createRequest } from '@http-ext/core';
-import { of } from 'rxjs';
 
 const data = {
   users: [
@@ -22,20 +22,24 @@ describe('NormalizerHandler', () => {
       handler: new NormalizerHandler({ schemas }),
     });
 
-    pluginTester.next.mockReturnValue(of(data));
+    pluginTester.next.mockReturnValue(of(createResponse({ body: data })));
 
     const request = createRequest({ url: '/somewhere' });
     const response = await pluginTester.handle({ request }).toPromise();
 
-    expect(response).toEqual({
-      result: { users: [1, 2] },
-      entities: {
-        users: {
-          '1': { id: 1, name: 'Pacard' },
-          '2': { id: 2, name: 'Whymper' },
+    expect(response).toEqual(
+      expect.objectContaining({
+        body: {
+          result: { users: [1, 2] },
+          entities: {
+            users: {
+              '1': { id: 1, name: 'Pacard' },
+              '2': { id: 2, name: 'Whymper' },
+            },
+          },
         },
-      },
-    });
+      })
+    );
   });
 
   it('should return the original response when no schema found', async () => {
