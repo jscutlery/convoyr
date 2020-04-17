@@ -1,3 +1,4 @@
+import { schema } from 'normalizr';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -8,6 +9,7 @@ import { HttpExtModule } from '@http-ext/angular';
 import { createAuthPlugin } from '@http-ext/plugin-auth';
 import { createCachePlugin } from '@http-ext/plugin-cache';
 import { createRetryPlugin } from '@http-ext/plugin-retry';
+import { createNormalizerPlugin } from '@http-ext/plugin-normalizer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +21,7 @@ import { createLoggerPlugin } from './http/create-logger-plugin';
 import { NavModule } from './nav/nav.component';
 import { RetryModule } from './retry/retry.component';
 import { SigninModule } from './signin/signin.component';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -54,6 +57,13 @@ import { SigninModule } from './signin/signin.component';
                     duration: 12000,
                   }
                 );
+              },
+            }),
+            createNormalizerPlugin({
+              schemas: {
+                [environment.apiBaseUrl + '/bikes']: {
+                  bikes: [new schema.Entity('bikes')],
+                },
               },
             }),
           ],

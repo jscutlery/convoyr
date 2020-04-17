@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
+import { NormalizedSchema } from 'normalizr';
 
 import { environment } from '../../environments/environment';
 import { Bike } from '../bike/bike';
@@ -29,9 +30,9 @@ import { BikeCardModule } from '../bike/bike-card.component';
     <div fxLayout="row wrap" fxLayoutAlign="space-around">
       <app-bike-card
         class="bike"
-        *ngFor="let bike of bikes"
-        [bike]="bike"
-        [routerLink]="['/bikes', bike.id]"
+        *ngFor="let bike of response?.entities?.bikes | keyvalue"
+        [bike]="bike.value"
+        [routerLink]="['/bikes', bike.key]"
       ></app-bike-card>
     </div>
   `,
@@ -51,7 +52,8 @@ import { BikeCardModule } from '../bike/bike-card.component';
   ],
 })
 export class BikeSearchComponent implements OnInit, OnDestroy {
-  bikes: Bike[] = [];
+  response: NormalizedSchema<Bike, string>;
+
   searchControl = new FormControl();
 
   private _subscription: Subscription;
@@ -63,14 +65,17 @@ export class BikeSearchComponent implements OnInit, OnDestroy {
       .pipe(
         startWith(''),
         switchMap((query) =>
-          this.http.get<{ bikes: Bike[] }>(environment.apiBaseUrl + '/bikes', {
-            params: {
-              q: query,
-            },
-          })
+          this.http.get<NormalizedSchema<Bike, string>>(
+            environment.apiBaseUrl + '/bikes',
+            {
+              params: {
+                q: query,
+              },
+            }
+          )
         )
       )
-      .subscribe(({ bikes }) => (this.bikes = bikes));
+      .subscribe((response) => (this.response = response));
   }
 
   ngOnDestroy() {
