@@ -47,11 +47,15 @@ describe('NormalizerHandler', () => {
       handler: new NormalizerHandler({ schemas }),
     });
 
-    pluginTester.next.mockReturnValue(of(data));
+    pluginTester.next.mockReturnValue(of(createResponse({ body: data })));
 
     const request = createRequest({ url: '/nowhere' });
     const response = await pluginTester.handle({ request }).toPromise();
 
-    expect(response).toEqual(response);
+    expect(response).toEqual(
+      expect.objectContaining({
+        body: data,
+      })
+    );
   });
 });
