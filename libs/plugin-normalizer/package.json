@@ -1,0 +1,13 @@
+{
+  "name": "@http-ext/plugin-normalizer",
+  "version": "2.1.1",
+  "license": "MIT",
+  "private": false,
+  "repository": "git@github.com:jscutlery/http-ext.git",
+  "scripts": {
+    "publish": "yarn publish ../../dist/libs/plugin-normalizer"
+  },
+  "peerDependencies": {
+    "@http-ext/core": "^2.1.1"
+  }
+}

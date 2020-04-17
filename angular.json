@@ -371,6 +371,46 @@
         }
       },
       "schematics": {}
+    },
+    "plugin-normalizer": {
+      "projectType": "library",
+      "root": "libs/plugin-normalizer",
+      "sourceRoot": "libs/plugin-normalizer/src",
+      "prefix": "http-ext",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/plugin-normalizer/tsconfig.lib.json",
+            "project": "libs/plugin-normalizer/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/plugin-normalizer/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/plugin-normalizer/tsconfig.lib.json",
+              "libs/plugin-normalizer/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/plugin-normalizer/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/plugin-normalizer/jest.config.js",
+            "tsConfig": "libs/plugin-normalizer/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/plugin-normalizer/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {
