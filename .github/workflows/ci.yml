@@ -8,6 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # Fetch 'latest' tag to build affected libraries from it
+      - run: git fetch --depth=1 origin +refs/tags/latest:refs/tags/latest
+
       - uses: actions/setup-node@v1
 
       - name: Cache node_modules
