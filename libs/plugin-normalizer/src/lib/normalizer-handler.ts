@@ -21,6 +21,11 @@ export class NormalizerHandler implements PluginHandler {
     return next({ request }).pipe(
       map((response) => {
         const schema = this._schemas[request.url];
+
+        if (schema == null) {
+          return response;
+        }
+
         return normalize(response, schema);
       })
     );

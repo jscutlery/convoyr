@@ -12,12 +12,12 @@ const data = {
   ],
 };
 
-describe('NormalizerHandler', () => {
-  it('should normalize data', async () => {
-    const user = new schema.Entity('users');
-    const usersSchema = { users: [user] };
-    const schemas = { '/somewhere': usersSchema };
+const user = new schema.Entity('users');
+const usersSchema = { users: [user] };
+const schemas = { '/somewhere': usersSchema };
 
+describe('NormalizerHandler', () => {
+  it('should normalize response', async () => {
     const pluginTester = createPluginTester({
       handler: new NormalizerHandler({ schemas }),
     });
@@ -27,16 +27,27 @@ describe('NormalizerHandler', () => {
     const request = createRequest({ url: '/somewhere' });
     const response = await pluginTester.handle({ request }).toPromise();
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        result: { users: [1, 2] },
-        entities: {
-          users: {
-            '1': { id: 1, name: 'Pacard' },
-            '2': { id: 2, name: 'Whymper' },
-          },
+    expect(response).toEqual({
+      result: { users: [1, 2] },
+      entities: {
+        users: {
+          '1': { id: 1, name: 'Pacard' },
+          '2': { id: 2, name: 'Whymper' },
         },
-      })
-    );
+      },
+    });
+  });
+
+  it('should return the original response when no schema found', async () => {
+    const pluginTester = createPluginTester({
+      handler: new NormalizerHandler({ schemas }),
+    });
+
+    pluginTester.next.mockReturnValue(of(data));
+
+    const request = createRequest({ url: '/nowhere' });
+    const response = await pluginTester.handle({ request }).toPromise();
+
+    expect(response).toEqual(response);
   });
 });
