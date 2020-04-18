@@ -12,7 +12,7 @@ describe('AuthPlugin', () => {
 
   it('should create the auth handler with default options', () => {
     const token = of('TOKEN');
-    const onUnauthorized: OnUnauthorized = (response) => true;
+    const onUnauthorized: OnUnauthorized = () => true;
     const matchSomewhereOrigin = matchOrigin('https://somewhere.com');
 
     const plugin = createAuthPlugin({

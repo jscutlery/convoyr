@@ -1,17 +1,12 @@
-import {
-  createRequest,
-  createResponse,
-  ConvoyrRequest,
-  ConvoyrResponse,
-} from '@convoyr/core';
+import { ConvoyrRequest, ConvoyrResponse, createRequest, createResponse } from '@convoyr/core';
+import { createPluginTester } from '@convoyr/core/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 import { concat } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-import { createPluginTester } from '@http-ext/core/testing';
-
+import { CacheHandler } from './cache-handler';
 import { WithCacheMetadata } from './cache-response';
 import { MemoryStorage } from './storages/memory-storage';
-import { CacheHandler } from './cache-handler';
+
 
 function createMemoryStorageSpy() {
   const spyStorage = new MemoryStorage();
@@ -171,8 +166,11 @@ describe('CachePlugin', () => {
           storage: new MemoryStorage(),
         }),
       });
+<<<<<<< HEAD
 >>>>>>> wip: 🚧 refactor tester plugin:libs/plugin-cache/src/lib/cache-handler.spec.ts
 
+=======
+>>>>>>> wip: 🚧 refactor tester plugin
       const requestA = createRequest({
         url: 'https://ultimate-answer.com',
         params: { q: 'a' },
@@ -182,17 +180,16 @@ describe('CachePlugin', () => {
         params: { q: 'b' },
       });
 
-      const responses = {
-        a: m.cold('-n|', {
-          n: createResponse({ body: { answer: 'A' } }),
-        }),
-        b: m.cold('-n|', {
-          n: createResponse({ body: { answer: 'B' } }),
-        }),
-      };
+      const responseA$ = m.cold('-n|', {
+        n: createResponse({ body: { answer: 'A' } }),
+      });
+      const responseB$ = m.cold('-n|', {
+        n: createResponse({ body: { answer: 'B' } }),
+      });
 
       const response1$ = pluginTester.handle({
         request: requestA,
+<<<<<<< HEAD
 <<<<<<< HEAD:libs/plugin-cache/src/lib/create-cache-plugin.spec.ts
         next: nextHandler,
       });
@@ -205,13 +202,22 @@ describe('CachePlugin', () => {
         next: nextHandler,
 =======
         response: responses[requestA.params.q as string],
+=======
+        response: responseA$,
+>>>>>>> wip: 🚧 refactor tester plugin
       });
       const response2$ = pluginTester.handle({
-        request: responses[requestB.params.q as string],
+        request: requestB,
+        response: responseB$,
       });
       const response3$ = pluginTester.handle({
+<<<<<<< HEAD
         request: responses[requestA.params.q as string],
 >>>>>>> wip: 🚧 refactor tester plugin:libs/plugin-cache/src/lib/cache-handler.spec.ts
+=======
+        request: requestA,
+        response: responseA$,
+>>>>>>> wip: 🚧 refactor tester plugin
       });
 
       const stream$ = concat(response1$, response2$, response3$);
