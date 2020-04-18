@@ -13,14 +13,14 @@ describe('CachePlugin', () => {
   const mockCacheHandler = CacheHandler as jest.Mock;
 
   it('should create the cache handler with default options', () => {
-    createCachePlugin();
+    const plugin = createCachePlugin();
 
     mockCacheHandler.mockReturnValue(EMPTY);
 
+    expect(plugin.shouldHandleRequest).toBe(isGetMethodAndJsonResponseType);
     expect(CacheHandler).toHaveBeenCalledWith({
       addCacheMetadata: false,
       storage: new MemoryStorage({ maxSize: 100 }),
-      shouldHandleRequest: isGetMethodAndJsonResponseType,
     });
   });
 });

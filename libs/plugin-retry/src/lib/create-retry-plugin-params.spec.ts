@@ -10,15 +10,16 @@ describe('RetryPlugin', () => {
   const mockRetryHandler = RetryHandler as jest.Mock;
 
   it('should create the retry handler with default options', () => {
-    createRetryPlugin();
+    const plugin = createRetryPlugin();
 
     mockRetryHandler.mockReturnValue(EMPTY);
 
+    expect(plugin.shouldHandleRequest).toBeUndefined();
     expect(RetryHandler).toHaveBeenCalledWith({
       initialInterval: 300,
       maxInterval: 10000,
       maxRetries: 3,
-      shouldRetry: isServerOrUnknownError
+      shouldRetry: isServerOrUnknownError,
     });
   });
 });

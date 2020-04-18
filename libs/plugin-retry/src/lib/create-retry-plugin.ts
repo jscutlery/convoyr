@@ -14,11 +14,11 @@ export interface RetryPluginOptions extends HandlerOptions {
  * @param shouldRetry defaults to server error: 5xx
  */
 export function createRetryPlugin({
-  shouldHandleRequest = () => true,
+  shouldHandleRequest,
   initialInterval = 300,
   maxInterval = 10_000,
   maxRetries = 3,
-  shouldRetry = isServerOrUnknownError
+  shouldRetry = isServerOrUnknownError,
 }: Partial<RetryPluginOptions> = {}) {
   return {
     shouldHandleRequest,
@@ -26,7 +26,7 @@ export function createRetryPlugin({
       initialInterval,
       maxInterval,
       maxRetries,
-      shouldRetry
-    })
+      shouldRetry,
+    }),
   };
 }
