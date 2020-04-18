@@ -1,5 +1,5 @@
 import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
-import { normalize } from 'normalizr';
+import { normalize, Schema } from 'normalizr';
 import { map } from 'rxjs/operators';
 
 export interface HandlerOptions {
@@ -7,7 +7,7 @@ export interface HandlerOptions {
 }
 
 export interface SchemaDictionary {
-  [url: string]: any;
+  [url: string]: Schema;
 }
 
 export class NormalizerHandler implements PluginHandler {

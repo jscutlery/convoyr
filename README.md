@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="130" src="https://github.com/jscutlery/http-ext/blob/master/logo.png?raw=true" alt="http-ext logo" />
+  <img width="110" src="https://github.com/jscutlery/http-ext/blob/master/logo.png?raw=true" alt="http-ext logo" />
   <hr>
   <a href="https://github.com/jscutlery/http-ext/actions" rel="nofollow">
     <img src="https://github.com/jscutlery/http-ext/workflows/Build%20&%20Test/badge.svg" />
@@ -29,13 +29,14 @@ Checkout the [demo app code](./apps/sandbox) for a concrete example.
 
 This project is a monorepo that includes the following packages.
 
-| Name                                          | Description    | Goal                     | Size                                                                   |
-| --------------------------------------------- | -------------- | ------------------------ | ---------------------------------------------------------------------- |
-| [@http-ext/core](./libs/core)                 | Core           | Plugins handler          | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
-| [@http-ext/angular](./libs/angular)           | Angular module | HttpClient compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
-| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin    | Authenticate requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
-| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Cache REST resources     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
-| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Retry failed requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
+| Name                                                    | Description       | Goal                     | Size                                                                        |
+| ------------------------------------------------------- | ----------------- | ------------------------ | --------------------------------------------------------------------------- |
+| [@http-ext/core](./libs/core)                           | Core              | Plugins handler          | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)              |
+| [@http-ext/angular](./libs/angular)                     | Angular module    | HttpClient compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)           |
+| [@http-ext/plugin-auth](./libs/plugin-auth)             | Auth plugin       | Authenticate requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)       |
+| [@http-ext/plugin-cache](./libs/plugin-cache)           | Cache plugin      | Cache REST resources     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache)      |
+| [@http-ext/plugin-retry](./libs/plugin-retry)           | Retry plugin      | Retry failed requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry)      |
+| [@http-ext/plugin-normalizer](./libs/plugin-normalizer) | Normalizer plugin | Normalize response body  | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-normalizer) |
 
 ## Quick start
 
@@ -53,7 +54,6 @@ npm install @http-ext/core @http-ext/angular
 
 ```bash
 yarn add @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
-
 # or
 
 npm install @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
