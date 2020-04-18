@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { createRequest, createResponse } from '@convoyr/core';
 import { createPluginTester } from '@convoyr/core/testing';
+=======
+import { createRequest, createResponse } from '@http-ext/core';
+import { createPluginTester } from '@http-ext/core/testing';
+>>>>>>> wip: 🚧 refactor tester plugin
 import { concat, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';
@@ -77,9 +82,16 @@ describe('AuthPlugin', () => {
       const response = createResponse({ status: 200, statusText: 'Ok' });
       const response$ = m.cold('r|', { r: response });
 
+<<<<<<< HEAD
       pluginTester.next.handle.mockReturnValue(response$);
 
       const source$ = concat(wait$, pluginTester.handle({ request }));
+=======
+      const source$ = concat(
+        wait$,
+        pluginTester.handle({ request, response: response$ })
+      );
+>>>>>>> wip: 🚧 refactor tester plugin
 
       m.expect(token$).toBeObservable('         x-a-b-c', tokens);
       m.expect(source$).toBeObservable('        -----b|', { b: response });
@@ -114,13 +126,19 @@ describe('AuthPlugin', () => {
       statusText: 'Unauthorized',
     });
 
+<<<<<<< HEAD
     pluginTester.next.handle.mockReturnValue(throwError(unauthorizedResponse));
 
+=======
+>>>>>>> wip: 🚧 refactor tester plugin
     const observer = {
       next: jest.fn(),
       error: jest.fn(),
     };
-    pluginTester.handle({ request }).subscribe(observer);
+
+    pluginTester
+      .handle({ request, response: throwError(unauthorizedResponse) })
+      .subscribe(observer);
 
     expect(observer.next).not.toHaveBeenCalled();
     expect(observer.error).toHaveBeenCalledTimes(1);

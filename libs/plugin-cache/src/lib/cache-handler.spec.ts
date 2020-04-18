@@ -5,12 +5,13 @@ import {
   ConvoyrResponse,
 } from '@convoyr/core';
 import { advanceTo, clear } from 'jest-date-mock';
-import { concat, of } from 'rxjs';
+import { concat } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
+import { createPluginTester } from '@http-ext/core/testing';
 
 import { WithCacheMetadata } from './cache-response';
-import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorage } from './storages/memory-storage';
+import { CacheHandler } from './cache-handler';
 
 function createMemoryStorageSpy() {
   const spyStorage = new MemoryStorage();
@@ -35,18 +36,26 @@ describe('CachePlugin', () => {
   it(
     'should serve cache with metadata when hydrated',
     marbles((m) => {
-      const cachePlugin = createCachePlugin({ addCacheMetadata: true });
-      const handler = cachePlugin.handler;
+      const pluginTester = createPluginTester({
+        handler: new CacheHandler({
+          addCacheMetadata: true,
+          storage: new MemoryStorage(),
+        }),
+      });
 
       /* Mock date. */
       advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
       /* Simulate final handler. */
+<<<<<<< HEAD:libs/plugin-cache/src/lib/create-cache-plugin.spec.ts
       const next = { handle: () => m.cold('-r|', { r: response }) };
+=======
+      const response$ = m.cold('-r|', { r: response });
+>>>>>>> wip: 🚧 refactor tester plugin:libs/plugin-cache/src/lib/cache-handler.spec.ts
 
       /* Run two requests with the same URL to fire cache response. */
-      const requestA$ = handler.handle({ request, next });
-      const requestB$ = handler.handle({ request, next });
+      const requestA$ = pluginTester.handle({ request, response: response$ });
+      const requestB$ = pluginTester.handle({ request, response: response$ });
 
       /* Execute requests in order. */
       const responses$ = concat(requestA$, requestB$);
@@ -79,6 +88,7 @@ describe('CachePlugin', () => {
     })
   );
 
+<<<<<<< HEAD:libs/plugin-cache/src/lib/create-cache-plugin.spec.ts
   it('should not apply metadata to response by default', () => {
     const cachePlugin = createCachePlugin();
     const cacheResponse = cachePlugin.handler.handle({
@@ -86,41 +96,41 @@ describe('CachePlugin', () => {
       next: {
         handle: () => of(response),
       },
+=======
+  it('should not apply metadata to response body', () => {
+    const pluginTester = createPluginTester({
+      handler: new CacheHandler({
+        addCacheMetadata: false,
+        storage: new MemoryStorage(),
+      }),
+>>>>>>> wip: 🚧 refactor tester plugin:libs/plugin-cache/src/lib/cache-handler.spec.ts
     });
-    const spyObserver = jest.fn();
 
-    cacheResponse.subscribe(spyObserver);
+    const observer = jest.fn();
 
-    expect(spyObserver).toBeCalledTimes(1);
-    expect(spyObserver).toBeCalledWith(
+    pluginTester.handle({ request, response }).subscribe(observer);
+
+    expect(pluginTester.next).toBeCalledTimes(1);
+    expect(observer).toBeCalledWith(
       expect.objectContaining({ body: { answer: 42 } })
     );
   });
 
-  it('should use `MemoryAdapter` storage by default', () => {
-    const cachePlugin = createCachePlugin();
-
-    expect(cachePlugin.handler['_storage']).toBeDefined();
-    expect(cachePlugin.handler['_storage']).toBeInstanceOf(MemoryStorage);
-  });
-
-  it('should use given request condition', () => {
-    const spyCondition = jest.fn().mockReturnValue(true);
-    const cachePlugin = createCachePlugin({
-      shouldHandleRequest: spyCondition,
-    });
-
-    cachePlugin.shouldHandleRequest({ request });
-
-    expect(spyCondition).toHaveBeenCalledWith({ request });
-  });
-
   it('should use given storage implementation to store cache', async () => {
     const storage = createMemoryStorageSpy() as any;
+<<<<<<< HEAD:libs/plugin-cache/src/lib/create-cache-plugin.spec.ts
     const cachePlugin = createCachePlugin({ storage });
     const next = { handle: () => of(response) };
+=======
+    const pluginTester = createPluginTester({
+      handler: new CacheHandler({
+        addCacheMetadata: false,
+        storage,
+      }),
+    });
+>>>>>>> wip: 🚧 refactor tester plugin:libs/plugin-cache/src/lib/cache-handler.spec.ts
 
-    const handler$ = cachePlugin.handler.handle({ request, next });
+    const handler$ = pluginTester.handle({ request, response });
 
     advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
@@ -144,6 +154,7 @@ describe('CachePlugin', () => {
   it(
     'should handle query string in store key',
     marbles((m) => {
+<<<<<<< HEAD:libs/plugin-cache/src/lib/create-cache-plugin.spec.ts
       const cachePlugin = createCachePlugin();
       const nextHandler = {
         handle: jest.fn().mockImplementation(({ request: _request }) => {
@@ -153,6 +164,14 @@ describe('CachePlugin', () => {
           }[_request.params.q];
         }),
       };
+=======
+      const pluginTester = createPluginTester({
+        handler: new CacheHandler({
+          addCacheMetadata: false,
+          storage: new MemoryStorage(),
+        }),
+      });
+>>>>>>> wip: 🚧 refactor tester plugin:libs/plugin-cache/src/lib/cache-handler.spec.ts
 
       const requestA = createRequest({
         url: 'https://ultimate-answer.com',
@@ -163,8 +182,18 @@ describe('CachePlugin', () => {
         params: { q: 'b' },
       });
 
-      const response1$ = cachePlugin.handler.handle({
+      const responses = {
+        a: m.cold('-n|', {
+          n: createResponse({ body: { answer: 'A' } }),
+        }),
+        b: m.cold('-n|', {
+          n: createResponse({ body: { answer: 'B' } }),
+        }),
+      };
+
+      const response1$ = pluginTester.handle({
         request: requestA,
+<<<<<<< HEAD:libs/plugin-cache/src/lib/create-cache-plugin.spec.ts
         next: nextHandler,
       });
       const response2$ = cachePlugin.handler.handle({
@@ -174,6 +203,15 @@ describe('CachePlugin', () => {
       const response3$ = cachePlugin.handler.handle({
         request: requestA,
         next: nextHandler,
+=======
+        response: responses[requestA.params.q as string],
+      });
+      const response2$ = pluginTester.handle({
+        request: responses[requestB.params.q as string],
+      });
+      const response3$ = pluginTester.handle({
+        request: responses[requestA.params.q as string],
+>>>>>>> wip: 🚧 refactor tester plugin:libs/plugin-cache/src/lib/cache-handler.spec.ts
       });
 
       const stream$ = concat(response1$, response2$, response3$);
