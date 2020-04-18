@@ -1,4 +1,8 @@
-import { HttpExtPlugin, RequestCondition, matchMethod } from '@http-ext/core';
+import {
+  HttpExtPlugin,
+  RequestCondition,
+  HttpExtRequest,
+} from '@http-ext/core';
 
 import { HandlerOptions, NormalizerHandler } from './normalizer-handler';
 
@@ -6,10 +10,16 @@ export interface NormalizerPluginOptions extends HandlerOptions {
   shouldHandleRequest?: RequestCondition;
 }
 
+export const isGetMethodAndJsonResponseType = ({
+  request,
+}: {
+  request: HttpExtRequest;
+}) => request.method === 'GET' && request.responseType === 'json';
+
 export function createNormalizerPlugin({
-  shouldHandleRequest = matchMethod('GET'),
+  shouldHandleRequest = isGetMethodAndJsonResponseType,
   schemas,
-}: NormalizerPluginOptions): HttpExtPlugin {
+}): HttpExtPlugin {
   return {
     shouldHandleRequest,
     handler: new NormalizerHandler({

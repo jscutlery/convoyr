@@ -33,7 +33,7 @@ describe('NormalizerHandler', () => {
           result: { users: [1, 2] },
           entities: {
             users: {
-              '1': { id: 1, name: 'Pacard' },
+              '1': { id: 1, name: 'Paccard' },
               '2': { id: 2, name: 'Whymper' },
             },
           },
