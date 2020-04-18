@@ -1,14 +1,7 @@
-import { createResponse, PluginHandler, ResponseArgs } from '@http-ext/core';
-import { isObservable, Observable, of } from 'rxjs';
+import { createResponse, ConvoyrResponse, PluginHandler } from '@convoyr/core';
+import { Observable, of, isObservable } from 'rxjs';
 
-export type TestObservableLike<T> = Observable<T> & {
-  subscriptions: any[];
-};
-
-export type TestResponse =
-  | ResponseArgs<unknown>
-  | Observable<ConvoyrResponse>
-  | TestObservableLike<unknown>;
+export type TestResponse = ConvoyrResponse | Observable<ConvoyrResponse>;
 
 export function createPluginTester({ handler }: { handler: PluginHandler }) {
   const nextSpy = (response: TestResponse): any => {
