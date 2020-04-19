@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="130" src="https://github.com/jscutlery/http-ext/blob/master/logo.png?raw=true" alt="http-ext logo" />
+  <img width="110" src="https://github.com/jscutlery/http-ext/blob/master/logo.png?raw=true" alt="http-ext logo" />
   <hr>
   <a href="https://github.com/jscutlery/http-ext/actions" rel="nofollow">
     <img src="https://github.com/jscutlery/http-ext/workflows/Build%20&%20Test/badge.svg" />
@@ -16,14 +16,14 @@
 </div>
 
 <p align="center">
-  Enhanced HTTP capabilities, based on <a href="https://www.typescriptlang.org" target="blank">TypeScript</a> and <a href="http://reactivex.io/rxjs" target="blank">RxJS</a>.
+  Reactive HTTP extensions, based on <a href="https://www.typescriptlang.org" target="blank">TypeScript</a> and <a href="http://reactivex.io/rxjs" target="blank">RxJS</a>.
 </p>
 
 ## Philosophy
 
-HttpExt is a reactive library built on the top of the Angular HTTP client. The goal is to provide useful behaviors to extend the power of the HTTP client without the boilerplate required by interceptors. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. You can directly use the built-in [plugin collection](https://github.com/jscutlery/http-ext#ecosystem) to start as fast as possible or [create your own plugin](https://github.com/jscutlery/http-ext#custom-plugin).
+HttpExt is a reactive library built on the top of the Angular's HTTP client that aims to enhance its capabilities. The goal is to provide useful behaviors to extend the power of the client without writing interceptor's boilerplate. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. To start as fast as possible you can use the built-in [plugin collection](https://github.com/jscutlery/http-ext#ecosystem) or [create your own plugin](https://github.com/jscutlery/http-ext#custom-plugin).
 
-Checkout the [demo app code](./apps/sandbox) for a concrete example.
+Checkout the [demo app](./apps/sandbox) for a concrete example.
 
 ## Ecosystem
 
@@ -34,7 +34,7 @@ This project is a monorepo that includes the following packages.
 | [@http-ext/core](./libs/core)                 | Core           | Plugins handler          | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
 | [@http-ext/angular](./libs/angular)           | Angular module | HttpClient compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
 | [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin    | Authenticate requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
-| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Cache REST resources     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
+| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Cache HTTP resources     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
 | [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Retry failed requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
 
 ## Quick start
