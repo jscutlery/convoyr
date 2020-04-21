@@ -161,6 +161,9 @@ The `shouldHandleRequest` function is optional, if it's not provided the plugin 
 
 Matchers are used to do conditional handling depending on the request object.
 
+- _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
+- _matchMethod:_ `matchMethod(expression: MethodMatchExpression) => RequestCondition`
+
 ```ts
 import { matchOrigin } from '@http-ext/core';
 
@@ -174,14 +177,12 @@ export function createLoggerPlugin(): HttpExtPlugin {
 
 Here only requests matching `https://secure-origin.com` origin will be logged.
 
-Built-in matchers:
-
-- _matchMethod:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
-- _matchMethod:_ `matchMethod(expression: MethodMatchExpression) => RequestCondition`
-
 ### Operators
 
 Operators are used to compose matchers.
+
+- _and:_ `and(...predicates: RequestCondition[]) => RequestCondition`
+- _or:_ `or(...predicates: RequestCondition[]) => RequestCondition`
 
 ```ts
 import { matchOrigin, and } from '@http-ext/core';
@@ -198,9 +199,6 @@ export function createLoggerPlugin(): HttpExtPlugin {
 ```
 
 Here requests from `https://secure-origin.com` and `https://another-secure-origin.com` origins will be logged.
-
-- _and:_ `and(...predicates: RequestCondition[]) => RequestCondition`
-- _or:_ `or(...predicates: RequestCondition[]) => RequestCondition`
 
 ## Roadmap
 
