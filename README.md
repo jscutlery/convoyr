@@ -176,8 +176,8 @@ Here only requests matching `https://secure-origin.com` origin will be logged.
 
 Built-in matchers:
 
-_matchMethod:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
-_matchMethod:_ `matchMethod(expression: MethodMatchExpression) => RequestCondition`
+- _matchMethod:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
+- _matchMethod:_ `matchMethod(expression: MethodMatchExpression) => RequestCondition`
 
 ### Operators
 
@@ -199,8 +199,8 @@ export function createLoggerPlugin(): HttpExtPlugin {
 
 Here requests from `https://secure-origin.com` and `https://another-secure-origin.com` origins will be logged.
 
-_and:_ `and(...predicates: RequestCondition[]) => RequestCondition`
-_or:_ `or(...predicates: RequestCondition[]) => RequestCondition`
+- _and:_ `and(...predicates: RequestCondition[]) => RequestCondition`
+- _or:_ `or(...predicates: RequestCondition[]) => RequestCondition`
 
 ## Roadmap
 
