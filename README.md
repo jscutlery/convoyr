@@ -212,13 +212,15 @@ Operators are used to compose with matchers.
 
 - _and:_ `and(...predicates: RequestCondition[]) => RequestCondition`
 - _or:_ `or(...predicates: RequestCondition[]) => RequestCondition`
+- _not:_ `not(predicate: RequestCondition) => RequestCondition`
 
 ```ts
-import { matchOrigin, and } from '@http-ext/core';
+import { matchOrigin, matchMethod, and } from '@http-ext/core';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
     shouldHandleRequest: and(
+      matchMethod('GET'),
       matchOrigin('https://secure-origin.com'),
       matchOrigin('https://another-secure-origin.com')
     ),
@@ -227,7 +229,7 @@ export function createLoggerPlugin(): HttpExtPlugin {
 }
 ```
 
-Here requests from `https://secure-origin.com` and `https://another-secure-origin.com` origins will be logged.
+Here only `GET` requests from `https://secure-origin.com` and `https://another-secure-origin.com` origins will be logged.
 
 ## Roadmap
 
