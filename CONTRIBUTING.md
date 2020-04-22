@@ -27,7 +27,7 @@ Meanwhile we provide a schematic for this, here are the steps to follow when add
 1. Generate library
 
 ```sh
-ng g @nrwl/angular:lib --publishable plugin-xyz
+yarn nx g @nrwl/workspace:library --publishable plugin-xyz
 ```
 
 2. Setup `libs/plugin-xyz/package.json`
