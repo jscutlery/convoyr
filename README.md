@@ -21,7 +21,7 @@
   Reactive <strong>HTTP extensions</strong> for Angular, based on <a href="https://www.typescriptlang.org" target="blank">TypeScript</a> and <a href="https://rxjs-dev.firebaseapp.com/" target="blank">RxJS</a>.
 </p>
 
-## Motivation
+# Motivation
 
 Enriching HTTP clients with capabilities related to **security**, **performance** or **resilience** is a common need but it is also an error-prone and sometimes complex task.
 
@@ -33,46 +33,22 @@ Enriching HTTP clients with capabilities related to **security**, **performance*
 - 📈 **HttpExt** is **progressive** because you can start using it without having to rewrite all your HTTP calls,
 - 🧱 **HttpExt** is **easily extendable** as you can create and share your own plugins.
 
-## How it works
+# How It Works
 
-The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](https://github.com/jscutlery/http-ext#ecosystem) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](https://github.com/jscutlery/http-ext#custom-plugin) for handling custom behaviors.
+The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](#built-in-plugins) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](#custom-plugin) for handling custom behaviors.
 
-## Examples
-
-Checkout the [demo app workspace](./apps/sandbox) for a concrete example.
-
-## Ecosystem
-
-This project is a monorepo that includes the following packages.
-
-| Name                                          | Description    | Goal                     | Size                                                                   |
-| --------------------------------------------- | -------------- | ------------------------ | ---------------------------------------------------------------------- |
-| [@http-ext/core](./libs/core)                 | Core           | Plugins handler          | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
-| [@http-ext/angular](./libs/angular)           | Angular module | HttpClient compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
-| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin    | Authenticate requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
-| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Cache HTTP resources     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
-| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Retry failed requests    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
-
-## Quick start
+# Quick Start
 
 1. Install core packages inside your project.
 
 ```bash
-yarn add @http-ext/core @http-ext/angular
-
-# or
-
-npm install @http-ext/core @http-ext/angular
+yarn add @http-ext/core @http-ext/angular # or npm install @http-ext/core @http-ext/angular
 ```
 
 2. Install plugins packages.
 
 ```bash
-yarn add @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
-
-# or
-
-npm install @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
+yarn add @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth # or npm install @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
 ```
 
 3. Import the module and define plugins you want to use.
@@ -109,9 +85,76 @@ import { AuthService } from './auth/auth.service';
 export class AppModule {}
 ```
 
-## Custom plugin
+## Complete Example
 
-A plugin is an object that follow the `HttpExtPlugin` interface:
+Checkout the [demo app workspace](./apps/sandbox) for a concrete example.
+
+# Built-in Plugins
+
+This project is a monorepo that includes the following packages.
+
+| Package                                       | Name           | Goal                                                                  | Size                                                                   |
+| --------------------------------------------- | -------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin    | Handle authentication                                                 | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
+| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Respond with cached results first then with fresh data when ready     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
+| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Retry failed requests with exponential backoff                        | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
+
+# Custom Plugins
+
+You can write your own custom plugins.
+
+## Custom Plugins Examples
+
+### Add a custom header for requests sent to a specific origin
+```ts
+
+const addHeaders = (headers) => ({
+  handle({request, next}) {
+    headers = {...request.headers, ...headers};
+    request = {...request, headers};
+    return next({request});
+  }
+});
+
+@NgModule({
+  imports: [
+    HttpExtModule.forRoot({
+      plugins: [
+        {
+          shouldHandleRequest: matchOrigin('https://github.com'),
+          handler: addHeaders({'x-my-headers': '🚀'})
+        }
+      ]
+    })
+  ]
+})
+export class AppModule {}
+```
+
+### Reject requests to unknown origins
+```ts
+@NgModule({
+  imports: [
+    HttpExtModule.forRoot({
+      plugins: [
+        {
+          shouldHandleRequest: not(matchOrigin('https://github.com')),
+          handler: {
+            handle({request, next}) {
+              return throwError(`🛑 requesting invalid origin. url: ${request.url}`);
+            }
+          }
+        }
+      ]
+    })
+  ]
+})
+export class AppModule {}
+```
+
+## Implemeting Custom Plugins
+
+A plugin is an object that follows the `HttpExtPlugin` interface:
 
 ```ts
 export interface HttpExtPlugin {
@@ -179,7 +222,7 @@ export function createLoggerPlugin(): HttpExtPlugin {
 
 By piping the `next` function you can manipulate the response stream and leverage reactive powers using RxJS operators.
 
-### Conditional handling
+## Conditional handling
 
 The `shouldHandleRequest` function checks for each outgoing request if the plugin handler should be executed:
 
@@ -198,12 +241,12 @@ Here only `GET` requests with URL including `api.github.com` will be handled by 
 
 Note that the `shouldHandleRequest` function is optional, but if not provided HttpExt will execute the plugin handler for **all outgoing requests**. For this reason it's better to provide the function and to be strict as possible. See the section below for handling exactly what you need using built-in matchers.
 
-#### Matchers
+### Matchers
 
 Matchers are utils functions for conditional request handling.
 
-- _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
 - _matchMethod:_ `matchMethod(expression: MethodMatchExpression) => RequestCondition`
+- _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
 
 ```ts
 import { matchOrigin, HttpExtPlugin } from '@http-ext/core';
@@ -218,9 +261,9 @@ export function createLoggerPlugin(): HttpExtPlugin {
 
 Here only requests matching `https://secure-origin.com` origin will be logged.
 
-#### Operators
+### Combiners
 
-Operators are used to compose with matchers.
+Combiners are used to compose with matchers.
 
 - _and:_ `and(...predicates: RequestCondition[]) => RequestCondition`
 - _or:_ `or(...predicates: RequestCondition[]) => RequestCondition`
@@ -243,15 +286,24 @@ export function createLoggerPlugin(): HttpExtPlugin {
 
 Here only `GET` requests from `https://secure-origin.com` and `https://another-secure-origin.com` origins will be logged.
 
-## Roadmap
+# Packages
+
+This project is a monorepo that includes the following packages in addition to the [built-in plugins above](#built-in-plugins).
+
+| Name                                          | Description    | Goal                     | Size                                                                   |
+| --------------------------------------------- | -------------- | ------------------------ | ---------------------------------------------------------------------- |
+| [@http-ext/core](./libs/core)                 | Core           | Plugins handler          | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
+| [@http-ext/angular](./libs/angular)           | Angular module | HttpClient compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
+
+# Roadmap
 
 For incoming evolutions [see our board](https://github.com/jscutlery/http-ext/projects/1).
 
-## Changelog
+# Changelog
 
 For new features or breaking changes [see the changelog](CHANGELOG.md).
 
-## Authors
+# Authors
 
 <table border="0">
   <tr>
@@ -272,11 +324,11 @@ For new features or breaking changes [see the changelog](CHANGELOG.md).
   </tr>
 </table>
 
-## Contributing
+# Contributing
 
 See our [contributing guide](./CONTRIBUTING.md) before starting. Contributions of any kind welcome!
 
-## Contributors
+# Contributors
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 
@@ -288,6 +340,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-## License
+# License
 
 This project is MIT licensed.
