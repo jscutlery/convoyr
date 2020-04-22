@@ -35,7 +35,7 @@ Enriching HTTP clients with capabilities related to **security**, **performance*
 
 # How It Works
 
-The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](#built-in-plugins) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](#custom-plugin) for handling custom behaviors.
+The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin.
 
 # Quick Start
 
@@ -93,11 +93,11 @@ Checkout the [demo app workspace](./apps/sandbox) for a concrete example.
 
 This project is a monorepo that includes the following packages.
 
-| Package                                       | Name           | Goal                                                                  | Size                                                                   |
-| --------------------------------------------- | -------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin    | Handle authentication                                                 | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
-| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin   | Respond with cached results first then with fresh data when ready     | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
-| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin   | Retry failed requests with exponential backoff                        | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
+| Package                                       | Name         | Description                                                       | Size                                                                   |
+| --------------------------------------------- | ------------ | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin  | Handle authentication                                             | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
+| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin | Respond with cached results first then with fresh data when ready | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
+| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin | Retry failed requests with exponential backoff                    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
 
 # Custom Plugins
 
@@ -106,14 +106,14 @@ You can write your own custom plugins.
 ## Custom Plugins Examples
 
 ### Add a custom header for requests sent to a specific origin
-```ts
 
+```ts
 const addHeaders = (headers) => ({
-  handle({request, next}) {
-    headers = {...request.headers, ...headers};
-    request = {...request, headers};
-    return next({request});
-  }
+  handle({ request, next }) {
+    headers = { ...request.headers, ...headers };
+    request = { ...request, headers };
+    return next({ request });
+  },
 });
 
 @NgModule({
@@ -122,16 +122,17 @@ const addHeaders = (headers) => ({
       plugins: [
         {
           shouldHandleRequest: matchOrigin('https://github.com'),
-          handler: addHeaders({'x-my-headers': '🚀'})
-        }
-      ]
-    })
-  ]
+          handler: addHeaders({ 'x-my-headers': '🚀' }),
+        },
+      ],
+    }),
+  ],
 })
 export class AppModule {}
 ```
 
 ### Reject requests to unknown origins
+
 ```ts
 @NgModule({
   imports: [
@@ -140,19 +141,21 @@ export class AppModule {}
         {
           shouldHandleRequest: not(matchOrigin('https://github.com')),
           handler: {
-            handle({request, next}) {
-              return throwError(`🛑 requesting invalid origin. url: ${request.url}`);
-            }
-          }
-        }
-      ]
-    })
-  ]
+            handle({ request, next }) {
+              return throwError(
+                `🛑 requesting invalid origin. url: ${request.url}`
+              );
+            },
+          },
+        },
+      ],
+    }),
+  ],
 })
 export class AppModule {}
 ```
 
-## Implemeting Custom Plugins
+## Implementing Custom Plugins
 
 A plugin is an object that follows the `HttpExtPlugin` interface:
 
@@ -290,10 +293,10 @@ Here only `GET` requests from `https://secure-origin.com` and `https://another-s
 
 This project is a monorepo that includes the following packages in addition to the [built-in plugins above](#built-in-plugins).
 
-| Name                                          | Description    | Goal                     | Size                                                                   |
-| --------------------------------------------- | -------------- | ------------------------ | ---------------------------------------------------------------------- |
-| [@http-ext/core](./libs/core)                 | Core           | Plugins handler          | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)         |
-| [@http-ext/angular](./libs/angular)           | Angular module | HttpClient compatibility | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular)      |
+| Name                                | Description    | Size                                                              |
+| ----------------------------------- | -------------- | ----------------------------------------------------------------- |
+| [@http-ext/core](./libs/core)       | Core           | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)    |
+| [@http-ext/angular](./libs/angular) | Angular module | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular) |
 
 # Roadmap
 
