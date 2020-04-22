@@ -169,7 +169,7 @@ By piping the `next` function you can manipulate the response stream and leverag
 
 ### Conditional handling
 
-The `shouldHandleRequest` function checks for each outgoing request if the plugin handler should be executed. Using this you can decide which request the plugin should handle:
+The `shouldHandleRequest` function checks for each outgoing request if the plugin handler should be executed:
 
 ```ts
 export function createLoggerPlugin(): HttpExtPlugin {
@@ -182,7 +182,9 @@ export function createLoggerPlugin(): HttpExtPlugin {
 }
 ```
 
-The `shouldHandleRequest` function is optional. If not provided, HttpExt will execute the plugin handler for **all outgoing requests**. For this reason it's better to provide the function and to be strict as possible. See the section below for handling exactly what you need using built-in matchers.
+Here only `GET` requests with URL including `api.github.com` will be handled by the plugin.
+
+Note that the `shouldHandleRequest` function is optional, but if not provided HttpExt will execute the plugin handler for **all outgoing requests**. For this reason it's better to provide the function and to be strict as possible. See the section below for handling exactly what you need using built-in matchers.
 
 #### Matchers
 
