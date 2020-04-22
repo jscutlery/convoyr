@@ -3,36 +3,65 @@ import { RequestCondition } from '../../plugin';
 import { matchOrigin, matchMethod } from '..';
 import { and } from './and';
 
-describe.each<[RequestArgs<unknown>, RequestCondition[], boolean]>([
-  [
-    { url: 'https://test.com', method: 'GET' },
-    [matchOrigin('https://test.com'), matchMethod('GET')],
-    true,
-  ],
-  [
-    { url: 'https://test.com', method: 'GET', responseType: 'json' },
+describe('operator: and', () => {
+  it.each<
     [
-      matchOrigin('https://test.com'),
-      ({ request }) => request.responseType === 'json',
-    ],
-    true,
-  ],
-  [
-    { url: 'https://test.com', method: 'GET' },
-    [matchOrigin('https://wrong.com'), matchMethod('POST')],
-    false,
-  ],
-  [
-    { url: 'https://test.com', method: 'GET', responseType: 'arraybuffer' },
+      string,
+      {
+        requestArgs: RequestArgs<unknown>;
+        operatorArgs: RequestCondition[];
+        expected: boolean;
+      }
+    ]
+  >([
     [
-      matchOrigin('https://test.com'),
-      ({ request }) => request.responseType === 'json',
+      'match origin and method',
+      {
+        requestArgs: { url: 'https://test.com', method: 'GET' },
+        operatorArgs: [matchOrigin('https://test.com'), matchMethod('GET')],
+        expected: true,
+      },
     ],
-    false,
-  ],
-])('operator: and, index: %#', (requestArgs, requestCondition, expected) => {
-  it('should determines whether all matchers returns true', () => {
+    [
+      'match origin and custom condition',
+      {
+        requestArgs: {
+          url: 'https://test.com',
+          method: 'GET',
+          responseType: 'json',
+        },
+        operatorArgs: [
+          matchOrigin('https://test.com'),
+          ({ request }) => request.responseType === 'json',
+        ],
+        expected: true,
+      },
+    ],
+    [
+      'mismatch origin even if method matches',
+      {
+        requestArgs: { url: 'https://wrong.com', method: 'GET' },
+        operatorArgs: [matchOrigin('https://test.com'), matchMethod('GET')],
+        expected: false,
+      },
+    ],
+    [
+      'mismatch custom condition',
+      {
+        requestArgs: {
+          url: 'https://test.com',
+          method: 'GET',
+          responseType: 'arraybuffer',
+        },
+        operatorArgs: [
+          matchOrigin('https://test.com'),
+          ({ request }) => request.responseType === 'json',
+        ],
+        expected: false,
+      },
+    ],
+  ])('should %s', (name, { requestArgs, operatorArgs, expected }) => {
     const request = createRequest({ ...requestArgs });
-    expect(and(...requestCondition)({ request })).toBe(expected);
+    expect(and(...operatorArgs)({ request })).toBe(expected);
   });
 });
