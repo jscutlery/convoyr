@@ -194,7 +194,7 @@ Matchers are utils functions for conditional request handling.
 - _matchMethod:_ `matchMethod(expression: MethodMatchExpression) => RequestCondition`
 
 ```ts
-import { matchOrigin } from '@http-ext/core';
+import { matchOrigin, HttpExtPlugin } from '@http-ext/core';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
@@ -215,7 +215,7 @@ Operators are used to compose with matchers.
 - _not:_ `not(predicate: RequestCondition) => RequestCondition`
 
 ```ts
-import { matchOrigin, matchMethod, and } from '@http-ext/core';
+import { matchOrigin, matchMethod, and, HttpExtPlugin } from '@http-ext/core';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
