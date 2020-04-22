@@ -1,5 +1,5 @@
 import { readAll } from '@nrwl/angular/testing';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { createRequest, RequestArgs } from '../../request';
 import { RequestCondition } from '../../plugin';
 import { matchOrigin, matchMethod } from '..';
@@ -92,8 +92,8 @@ describe('operator: and', () => {
     ],
   ])('should %s', async (name, { requestArgs, operatorArgs, expected }) => {
     const request = createRequest({ ...requestArgs });
-    expect(await readAll(and(...operatorArgs)({ request }))).toEqual([
-      expected,
-    ]);
+    expect(
+      await readAll(and(...operatorArgs)({ request }) as Observable<boolean>)
+    ).toEqual([expected]);
   });
 });

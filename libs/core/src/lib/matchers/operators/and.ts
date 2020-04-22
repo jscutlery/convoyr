@@ -3,7 +3,9 @@ import { map, take } from 'rxjs/operators';
 import { RequestCondition } from '../../plugin';
 import { fromSyncOrAsync } from '../../utils/from-sync-or-async';
 
-export const and = (...predicates: RequestCondition[]) => ({ request }) => {
+export const and = (...predicates: RequestCondition[]): RequestCondition => ({
+  request,
+}) => {
   const observableList = predicates.map((predicate) =>
     fromSyncOrAsync(predicate({ request }))
   );

@@ -1,3 +1,5 @@
+import { readAll } from '@nrwl/angular/testing';
+import { Observable, of } from 'rxjs';
 import { matchMethod, matchOrigin } from '..';
 import { RequestCondition } from '../../plugin';
 import { createRequest, RequestArgs } from '../../request';
@@ -60,8 +62,38 @@ describe('operator: or', () => {
         expected: false,
       },
     ],
-  ])('should %s', (name, { requestArgs, operatorArgs, expected }) => {
+    [
+      'match with async conditions',
+      {
+        requestArgs: {
+          url: 'https://test.com',
+          method: 'GET',
+        },
+        operatorArgs: [
+          (...args) => of(true),
+          (...args) => Promise.resolve(false),
+        ],
+        expected: true,
+      },
+    ],
+    [
+      'mismatch with async conditions',
+      {
+        requestArgs: {
+          url: 'https://test.com',
+          method: 'GET',
+        },
+        operatorArgs: [
+          (...args) => of(false),
+          (...args) => Promise.resolve(false),
+        ],
+        expected: false,
+      },
+    ],
+  ])('should %s', async (name, { requestArgs, operatorArgs, expected }) => {
     const request = createRequest({ ...requestArgs });
-    expect(or(...operatorArgs)({ request })).toBe(expected);
+    expect(
+      await readAll(or(...operatorArgs)({ request }) as Observable<boolean>)
+    ).toEqual([expected]);
   });
 });
