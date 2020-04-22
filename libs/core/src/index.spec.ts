@@ -9,5 +9,6 @@ describe('Public API', () => {
     expect(publicApi.createResponse).toBeDefined();
     expect(publicApi.or).toBeDefined();
     expect(publicApi.and).toBeDefined();
+    expect(publicApi.not).toBeDefined();
   });
 });
