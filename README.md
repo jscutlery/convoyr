@@ -165,7 +165,7 @@ export function createLoggerPlugin(): HttpExtPlugin {
 }
 ```
 
-By piping the `next` function you can manipulate the response stream and leverage the reactive programming powers using RxJS operators.
+By piping the `next` function you can manipulate the response stream and leverage reactive powers using RxJS operators.
 
 ### Conditional handling
 
