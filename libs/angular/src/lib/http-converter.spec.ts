@@ -17,13 +17,13 @@ describe('fromNgRequest', () => {
       body: { data: 'hello world' },
       headers: { Authorization: 'token' },
       responseType: 'json',
-      params: {}
+      params: {},
     });
   });
 
   it('should convert HttpRequest without body to Request object', () => {
     const ngRequest = new HttpRequest('GET', 'https://wikipedia.com', {
-      params: new HttpParams().set('id', '1')
+      params: new HttpParams().set('id', '1'),
     });
     expect(fromNgRequest(ngRequest)).toEqual({
       url: 'https://wikipedia.com',
@@ -31,7 +31,7 @@ describe('fromNgRequest', () => {
       body: null,
       headers: {},
       params: { id: '1' },
-      responseType: 'json'
+      responseType: 'json',
     });
   });
 });
@@ -44,7 +44,7 @@ describe('toNgRequest', () => {
       body: { data: { name: 'Jacques Chirac' } },
       headers: { Authorization: 'Bearer token' },
       responseType: 'json',
-      params: { id: '1' }
+      params: { id: '1' },
     };
 
     const ngRequest = toNgRequest(request);
@@ -52,7 +52,7 @@ describe('toNgRequest', () => {
       expect.objectContaining({
         method: 'PUT',
         url: 'https://presidents.com',
-        body: { data: { name: 'Jacques Chirac' } }
+        body: { data: { name: 'Jacques Chirac' } },
       })
     );
     expect(ngRequest.headers.get('Authorization')).toEqual('Bearer token');
@@ -65,14 +65,14 @@ describe('toNgRequest', () => {
       body: null,
       headers: {},
       responseType: 'json',
-      params: {}
+      params: {},
     };
 
     const ngRequest = toNgRequest(request);
     expect(ngRequest).toEqual(
       expect.objectContaining({
         method: 'GET',
-        url: 'https://test.com'
+        url: 'https://test.com',
       })
     );
   });

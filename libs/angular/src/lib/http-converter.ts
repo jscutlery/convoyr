@@ -2,14 +2,14 @@ import {
   HttpHeaders,
   HttpParams,
   HttpRequest,
-  HttpResponse
+  HttpResponse,
 } from '@angular/common/http';
 import {
   createRequest,
   createResponse,
   HttpExtRequest,
   HttpExtResponse,
-  HttpMethod
+  HttpMethod,
 } from '@http-ext/core';
 
 export function fromNgClass(
@@ -29,7 +29,7 @@ export function fromNgRequest(
     body: request.body,
     headers: fromNgClass(request.headers),
     params: fromNgClass(request.params),
-    responseType: request.responseType
+    responseType: request.responseType,
   });
 }
 
@@ -39,7 +39,7 @@ export function toNgRequest(
   const init = {
     headers: new HttpHeaders(request.headers),
     params: new HttpParams({ fromObject: request.params }),
-    responseType: request.responseType
+    responseType: request.responseType,
   };
 
   if (['POST', 'PUT', 'PATCH'].includes(request.method)) {
@@ -56,7 +56,7 @@ export function fromNgResponse(
     body: ngResponse.body,
     headers: fromNgClass(ngResponse.headers),
     status: ngResponse.status,
-    statusText: ngResponse.statusText
+    statusText: ngResponse.statusText,
   });
 }
 
@@ -67,6 +67,6 @@ export function toNgResponse(
     body: response.body,
     headers: new HttpHeaders(response.headers),
     status: response.status,
-    statusText: response.statusText
+    statusText: response.statusText,
   });
 }

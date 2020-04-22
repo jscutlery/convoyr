@@ -3,7 +3,7 @@ import {
   HttpProgressEvent,
   HttpRequest,
   HttpResponse,
-  HttpSentEvent
+  HttpSentEvent,
 } from '@angular/common/http';
 import { createRequest, createResponse, HttpExt } from '@http-ext/core';
 import { EMPTY, of } from 'rxjs';
@@ -31,7 +31,7 @@ describe('HttpExtInterceptor', () => {
 
     next = {
       /* Just to avoid pipe error. */
-      handle: jest.fn().mockReturnValue(EMPTY)
+      handle: jest.fn().mockReturnValue(EMPTY),
     };
   });
 
@@ -48,7 +48,7 @@ describe('HttpExtInterceptor', () => {
     expect(httpExt.handle).toHaveBeenCalledTimes(1);
     expect(httpExt.handle).toHaveBeenCalledWith(
       expect.objectContaining({
-        request: createRequest({ url: 'https://test.com', method: 'GET' })
+        request: createRequest({ url: 'https://test.com', method: 'GET' }),
       })
     );
   });
@@ -63,7 +63,7 @@ describe('HttpExtInterceptor', () => {
     expect(forwardedNgRequest).toEqual(
       expect.objectContaining({
         method: 'GET',
-        url: 'https://test.com'
+        url: 'https://test.com',
       })
     );
   });
@@ -73,7 +73,7 @@ describe('HttpExtInterceptor', () => {
     const httpProgressEvent: HttpProgressEvent = {
       type: 3,
       loaded: 1,
-      total: 0
+      total: 0,
     };
     asMock(next.handle).mockReturnValue(
       of(
@@ -112,8 +112,8 @@ describe('HttpExtInterceptor', () => {
         status: 200,
         statusText: 'OK',
         body: {
-          answer: 42
-        }
+          answer: 42,
+        },
       })
     );
   });

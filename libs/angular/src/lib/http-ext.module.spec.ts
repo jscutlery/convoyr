@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
-  HttpTestingController
+  HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { createSpyPlugin } from '@http-ext/core/testing';
@@ -20,9 +20,9 @@ describe('HttpExtModule', () => {
         imports: [
           HttpClientTestingModule,
           HttpExtModule.forRoot({
-            plugins: [spyPlugin]
-          })
-        ]
+            plugins: [spyPlugin],
+          }),
+        ],
       });
     });
 
@@ -45,13 +45,13 @@ describe('HttpExtModule', () => {
         .expectOne('https://jscutlery.github.io/items/ITEM_ID')
         .flush({
           id: 'ITEM_ID',
-          title: 'ITEM_TITLE'
+          title: 'ITEM_TITLE',
         });
 
       expect(observer).toHaveBeenCalledTimes(1);
       expect(observer.mock.calls[0][0]).toEqual({
         id: 'ITEM_ID',
-        title: 'ITEM_TITLE'
+        title: 'ITEM_TITLE',
       });
 
       expect(spyPlugin.handler.handle).toHaveBeenCalledTimes(1);
@@ -61,7 +61,7 @@ describe('HttpExtModule', () => {
         body: null,
         headers: {},
         params: {},
-        responseType: 'json'
+        responseType: 'json',
       });
       expect(typeof spyPlugin.handler.handle.mock.calls[0][0].next).toEqual(
         'function'
@@ -78,10 +78,10 @@ describe('HttpExtModule', () => {
           HttpClientTestingModule,
           HttpExtModule.forRoot({
             config: () => ({
-              plugins: [spyPlugin]
-            })
-          })
-        ]
+              plugins: [spyPlugin],
+            }),
+          }),
+        ],
       });
     });
 
@@ -123,16 +123,16 @@ describe('HttpExtModule', () => {
         providers: [
           {
             provide: Service,
-            useValue: service
-          }
+            useValue: service,
+          },
         ],
         imports: [
           HttpClientTestingModule,
           HttpExtModule.forRoot({
             deps: [Service],
-            config: configFn
-          })
-        ]
+            config: configFn,
+          }),
+        ],
       });
     });
 

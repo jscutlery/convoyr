@@ -3,7 +3,7 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpResponse
+  HttpResponse,
 } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { HttpExt, HttpExtPlugin } from '@http-ext/core';
@@ -14,7 +14,7 @@ import {
   fromNgRequest,
   fromNgResponse,
   toNgRequest,
-  toNgResponse
+  toNgResponse,
 } from './http-converter';
 
 export interface HttpExtConfig {
@@ -46,9 +46,9 @@ export class HttpExtInterceptor implements HttpInterceptor {
         request: fromNgRequest(ngRequest),
         httpHandler: ({ request }) =>
           next.handle(toNgRequest(request)).pipe(
-            filter(httpEvent => httpEvent instanceof HttpResponse),
+            filter((httpEvent) => httpEvent instanceof HttpResponse),
             map(fromNgResponse)
-          )
+          ),
       })
       .pipe(map(toNgResponse));
   }
