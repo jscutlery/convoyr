@@ -18,12 +18,24 @@
 </div>
 
 <p align="center">
-  Reactive <strong>HTTP extensions</strong> for Angular, based on <a href="https://www.typescriptlang.org" target="blank">TypeScript</a> and <a href="http://reactivex.io/rxjs" target="blank">RxJS</a>.
+  Reactive <strong>HTTP extensions</strong> for Angular, based on <a href="https://www.typescriptlang.org" target="blank">TypeScript</a> and <a href="https://rxjs-dev.firebaseapp.com/" target="blank">RxJS</a>.
 </p>
 
-## Philosophy
+## Motivation
 
-HttpExt is a reactive library built on the top of the Angular HTTP client that aims to enhance its capabilities. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](https://github.com/jscutlery/http-ext#ecosystem) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](https://github.com/jscutlery/http-ext#custom-plugin) for handling custom behaviors.
+Enriching HTTP clients with capabilities related to **security**, **performance** or **resilience** is a common need but it is also an error-prone and sometimes complex task.
+
+🎯 **HttpExt** has been built with one goal in mind: helping you focus on your apps' features instead of the transport layer's boilerplate and matters... and without any trade-off.
+
+- 🅰️ **HttpExt** is **Angular-ready** and makes [interceptors](https://angular.io/api/common/http/HttpInterceptor) implementation safe and easy,
+- 🐍 **HttpExt** is **fully reactive** and based on [RxJS](https://rxjs-dev.firebaseapp.com/),
+- 🔋 **HttpExt** has **batteries included** as it comes with some useful plugins,
+- 📈 **HttpExt** is **progressive** because you can start using it without having to rewrite all your HTTP calls,
+- 🧱 **HttpExt** is **easily extendable** as you can create and share your own plugins.
+
+## How it works
+
+The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](https://github.com/jscutlery/http-ext#ecosystem) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](https://github.com/jscutlery/http-ext#custom-plugin) for handling custom behaviors.
 
 ## Examples
 
