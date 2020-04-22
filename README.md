@@ -28,7 +28,7 @@ Enriching HTTP clients with capabilities related to **security**, **performance*
 🎯 **HttpExt** has been built with one goal in mind: helping you focus on your apps' features instead of the transport layer's boilerplate and matters... and without any trade-off.
 
 - 🅰️ **HttpExt** is **Angular-ready** and makes [interceptors](https://angular.io/api/common/http/HttpInterceptor) implementation safe and easy,
-- 🐍 **HttpExt** is **fully reactive** and based on [RxJS](https://rxjs-dev.firebaseapp.com/),
+- ⚡️ **HttpExt** is **fully reactive** and based on [RxJS](https://rxjs-dev.firebaseapp.com/),
 - 🔋 **HttpExt** has **batteries included** as it comes with some useful plugins,
 - 📈 **HttpExt** is **progressive** because you can start using it without having to rewrite all your HTTP calls,
 - 🧱 **HttpExt** is **easily extendable** as you can create and share your own plugins.
