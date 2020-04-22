@@ -1,6 +1,8 @@
-<div align="center">
+<p align="center">
   <img width="110" src="https://github.com/jscutlery/http-ext/blob/master/logo.png?raw=true" alt="http-ext logo" />
-  <hr>
+</p>
+
+<div align="center">
   <a href="https://github.com/jscutlery/http-ext/actions" rel="nofollow">
     <img src="https://github.com/jscutlery/http-ext/workflows/Build%20&%20Test/badge.svg" />
   </a>
@@ -16,14 +18,16 @@
 </div>
 
 <p align="center">
-  Reactive HTTP extensions, based on <a href="https://www.typescriptlang.org" target="blank">TypeScript</a> and <a href="http://reactivex.io/rxjs" target="blank">RxJS</a>.
+  Reactive <strong>HTTP extensions</strong> for Angular, based on <a href="https://www.typescriptlang.org" target="blank">TypeScript</a> and <a href="http://reactivex.io/rxjs" target="blank">RxJS</a>.
 </p>
 
 ## Philosophy
 
-HttpExt is a reactive library built on the top of the Angular's HTTP client that aims to enhance its capabilities. The goal is to provide useful behaviors to extend the power of the client without writing interceptor's boilerplate. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. To start as fast as possible you can use the built-in [plugin collection](https://github.com/jscutlery/http-ext#ecosystem) or [create your own plugin](https://github.com/jscutlery/http-ext#custom-plugin).
+HttpExt is a reactive library built on the top of the Angular HTTP client that aims to enhance its capabilities. The main building block is a plugin which is a simple object that let you intercept network communications in a fancy way. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](https://github.com/jscutlery/http-ext#ecosystem) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](https://github.com/jscutlery/http-ext#custom-plugin) for handling custom behaviors.
 
-Checkout the [demo app](./apps/sandbox) for a concrete example.
+## Examples
+
+Checkout the [demo app workspace](./apps/sandbox) for a concrete example.
 
 ## Ecosystem
 
@@ -95,56 +99,81 @@ export class AppModule {}
 
 ## Custom plugin
 
-A plugin is the main piece in HttpExt, it lets you intercept network requests and add your custom logic on the top. Its form is a plain object that implement the `HttpExtPlugin` interface. This object exposes the following properties:
-
-- The `shouldHandleRequest` function for conditional request handling.
-- The `handler` object that encapsulates the plugin logic.
+A plugin is an object that follow the `HttpExtPlugin` interface:
 
 ```ts
-import { HttpExtPlugin } from '@http-ext/core';
+export interface HttpExtPlugin {
+  shouldHandleRequest?: RequestCondition;
+  handler: PluginHandler;
+}
+```
+
+All the logic is hold by the `handler` object which follow the following interface:
+
+```ts
+export interface PluginHandler {
+  handle({ request, next }: PluginHandlerArgs): SyncOrAsync<HttpExtResponse>;
+}
+```
+
+The `handle` method lets you manipulate request and the response stream as well before passing it to the next plugin using the `next` function. The `SyncOrAsync<HttpExtResponse>` allows you to deal with:
+
+- synchronous response,
+- Promise based response,
+- Observable based response.
+
+Note that HttpExt internally transforms the response to a stream using Observables. Here is an example using a literal `handler` object and returns a Promise based response:
+
+```ts
+import { HttpExtPlugin, PluginHandler } from '@http-ext/core';
 import { LoggerHandler } from './handler';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
     shouldHandleRequest: ({ request }) => request.url.includes('api.github.com')
-    handler: new LoggerHandler()
+    handler: {
+      async handle({ request, next }) {
+        const response = await next({ request }).toPromise();
+        console.log({ response });
+        return response;
+      }
+    }
   };
 }
 ```
 
-In this example the handler will be executed only if the URL includes `api.github.com`. Note that the condition function is optional. Learn more about [conditional handling](https://github.com/jscutlery/http-ext#conditional-handling).
+In this example the `handler` will be executed only if the URL includes `api.github.com`. Note that the `shouldHandleRequest` function is optional. Learn more about [conditional handling](https://github.com/jscutlery/http-ext#conditional-handling).
 
-The handler is where all the plugin logic is put. It needs to implement the `PluginHandler` interface and it let you access both `HttpExtRequest` and `HttpExtResponse` objects.
+The following example uses a class to implement the `PluginHandler` interface and an Observable for handling the response:
 
 ```ts
-import { PluginHandler } from '@http-ext/core';
+import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
 import { tap } from 'rxjs/operators';
 
 export class LoggerHandler implements PluginHandler {
-  handle({ request, next }) {
-    /* Here you can access the request. */
-    console.log(`${request.method} ${request.url}`);
-
-    /* By piping the next function you can manipulate the response. */
+  handle({ request, next }: PluginHandlerArgs) {
     return next({ request }).pipe(
       tap((response) => {
-        console.log(`${response.status} ${request.url}`);
+        console.log({ response });
       })
     );
   }
 }
+
+export function createLoggerPlugin(): HttpExtPlugin {
+  return { handler: new LoggerHandler() };
+}
 ```
 
-The response is accessible through piping the `next` function. Here you can transform the response stream as well.
+By piping the `next` function you can manipulate the response stream and leverage the reactive programming powers using RxJS operators.
 
 ### Conditional handling
 
-The `shouldHandleRequest` function checks for each request if the plugin handler should be executed.
+The `shouldHandleRequest` function checks for each outgoing request if the plugin handler should be executed. Using this you can decide which request the plugin should handle:
 
 ```ts
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
-    /* Here you can access the request object and decide which request you need to handle */
     shouldHandleRequest: ({ request }) => {
       return request.method === 'GET' && request.url.includes('api.github.com');
     },
@@ -153,13 +182,11 @@ export function createLoggerPlugin(): HttpExtPlugin {
 }
 ```
 
-The `shouldHandleRequest` function is optional, if it's not provided the plugin will handle **all requests** executed through the HTTP client. It's important to think about which requests the plugin should be bound.
+The `shouldHandleRequest` function is optional. If not provided, HttpExt will execute the plugin handler for **all outgoing requests**. For this reason it's better to provide the function and to be strict as possible. See the section below for handling exactly what you need using built-in matchers.
 
-> Imagine you want to build an authentication plugin that add the authorization token to the request headers and you forget to add conditional handling. The token will potentially leak to other insecure origins which obviously result in a serious security issue.
+#### Matchers
 
-### Matchers
-
-Matchers are used to do conditional handling depending on the request object.
+Matchers are utils functions for conditional request handling.
 
 - _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
 - _matchMethod:_ `matchMethod(expression: MethodMatchExpression) => RequestCondition`
@@ -177,9 +204,9 @@ export function createLoggerPlugin(): HttpExtPlugin {
 
 Here only requests matching `https://secure-origin.com` origin will be logged.
 
-### Operators
+#### Operators
 
-Operators are used to compose matchers.
+Operators are used to compose with matchers.
 
 - _and:_ `and(...predicates: RequestCondition[]) => RequestCondition`
 - _or:_ `or(...predicates: RequestCondition[]) => RequestCondition`
