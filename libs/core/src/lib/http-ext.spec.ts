@@ -1,23 +1,23 @@
 /**
  * @hack relative import of `createSpyPlugin`:
- *   If we import `@http-ext/core/testing`, it fails building the core library.
- *   Somehow, `http-ext.spec.ts` is considered part of `@http-ext/core` by ng-packagr and creates an import loop between core and core/testing.
+ *   If we import `@convoy/core/testing`, it fails building the core library.
+ *   Somehow, `convoy.spec.ts` is considered part of `@convoy/core` by ng-packagr and creates an import loop between core and core/testing.
  */
 import { createSpyPlugin } from '../../testing/src/index';
 import { of } from 'rxjs';
 
-import { HttpExt } from './http-ext';
+import { Convoy } from './convoy';
 import { createRequest } from './request';
 import { createResponse } from './response';
 
-describe('HttpExt', () => {
+describe('Convoy', () => {
   it('should handle multiple plugins', () => {
     const pluginA = createSpyPlugin();
     const pluginB = createSpyPlugin();
-    const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
+    const httpExt = new Convoy({ plugins: [pluginA, pluginB] });
 
     const request = createRequest({
-      url: 'https://answer-to-the-ultimate-question-of-life.com'
+      url: 'https://answer-to-the-ultimate-question-of-life.com',
     });
 
     const response$ = httpExt.handle({
@@ -25,9 +25,9 @@ describe('HttpExt', () => {
       httpHandler: () =>
         of(
           createResponse({
-            body: { answer: 42 }
+            body: { answer: 42 },
           })
-        )
+        ),
     });
     const responseObserver = jest.fn();
 
@@ -43,7 +43,7 @@ describe('HttpExt', () => {
     expect(pluginA.handler.handle.mock.calls[0][0].request).toEqual(
       expect.objectContaining({
         url: 'https://answer-to-the-ultimate-question-of-life.com',
-        method: 'GET'
+        method: 'GET',
       })
     );
 
@@ -57,7 +57,7 @@ describe('HttpExt', () => {
     expect(pluginB.handler.handle.mock.calls[0][0].request).toEqual(
       expect.objectContaining({
         url: 'https://answer-to-the-ultimate-question-of-life.com',
-        method: 'GET'
+        method: 'GET',
       })
     );
 
@@ -65,22 +65,22 @@ describe('HttpExt', () => {
     expect(responseObserver).toHaveBeenCalledWith(
       expect.objectContaining({
         body: {
-          answer: 42
-        }
+          answer: 42,
+        },
       })
     );
   });
 
   it('should conditionally handle plugins', () => {
-    const pluginA = createSpyPlugin(req =>
+    const pluginA = createSpyPlugin((req) =>
       req.url.startsWith('https://answer-to-the-ultimate-question-of-life.com/')
     );
-    const pluginB = createSpyPlugin(req =>
+    const pluginB = createSpyPlugin((req) =>
       req.url.startsWith('https://something-else-that-do-not-match.com/')
     );
-    const httpExt = new HttpExt({ plugins: [pluginA, pluginB] });
+    const httpExt = new Convoy({ plugins: [pluginA, pluginB] });
     const request = createRequest({
-      url: 'https://answer-to-the-ultimate-question-of-life.com/'
+      url: 'https://answer-to-the-ultimate-question-of-life.com/',
     });
 
     const response$ = httpExt.handle({
@@ -88,9 +88,9 @@ describe('HttpExt', () => {
       httpHandler: () =>
         of(
           createResponse({
-            body: { answer: 42 }
+            body: { answer: 42 },
           })
-        )
+        ),
     });
     const responseObserver = jest.fn();
 
@@ -106,21 +106,21 @@ describe('HttpExt', () => {
     expect(responseObserver).toHaveBeenCalledWith(
       expect.objectContaining({
         body: {
-          answer: 42
-        }
+          answer: 42,
+        },
       })
     );
   });
 
   it('should throw when a plugin condition returns an invalid value', () => {
     const plugin = createSpyPlugin(() => '' as any /* 👈🏻 invalid condition */);
-    const httpExt = new HttpExt({ plugins: [plugin] });
+    const httpExt = new Convoy({ plugins: [plugin] });
     const request = createRequest({
-      url: 'https://test.com/'
+      url: 'https://test.com/',
     });
     const response$ = httpExt.handle({
       request,
-      httpHandler: () => of(createResponse({ body: null }))
+      httpHandler: () => of(createResponse({ body: null })),
     });
 
     const errorObserver = jest.fn();

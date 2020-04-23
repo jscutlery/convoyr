@@ -1,4 +1,4 @@
-import { RequestCondition } from '@http-ext/core';
+import { RequestCondition } from '@convoy/core';
 
 import { AuthHandler, HandlerOptions } from './auth-handler';
 

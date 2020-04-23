@@ -1,19 +1,19 @@
 <p align="center">
-  <img width="110" src="https://github.com/jscutlery/http-ext/blob/master/logo.png?raw=true" alt="http-ext logo" />
+  <img width="110" src="https://github.com/jscutlery/convoy/blob/master/logo.png?raw=true" alt="convoy logo" />
 </p>
 
 <div align="center">
-  <a href="https://github.com/jscutlery/http-ext/actions" rel="nofollow">
-    <img src="https://github.com/jscutlery/http-ext/workflows/Build%20&%20Test/badge.svg" />
+  <a href="https://github.com/jscutlery/convoy/actions" rel="nofollow">
+    <img src="https://github.com/jscutlery/convoy/workflows/Build%20&%20Test/badge.svg" />
   </a>
-  <a href="https://codecov.io/gh/jscutlery/http-ext" rel="nofollow">
-    <img src="https://badgen.net/codecov/c/github/jscutlery/http-ext" />
+  <a href="https://codecov.io/gh/jscutlery/convoy" rel="nofollow">
+    <img src="https://badgen.net/codecov/c/github/jscutlery/convoy" />
   </a>
-  <a href="https://github.com/jscutlery/http-ext/blob/master/LICENSE" rel="nofollow">
-    <img src="https://badgen.net/npm/license/@http-ext/core">
+  <a href="https://github.com/jscutlery/convoy/blob/master/LICENSE" rel="nofollow">
+    <img src="https://badgen.net/npm/license/@convoy/core">
   </a>
-  <a href="https://www.npmjs.com/package/@http-ext/core" rel="nofollow">
-    <img src="https://badgen.net/npm/v/@http-ext/core">
+  <a href="https://www.npmjs.com/package/@convoy/core" rel="nofollow">
+    <img src="https://badgen.net/npm/v/@convoy/core">
   </a>
 </div>
 
@@ -25,13 +25,13 @@
 
 Enriching HTTP clients with capabilities related to **security**, **performance** or **resilience** is a common need but it is also an error-prone and sometimes complex task.
 
-🎯 **HttpExt** has been built with one goal in mind: helping you focus on your apps' features instead of the transport layer's boilerplate and matters... and without any trade-off.
+🎯 **Convoy** has been built with one goal in mind: helping you focus on your apps' features instead of the transport layer's boilerplate and matters... and without any trade-off.
 
-- 🅰️ **HttpExt** is **Angular-ready** and makes [interceptors](https://angular.io/api/common/http/HttpInterceptor) implementation safe and easy,
-- ⚡️ **HttpExt** is **fully reactive** and based on [RxJS](https://rxjs-dev.firebaseapp.com/),
-- 🔋 **HttpExt** has **batteries included** as it comes with some useful plugins,
-- 📈 **HttpExt** is **progressive** because you can start using it without having to rewrite all your HTTP calls,
-- 🧱 **HttpExt** is **easily extendable** as you can create and share your own plugins.
+- 🅰️ **Convoy** is **Angular-ready** and makes [interceptors](https://angular.io/api/common/http/HttpInterceptor) implementation safe and easy,
+- ⚡️ **Convoy** is **fully reactive** and based on [RxJS](https://rxjs-dev.firebaseapp.com/),
+- 🔋 **Convoy** has **batteries included** as it comes with some useful plugins,
+- 📈 **Convoy** is **progressive** because you can start using it without having to rewrite all your HTTP calls,
+- 🧱 **Convoy** is **easily extendable** as you can create and share your own plugins.
 
 # How It Works
 
@@ -42,22 +42,22 @@ The main building block is the plugin. A plugin is a simple object that lets you
 1. Install core packages inside your project.
 
 ```bash
-yarn add @http-ext/core @http-ext/angular # or npm install @http-ext/core @http-ext/angular
+yarn add @convoy/core @convoy/angular # or npm install @convoy/core @convoy/angular
 ```
 
 2. Install plugins packages.
 
 ```bash
-yarn add @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth # or npm install @http-ext/plugin-cache @http-ext/plugin-retry @http-ext/plugin-auth
+yarn add @convoy/plugin-cache @convoy/plugin-retry @convoy/plugin-auth # or npm install @convoy/plugin-cache @convoy/plugin-retry @convoy/plugin-auth
 ```
 
 3. Import the module and define plugins you want to use.
 
 ```ts
-import { HttpExtModule } from '@http-ext/angular';
-import { createCachePlugin } from '@http-ext/plugin-cache';
-import { createRetryPlugin } from '@http-ext/plugin-retry';
-import { createRetryPlugin } from '@http-ext/plugin-auth';
+import { HttpExtModule } from '@convoy/angular';
+import { createCachePlugin } from '@convoy/plugin-cache';
+import { createRetryPlugin } from '@convoy/plugin-retry';
+import { createRetryPlugin } from '@convoy/plugin-auth';
 import { AuthService } from './auth/auth.service';
 
 @NgModule({
@@ -93,11 +93,11 @@ Checkout the [demo app workspace](./apps/sandbox) for a concrete example.
 
 This project is a monorepo that includes the following packages.
 
-| Package                                       | Name         | Description                                                       | Size                                                                   |
-| --------------------------------------------- | ------------ | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [@http-ext/plugin-auth](./libs/plugin-auth)   | Auth plugin  | Handle authentication                                             | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-auth)  |
-| [@http-ext/plugin-cache](./libs/plugin-cache) | Cache plugin | Respond with cached results first then with fresh data when ready | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-cache) |
-| [@http-ext/plugin-retry](./libs/plugin-retry) | Retry plugin | Retry failed requests with exponential backoff                    | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/plugin-retry) |
+| Package                                     | Name         | Description                                                       | Size                                                                 |
+| ------------------------------------------- | ------------ | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [@convoy/plugin-auth](./libs/plugin-auth)   | Auth plugin  | Handle authentication                                             | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/plugin-auth)  |
+| [@convoy/plugin-cache](./libs/plugin-cache) | Cache plugin | Respond with cached results first then with fresh data when ready | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/plugin-cache) |
+| [@convoy/plugin-retry](./libs/plugin-retry) | Retry plugin | Retry failed requests with exponential backoff                    | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/plugin-retry) |
 
 # Custom Plugins
 
@@ -180,10 +180,10 @@ The `handle` method lets you manipulate request and the response stream as well 
 - Promise based response,
 - Observable based response.
 
-Note that HttpExt internally transforms the response to a stream using Observables. Here is an example using a literal `handler` object and returns a Promise based response:
+Note that Convoy internally transforms the response to a stream using Observables. Here is an example using a literal `handler` object and returns a Promise based response:
 
 ```ts
-import { HttpExtPlugin, PluginHandler } from '@http-ext/core';
+import { HttpExtPlugin, PluginHandler } from '@convoy/core';
 import { LoggerHandler } from './handler';
 
 export function createLoggerPlugin(): HttpExtPlugin {
@@ -200,12 +200,12 @@ export function createLoggerPlugin(): HttpExtPlugin {
 }
 ```
 
-In this example the `handler` will be executed only if the URL includes `api.github.com`. Note that the `shouldHandleRequest` function is optional. Learn more about [conditional handling](https://github.com/jscutlery/http-ext#conditional-handling).
+In this example the `handler` will be executed only if the URL includes `api.github.com`. Note that the `shouldHandleRequest` function is optional. Learn more about [conditional handling](https://github.com/jscutlery/convoy#conditional-handling).
 
 The following example uses a class to implement the `PluginHandler` interface and an Observable for handling the response:
 
 ```ts
-import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
+import { PluginHandler, PluginHandlerArgs } from '@convoy/core';
 import { tap } from 'rxjs/operators';
 
 export class LoggerHandler implements PluginHandler {
@@ -242,7 +242,7 @@ export function createLoggerPlugin(): HttpExtPlugin {
 
 Here only `GET` requests with URL including `api.github.com` will be handled by the plugin.
 
-Note that the `shouldHandleRequest` function is optional, but if not provided HttpExt will execute the plugin handler for **all outgoing requests**. For this reason it's better to provide the function and to be strict as possible. See the section below for handling exactly what you need using built-in matchers.
+Note that the `shouldHandleRequest` function is optional, but if not provided Convoy will execute the plugin handler for **all outgoing requests**. For this reason it's better to provide the function and to be strict as possible. See the section below for handling exactly what you need using built-in matchers.
 
 ### Matchers
 
@@ -252,7 +252,7 @@ Matchers are utils functions for conditional request handling.
 - _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
 
 ```ts
-import { matchOrigin, HttpExtPlugin } from '@http-ext/core';
+import { matchOrigin, HttpExtPlugin } from '@convoy/core';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
@@ -273,7 +273,7 @@ Combiners are used to compose with matchers.
 - _not:_ `not(predicate: RequestCondition) => RequestCondition`
 
 ```ts
-import { matchOrigin, matchMethod, and, HttpExtPlugin } from '@http-ext/core';
+import { matchOrigin, matchMethod, and, HttpExtPlugin } from '@convoy/core';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {
@@ -293,14 +293,14 @@ Here only `GET` requests from `https://secure-origin.com` and `https://another-s
 
 This project is a monorepo that includes the following packages in addition to the [built-in plugins above](#built-in-plugins).
 
-| Name                                | Description    | Size                                                              |
-| ----------------------------------- | -------------- | ----------------------------------------------------------------- |
-| [@http-ext/core](./libs/core)       | Core           | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/core)    |
-| [@http-ext/angular](./libs/angular) | Angular module | ![cost](https://badgen.net/bundlephobia/minzip/@http-ext/angular) |
+| Name                              | Description    | Size                                                            |
+| --------------------------------- | -------------- | --------------------------------------------------------------- |
+| [@convoy/core](./libs/core)       | Core           | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/core)    |
+| [@convoy/angular](./libs/angular) | Angular module | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/angular) |
 
 # Roadmap
 
-For incoming evolutions [see our board](https://github.com/jscutlery/http-ext/projects/1).
+For incoming evolutions [see our board](https://github.com/jscutlery/convoy/projects/1).
 
 # Changelog
 

@@ -1,4 +1,4 @@
-import { RequestCondition } from '@http-ext/core';
+import { RequestCondition } from '@convoy/core';
 import { isServerOrUnknownError } from './predicates/is-server-or-unknown-error';
 import { HandlerOptions, RetryHandler } from './retry-handler';
 

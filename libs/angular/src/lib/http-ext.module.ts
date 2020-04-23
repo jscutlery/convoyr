@@ -4,8 +4,8 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import {
   _HTTP_EXT_CONFIG,
   HttpExtConfig,
-  HttpExtInterceptor
-} from './http-ext.interceptor';
+  HttpExtInterceptor,
+} from './convoy.interceptor';
 
 export type HttpExtModuleArgs =
   | HttpExtConfig
@@ -25,18 +25,18 @@ export class HttpExtModule {
           ...('config' in args
             ? {
                 deps: args.deps,
-                useFactory: args.config
+                useFactory: args.config,
               }
             : {
-                useValue: args
-              })
+                useValue: args,
+              }),
         },
         {
           provide: HTTP_INTERCEPTORS,
           multi: true,
-          useClass: HttpExtInterceptor
-        }
-      ]
+          useClass: HttpExtInterceptor,
+        },
+      ],
     };
   }
 }

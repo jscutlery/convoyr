@@ -127,7 +127,7 @@
       "projectType": "library",
       "root": "libs/core",
       "sourceRoot": "libs/core/src",
-      "prefix": "http-ext",
+      "prefix": "convoy",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -166,7 +166,7 @@
       "projectType": "library",
       "root": "libs/plugin-cache",
       "sourceRoot": "libs/plugin-cache/src",
-      "prefix": "http-ext",
+      "prefix": "convoy",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -205,7 +205,7 @@
       "projectType": "library",
       "root": "libs/angular",
       "sourceRoot": "libs/angular/src",
-      "prefix": "http-ext",
+      "prefix": "convoy",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -244,7 +244,7 @@
       "projectType": "library",
       "root": "libs/plugin-retry",
       "sourceRoot": "libs/plugin-retry/src",
-      "prefix": "http-ext",
+      "prefix": "convoy",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -337,7 +337,7 @@
       "projectType": "library",
       "root": "libs/plugin-auth",
       "sourceRoot": "libs/plugin-auth/src",
-      "prefix": "http-ext",
+      "prefix": "convoy",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",

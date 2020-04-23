@@ -3,22 +3,22 @@ import {
   HttpExtRequest,
   HttpExtResponse,
   PluginHandler,
-  PluginHandlerArgs
-} from '@http-ext/core';
+  PluginHandlerArgs,
+} from '@convoy/core';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import {
   map,
   mergeMap,
   shareReplay,
   switchMapTo,
-  takeUntil
+  takeUntil,
 } from 'rxjs/operators';
 
 import { CacheEntry, createCacheEntry } from './cache-entry';
 import {
   CacheMetadata,
   createCacheMetadata,
-  createEmptyCacheMetadata
+  createEmptyCacheMetadata,
 } from './cache-metadata';
 import { HttpExtCacheResponse, WithCacheMetadata } from './cache-response';
 import { Storage } from './storages/storage';
@@ -41,14 +41,14 @@ export class CacheHandler implements PluginHandler {
 
   handle({
     request,
-    next
+    next,
   }: PluginHandlerArgs): Observable<CacheHandlerResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
     const fromNetwork$: Observable<HttpExtResponse> = next({
-      request
+      request,
     }).pipe(
-      mergeMap(response => {
+      mergeMap((response) => {
         /* Return response immediately but store in cache as side effect. */
         return merge(
           of(response),
@@ -57,18 +57,18 @@ export class CacheHandler implements PluginHandler {
       }),
       shareReplay({
         refCount: true,
-        bufferSize: 1
+        bufferSize: 1,
       })
     );
 
     const fromCache$: Observable<HttpExtResponse> = defer(() =>
       this._load(request)
     ).pipe(
-      map(cacheEntry =>
+      map((cacheEntry) =>
         this._createResponseWithOptionalMetadata({
           response: cacheEntry.response,
           shouldAddCacheMetadata,
-          cacheMetadata: createCacheMetadata(cacheEntry)
+          cacheMetadata: createCacheMetadata(cacheEntry),
         })
       ),
       takeUntil(fromNetwork$)
@@ -80,11 +80,11 @@ export class CacheHandler implements PluginHandler {
      * thanks to shareReplay. */
     return merge(
       fromNetwork$.pipe(
-        map(response =>
+        map((response) =>
           this._createResponseWithOptionalMetadata({
             response,
             shouldAddCacheMetadata,
-            cacheMetadata: createEmptyCacheMetadata()
+            cacheMetadata: createEmptyCacheMetadata(),
           })
         )
       ),
@@ -101,7 +101,7 @@ export class CacheHandler implements PluginHandler {
       const key = this._serializeCacheKey(request);
       const cacheEntry = createCacheEntry({
         createdAt: new Date(),
-        response
+        response,
       });
       const cache = JSON.stringify(cacheEntry);
 
@@ -111,7 +111,7 @@ export class CacheHandler implements PluginHandler {
 
   private _load(request: HttpExtRequest): Observable<CacheEntry> {
     return this._storage.get(this._serializeCacheKey(request)).pipe(
-      mergeMap(rawCacheEntry => {
+      mergeMap((rawCacheEntry) => {
         /* There's no entry. */
         if (rawCacheEntry == null) {
           return EMPTY;
@@ -132,14 +132,14 @@ export class CacheHandler implements PluginHandler {
 
     return JSON.stringify({
       u: request.url,
-      p: hasParams ? request.params : undefined
+      p: hasParams ? request.params : undefined,
     });
   }
 
   private _createResponseWithOptionalMetadata({
     response,
     cacheMetadata,
-    shouldAddCacheMetadata
+    shouldAddCacheMetadata,
   }: {
     response: HttpExtResponse;
     cacheMetadata: CacheMetadata;
@@ -148,12 +148,12 @@ export class CacheHandler implements PluginHandler {
     const body = shouldAddCacheMetadata
       ? ({
           cacheMetadata,
-          data: response.body
+          data: response.body,
         } as WithCacheMetadata)
       : response.body;
     return createResponse({
       ...response,
-      body
+      body,
     });
   }
 }

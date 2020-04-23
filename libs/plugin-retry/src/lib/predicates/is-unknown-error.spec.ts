@@ -1,21 +1,21 @@
-import { createResponse, HttpExtResponse } from '@http-ext/core';
+import { createResponse, HttpExtResponse } from '@convoy/core';
 import { isUnknownError } from './is-unknown-error';
 
 describe.each<[HttpExtResponse, boolean]>([
   [
     createResponse({
       status: 0,
-      statusText: 'Unknown Error'
+      statusText: 'Unknown Error',
     }),
-    true
+    true,
   ],
   [
     createResponse({
       status: 200,
-      statusText: 'Ok'
+      statusText: 'Ok',
     }),
-    false
-  ]
+    false,
+  ],
 ])('isUnknownError with response: %p => %p', (response, expected) => {
   it('should check if the response is an unknown error', () => {
     expect(isUnknownError(response)).toBe(expected);

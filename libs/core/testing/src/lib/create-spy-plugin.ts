@@ -1,4 +1,4 @@
-import { HttpExtRequest } from '@http-ext/core';
+import { HttpExtRequest } from '@convoy/core';
 
 /**
  * A plugin handle that just calls through the next plugin.

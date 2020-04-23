@@ -1,4 +1,4 @@
-import { HttpExtPlugin, and, matchMethod, matchOrigin } from '@http-ext/core';
+import { HttpExtPlugin, and, matchMethod, matchOrigin } from '@convoy/core';
 
 export function createLoggerPlugin(): HttpExtPlugin {
   return {

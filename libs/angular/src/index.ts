@@ -1,1 +1,1 @@
-export { HttpExtModule } from './lib/http-ext.module';
+export { HttpExtModule } from './lib/convoy.module';

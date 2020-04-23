@@ -1,23 +1,23 @@
-# @http-ext/plugin-retry
+# @convoy/plugin-retry
 
-> A retry plugin for [HttpExt](https://github.com/jscutlery/http-ext).
+> A retry plugin for [Convoy](https://github.com/jscutlery/convoy).
 
 This plugin retries failed network requests using a configurable back-off strategy.
 
 ## Requirements
 
-The plugin requires `@http-ext/core` and `@http-ext/angular` to be installed.
+The plugin requires `@convoy/core` and `@convoy/angular` to be installed.
 
 ## Installation
 
 ```bash
-yarn add @http-ext/plugin-retry
+yarn add @convoy/plugin-retry
 ```
 
 or
 
 ```bash
-npm install @http-ext/plugin-retry
+npm install @convoy/plugin-retry
 ```
 
 ## Usage
@@ -25,8 +25,8 @@ npm install @http-ext/plugin-retry
 The whole configuration object is optional.
 
 ```ts
-import { HttpExtModule } from '@http-ext/angular';
-import { createRetryPlugin } from '@http-ext/plugin-retry';
+import { HttpExtModule } from '@convoy/angular';
+import { createRetryPlugin } from '@convoy/plugin-retry';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,10 +34,10 @@ import { createRetryPlugin } from '@http-ext/plugin-retry';
     BrowserModule,
     HttpClientModule,
     HttpExtModule.forRoot({
-      plugins: [createRetryPlugin()]
-    })
+      plugins: [createRetryPlugin()],
+    }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -59,7 +59,7 @@ Here is an example passing a configuration object.
 Keep in mind that HTTP error is not emitted while the plugin is retrying. In the following example the HTTP error will be emitted after 10 retries, then the observable completes.
 
 ```ts
-import { MemoryStorage } from '@http-ext/plugin-cache';
+import { MemoryStorage } from '@convoy/plugin-cache';
 
 @NgModule({
   imports: [
@@ -69,13 +69,13 @@ import { MemoryStorage } from '@http-ext/plugin-cache';
           initialIntervalMs: 500,
           maxIntervalMs: 20_000,
           maxRetries: 10,
-          shouldRetry: response => response.status !== 404,
+          shouldRetry: (response) => response.status !== 404,
           shouldHandleRequest: ({ request }) =>
-            request.url.includes('api.github.com')
-        })
-      ]
-    })
-  ]
+            request.url.includes('api.github.com'),
+        }),
+      ],
+    }),
+  ],
 })
 export class AppModule {}
 ```

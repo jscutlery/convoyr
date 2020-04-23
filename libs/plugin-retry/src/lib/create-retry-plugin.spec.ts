@@ -1,4 +1,4 @@
-import { createRequest, HttpExtRequest, createResponse } from '@http-ext/core';
+import { createRequest, HttpExtRequest, createResponse } from '@convoy/core';
 import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
 
@@ -13,20 +13,20 @@ describe('RetryPlugin', () => {
 
   it(
     'should retry the handler with back-off strategy when a server error occurs',
-    marbles(m => {
+    marbles((m) => {
       /* Setting every frame duration to 100ms. */
       TestScheduler['frameTimeFactor'] = 100;
 
       const retryPlugin = createRetryPlugin({
         initialInterval: 100,
-        maxRetries: 3
+        maxRetries: 3,
       });
       const { handler } = retryPlugin;
 
       /* Create an error response */
       const errorResponse = createResponse({
         status: 500,
-        statusText: 'Internal Server Error'
+        statusText: 'Internal Server Error',
       });
 
       /* Simulate failure response */
@@ -43,24 +43,24 @@ describe('RetryPlugin', () => {
         /* Second retry after 200ms which makes it happen in frame 5 (500ms): 200ms + 100ms (response delay) + 200ms. */
         '-----^!',
         /* Third retry after 400ms which makes it happen in frame 10 (1s): 500ms + 100ms (response delay) + 400ms. */
-        '----------^!'
+        '----------^!',
       ]);
     })
   );
 
   it(
     'should not retry the handler when no server error occurs',
-    marbles(m => {
+    marbles((m) => {
       const retryPlugin = createRetryPlugin({
         initialInterval: 1,
-        maxRetries: 3
+        maxRetries: 3,
       });
       const { handler } = retryPlugin;
 
       /* Create a 404 response */
       const errorResponse = createResponse({
         status: 404,
-        statusText: 'Resource not found'
+        statusText: 'Resource not found',
       });
 
       /* Simulate failure response */

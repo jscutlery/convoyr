@@ -4,7 +4,7 @@ import {
   HttpExtResponse,
   PluginHandler,
   ResponseArgs,
-} from '@http-ext/core';
+} from '@convoy/core';
 import { Observable, of } from 'rxjs';
 
 export function createPluginTester(

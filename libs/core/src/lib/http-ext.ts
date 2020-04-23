@@ -17,7 +17,7 @@ export interface HttpExtConfig {
   plugins: HttpExtPlugin[];
 }
 
-export class HttpExt {
+export class Convoy {
   private _plugins: HttpExtPlugin[];
 
   constructor({ plugins }: HttpExtConfig) {

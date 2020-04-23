@@ -4,10 +4,10 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { createSpyPlugin } from '@http-ext/core/testing';
-import { _HTTP_EXT_CONFIG } from './http-ext.interceptor';
+import { createSpyPlugin } from '@convoy/core/testing';
+import { _HTTP_EXT_CONFIG } from './convoy.interceptor';
 
-import { HttpExtModule } from './http-ext.module';
+import { HttpExtModule } from './convoy.module';
 
 describe('HttpExtModule', () => {
   let spyPlugin;

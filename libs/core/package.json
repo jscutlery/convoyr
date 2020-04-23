@@ -1,9 +1,9 @@
 {
-  "name": "@http-ext/core",
+  "name": "@convoy/core",
   "version": "2.1.1",
   "license": "MIT",
   "private": false,
-  "repository": "git@github.com:jscutlery/http-ext.git",
+  "repository": "git@github.com:jscutlery/convoy.git",
   "scripts": {
     "publish": "yarn publish ../../dist/libs/core"
   },

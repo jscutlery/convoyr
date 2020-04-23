@@ -3,7 +3,7 @@ import {
   createResponse,
   HttpExtRequest,
   HttpExtResponse,
-} from '@http-ext/core';
+} from '@convoy/core';
 import { advanceTo, clear } from 'jest-date-mock';
 import { concat, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';

@@ -42,7 +42,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
             >
               Menu
             </button>
-            <img class="logo" src="/assets/logo.svg" alt="http-ext logo" />
+            <img class="logo" src="/assets/logo.svg" alt="convoy logo" />
             <strong>Http-ext</strong>demo
           </span>
           <span class="signed-in" *ngIf="isAuthenticated$ | async">

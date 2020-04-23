@@ -10,7 +10,7 @@ import {
   HttpExtRequest,
   HttpExtResponse,
   HttpMethod,
-} from '@http-ext/core';
+} from '@convoy/core';
 
 export function fromNgClass(
   ngClass: HttpHeaders | HttpParams

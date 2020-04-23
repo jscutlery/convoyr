@@ -1,23 +1,23 @@
-# @http-ext/plugin-cache
+# @convoy/plugin-cache
 
-> A cache plugin for [HttpExt](https://github.com/jscutlery/http-ext).
+> A cache plugin for [Convoy](https://github.com/jscutlery/convoy).
 
 This plugin cache network requests using the _cache-then-network_ strategy. First the plugin returns the data from cache, then sends the request, and finally comes with fresh data again. This technique drastically improve UI reactivity.
 
 ## Requirements
 
-The plugin requires `@http-ext/core` and `@http-ext/angular` to be installed.
+The plugin requires `@convoy/core` and `@convoy/angular` to be installed.
 
 ## Installation
 
 ```bash
-yarn add @http-ext/plugin-cache
+yarn add @convoy/plugin-cache
 ```
 
 or
 
 ```bash
-npm install @http-ext/plugin-cache
+npm install @convoy/plugin-cache
 ```
 
 ## Usage
@@ -25,8 +25,8 @@ npm install @http-ext/plugin-cache
 The whole configuration object is optional.
 
 ```ts
-import { HttpExtModule } from '@http-ext/angular';
-import { createCachePlugin } from '@http-ext/plugin-cache';
+import { HttpExtModule } from '@convoy/angular';
+import { createCachePlugin } from '@convoy/plugin-cache';
 
 @NgModule({
   declarations: [AppComponent],
@@ -55,7 +55,7 @@ You can give a partial configuration object it will be merged with default value
 Here is an example passing a configuration object.
 
 ```ts
-import { createCachePlugin, MemoryStorage } from '@http-ext/plugin-cache';
+import { createCachePlugin, MemoryStorage } from '@convoy/plugin-cache';
 
 @NgModule({
   imports: [
@@ -72,7 +72,7 @@ import { createCachePlugin, MemoryStorage } from '@http-ext/plugin-cache';
 export class AppModule {}
 ```
 
-To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/http-ext#conditional-handling).
+To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/convoy#conditional-handling).
 
 ### Metadata
 

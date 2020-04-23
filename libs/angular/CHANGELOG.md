@@ -3,98 +3,57 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [2.1.1](https://github.com/jscutlery/http-ext/compare/v2.1.0...v2.1.1) (2020-04-16)
-
+## [2.1.1](https://github.com/jscutlery/convoy/compare/v2.1.0...v2.1.1) (2020-04-16)
 
 ### Bug Fixes
 
-* 📦 update angular monorepo to v9.1.2 ([a5a5b8f](https://github.com/jscutlery/http-ext/commit/a5a5b8f3688f98122d3e53167d3a975f076d80f8))
+- 📦 update angular monorepo to v9.1.2 ([a5a5b8f](https://github.com/jscutlery/convoy/commit/a5a5b8f3688f98122d3e53167d3a975f076d80f8))
 
+# [2.1.0](https://github.com/jscutlery/convoy/compare/v2.0.1...v2.1.0) (2020-04-11)
 
+**Note:** Version bump only for package @convoy/angular
 
+## [2.0.2](https://github.com/jscutlery/convoy/compare/v2.0.1...v2.0.2) (2020-04-08)
 
+**Note:** Version bump only for package @convoy/angular
 
-# [2.1.0](https://github.com/jscutlery/http-ext/compare/v2.0.1...v2.1.0) (2020-04-11)
+## [2.0.1](https://github.com/jscutlery/convoy/compare/v2.0.0...v2.0.1) (2020-04-07)
 
-**Note:** Version bump only for package @http-ext/angular
+**Note:** Version bump only for package @convoy/angular
 
+# [2.0.0](https://github.com/jscutlery/convoy/compare/v1.0.0...v2.0.0) (2020-04-01)
 
+**Note:** Version bump only for package @convoy/angular
 
+# [1.2.0](https://github.com/jscutlery/convoy/compare/v1.1.0...v1.2.0) (2020-03-31)
 
+**Note:** Version bump only for package @convoy/angular
 
-## [2.0.2](https://github.com/jscutlery/http-ext/compare/v2.0.1...v2.0.2) (2020-04-08)
+# [1.1.0](https://github.com/jscutlery/convoy/compare/v1.0.0...v1.1.0) (2020-01-14)
 
-**Note:** Version bump only for package @http-ext/angular
+**Note:** Version bump only for package @convoy/angular
 
+# [1.0.0](https://github.com/jscutlery/convoy/compare/v0.1.1...v1.0.0) (2020-01-06)
 
-
-
-
-## [2.0.1](https://github.com/jscutlery/http-ext/compare/v2.0.0...v2.0.1) (2020-04-07)
-
-**Note:** Version bump only for package @http-ext/angular
-
-
-
-
-
-# [2.0.0](https://github.com/jscutlery/http-ext/compare/v1.0.0...v2.0.0) (2020-04-01)
-
-**Note:** Version bump only for package @http-ext/angular
-
-
-
-
-
-# [1.2.0](https://github.com/jscutlery/http-ext/compare/v1.1.0...v1.2.0) (2020-03-31)
-
-**Note:** Version bump only for package @http-ext/angular
-
-
-
-
-
-# [1.1.0](https://github.com/jscutlery/http-ext/compare/v1.0.0...v1.1.0) (2020-01-14)
-
-**Note:** Version bump only for package @http-ext/angular
-
-
-
-
-
-# [1.0.0](https://github.com/jscutlery/http-ext/compare/v0.1.1...v1.0.0) (2020-01-06)
-
-
-* feat!: :white_check_mark: use an object as plugin handler ([47a5e9f](https://github.com/jscutlery/http-ext/commit/47a5e9f87d9c4256578a005d77516cb2d7034327))
-
+- feat!: :white_check_mark: use an object as plugin handler ([47a5e9f](https://github.com/jscutlery/convoy/commit/47a5e9f87d9c4256578a005d77516cb2d7034327))
 
 ### BREAKING CHANGES
 
-* the plugin handler become an object
+- the plugin handler become an object
 
+## [0.1.1](https://github.com/jscutlery/convoy/compare/v0.1.0...v0.1.1) (2019-11-20)
 
-
-
-
-## [0.1.1](https://github.com/jscutlery/http-ext/compare/v0.1.0...v0.1.1) (2019-11-20)
-
-**Note:** Version bump only for package @http-ext/angular
-
-
-
-
+**Note:** Version bump only for package @convoy/angular
 
 # 0.1.0 (2019-11-19)
 
-
 ### Bug Fixes
 
-* :beetle: package dependency build ([b510752](https://github.com/jscutlery/http-ext/commit/b51075254dc2e337e3e8b5ef293156abf4bf54ff))
-* :beetle: use path mapping to internally expose `_createSpyPlugin` ([9f1e845](https://github.com/jscutlery/http-ext/commit/9f1e8459738c2d0571cde0e95d4f9be19d64a440))
-* 🐞 fix AOT issue "Expression form not supported" when using inline type with `@Inject` ([5a93caf](https://github.com/jscutlery/http-ext/commit/5a93caf536df1df9e01e3049cc2d8aed2f088eba))
-* 🐞 fix AOT issue due to logic in `forRoot` ([9f2a093](https://github.com/jscutlery/http-ext/commit/9f2a093dda9b5f42b47fefcdefa735f1582380be))
-
+- :beetle: package dependency build ([b510752](https://github.com/jscutlery/convoy/commit/b51075254dc2e337e3e8b5ef293156abf4bf54ff))
+- :beetle: use path mapping to internally expose `_createSpyPlugin` ([9f1e845](https://github.com/jscutlery/convoy/commit/9f1e8459738c2d0571cde0e95d4f9be19d64a440))
+- 🐞 fix AOT issue "Expression form not supported" when using inline type with `@Inject` ([5a93caf](https://github.com/jscutlery/convoy/commit/5a93caf536df1df9e01e3049cc2d8aed2f088eba))
+- 🐞 fix AOT issue due to logic in `forRoot` ([9f2a093](https://github.com/jscutlery/convoy/commit/9f2a093dda9b5f42b47fefcdefa735f1582380be))
 
 ### Features
 
-* :white_check_mark: split packages ([77b22c0](https://github.com/jscutlery/http-ext/commit/77b22c01f5de59f02aa28e8bd3fd46e2c49d3bff))
+- :white_check_mark: split packages ([77b22c0](https://github.com/jscutlery/convoy/commit/77b22c01f5de59f02aa28e8bd3fd46e2c49d3bff))

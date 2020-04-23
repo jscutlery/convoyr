@@ -6,7 +6,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { HttpExt, HttpExtPlugin } from '@http-ext/core';
+import { Convoy, HttpExtPlugin } from '@convoy/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -26,11 +26,11 @@ export interface HttpExtConfig {
  */
 export const _HTTP_EXT_CONFIG = new InjectionToken<{
   plugins: HttpExtPlugin[];
-}>('HttpExt Config');
+}>('Convoy Config');
 
 @Injectable()
 export class HttpExtInterceptor implements HttpInterceptor {
-  private _httpExt = new HttpExt(this._httpExtConfig);
+  private _httpExt = new Convoy(this._httpExtConfig);
 
   constructor(
     @Inject(_HTTP_EXT_CONFIG)

@@ -1,4 +1,4 @@
-import { RequestCondition, HttpExtRequest } from '@http-ext/core';
+import { RequestCondition, HttpExtRequest } from '@convoy/core';
 
 import { CacheHandler, HandlerOptions } from './cache-handler';
 import { MemoryStorage } from './storages/memory-storage';

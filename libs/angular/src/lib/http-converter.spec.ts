@@ -1,5 +1,5 @@
 import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
-import { HttpExtRequest } from '@http-ext/core';
+import { HttpExtRequest } from '@convoy/core';
 
 import { fromNgRequest, toNgRequest } from './http-converter';
 

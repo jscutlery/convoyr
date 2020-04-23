@@ -1,5 +1,5 @@
 {
-  "npmScope": "http-ext",
+  "npmScope": "convoy",
   "implicitDependencies": {
     "angular.json": "*",
     "package.json": "*",
@@ -13,9 +13,7 @@
     },
     "sandbox": {
       "tags": [],
-      "implicitDependencies": [
-        "sandbox-api"
-      ]
+      "implicitDependencies": ["sandbox-api"]
     },
     "core": {
       "tags": []

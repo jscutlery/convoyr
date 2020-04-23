@@ -1,4 +1,4 @@
-import { HttpExtResponse } from '@http-ext/core';
+import { HttpExtResponse } from '@convoy/core';
 
 export interface CacheEntry {
   createdAt: Date;
@@ -13,6 +13,6 @@ export interface CacheEntryArgs {
 export function createCacheEntry(cacheEntry: CacheEntryArgs): CacheEntry {
   return {
     createdAt: new Date(cacheEntry.createdAt),
-    response: cacheEntry.response
+    response: cacheEntry.response,
   };
 }

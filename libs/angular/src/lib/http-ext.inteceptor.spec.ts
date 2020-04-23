@@ -5,10 +5,10 @@ import {
   HttpResponse,
   HttpSentEvent,
 } from '@angular/common/http';
-import { createRequest, createResponse, HttpExt } from '@http-ext/core';
+import { createRequest, createResponse, Convoy } from '@convoy/core';
 import { EMPTY, of } from 'rxjs';
 
-import { HttpExtInterceptor } from './http-ext.interceptor';
+import { HttpExtInterceptor } from './convoy.interceptor';
 
 function asMock<TReturn, TArgs extends any[]>(
   value: (...TArgs) => TReturn
@@ -17,7 +17,7 @@ function asMock<TReturn, TArgs extends any[]>(
 }
 
 describe('HttpExtInterceptor', () => {
-  let httpExt: HttpExt;
+  let httpExt: Convoy;
   let interceptor: HttpExtInterceptor;
   let next: HttpHandler;
 
@@ -26,7 +26,7 @@ describe('HttpExtInterceptor', () => {
 
     httpExt = interceptor['_httpExt'];
 
-    /* Mock `HttpExt.handle`. */
+    /* Mock `Convoy.handle`. */
     jest.spyOn(httpExt, 'handle');
 
     next = {
