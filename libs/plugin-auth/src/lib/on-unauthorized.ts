@@ -1,3 +1,3 @@
-import { HttpExtResponse } from '@http-ext/core';
+import { ConvoyResponse } from '@convoy/core';
 
-export type OnUnauthorized = (response: HttpExtResponse) => void;
+export type OnUnauthorized = (response: ConvoyResponse) => void;

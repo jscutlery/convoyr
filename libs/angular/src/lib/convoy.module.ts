@@ -3,40 +3,40 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import {
   _HTTP_EXT_CONFIG,
-  HttpExtConfig,
-  HttpExtInterceptor
-} from './http-ext.interceptor';
+  ConvoyConfig,
+  ConvoyInterceptor,
+} from './convoy.interceptor';
 
-export type HttpExtModuleArgs =
-  | HttpExtConfig
+export type ConvoyModuleArgs =
+  | ConvoyConfig
   | {
       deps?: unknown[];
-      config: (...args: unknown[]) => HttpExtConfig;
+      config: (...args: unknown[]) => ConvoyConfig;
     };
 
 @NgModule({})
-export class HttpExtModule {
-  static forRoot(args: HttpExtModuleArgs): ModuleWithProviders<HttpExtModule> {
+export class ConvoyModule {
+  static forRoot(args: ConvoyModuleArgs): ModuleWithProviders<ConvoyModule> {
     return {
-      ngModule: HttpExtModule,
+      ngModule: ConvoyModule,
       providers: [
         {
           provide: _HTTP_EXT_CONFIG,
           ...('config' in args
             ? {
                 deps: args.deps,
-                useFactory: args.config
+                useFactory: args.config,
               }
             : {
-                useValue: args
-              })
+                useValue: args,
+              }),
         },
         {
           provide: HTTP_INTERCEPTORS,
           multi: true,
-          useClass: HttpExtInterceptor
-        }
-      ]
+          useClass: ConvoyInterceptor,
+        },
+      ],
     };
   }
 }

@@ -1,3 +1,3 @@
-import { HttpExtResponse } from '@http-ext/core';
+import { ConvoyResponse } from '@convoy/core';
 
-export type RetryPredicate = (response: HttpExtResponse) => boolean;
+export type RetryPredicate = (response: ConvoyResponse) => boolean;

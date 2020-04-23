@@ -1,10 +1,10 @@
 import {
   createResponse,
-  HttpExtRequest,
-  HttpExtResponse,
+  ConvoyRequest,
+  ConvoyResponse,
   PluginHandler,
   ResponseArgs,
-} from '@http-ext/core';
+} from '@convoy/core';
 import { Observable, of } from 'rxjs';
 
 export function createPluginTester(
@@ -22,8 +22,8 @@ export function createPluginTester(
 
   return {
     next,
-    handle({ request }: { request: HttpExtRequest }) {
-      return handler.handle({ request, next }) as Observable<HttpExtResponse>;
+    handle({ request }: { request: ConvoyRequest }) {
+      return handler.handle({ request, next }) as Observable<ConvoyResponse>;
     },
   };
 }

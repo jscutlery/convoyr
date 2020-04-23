@@ -7,10 +7,10 @@ import {
 import {
   createRequest,
   createResponse,
-  HttpExtRequest,
-  HttpExtResponse,
+  ConvoyRequest,
+  ConvoyResponse,
   HttpMethod,
-} from '@http-ext/core';
+} from '@convoy/core';
 
 export function fromNgClass(
   ngClass: HttpHeaders | HttpParams
@@ -22,7 +22,7 @@ export function fromNgClass(
 
 export function fromNgRequest(
   request: HttpRequest<unknown>
-): HttpExtRequest<unknown> {
+): ConvoyRequest<unknown> {
   return createRequest({
     url: request.url,
     method: request.method as HttpMethod,
@@ -34,7 +34,7 @@ export function fromNgRequest(
 }
 
 export function toNgRequest(
-  request: HttpExtRequest<unknown>
+  request: ConvoyRequest<unknown>
 ): HttpRequest<unknown> {
   const init = {
     headers: new HttpHeaders(request.headers),
@@ -51,7 +51,7 @@ export function toNgRequest(
 
 export function fromNgResponse(
   ngResponse: HttpResponse<unknown>
-): HttpExtResponse<unknown> {
+): ConvoyResponse<unknown> {
   return createResponse({
     body: ngResponse.body,
     headers: fromNgClass(ngResponse.headers),
@@ -61,7 +61,7 @@ export function fromNgResponse(
 }
 
 export function toNgResponse(
-  response: HttpExtResponse<unknown>
+  response: ConvoyResponse<unknown>
 ): HttpResponse<unknown> {
   return new HttpResponse({
     body: response.body,

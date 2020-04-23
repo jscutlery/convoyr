@@ -1,14 +1,14 @@
 {
-  "name": "@http-ext/plugin-cache",
+  "name": "@convoy/plugin-cache",
   "version": "2.1.1",
   "license": "MIT",
   "private": false,
-  "repository": "git@github.com:jscutlery/http-ext.git",
+  "repository": "git@github.com:jscutlery/convoy.git",
   "scripts": {
     "publish": "yarn publish ../../dist/libs/plugin-cache"
   },
   "peerDependencies": {
-    "@http-ext/core": "^2.0.0",
+    "@convoy/core": "^2.0.0",
     "rxjs": "^6.5.4"
   },
   "dependencies": {

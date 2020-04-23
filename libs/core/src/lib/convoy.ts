@@ -1,10 +1,10 @@
 import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { HttpExtPlugin } from './plugin';
-import { HttpExtRequest } from './request';
+import { ConvoyPlugin } from './plugin';
+import { ConvoyRequest } from './request';
 import { NextFn } from './request-handler';
-import { HttpExtResponse } from './response';
+import { ConvoyResponse } from './response';
 import { throwIfInvalidPluginCondition } from './throw-invalid-plugin-condition';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
@@ -13,14 +13,14 @@ export function invalidHandleRequestConditionError() {
   return new Error('"shouldHandleRequest" should be a function.');
 }
 
-export interface HttpExtConfig {
-  plugins: HttpExtPlugin[];
+export interface ConvoyConfig {
+  plugins: ConvoyPlugin[];
 }
 
-export class HttpExt {
-  private _plugins: HttpExtPlugin[];
+export class Convoy {
+  private _plugins: ConvoyPlugin[];
 
-  constructor({ plugins }: HttpExtConfig) {
+  constructor({ plugins }: ConvoyConfig) {
     this._plugins = plugins;
   }
 
@@ -28,9 +28,9 @@ export class HttpExt {
     request,
     httpHandler,
   }: {
-    request: HttpExtRequest;
+    request: ConvoyRequest;
     httpHandler: NextFn;
-  }): Observable<HttpExtResponse> {
+  }): Observable<ConvoyResponse> {
     return this._handle({
       request,
       plugins: this._plugins,
@@ -43,10 +43,10 @@ export class HttpExt {
     plugins,
     httpHandler,
   }: {
-    request: HttpExtRequest;
-    plugins: HttpExtPlugin[];
+    request: ConvoyRequest;
+    plugins: ConvoyPlugin[];
     httpHandler: NextFn;
-  }): Observable<HttpExtResponse> {
+  }): Observable<ConvoyResponse> {
     if (plugins.length === 0) {
       return httpHandler({ request });
     }
@@ -88,8 +88,8 @@ export class HttpExt {
     request,
     plugin,
   }: {
-    request: HttpExtRequest;
-    plugin: HttpExtPlugin;
+    request: ConvoyRequest;
+    plugin: ConvoyPlugin;
   }): Observable<boolean> {
     if (
       plugin.shouldHandleRequest != null &&

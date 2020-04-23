@@ -16,12 +16,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@http-ext/angular": ["libs/angular/src/index.ts"],
-      "@http-ext/core": ["libs/core/src/index.ts"],
-      "@http-ext/core/testing": ["libs/core/testing/src/index.ts"],
-      "@http-ext/plugin-auth": ["libs/plugin-auth/src/index.ts"],
-      "@http-ext/plugin-cache": ["libs/plugin-cache/src/index.ts"],
-      "@http-ext/plugin-retry": ["libs/plugin-retry/src/index.ts"]
+      "@convoy/angular": ["libs/angular/src/index.ts"],
+      "@convoy/core": ["libs/core/src/index.ts"],
+      "@convoy/core/testing": ["libs/core/testing/src/index.ts"],
+      "@convoy/plugin-auth": ["libs/plugin-auth/src/index.ts"],
+      "@convoy/plugin-cache": ["libs/plugin-cache/src/index.ts"],
+      "@convoy/plugin-retry": ["libs/plugin-retry/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

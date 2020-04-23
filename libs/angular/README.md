@@ -1,5 +1,5 @@
-# @http-ext/angular
+# @convoy/angular
 
-This is part of the HttpExt library.
+This is part of the Convoy library.
 
-[Find out more on our GitHub repo](https://github.com/jscutlery/http-ext)
+[Find out more on our GitHub repo](https://github.com/jscutlery/convoy)

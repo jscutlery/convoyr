@@ -1,4 +1,4 @@
-import { PluginHandler, PluginHandlerArgs } from '@http-ext/core';
+import { PluginHandler, PluginHandlerArgs } from '@convoy/core';
 import { defer, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
@@ -32,11 +32,11 @@ export class AuthHandler implements PluginHandler {
           return setHeader({
             request,
             key: 'Authorization',
-            value: `Bearer ${token}`
+            value: `Bearer ${token}`,
           });
         }),
-        switchMap(request => next({ request })),
-        catchError(response => {
+        switchMap((request) => next({ request })),
+        catchError((response) => {
           if (response.status === 401) {
             /* tslint:disable-next-line: no-unused-expression */
             this._onUnauthorized && this._onUnauthorized(response);

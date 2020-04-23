@@ -11,7 +11,7 @@ export type HttpMethod =
   | 'PATCH'
   | 'DELETE';
 
-export interface HttpExtRequest<TBody = unknown> {
+export interface ConvoyRequest<TBody = unknown> {
   readonly url: string;
   readonly method: HttpMethod;
   readonly body: TBody | null;
@@ -21,18 +21,18 @@ export interface HttpExtRequest<TBody = unknown> {
 }
 
 export type RequestArgs<TBody> = { url: string } & Partial<
-  HttpExtRequest<TBody>
+  ConvoyRequest<TBody>
 >;
 
 export function createRequest<TBody>(
   request: RequestArgs<TBody>
-): HttpExtRequest {
+): ConvoyRequest {
   return {
     url: request.url,
     method: request.method || 'GET',
     body: request.body || null,
     headers: request.headers || {},
     params: request.params || {},
-    responseType: request.responseType || 'json'
+    responseType: request.responseType || 'json',
   };
 }

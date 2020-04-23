@@ -1,4 +1,4 @@
-import { createResponse, HttpExtResponse } from '@http-ext/core';
+import { createResponse } from '@convoy/core';
 import { advanceTo, clear } from 'jest-date-mock';
 
 import { createCacheEntry } from './cache-entry';
@@ -14,7 +14,7 @@ describe('createCacheEntry', () => {
 
     expect(createCacheEntry(cacheEntryArgs)).toEqual({
       createdAt: new Date('2020-01-13T00:00:00.000Z'),
-      response
+      response,
     });
   });
 });

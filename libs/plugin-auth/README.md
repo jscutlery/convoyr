@@ -1,6 +1,6 @@
-# @http-ext/plugin-auth
+# @convoy/plugin-auth
 
-> A auth plugin for [HttpExt](https://github.com/jscutlery/http-ext).
+> A auth plugin for [Convoy](https://github.com/jscutlery/convoy).
 
 This plugin takes care of handling authorization by:
 
@@ -14,32 +14,32 @@ This also helps using different tokens for different APIs in the same app.
 
 ## Requirements
 
-The plugin requires `@http-ext/core` and `@http-ext/angular` to be installed.
+The plugin requires `@convoy/core` and `@convoy/angular` to be installed.
 
 ## Installation
 
 ```bash
-yarn add @http-ext/plugin-cache @http-ext/core
+yarn add @convoy/plugin-cache @convoy/core
 ```
 
 or
 
 ```bash
-npm install @http-ext/plugin-cache @http-ext/core
+npm install @convoy/plugin-cache @convoy/core
 ```
 
 ## Usage
 
 ```ts
-import { HttpExtModule } from '@http-ext/angular';
-import { createAuthPlugin } from '@http-ext/plugin-auth';
+import { ConvoyModule } from '@convoy/angular';
+import { createAuthPlugin } from '@convoy/plugin-auth';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       deps: [AuthService],
       config: (authService: AuthService) =>
         createAuthPlugin({
@@ -64,4 +64,4 @@ You can give a partial configuration object it will be merged with default value
 | `onUnauthorized`      | `OnUnauthorized`     | No       | `undefined`   | A function executed when an unauthorized response is thrown.                                 |
 | `shouldHandleRequest` | `RequestCondition`   | No       | `undefined`   | Predicate function to know which request the plugin should handle.                           |
 
-To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/http-ext#conditional-handling).
+To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/convoy#conditional-handling).

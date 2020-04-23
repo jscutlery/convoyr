@@ -1,4 +1,4 @@
-import { createRequest, HttpExtRequest } from '../../request';
+import { createRequest, ConvoyRequest } from '../../request';
 import { matchOrigin } from './match-origin';
 import { OriginMatchExpression } from './origin-match-expression';
 
@@ -19,7 +19,7 @@ describe.each<[string, OriginMatchExpression, boolean]>([
 
   /* Using a RegExp */
   ['https://test.com', /[a-z]/, true],
-  ['https://test.com', /[0-9]/, false]
+  ['https://test.com', /[0-9]/, false],
 ])(
   'matchOrigin with url: %p and matcher: %p => %p',
   (url, matcher, expected) => {
@@ -32,7 +32,7 @@ describe.each<[string, OriginMatchExpression, boolean]>([
 
 describe.each<[string, boolean]>([
   ['https://test.com', true],
-  ['http://test.com', false]
+  ['http://test.com', false],
 ])(
   'matchOrigin with url: %p and starts with https predicate => %p',
   (url, expected) => {
@@ -47,7 +47,7 @@ describe.each<[string, boolean]>([
 );
 
 describe('matchOrigin', () => {
-  let request: HttpExtRequest;
+  let request: ConvoyRequest;
 
   beforeEach(() => (request = createRequest({ url: 'https://test.com' })));
 

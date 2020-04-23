@@ -9,7 +9,7 @@ We use emojis for commits categorization:
 | Work In Progress | `wip(plugin-cache): 🚧 do craziness`   | This is the commit message when working on a feature. Same message can be reused while working on the feature.               |
 | Feature          | `feat(plugin-cache): ✅ add craziness` | This is the final commit when the feature is finished and you want it to appear in the changelog. It can be an empty commit. |
 | Fix              | `fix(plugin-cache): 🐞 fix craziness`  | Anything that fixes a user facing bug.                                                                                       |
-| Anything else    | `chore(plugin-cache): 🛠 rename stuff` | This applies to all changes that don't bring new features or fix user facing bugs.                                          |
+| Anything else    | `chore(plugin-cache): 🛠 rename stuff`  | This applies to all changes that don't bring new features or fix user facing bugs.                                           |
 | Docs             | `docs(plugin-cache): 📝 add docs`      | Documentation                                                                                                                |
 
 - Each commit type can be scoped by package name like `feat(core,plugin-cache):`, or no scope at all _(i.e. `feat:`)_ if it affects everything
@@ -34,16 +34,16 @@ yarn nx g @nrwl/workspace:library --publishable plugin-xyz
 
 ```json
 {
-  "name": "@http-ext/plugin-xyz",
+  "name": "@convoy/plugin-xyz",
   "version": "2.1.0",
   "license": "MIT",
   "private": false,
-  "repository": "git@github.com:jscutlery/http-ext.git",
+  "repository": "git@github.com:jscutlery/convoy.git",
   "scripts": {
     "publish": "yarn publish ../../dist/libs/plugin-xyz"
   },
   "peerDependencies": {
-    "@http-ext/core": "^2.0.0"
+    "@convoy/core": "^2.0.0"
   }
 }
 ```

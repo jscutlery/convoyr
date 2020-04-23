@@ -1,15 +1,15 @@
 import { Observable } from 'rxjs';
 
-import { HttpExtRequest } from './request';
+import { ConvoyRequest } from './request';
 import { PluginHandler } from './handler';
 
 export type RequestCondition = ({
-  request
+  request,
 }: {
-  request: HttpExtRequest;
+  request: ConvoyRequest;
 }) => boolean | Promise<boolean> | Observable<boolean>;
 
-export interface HttpExtPlugin {
+export interface ConvoyPlugin {
   shouldHandleRequest?: RequestCondition;
   handler: PluginHandler;
 }

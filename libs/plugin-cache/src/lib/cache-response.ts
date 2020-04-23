@@ -1,4 +1,4 @@
-import { HttpExtResponse } from '@http-ext/core';
+import { ConvoyResponse } from '@convoy/core';
 import { CacheMetadata } from './cache-metadata';
 
 export interface WithCacheMetadata<TData = unknown> {
@@ -6,6 +6,6 @@ export interface WithCacheMetadata<TData = unknown> {
   data: TData;
 }
 
-export type HttpExtCacheResponse<TData = unknown> = HttpExtResponse<
+export type ConvoyCacheResponse<TData = unknown> = ConvoyResponse<
   WithCacheMetadata<TData>
 >;

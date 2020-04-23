@@ -1,5 +1,5 @@
-import { createRequest, createResponse } from '@http-ext/core';
-import { createPluginTester } from '@http-ext/core/testing';
+import { createRequest, createResponse } from '@convoy/core';
+import { createPluginTester } from '@convoy/core/testing';
 import { concat, from, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';
@@ -13,7 +13,7 @@ describe('AuthPlugin', () => {
       const token$ = of(token);
 
       const pluginTester = createPluginTester({
-        handler: new AuthHandler({ token: token$ })
+        handler: new AuthHandler({ token: token$ }),
       });
 
       const request = createRequest({ url: '/somewhere' });
@@ -24,8 +24,8 @@ describe('AuthPlugin', () => {
       expect(pluginTester.next).toHaveBeenCalledWith({
         request: expect.objectContaining({
           url: '/somewhere',
-          headers: {}
-        })
+          headers: {},
+        }),
       });
     }
   );
@@ -36,7 +36,7 @@ describe('AuthPlugin', () => {
     const token$ = of('OLD_TOKEN', 'TOKEN');
 
     const pluginTester = createPluginTester({
-      handler: new AuthHandler({ token: token$ })
+      handler: new AuthHandler({ token: token$ }),
     });
 
     const request = createRequest({ url: '/somewhere' });
@@ -48,21 +48,21 @@ describe('AuthPlugin', () => {
       request: expect.objectContaining({
         url: '/somewhere',
         headers: {
-          Authorization: 'Bearer TOKEN'
-        }
-      })
+          Authorization: 'Bearer TOKEN',
+        },
+      }),
     });
   });
 
   it(
     'should grab the last token value only and run request once',
-    marbles(m => {
+    marbles((m) => {
       const wait$ = m.cold('-----|');
       const tokens = {
         x: null,
         a: 'TOKEN_A',
         b: 'TOKEN_B',
-        c: 'TOKEN_C'
+        c: 'TOKEN_C',
       };
       /* Simulate state management with shareReplay. */
       const token$ = m
@@ -70,7 +70,7 @@ describe('AuthPlugin', () => {
         .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
       const pluginTester = createPluginTester({
-        handler: new AuthHandler({ token: token$ })
+        handler: new AuthHandler({ token: token$ }),
       });
 
       const request = createRequest({ url: '/somewhere' });
@@ -90,9 +90,9 @@ describe('AuthPlugin', () => {
       expect(pluginTester.next).toHaveBeenCalledWith({
         request: expect.objectContaining({
           headers: {
-            Authorization: 'Bearer TOKEN_B'
-          }
-        })
+            Authorization: 'Bearer TOKEN_B',
+          },
+        }),
       });
     })
   );
@@ -104,21 +104,21 @@ describe('AuthPlugin', () => {
     const pluginTester = createPluginTester({
       handler: new AuthHandler({
         token: token$,
-        onUnauthorized: onUnauthorizedSpy
-      })
+        onUnauthorized: onUnauthorizedSpy,
+      }),
     });
 
     const request = createRequest({ url: '/somewhere' });
     const unauthorizedResponse = createResponse({
       status: 401,
-      statusText: 'Unauthorized'
+      statusText: 'Unauthorized',
     });
 
     pluginTester.next.mockReturnValue(throwError(unauthorizedResponse));
 
     const observer = {
       next: jest.fn(),
-      error: jest.fn()
+      error: jest.fn(),
     };
     pluginTester.handle({ request }).subscribe(observer);
 

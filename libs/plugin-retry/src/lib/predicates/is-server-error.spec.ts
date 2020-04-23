@@ -1,36 +1,36 @@
-import { createResponse, HttpExtResponse } from '@http-ext/core';
+import { createResponse, ConvoyResponse } from '@convoy/core';
 
 import { isServerError } from './is-server-error';
 
-describe.each<[HttpExtResponse, boolean]>([
+describe.each<[ConvoyResponse, boolean]>([
   [
     createResponse({
       status: 500,
-      statusText: 'Internal Server Error'
+      statusText: 'Internal Server Error',
     }),
-    true
+    true,
   ],
   [
     createResponse({
       status: 200,
-      statusText: 'Ok'
+      statusText: 'Ok',
     }),
-    false
+    false,
   ],
   [
     createResponse({
       status: 400,
-      statusText: 'Bad Request'
+      statusText: 'Bad Request',
     }),
-    false
+    false,
   ],
   [
     createResponse({
       status: 304,
-      statusText: 'Not Modified'
+      statusText: 'Not Modified',
     }),
-    false
-  ]
+    false,
+  ],
 ])('isServerError with response: %p => %p', (response, expected) => {
   it('should check if the response is a server error', () => {
     expect(isServerError(response)).toBe(expected);

@@ -1,8 +1,4 @@
-import {
-  HttpExtResponse,
-  PluginHandler,
-  PluginHandlerArgs
-} from '@http-ext/core';
+import { ConvoyResponse, PluginHandler, PluginHandlerArgs } from '@convoy/core';
 import { retryBackoff } from 'backoff-rxjs';
 import { Observable } from 'rxjs';
 import { RetryPredicate } from './predicates/retry-predicate';
@@ -30,7 +26,7 @@ export class RetryHandler implements PluginHandler {
     initialInterval,
     maxInterval,
     maxRetries,
-    shouldRetry
+    shouldRetry,
   }: HandlerOptions) {
     this._initialInterval = initialInterval;
     this._maxInterval = maxInterval;
@@ -38,13 +34,13 @@ export class RetryHandler implements PluginHandler {
     this._shouldRetry = shouldRetry;
   }
 
-  handle({ request, next }: PluginHandlerArgs): Observable<HttpExtResponse> {
+  handle({ request, next }: PluginHandlerArgs): Observable<ConvoyResponse> {
     return next({ request }).pipe(
       retryBackoff({
         initialInterval: this._initialInterval,
         maxInterval: this._maxInterval,
         maxRetries: this._maxRetries,
-        shouldRetry: this._shouldRetry
+        shouldRetry: this._shouldRetry,
       })
     );
   }

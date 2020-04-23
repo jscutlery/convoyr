@@ -4,7 +4,7 @@
   "lib": {
     "entryFile": "src/index.ts",
     "umdModuleIds": {
-      "@http-ext/core": "@http-ext/core",
+      "@convoy/core": "@convoy/core",
       "backoff-rxjs": "backoff-rxjs"
     }
   },

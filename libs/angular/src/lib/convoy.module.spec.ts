@@ -4,12 +4,12 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { createSpyPlugin } from '@http-ext/core/testing';
-import { _HTTP_EXT_CONFIG } from './http-ext.interceptor';
+import { createSpyPlugin } from '@convoy/core/testing';
+import { _HTTP_EXT_CONFIG } from './convoy.interceptor';
 
-import { HttpExtModule } from './http-ext.module';
+import { ConvoyModule } from './convoy.module';
 
-describe('HttpExtModule', () => {
+describe('ConvoyModule', () => {
   let spyPlugin;
 
   describe('with config', () => {
@@ -19,7 +19,7 @@ describe('HttpExtModule', () => {
       TestBed.configureTestingModule({
         imports: [
           HttpClientTestingModule,
-          HttpExtModule.forRoot({
+          ConvoyModule.forRoot({
             plugins: [spyPlugin],
           }),
         ],
@@ -76,7 +76,7 @@ describe('HttpExtModule', () => {
       TestBed.configureTestingModule({
         imports: [
           HttpClientTestingModule,
-          HttpExtModule.forRoot({
+          ConvoyModule.forRoot({
             config: () => ({
               plugins: [spyPlugin],
             }),
@@ -128,7 +128,7 @@ describe('HttpExtModule', () => {
         ],
         imports: [
           HttpClientTestingModule,
-          HttpExtModule.forRoot({
+          ConvoyModule.forRoot({
             deps: [Service],
             config: configFn,
           }),

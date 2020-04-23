@@ -1,26 +1,26 @@
 import {
   createResponse,
-  HttpExtRequest,
-  HttpExtResponse,
+  ConvoyRequest,
+  ConvoyResponse,
   PluginHandler,
-  PluginHandlerArgs
-} from '@http-ext/core';
+  PluginHandlerArgs,
+} from '@convoy/core';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import {
   map,
   mergeMap,
   shareReplay,
   switchMapTo,
-  takeUntil
+  takeUntil,
 } from 'rxjs/operators';
 
 import { CacheEntry, createCacheEntry } from './cache-entry';
 import {
   CacheMetadata,
   createCacheMetadata,
-  createEmptyCacheMetadata
+  createEmptyCacheMetadata,
 } from './cache-metadata';
-import { HttpExtCacheResponse, WithCacheMetadata } from './cache-response';
+import { ConvoyCacheResponse, WithCacheMetadata } from './cache-response';
 import { Storage } from './storages/storage';
 
 export interface HandlerOptions {
@@ -28,7 +28,7 @@ export interface HandlerOptions {
   storage: Storage;
 }
 
-export type CacheHandlerResponse = HttpExtResponse | HttpExtCacheResponse;
+export type CacheHandlerResponse = ConvoyResponse | ConvoyCacheResponse;
 
 export class CacheHandler implements PluginHandler {
   private _shouldAddCacheMetadata: boolean;
@@ -41,14 +41,14 @@ export class CacheHandler implements PluginHandler {
 
   handle({
     request,
-    next
+    next,
   }: PluginHandlerArgs): Observable<CacheHandlerResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
-    const fromNetwork$: Observable<HttpExtResponse> = next({
-      request
+    const fromNetwork$: Observable<ConvoyResponse> = next({
+      request,
     }).pipe(
-      mergeMap(response => {
+      mergeMap((response) => {
         /* Return response immediately but store in cache as side effect. */
         return merge(
           of(response),
@@ -57,18 +57,18 @@ export class CacheHandler implements PluginHandler {
       }),
       shareReplay({
         refCount: true,
-        bufferSize: 1
+        bufferSize: 1,
       })
     );
 
-    const fromCache$: Observable<HttpExtResponse> = defer(() =>
+    const fromCache$: Observable<ConvoyResponse> = defer(() =>
       this._load(request)
     ).pipe(
-      map(cacheEntry =>
+      map((cacheEntry) =>
         this._createResponseWithOptionalMetadata({
           response: cacheEntry.response,
           shouldAddCacheMetadata,
-          cacheMetadata: createCacheMetadata(cacheEntry)
+          cacheMetadata: createCacheMetadata(cacheEntry),
         })
       ),
       takeUntil(fromNetwork$)
@@ -80,11 +80,11 @@ export class CacheHandler implements PluginHandler {
      * thanks to shareReplay. */
     return merge(
       fromNetwork$.pipe(
-        map(response =>
+        map((response) =>
           this._createResponseWithOptionalMetadata({
             response,
             shouldAddCacheMetadata,
-            cacheMetadata: createEmptyCacheMetadata()
+            cacheMetadata: createEmptyCacheMetadata(),
           })
         )
       ),
@@ -94,14 +94,14 @@ export class CacheHandler implements PluginHandler {
 
   /* Store metadata belong cache. */
   private _store(
-    request: HttpExtRequest,
-    response: HttpExtResponse
+    request: ConvoyRequest,
+    response: ConvoyResponse
   ): Observable<void> {
     return defer(() => {
       const key = this._serializeCacheKey(request);
       const cacheEntry = createCacheEntry({
         createdAt: new Date(),
-        response
+        response,
       });
       const cache = JSON.stringify(cacheEntry);
 
@@ -109,9 +109,9 @@ export class CacheHandler implements PluginHandler {
     });
   }
 
-  private _load(request: HttpExtRequest): Observable<CacheEntry> {
+  private _load(request: ConvoyRequest): Observable<CacheEntry> {
     return this._storage.get(this._serializeCacheKey(request)).pipe(
-      mergeMap(rawCacheEntry => {
+      mergeMap((rawCacheEntry) => {
         /* There's no entry. */
         if (rawCacheEntry == null) {
           return EMPTY;
@@ -126,34 +126,34 @@ export class CacheHandler implements PluginHandler {
   }
 
   /* Create a unique key by request URI to retrieve cache later. */
-  private _serializeCacheKey(request: HttpExtRequest): string {
+  private _serializeCacheKey(request: ConvoyRequest): string {
     const { params } = request;
     const hasParams = Object.keys(params).length > 0;
 
     return JSON.stringify({
       u: request.url,
-      p: hasParams ? request.params : undefined
+      p: hasParams ? request.params : undefined,
     });
   }
 
   private _createResponseWithOptionalMetadata({
     response,
     cacheMetadata,
-    shouldAddCacheMetadata
+    shouldAddCacheMetadata,
   }: {
-    response: HttpExtResponse;
+    response: ConvoyResponse;
     cacheMetadata: CacheMetadata;
     shouldAddCacheMetadata: boolean;
-  }): HttpExtResponse | HttpExtCacheResponse {
+  }): ConvoyResponse | ConvoyCacheResponse {
     const body = shouldAddCacheMetadata
       ? ({
           cacheMetadata,
-          data: response.body
+          data: response.body,
         } as WithCacheMetadata)
       : response.body;
     return createResponse({
       ...response,
-      body
+      body,
     });
   }
 }

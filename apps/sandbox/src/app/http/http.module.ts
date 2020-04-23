@@ -2,10 +2,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { HttpExtModule } from '@http-ext/angular';
-import { createAuthPlugin } from '@http-ext/plugin-auth';
-import { createCachePlugin } from '@http-ext/plugin-cache';
-import { createRetryPlugin } from '@http-ext/plugin-retry';
+import { ConvoyModule } from '@convoy/angular';
+import { createAuthPlugin } from '@convoy/plugin-auth';
+import { createCachePlugin } from '@convoy/plugin-cache';
+import { createRetryPlugin } from '@convoy/plugin-retry';
 
 import { AuthService } from '../auth/auth.service';
 import { createLoggerPlugin } from './create-logger-plugin';
@@ -13,7 +13,7 @@ import { createLoggerPlugin } from './create-logger-plugin';
 @NgModule({
   imports: [
     HttpClientModule,
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       deps: [AuthService, Router, MatSnackBar],
       config(auth: AuthService, router: Router, snackBar: MatSnackBar) {
         return {
@@ -40,6 +40,6 @@ import { createLoggerPlugin } from './create-logger-plugin';
       },
     }),
   ],
-  exports: [HttpClientModule, HttpExtModule],
+  exports: [HttpClientModule, ConvoyModule],
 })
 export class HttpModule {}
