@@ -93,7 +93,7 @@ describe('ConvoyInterceptor', () => {
     expect(response).toEqual(createResponse({ body: { answer: 42 } }));
   });
 
-  it('should convert Angular HttpResponse to ConvoyResponse before handling it back to plugins', () => {
+  it('should convert Angular HttpResponse to ConvoyrResponse before handling it back to plugins', () => {
     asMock(next.handle).mockReturnValue(
       of(new HttpResponse({ body: { answer: 42 } }))
     );
@@ -118,7 +118,7 @@ describe('ConvoyInterceptor', () => {
     );
   });
 
-  it('should convert plugin ConvoyResponse to Angular HttpResponse', () => {
+  it('should convert plugin ConvoyrResponse to Angular HttpResponse', () => {
     asMock(next.handle).mockReturnValue(
       of(new HttpResponse({ body: { answer: 42 } }))
     );
@@ -129,7 +129,7 @@ describe('ConvoyInterceptor', () => {
 
     const response = observer.mock.calls[0][0];
 
-    /* Check there is no raw ConvoyResponse given to the interceptor. */
+    /* Check there is no raw ConvoyrResponse given to the interceptor. */
     expect(response).toBeInstanceOf(HttpResponse);
     expect(response).toEqual(expect.objectContaining({ body: { answer: 42 } }));
   });
