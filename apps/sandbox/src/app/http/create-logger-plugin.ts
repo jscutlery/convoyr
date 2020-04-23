@@ -1,6 +1,6 @@
-import { ConvoyPlugin, and, matchMethod, matchOrigin } from '@convoyr/core';
+import { ConvoyrPlugin, and, matchMethod, matchOrigin } from '@convoyr/core';
 
-export function createLoggerPlugin(): ConvoyPlugin {
+export function createLoggerPlugin(): ConvoyrPlugin {
   return {
     shouldHandleRequest: and(
       matchMethod('GET'),

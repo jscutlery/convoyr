@@ -9,7 +9,7 @@ export type RequestCondition = ({
   request: ConvoyRequest;
 }) => boolean | Promise<boolean> | Observable<boolean>;
 
-export interface ConvoyPlugin {
+export interface ConvoyrPlugin {
   shouldHandleRequest?: RequestCondition;
   handler: PluginHandler;
 }
