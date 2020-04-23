@@ -5,9 +5,9 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { createSpyPlugin } from '@convoyr/core/testing';
-import { _HTTP_EXT_CONFIG } from './convoy.interceptor';
+import { _HTTP_EXT_CONFIG } from './convoyr.interceptor';
 
-import { ConvoyModule } from './convoy.module';
+import { ConvoyModule } from './convoyr.module';
 
 describe('ConvoyModule', () => {
   let spyPlugin;

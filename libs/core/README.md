@@ -1,5 +1,5 @@
 # @convoyr/core
 
-This is part of the Convoy library.
+This is part of the Convoyr library.
 
-[Find out more on our GitHub repo](https://github.com/jscutlery/convoy)
+[Find out more on our GitHub repo](https://github.com/jscutlery/convoyr)

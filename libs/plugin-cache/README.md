@@ -1,6 +1,6 @@
 # @convoyr/plugin-cache
 
-> A cache plugin for [Convoy](https://github.com/jscutlery/convoy).
+> A cache plugin for [Convoyr](https://github.com/jscutlery/convoyr).
 
 This plugin cache network requests using the _cache-then-network_ strategy. First the plugin returns the data from cache, then sends the request, and finally comes with fresh data again. This technique drastically improve UI reactivity.
 
@@ -72,7 +72,7 @@ import { createCachePlugin, MemoryStorage } from '@convoyr/plugin-cache';
 export class AppModule {}
 ```
 
-To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/convoy#conditional-handling).
+To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/convoyr#conditional-handling).
 
 ### Metadata
 

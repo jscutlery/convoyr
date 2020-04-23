@@ -17,7 +17,7 @@ export interface ConvoyConfig {
   plugins: ConvoyPlugin[];
 }
 
-export class Convoy {
+export class Convoyr {
   private _plugins: ConvoyPlugin[];
 
   constructor({ plugins }: ConvoyConfig) {

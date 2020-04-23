@@ -38,7 +38,7 @@ yarn nx g @nrwl/workspace:library --publishable plugin-xyz
   "version": "2.1.0",
   "license": "MIT",
   "private": false,
-  "repository": "git@github.com:jscutlery/convoy.git",
+  "repository": "git@github.com:jscutlery/convoyr.git",
   "scripts": {
     "publish": "yarn publish ../../dist/libs/plugin-xyz"
   },

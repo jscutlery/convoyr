@@ -1,5 +1,5 @@
 {
-  "npmScope": "convoy",
+  "npmScope": "convoyr",
   "implicitDependencies": {
     "angular.json": "*",
     "package.json": "*",

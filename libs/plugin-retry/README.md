@@ -1,6 +1,6 @@
 # @convoyr/plugin-retry
 
-> A retry plugin for [Convoy](https://github.com/jscutlery/convoy).
+> A retry plugin for [Convoyr](https://github.com/jscutlery/convoyr).
 
 This plugin retries failed network requests using a configurable back-off strategy.
 

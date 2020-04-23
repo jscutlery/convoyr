@@ -5,10 +5,10 @@ import {
   HttpResponse,
   HttpSentEvent,
 } from '@angular/common/http';
-import { createRequest, createResponse, Convoy } from '@convoyr/core';
+import { createRequest, createResponse, Convoyr } from '@convoyr/core';
 import { EMPTY, of } from 'rxjs';
 
-import { ConvoyInterceptor } from './convoy.interceptor';
+import { ConvoyInterceptor } from './convoyr.interceptor';
 
 function asMock<TReturn, TArgs extends any[]>(
   value: (...TArgs) => TReturn
@@ -17,17 +17,17 @@ function asMock<TReturn, TArgs extends any[]>(
 }
 
 describe('ConvoyInterceptor', () => {
-  let convoy: Convoy;
+  let convoyr: Convoyr;
   let interceptor: ConvoyInterceptor;
   let next: HttpHandler;
 
   beforeEach(() => {
     interceptor = new ConvoyInterceptor({ plugins: [] });
 
-    convoy = interceptor['_convoy'];
+    convoyr = interceptor['_convoy'];
 
-    /* Mock `Convoy.handle`. */
-    jest.spyOn(convoy, 'handle');
+    /* Mock `Convoyr.handle`. */
+    jest.spyOn(convoyr, 'handle');
 
     next = {
       /* Just to avoid pipe error. */
@@ -44,9 +44,9 @@ describe('ConvoyInterceptor', () => {
   });
 
   it('should convert Angular HttpRequest to ConvoyRequest before handing it to plugins', () => {
-    /* Check that request is transformed from Angular HttpRequest to ConvoyRequest and forwarded to `convoy`. */
-    expect(convoy.handle).toHaveBeenCalledTimes(1);
-    expect(convoy.handle).toHaveBeenCalledWith(
+    /* Check that request is transformed from Angular HttpRequest to ConvoyRequest and forwarded to `convoyr`. */
+    expect(convoyr.handle).toHaveBeenCalledTimes(1);
+    expect(convoyr.handle).toHaveBeenCalledWith(
       expect.objectContaining({
         request: createRequest({ url: 'https://test.com', method: 'GET' }),
       })
@@ -82,7 +82,7 @@ describe('ConvoyInterceptor', () => {
         new HttpResponse({ body: { answer: 42 } })
       )
     );
-    const { request, httpHandler } = asMock(convoy.handle).mock.calls[0][0];
+    const { request, httpHandler } = asMock(convoyr.handle).mock.calls[0][0];
     const observer = jest.fn();
 
     httpHandler({ request }).subscribe(observer);
@@ -97,7 +97,7 @@ describe('ConvoyInterceptor', () => {
     asMock(next.handle).mockReturnValue(
       of(new HttpResponse({ body: { answer: 42 } }))
     );
-    const { request, httpHandler } = asMock(convoy.handle).mock.calls[0][0];
+    const { request, httpHandler } = asMock(convoyr.handle).mock.calls[0][0];
     const observer = jest.fn();
 
     httpHandler({ request }).subscribe(observer);

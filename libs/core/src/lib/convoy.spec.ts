@@ -1,26 +1,26 @@
 /**
  * @hack relative import of `createSpyPlugin`:
  *   If we import `@convoyr/core/testing`, it fails building the core library.
- *   Somehow, `convoy.spec.ts` is considered part of `@convoyr/core` by ng-packagr and creates an import loop between core and core/testing.
+ *   Somehow, `convoyr.spec.ts` is considered part of `@convoyr/core` by ng-packagr and creates an import loop between core and core/testing.
  */
 import { createSpyPlugin } from '../../testing/src/index';
 import { of } from 'rxjs';
 
-import { Convoy } from './convoy';
+import { Convoyr } from './convoyr';
 import { createRequest } from './request';
 import { createResponse } from './response';
 
-describe('Convoy', () => {
+describe('Convoyr', () => {
   it('should handle multiple plugins', () => {
     const pluginA = createSpyPlugin();
     const pluginB = createSpyPlugin();
-    const convoy = new Convoy({ plugins: [pluginA, pluginB] });
+    const convoyr = new Convoyr({ plugins: [pluginA, pluginB] });
 
     const request = createRequest({
       url: 'https://answer-to-the-ultimate-question-of-life.com',
     });
 
-    const response$ = convoy.handle({
+    const response$ = convoyr.handle({
       request,
       httpHandler: () =>
         of(
@@ -78,12 +78,12 @@ describe('Convoy', () => {
     const pluginB = createSpyPlugin((req) =>
       req.url.startsWith('https://something-else-that-do-not-match.com/')
     );
-    const convoy = new Convoy({ plugins: [pluginA, pluginB] });
+    const convoyr = new Convoyr({ plugins: [pluginA, pluginB] });
     const request = createRequest({
       url: 'https://answer-to-the-ultimate-question-of-life.com/',
     });
 
-    const response$ = convoy.handle({
+    const response$ = convoyr.handle({
       request,
       httpHandler: () =>
         of(
@@ -114,11 +114,11 @@ describe('Convoy', () => {
 
   it('should throw when a plugin condition returns an invalid value', () => {
     const plugin = createSpyPlugin(() => '' as any /* 👈🏻 invalid condition */);
-    const convoy = new Convoy({ plugins: [plugin] });
+    const convoyr = new Convoyr({ plugins: [plugin] });
     const request = createRequest({
       url: 'https://test.com/',
     });
-    const response$ = convoy.handle({
+    const response$ = convoyr.handle({
       request,
       httpHandler: () => of(createResponse({ body: null })),
     });

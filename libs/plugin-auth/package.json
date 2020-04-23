@@ -3,7 +3,7 @@
   "version": "2.2.0",
   "license": "MIT",
   "private": false,
-  "repository": "git@github.com:jscutlery/convoy.git",
+  "repository": "git@github.com:jscutlery/convoyr.git",
   "scripts": {
     "prepublishOnly": "rm -rf dist && cp -r ../../dist/libs/plugin-auth dist",
     "postpublish": "rm -r dist"

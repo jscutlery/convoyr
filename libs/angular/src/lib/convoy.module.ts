@@ -5,7 +5,7 @@ import {
   _HTTP_EXT_CONFIG,
   ConvoyConfig,
   ConvoyInterceptor,
-} from './convoy.interceptor';
+} from './convoyr.interceptor';
 
 export type ConvoyModuleArgs =
   | ConvoyConfig

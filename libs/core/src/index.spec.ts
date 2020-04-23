@@ -1,8 +1,8 @@
 import * as publicApi from './index';
 
 describe('Public API', () => {
-  it('should expose Convoy', () => {
-    expect(publicApi.Convoy).toBeDefined();
+  it('should expose Convoyr', () => {
+    expect(publicApi.Convoyr).toBeDefined();
     expect(publicApi.matchOrigin).toBeDefined();
     expect(publicApi.matchMethod).toBeDefined();
     expect(publicApi.createRequest).toBeDefined();

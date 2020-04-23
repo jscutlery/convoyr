@@ -6,7 +6,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { Convoy, ConvoyPlugin } from '@convoyr/core';
+import { Convoyr, ConvoyPlugin } from '@convoyr/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -26,11 +26,11 @@ export interface ConvoyConfig {
  */
 export const _HTTP_EXT_CONFIG = new InjectionToken<{
   plugins: ConvoyPlugin[];
-}>('Convoy Config');
+}>('Convoyr Config');
 
 @Injectable()
 export class ConvoyInterceptor implements HttpInterceptor {
-  private _convoy = new Convoy(this._convoyConfig);
+  private _convoy = new Convoyr(this._convoyConfig);
 
   constructor(
     @Inject(_HTTP_EXT_CONFIG)
