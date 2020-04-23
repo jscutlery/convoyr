@@ -157,10 +157,10 @@ export class AppModule {}
 
 ## Implementing Custom Plugins
 
-A plugin is an object that follows the `ConvoyPlugin` interface:
+A plugin is an object that follows the `ConvoyrPlugin` interface:
 
 ```ts
-export interface ConvoyPlugin {
+export interface ConvoyrPlugin {
   shouldHandleRequest?: RequestCondition;
   handler: PluginHandler;
 }
@@ -183,10 +183,10 @@ The `handle` method lets you manipulate request and the response stream as well 
 Note that Convoyr internally transforms the response to a stream using Observables. Here is an example using a literal `handler` object and returns a Promise based response:
 
 ```ts
-import { ConvoyPlugin, PluginHandler } from '@convoyr/core';
+import { ConvoyrPlugin, PluginHandler } from '@convoyr/core';
 import { LoggerHandler } from './handler';
 
-export function createLoggerPlugin(): ConvoyPlugin {
+export function createLoggerPlugin(): ConvoyrPlugin {
   return {
     shouldHandleRequest: ({ request }) => request.url.includes('api.github.com')
     handler: {
@@ -218,7 +218,7 @@ export class LoggerHandler implements PluginHandler {
   }
 }
 
-export function createLoggerPlugin(): ConvoyPlugin {
+export function createLoggerPlugin(): ConvoyrPlugin {
   return { handler: new LoggerHandler() };
 }
 ```
@@ -230,7 +230,7 @@ By piping the `next` function you can manipulate the response stream and leverag
 The `shouldHandleRequest` function checks for each outgoing request if the plugin handler should be executed:
 
 ```ts
-export function createLoggerPlugin(): ConvoyPlugin {
+export function createLoggerPlugin(): ConvoyrPlugin {
   return {
     shouldHandleRequest: ({ request }) => {
       return request.method === 'GET' && request.url.includes('api.github.com');
@@ -252,9 +252,9 @@ Matchers are utils functions for conditional request handling.
 - _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
 
 ```ts
-import { matchOrigin, ConvoyPlugin } from '@convoyr/core';
+import { matchOrigin, ConvoyrPlugin } from '@convoyr/core';
 
-export function createLoggerPlugin(): ConvoyPlugin {
+export function createLoggerPlugin(): ConvoyrPlugin {
   return {
     shouldHandleRequest: matchOrigin('https://secure-origin.com'),
     handler: new LoggerHandler(),
@@ -273,9 +273,9 @@ Combiners are used to compose with matchers.
 - _not:_ `not(predicate: RequestCondition) => RequestCondition`
 
 ```ts
-import { matchOrigin, matchMethod, and, ConvoyPlugin } from '@convoyr/core';
+import { matchOrigin, matchMethod, and, ConvoyrPlugin } from '@convoyr/core';
 
-export function createLoggerPlugin(): ConvoyPlugin {
+export function createLoggerPlugin(): ConvoyrPlugin {
   return {
     shouldHandleRequest: and(
       matchMethod('GET'),
