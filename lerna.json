@@ -2,9 +2,7 @@
   "version": "2.2.0",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "packages": [
-    "libs/*"
-  ],
+  "packages": ["libs/*"],
   "command": {
     "version": {
       "conventionalCommits": true,
@@ -14,8 +12,7 @@
     "publish": {
       "conventionalCommits": true,
       "allowBranch": "master",
-      "contents": "dist",
-      "distTag": "latest"
+      "contents": "dist"
     }
   }
 }

@@ -5,7 +5,8 @@
   "private": false,
   "repository": "git@github.com:jscutlery/convoy.git",
   "scripts": {
-    "publish": "yarn publish ../../dist/libs/plugin-auth"
+    "prepublishOnly": "cp -r ../../dist/libs/plugin-auth dist",
+    "postpublish": "rm -r dist"
   },
   "peerDependencies": {
     "@convoy/core": "^2.0.0",

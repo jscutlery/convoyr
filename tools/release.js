@@ -8,7 +8,4 @@ const execSync = (command) => exec(command, { stdio: 'inherit' });
 execSync('nx affected:build --all --with-deps --prod');
 
 /* Publish to NPM */
-execSync('lerna publish --yes');
-
-/* Push to GitHub */
-execSync('git push --follow-tags');
+execSync('lerna publish from-package --dist-tag latest --yes');
