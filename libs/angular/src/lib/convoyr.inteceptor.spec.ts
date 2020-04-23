@@ -24,7 +24,7 @@ describe('ConvoyrInterceptor', () => {
   beforeEach(() => {
     interceptor = new ConvoyrInterceptor({ plugins: [] });
 
-    convoyr = interceptor['_convoy'];
+    convoyr = interceptor['_convoyr'];
 
     /* Mock `Convoyr.handle`. */
     jest.spyOn(convoyr, 'handle');
