@@ -4,7 +4,7 @@ import {
   ConvoyResponse,
   PluginHandler,
   PluginHandlerArgs,
-} from '@convoy/core';
+} from '@convoyr/core';
 import { defer, EMPTY, merge, Observable, of } from 'rxjs';
 import {
   map,

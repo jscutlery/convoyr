@@ -1,4 +1,4 @@
-# @convoy/core
+# @convoyr/core
 
 This is part of the Convoy library.
 

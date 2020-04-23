@@ -1,4 +1,4 @@
-# @convoy/plugin-cache
+# @convoyr/plugin-cache
 
 > A cache plugin for [Convoy](https://github.com/jscutlery/convoy).
 
@@ -6,18 +6,18 @@ This plugin cache network requests using the _cache-then-network_ strategy. Firs
 
 ## Requirements
 
-The plugin requires `@convoy/core` and `@convoy/angular` to be installed.
+The plugin requires `@convoyr/core` and `@convoyr/angular` to be installed.
 
 ## Installation
 
 ```bash
-yarn add @convoy/plugin-cache
+yarn add @convoyr/plugin-cache
 ```
 
 or
 
 ```bash
-npm install @convoy/plugin-cache
+npm install @convoyr/plugin-cache
 ```
 
 ## Usage
@@ -25,8 +25,8 @@ npm install @convoy/plugin-cache
 The whole configuration object is optional.
 
 ```ts
-import { ConvoyModule } from '@convoy/angular';
-import { createCachePlugin } from '@convoy/plugin-cache';
+import { ConvoyModule } from '@convoyr/angular';
+import { createCachePlugin } from '@convoyr/plugin-cache';
 
 @NgModule({
   declarations: [AppComponent],
@@ -55,7 +55,7 @@ You can give a partial configuration object it will be merged with default value
 Here is an example passing a configuration object.
 
 ```ts
-import { createCachePlugin, MemoryStorage } from '@convoy/plugin-cache';
+import { createCachePlugin, MemoryStorage } from '@convoyr/plugin-cache';
 
 @NgModule({
   imports: [

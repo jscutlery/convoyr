@@ -34,7 +34,7 @@ yarn nx g @nrwl/workspace:library --publishable plugin-xyz
 
 ```json
 {
-  "name": "@convoy/plugin-xyz",
+  "name": "@convoyr/plugin-xyz",
   "version": "2.1.0",
   "license": "MIT",
   "private": false,
@@ -43,7 +43,7 @@ yarn nx g @nrwl/workspace:library --publishable plugin-xyz
     "publish": "yarn publish ../../dist/libs/plugin-xyz"
   },
   "peerDependencies": {
-    "@convoy/core": "^2.0.0"
+    "@convoyr/core": "^2.0.0"
   }
 }
 ```

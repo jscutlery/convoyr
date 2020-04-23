@@ -1,4 +1,4 @@
-import { ConvoyRequest } from '@convoy/core';
+import { ConvoyRequest } from '@convoyr/core';
 
 /**
  * A plugin handle that just calls through the next plugin.

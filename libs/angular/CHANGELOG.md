@@ -5,14 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.2.0](https://github.com/jscutlery/convoy/compare/v2.1.1...v2.2.0) (2020-04-23)
 
-
 ### Bug Fixes
 
-* 📦 update angular monorepo to v9.1.3 ([fb3a984](https://github.com/jscutlery/convoy/commit/fb3a984655ebbb0df68b43d32efcd57bc952a615))
-
-
-
-
+- 📦 update angular monorepo to v9.1.3 ([fb3a984](https://github.com/jscutlery/convoy/commit/fb3a984655ebbb0df68b43d32efcd57bc952a615))
 
 ## [2.1.1](https://github.com/jscutlery/convoy/compare/v2.1.0...v2.1.1) (2020-04-16)
 
@@ -22,27 +17,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.1.0](https://github.com/jscutlery/convoy/compare/v2.0.1...v2.1.0) (2020-04-11)
 
-**Note:** Version bump only for package @convoy/angular
+**Note:** Version bump only for package @convoyr/angular
 
 ## [2.0.2](https://github.com/jscutlery/convoy/compare/v2.0.1...v2.0.2) (2020-04-08)
 
-**Note:** Version bump only for package @convoy/angular
+**Note:** Version bump only for package @convoyr/angular
 
 ## [2.0.1](https://github.com/jscutlery/convoy/compare/v2.0.0...v2.0.1) (2020-04-07)
 
-**Note:** Version bump only for package @convoy/angular
+**Note:** Version bump only for package @convoyr/angular
 
 # [2.0.0](https://github.com/jscutlery/convoy/compare/v1.0.0...v2.0.0) (2020-04-01)
 
-**Note:** Version bump only for package @convoy/angular
+**Note:** Version bump only for package @convoyr/angular
 
 # [1.2.0](https://github.com/jscutlery/convoy/compare/v1.1.0...v1.2.0) (2020-03-31)
 
-**Note:** Version bump only for package @convoy/angular
+**Note:** Version bump only for package @convoyr/angular
 
 # [1.1.0](https://github.com/jscutlery/convoy/compare/v1.0.0...v1.1.0) (2020-01-14)
 
-**Note:** Version bump only for package @convoy/angular
+**Note:** Version bump only for package @convoyr/angular
 
 # [1.0.0](https://github.com/jscutlery/convoy/compare/v0.1.1...v1.0.0) (2020-01-06)
 
@@ -54,7 +49,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.1.1](https://github.com/jscutlery/convoy/compare/v0.1.0...v0.1.1) (2019-11-20)
 
-**Note:** Version bump only for package @convoy/angular
+**Note:** Version bump only for package @convoyr/angular
 
 # 0.1.0 (2019-11-19)
 

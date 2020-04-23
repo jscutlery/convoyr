@@ -10,10 +10,10 @@
     <img src="https://badgen.net/codecov/c/github/jscutlery/convoy" />
   </a>
   <a href="https://github.com/jscutlery/convoy/blob/master/LICENSE" rel="nofollow">
-    <img src="https://badgen.net/npm/license/@convoy/core">
+    <img src="https://badgen.net/npm/license/@convoyr/core">
   </a>
-  <a href="https://www.npmjs.com/package/@convoy/core" rel="nofollow">
-    <img src="https://badgen.net/npm/v/@convoy/core">
+  <a href="https://www.npmjs.com/package/@convoyr/core" rel="nofollow">
+    <img src="https://badgen.net/npm/v/@convoyr/core">
   </a>
 </div>
 
@@ -42,22 +42,22 @@ The main building block is the plugin. A plugin is a simple object that lets you
 1. Install core packages inside your project.
 
 ```bash
-yarn add @convoy/core @convoy/angular # or npm install @convoy/core @convoy/angular
+yarn add @convoyr/core @convoyr/angular # or npm install @convoyr/core @convoyr/angular
 ```
 
 2. Install plugins packages.
 
 ```bash
-yarn add @convoy/plugin-cache @convoy/plugin-retry @convoy/plugin-auth # or npm install @convoy/plugin-cache @convoy/plugin-retry @convoy/plugin-auth
+yarn add @convoyr/plugin-cache @convoyr/plugin-retry @convoyr/plugin-auth # or npm install @convoyr/plugin-cache @convoyr/plugin-retry @convoyr/plugin-auth
 ```
 
 3. Import the module and define plugins you want to use.
 
 ```ts
-import { ConvoyModule } from '@convoy/angular';
-import { createCachePlugin } from '@convoy/plugin-cache';
-import { createRetryPlugin } from '@convoy/plugin-retry';
-import { createRetryPlugin } from '@convoy/plugin-auth';
+import { ConvoyModule } from '@convoyr/angular';
+import { createCachePlugin } from '@convoyr/plugin-cache';
+import { createRetryPlugin } from '@convoyr/plugin-retry';
+import { createRetryPlugin } from '@convoyr/plugin-auth';
 import { AuthService } from './auth/auth.service';
 
 @NgModule({
@@ -93,11 +93,11 @@ Checkout the [demo app workspace](./apps/sandbox) for a concrete example.
 
 This project is a monorepo that includes the following packages.
 
-| Package                                     | Name         | Description                                                       | Size                                                                 |
-| ------------------------------------------- | ------------ | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [@convoy/plugin-auth](./libs/plugin-auth)   | Auth plugin  | Handle authentication                                             | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/plugin-auth)  |
-| [@convoy/plugin-cache](./libs/plugin-cache) | Cache plugin | Respond with cached results first then with fresh data when ready | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/plugin-cache) |
-| [@convoy/plugin-retry](./libs/plugin-retry) | Retry plugin | Retry failed requests with exponential backoff                    | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/plugin-retry) |
+| Package                                      | Name         | Description                                                       | Size                                                                  |
+| -------------------------------------------- | ------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [@convoyr/plugin-auth](./libs/plugin-auth)   | Auth plugin  | Handle authentication                                             | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/plugin-auth)  |
+| [@convoyr/plugin-cache](./libs/plugin-cache) | Cache plugin | Respond with cached results first then with fresh data when ready | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/plugin-cache) |
+| [@convoyr/plugin-retry](./libs/plugin-retry) | Retry plugin | Retry failed requests with exponential backoff                    | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/plugin-retry) |
 
 # Custom Plugins
 
@@ -183,7 +183,7 @@ The `handle` method lets you manipulate request and the response stream as well 
 Note that Convoy internally transforms the response to a stream using Observables. Here is an example using a literal `handler` object and returns a Promise based response:
 
 ```ts
-import { ConvoyPlugin, PluginHandler } from '@convoy/core';
+import { ConvoyPlugin, PluginHandler } from '@convoyr/core';
 import { LoggerHandler } from './handler';
 
 export function createLoggerPlugin(): ConvoyPlugin {
@@ -205,7 +205,7 @@ In this example the `handler` will be executed only if the URL includes `api.git
 The following example uses a class to implement the `PluginHandler` interface and an Observable for handling the response:
 
 ```ts
-import { PluginHandler, PluginHandlerArgs } from '@convoy/core';
+import { PluginHandler, PluginHandlerArgs } from '@convoyr/core';
 import { tap } from 'rxjs/operators';
 
 export class LoggerHandler implements PluginHandler {
@@ -252,7 +252,7 @@ Matchers are utils functions for conditional request handling.
 - _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
 
 ```ts
-import { matchOrigin, ConvoyPlugin } from '@convoy/core';
+import { matchOrigin, ConvoyPlugin } from '@convoyr/core';
 
 export function createLoggerPlugin(): ConvoyPlugin {
   return {
@@ -273,7 +273,7 @@ Combiners are used to compose with matchers.
 - _not:_ `not(predicate: RequestCondition) => RequestCondition`
 
 ```ts
-import { matchOrigin, matchMethod, and, ConvoyPlugin } from '@convoy/core';
+import { matchOrigin, matchMethod, and, ConvoyPlugin } from '@convoyr/core';
 
 export function createLoggerPlugin(): ConvoyPlugin {
   return {
@@ -293,10 +293,10 @@ Here only `GET` requests from `https://secure-origin.com` and `https://another-s
 
 This project is a monorepo that includes the following packages in addition to the [built-in plugins above](#built-in-plugins).
 
-| Name                              | Description    | Size                                                            |
-| --------------------------------- | -------------- | --------------------------------------------------------------- |
-| [@convoy/core](./libs/core)       | Core           | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/core)    |
-| [@convoy/angular](./libs/angular) | Angular module | ![cost](https://badgen.net/bundlephobia/minzip/@convoy/angular) |
+| Name                               | Description    | Size                                                             |
+| ---------------------------------- | -------------- | ---------------------------------------------------------------- |
+| [@convoyr/core](./libs/core)       | Core           | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/core)    |
+| [@convoyr/angular](./libs/angular) | Angular module | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/angular) |
 
 # Roadmap
 

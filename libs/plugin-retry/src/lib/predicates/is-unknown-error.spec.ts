@@ -1,4 +1,4 @@
-import { createResponse, ConvoyResponse } from '@convoy/core';
+import { createResponse, ConvoyResponse } from '@convoyr/core';
 import { isUnknownError } from './is-unknown-error';
 
 describe.each<[ConvoyResponse, boolean]>([

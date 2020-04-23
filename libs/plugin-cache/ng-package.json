@@ -4,7 +4,7 @@
   "lib": {
     "entryFile": "src/index.ts",
     "umdModuleIds": {
-      "@convoy/core": "@convoy/core",
+      "@convoyr/core": "@convoyr/core",
       "lru-cache": "LRU",
       "buffer": "buffer",
       "bytes": "bytes"

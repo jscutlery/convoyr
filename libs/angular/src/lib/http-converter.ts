@@ -10,7 +10,7 @@ import {
   ConvoyRequest,
   ConvoyResponse,
   HttpMethod,
-} from '@convoy/core';
+} from '@convoyr/core';
 
 export function fromNgClass(
   ngClass: HttpHeaders | HttpParams

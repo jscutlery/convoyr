@@ -4,7 +4,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { createSpyPlugin } from '@convoy/core/testing';
+import { createSpyPlugin } from '@convoyr/core/testing';
 import { _HTTP_EXT_CONFIG } from './convoy.interceptor';
 
 import { ConvoyModule } from './convoy.module';

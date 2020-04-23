@@ -1,4 +1,4 @@
-import { RequestCondition } from '@convoy/core';
+import { RequestCondition } from '@convoyr/core';
 
 import { AuthHandler, HandlerOptions } from './auth-handler';
 

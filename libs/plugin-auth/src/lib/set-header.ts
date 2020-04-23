@@ -1,4 +1,4 @@
-import { ConvoyRequest } from '@convoy/core';
+import { ConvoyRequest } from '@convoyr/core';
 
 export function setHeader({
   request,

@@ -1,4 +1,4 @@
-# @convoy/plugin-retry
+# @convoyr/plugin-retry
 
 > A retry plugin for [Convoy](https://github.com/jscutlery/convoy).
 
@@ -6,18 +6,18 @@ This plugin retries failed network requests using a configurable back-off strate
 
 ## Requirements
 
-The plugin requires `@convoy/core` and `@convoy/angular` to be installed.
+The plugin requires `@convoyr/core` and `@convoyr/angular` to be installed.
 
 ## Installation
 
 ```bash
-yarn add @convoy/plugin-retry
+yarn add @convoyr/plugin-retry
 ```
 
 or
 
 ```bash
-npm install @convoy/plugin-retry
+npm install @convoyr/plugin-retry
 ```
 
 ## Usage
@@ -25,8 +25,8 @@ npm install @convoy/plugin-retry
 The whole configuration object is optional.
 
 ```ts
-import { ConvoyModule } from '@convoy/angular';
-import { createRetryPlugin } from '@convoy/plugin-retry';
+import { ConvoyModule } from '@convoyr/angular';
+import { createRetryPlugin } from '@convoyr/plugin-retry';
 
 @NgModule({
   declarations: [AppComponent],
@@ -59,7 +59,7 @@ Here is an example passing a configuration object.
 Keep in mind that HTTP error is not emitted while the plugin is retrying. In the following example the HTTP error will be emitted after 10 retries, then the observable completes.
 
 ```ts
-import { MemoryStorage } from '@convoy/plugin-cache';
+import { MemoryStorage } from '@convoyr/plugin-cache';
 
 @NgModule({
   imports: [

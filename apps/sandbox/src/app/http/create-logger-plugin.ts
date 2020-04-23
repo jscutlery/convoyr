@@ -1,4 +1,4 @@
-import { ConvoyPlugin, and, matchMethod, matchOrigin } from '@convoy/core';
+import { ConvoyPlugin, and, matchMethod, matchOrigin } from '@convoyr/core';
 
 export function createLoggerPlugin(): ConvoyPlugin {
   return {

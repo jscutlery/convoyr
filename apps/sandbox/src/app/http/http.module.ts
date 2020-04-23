@@ -2,10 +2,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { ConvoyModule } from '@convoy/angular';
-import { createAuthPlugin } from '@convoy/plugin-auth';
-import { createCachePlugin } from '@convoy/plugin-cache';
-import { createRetryPlugin } from '@convoy/plugin-retry';
+import { ConvoyModule } from '@convoyr/angular';
+import { createAuthPlugin } from '@convoyr/plugin-auth';
+import { createCachePlugin } from '@convoyr/plugin-cache';
+import { createRetryPlugin } from '@convoyr/plugin-retry';
 
 import { AuthService } from '../auth/auth.service';
 import { createLoggerPlugin } from './create-logger-plugin';

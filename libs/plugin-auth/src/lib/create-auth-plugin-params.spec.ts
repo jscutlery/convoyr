@@ -1,5 +1,5 @@
 import { EMPTY, of } from 'rxjs';
-import { matchOrigin } from '@convoy/core';
+import { matchOrigin } from '@convoyr/core';
 
 import { AuthHandler } from './auth-handler';
 import { createAuthPlugin } from './create-auth-plugin';

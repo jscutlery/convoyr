@@ -1,4 +1,4 @@
-import { ConvoyResponse } from '@convoy/core';
+import { ConvoyResponse } from '@convoyr/core';
 
 export interface CacheEntry {
   createdAt: Date;

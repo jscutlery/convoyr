@@ -1,7 +1,7 @@
 /**
  * @hack relative import of `createSpyPlugin`:
- *   If we import `@convoy/core/testing`, it fails building the core library.
- *   Somehow, `convoy.spec.ts` is considered part of `@convoy/core` by ng-packagr and creates an import loop between core and core/testing.
+ *   If we import `@convoyr/core/testing`, it fails building the core library.
+ *   Somehow, `convoy.spec.ts` is considered part of `@convoyr/core` by ng-packagr and creates an import loop between core and core/testing.
  */
 import { createSpyPlugin } from '../../testing/src/index';
 import { of } from 'rxjs';

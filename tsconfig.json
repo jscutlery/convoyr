@@ -16,12 +16,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@convoy/angular": ["libs/angular/src/index.ts"],
-      "@convoy/core": ["libs/core/src/index.ts"],
-      "@convoy/core/testing": ["libs/core/testing/src/index.ts"],
-      "@convoy/plugin-auth": ["libs/plugin-auth/src/index.ts"],
-      "@convoy/plugin-cache": ["libs/plugin-cache/src/index.ts"],
-      "@convoy/plugin-retry": ["libs/plugin-retry/src/index.ts"]
+      "@convoyr/angular": ["libs/angular/src/index.ts"],
+      "@convoyr/core": ["libs/core/src/index.ts"],
+      "@convoyr/core/testing": ["libs/core/testing/src/index.ts"],
+      "@convoyr/plugin-auth": ["libs/plugin-auth/src/index.ts"],
+      "@convoyr/plugin-cache": ["libs/plugin-cache/src/index.ts"],
+      "@convoyr/plugin-retry": ["libs/plugin-retry/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

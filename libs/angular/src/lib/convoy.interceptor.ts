@@ -6,7 +6,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { Convoy, ConvoyPlugin } from '@convoy/core';
+import { Convoy, ConvoyPlugin } from '@convoyr/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 

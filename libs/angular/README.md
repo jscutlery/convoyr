@@ -1,4 +1,4 @@
-# @convoy/angular
+# @convoyr/angular
 
 This is part of the Convoy library.
 

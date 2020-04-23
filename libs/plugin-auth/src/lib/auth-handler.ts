@@ -1,4 +1,4 @@
-import { PluginHandler, PluginHandlerArgs } from '@convoy/core';
+import { PluginHandler, PluginHandlerArgs } from '@convoyr/core';
 import { defer, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 

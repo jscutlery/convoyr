@@ -5,7 +5,7 @@ import {
   HttpResponse,
   HttpSentEvent,
 } from '@angular/common/http';
-import { createRequest, createResponse, Convoy } from '@convoy/core';
+import { createRequest, createResponse, Convoy } from '@convoyr/core';
 import { EMPTY, of } from 'rxjs';
 
 import { ConvoyInterceptor } from './convoy.interceptor';

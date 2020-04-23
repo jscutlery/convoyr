@@ -1,5 +1,5 @@
 {
-  "name": "@convoy/plugin-cache",
+  "name": "@convoyr/plugin-cache",
   "version": "2.2.0",
   "license": "MIT",
   "private": false,
@@ -9,7 +9,7 @@
     "postpublish": "rm -r dist"
   },
   "peerDependencies": {
-    "@convoy/core": "^2.0.0",
+    "@convoyr/core": "^2.0.0",
     "rxjs": "^6.5.4"
   },
   "dependencies": {

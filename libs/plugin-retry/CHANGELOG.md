@@ -5,27 +5,23 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.2.0](https://github.com/jscutlery/convoy/compare/v2.1.1...v2.2.0) (2020-04-23)
 
-**Note:** Version bump only for package @convoy/plugin-retry
-
-
-
-
+**Note:** Version bump only for package @convoyr/plugin-retry
 
 ## [2.1.1](https://github.com/jscutlery/convoy/compare/v2.1.0...v2.1.1) (2020-04-16)
 
-**Note:** Version bump only for package @convoy/plugin-retry
+**Note:** Version bump only for package @convoyr/plugin-retry
 
 # [2.1.0](https://github.com/jscutlery/convoy/compare/v2.0.1...v2.1.0) (2020-04-11)
 
-**Note:** Version bump only for package @convoy/plugin-retry
+**Note:** Version bump only for package @convoyr/plugin-retry
 
 ## [2.0.2](https://github.com/jscutlery/convoy/compare/v2.0.1...v2.0.2) (2020-04-08)
 
-**Note:** Version bump only for package @convoy/plugin-retry
+**Note:** Version bump only for package @convoyr/plugin-retry
 
 ## [2.0.1](https://github.com/jscutlery/convoy/compare/v2.0.0...v2.0.1) (2020-04-07)
 
-**Note:** Version bump only for package @convoy/plugin-retry
+**Note:** Version bump only for package @convoyr/plugin-retry
 
 # [2.0.0](https://github.com/jscutlery/convoy/compare/v1.0.0...v2.0.0) (2020-04-01)
 
@@ -41,8 +37,8 @@ Co-authored-by: Edouard Bozon <bozonedouard@gmail.com>
 
 # [1.2.0](https://github.com/jscutlery/convoy/compare/v1.1.0...v1.2.0) (2020-03-31)
 
-**Note:** Version bump only for package @convoy/plugin-retry
+**Note:** Version bump only for package @convoyr/plugin-retry
 
 # [1.1.0](https://github.com/jscutlery/convoy/compare/v1.0.0...v1.1.0) (2020-01-14)
 
-**Note:** Version bump only for package @convoy/plugin-retry
+**Note:** Version bump only for package @convoyr/plugin-retry

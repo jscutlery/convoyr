@@ -4,7 +4,7 @@ import {
   ConvoyResponse,
   PluginHandler,
   ResponseArgs,
-} from '@convoy/core';
+} from '@convoyr/core';
 import { Observable, of } from 'rxjs';
 
 export function createPluginTester(

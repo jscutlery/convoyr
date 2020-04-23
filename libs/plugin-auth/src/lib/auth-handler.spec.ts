@@ -1,5 +1,5 @@
-import { createRequest, createResponse } from '@convoy/core';
-import { createPluginTester } from '@convoy/core/testing';
+import { createRequest, createResponse } from '@convoyr/core';
+import { createPluginTester } from '@convoyr/core/testing';
 import { concat, from, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';

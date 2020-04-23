@@ -1,4 +1,4 @@
-import { RequestCondition, ConvoyRequest } from '@convoy/core';
+import { RequestCondition, ConvoyRequest } from '@convoyr/core';
 
 import { CacheHandler, HandlerOptions } from './cache-handler';
 import { MemoryStorage } from './storages/memory-storage';

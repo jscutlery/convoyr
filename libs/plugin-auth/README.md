@@ -1,4 +1,4 @@
-# @convoy/plugin-auth
+# @convoyr/plugin-auth
 
 > A auth plugin for [Convoy](https://github.com/jscutlery/convoy).
 
@@ -14,25 +14,25 @@ This also helps using different tokens for different APIs in the same app.
 
 ## Requirements
 
-The plugin requires `@convoy/core` and `@convoy/angular` to be installed.
+The plugin requires `@convoyr/core` and `@convoyr/angular` to be installed.
 
 ## Installation
 
 ```bash
-yarn add @convoy/plugin-cache @convoy/core
+yarn add @convoyr/plugin-cache @convoyr/core
 ```
 
 or
 
 ```bash
-npm install @convoy/plugin-cache @convoy/core
+npm install @convoyr/plugin-cache @convoyr/core
 ```
 
 ## Usage
 
 ```ts
-import { ConvoyModule } from '@convoy/angular';
-import { createAuthPlugin } from '@convoy/plugin-auth';
+import { ConvoyModule } from '@convoyr/angular';
+import { createAuthPlugin } from '@convoyr/plugin-auth';
 
 @NgModule({
   declarations: [AppComponent],

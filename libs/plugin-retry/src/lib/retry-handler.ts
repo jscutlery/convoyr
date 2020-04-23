@@ -1,4 +1,8 @@
-import { ConvoyResponse, PluginHandler, PluginHandlerArgs } from '@convoy/core';
+import {
+  ConvoyResponse,
+  PluginHandler,
+  PluginHandlerArgs,
+} from '@convoyr/core';
 import { retryBackoff } from 'backoff-rxjs';
 import { Observable } from 'rxjs';
 import { RetryPredicate } from './predicates/retry-predicate';

@@ -1,4 +1,4 @@
-import { createRequest, ConvoyRequest, createResponse } from '@convoy/core';
+import { createRequest, ConvoyRequest, createResponse } from '@convoyr/core';
 import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
 

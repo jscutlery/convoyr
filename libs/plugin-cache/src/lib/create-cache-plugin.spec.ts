@@ -3,7 +3,7 @@ import {
   createResponse,
   ConvoyRequest,
   ConvoyResponse,
-} from '@convoy/core';
+} from '@convoyr/core';
 import { advanceTo, clear } from 'jest-date-mock';
 import { concat, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
