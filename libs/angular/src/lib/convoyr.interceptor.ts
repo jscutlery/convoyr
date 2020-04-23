@@ -29,7 +29,7 @@ export const _HTTP_EXT_CONFIG = new InjectionToken<{
 }>('Convoyr Config');
 
 @Injectable()
-export class ConvoyInterceptor implements HttpInterceptor {
+export class ConvoyrInterceptor implements HttpInterceptor {
   private _convoyr = new Convoyr(this._convoyConfig);
 
   constructor(

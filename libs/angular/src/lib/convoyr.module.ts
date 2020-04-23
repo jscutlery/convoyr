@@ -15,10 +15,10 @@ export type ConvoyModuleArgs =
     };
 
 @NgModule({})
-export class ConvoyModule {
-  static forRoot(args: ConvoyModuleArgs): ModuleWithProviders<ConvoyModule> {
+export class ConvoyrModule {
+  static forRoot(args: ConvoyModuleArgs): ModuleWithProviders<ConvoyrModule> {
     return {
-      ngModule: ConvoyModule,
+      ngModule: ConvoyrModule,
       providers: [
         {
           provide: _HTTP_EXT_CONFIG,

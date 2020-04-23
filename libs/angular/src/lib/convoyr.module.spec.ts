@@ -7,7 +7,7 @@ import { TestBed } from '@angular/core/testing';
 import { createSpyPlugin } from '@convoyr/core/testing';
 import { _HTTP_EXT_CONFIG } from './convoyr.interceptor';
 
-import { ConvoyModule } from './convoyr.module';
+import { ConvoyrModule } from './convoyr.module';
 
 describe('ConvoyModule', () => {
   let spyPlugin;
@@ -19,7 +19,7 @@ describe('ConvoyModule', () => {
       TestBed.configureTestingModule({
         imports: [
           HttpClientTestingModule,
-          ConvoyModule.forRoot({
+          ConvoyrModule.forRoot({
             plugins: [spyPlugin],
           }),
         ],
@@ -76,7 +76,7 @@ describe('ConvoyModule', () => {
       TestBed.configureTestingModule({
         imports: [
           HttpClientTestingModule,
-          ConvoyModule.forRoot({
+          ConvoyrModule.forRoot({
             config: () => ({
               plugins: [spyPlugin],
             }),
@@ -128,7 +128,7 @@ describe('ConvoyModule', () => {
         ],
         imports: [
           HttpClientTestingModule,
-          ConvoyModule.forRoot({
+          ConvoyrModule.forRoot({
             deps: [Service],
             config: configFn,
           }),
