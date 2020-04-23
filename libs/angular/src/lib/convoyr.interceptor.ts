@@ -17,7 +17,7 @@ import {
   toNgResponse,
 } from './http-converter';
 
-export interface ConvoyConfig {
+export interface ConvoyrConfig {
   plugins: ConvoyrPlugin[];
 }
 
@@ -34,7 +34,7 @@ export class ConvoyrInterceptor implements HttpInterceptor {
 
   constructor(
     @Inject(_HTTP_EXT_CONFIG)
-    private _convoyConfig: ConvoyConfig
+    private _convoyConfig: ConvoyrConfig
   ) {}
 
   intercept(

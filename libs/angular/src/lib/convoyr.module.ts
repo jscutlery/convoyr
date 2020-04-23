@@ -3,20 +3,20 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import {
   _HTTP_EXT_CONFIG,
-  ConvoyConfig,
-  ConvoyInterceptor,
+  ConvoyrConfig,
+  ConvoyrInterceptor,
 } from './convoyr.interceptor';
 
-export type ConvoyModuleArgs =
-  | ConvoyConfig
+export type ConvoyrModuleArgs =
+  | ConvoyrConfig
   | {
       deps?: unknown[];
-      config: (...args: unknown[]) => ConvoyConfig;
+      config: (...args: unknown[]) => ConvoyrConfig;
     };
 
 @NgModule({})
 export class ConvoyrModule {
-  static forRoot(args: ConvoyModuleArgs): ModuleWithProviders<ConvoyrModule> {
+  static forRoot(args: ConvoyrModuleArgs): ModuleWithProviders<ConvoyrModule> {
     return {
       ngModule: ConvoyrModule,
       providers: [
@@ -34,7 +34,7 @@ export class ConvoyrModule {
         {
           provide: HTTP_INTERCEPTORS,
           multi: true,
-          useClass: ConvoyInterceptor,
+          useClass: ConvoyrInterceptor,
         },
       ],
     };
