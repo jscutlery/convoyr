@@ -1,15 +1,15 @@
 <p align="center">
-  <img width="110" src="https://github.com/jscutlery/convoy/blob/master/logo.png?raw=true" alt="convoy logo" />
+  <img width="110" src="https://github.com/jscutlery/convoyr/blob/master/logo.png?raw=true" alt="convoyr logo" />
 </p>
 
 <div align="center">
-  <a href="https://github.com/jscutlery/convoy/actions" rel="nofollow">
-    <img src="https://github.com/jscutlery/convoy/workflows/Build%20&%20Test/badge.svg" />
+  <a href="https://github.com/jscutlery/convoyr/actions" rel="nofollow">
+    <img src="https://github.com/jscutlery/convoyr/workflows/Build%20&%20Test/badge.svg" />
   </a>
-  <a href="https://codecov.io/gh/jscutlery/convoy" rel="nofollow">
-    <img src="https://badgen.net/codecov/c/github/jscutlery/convoy" />
+  <a href="https://codecov.io/gh/jscutlery/convoyr" rel="nofollow">
+    <img src="https://badgen.net/codecov/c/github/jscutlery/convoyr" />
   </a>
-  <a href="https://github.com/jscutlery/convoy/blob/master/LICENSE" rel="nofollow">
+  <a href="https://github.com/jscutlery/convoyr/blob/master/LICENSE" rel="nofollow">
     <img src="https://badgen.net/npm/license/@convoyr/core">
   </a>
   <a href="https://www.npmjs.com/package/@convoyr/core" rel="nofollow">
@@ -25,13 +25,13 @@
 
 Enriching HTTP clients with capabilities related to **security**, **performance** or **resilience** is a common need but it is also an error-prone and sometimes complex task.
 
-🎯 **Convoy** has been built with one goal in mind: helping you focus on your apps' features instead of the transport layer's boilerplate and matters... and without any trade-off.
+🎯 **Convoyr** has been built with one goal in mind: helping you focus on your apps' features instead of the transport layer's boilerplate and matters... and without any trade-off.
 
-- 🅰️ **Convoy** is **Angular-ready** and makes [interceptors](https://angular.io/api/common/http/HttpInterceptor) implementation safe and easy,
-- ⚡️ **Convoy** is **fully reactive** and based on [RxJS](https://rxjs-dev.firebaseapp.com/),
-- 🔋 **Convoy** has **batteries included** as it comes with some useful plugins,
-- 📈 **Convoy** is **progressive** because you can start using it without having to rewrite all your HTTP calls,
-- 🧱 **Convoy** is **easily extendable** as you can create and share your own plugins.
+- 🅰️ **Convoyr** is **Angular-ready** and makes [interceptors](https://angular.io/api/common/http/HttpInterceptor) implementation safe and easy,
+- ⚡️ **Convoyr** is **fully reactive** and based on [RxJS](https://rxjs-dev.firebaseapp.com/),
+- 🔋 **Convoyr** has **batteries included** as it comes with some useful plugins,
+- 📈 **Convoyr** is **progressive** because you can start using it without having to rewrite all your HTTP calls,
+- 🧱 **Convoyr** is **easily extendable** as you can create and share your own plugins.
 
 # How It Works
 
@@ -180,7 +180,7 @@ The `handle` method lets you manipulate request and the response stream as well 
 - Promise based response,
 - Observable based response.
 
-Note that Convoy internally transforms the response to a stream using Observables. Here is an example using a literal `handler` object and returns a Promise based response:
+Note that Convoyr internally transforms the response to a stream using Observables. Here is an example using a literal `handler` object and returns a Promise based response:
 
 ```ts
 import { ConvoyPlugin, PluginHandler } from '@convoyr/core';
@@ -200,7 +200,7 @@ export function createLoggerPlugin(): ConvoyPlugin {
 }
 ```
 
-In this example the `handler` will be executed only if the URL includes `api.github.com`. Note that the `shouldHandleRequest` function is optional. Learn more about [conditional handling](https://github.com/jscutlery/convoy#conditional-handling).
+In this example the `handler` will be executed only if the URL includes `api.github.com`. Note that the `shouldHandleRequest` function is optional. Learn more about [conditional handling](https://github.com/jscutlery/convoyr#conditional-handling).
 
 The following example uses a class to implement the `PluginHandler` interface and an Observable for handling the response:
 
@@ -242,7 +242,7 @@ export function createLoggerPlugin(): ConvoyPlugin {
 
 Here only `GET` requests with URL including `api.github.com` will be handled by the plugin.
 
-Note that the `shouldHandleRequest` function is optional, but if not provided Convoy will execute the plugin handler for **all outgoing requests**. For this reason it's better to provide the function and to be strict as possible. See the section below for handling exactly what you need using built-in matchers.
+Note that the `shouldHandleRequest` function is optional, but if not provided Convoyr will execute the plugin handler for **all outgoing requests**. For this reason it's better to provide the function and to be strict as possible. See the section below for handling exactly what you need using built-in matchers.
 
 ### Matchers
 
@@ -300,7 +300,7 @@ This project is a monorepo that includes the following packages in addition to t
 
 # Roadmap
 
-For incoming evolutions [see our board](https://github.com/jscutlery/convoy/projects/1).
+For incoming evolutions [see our board](https://github.com/jscutlery/convoyr/projects/1).
 
 # Changelog
 
