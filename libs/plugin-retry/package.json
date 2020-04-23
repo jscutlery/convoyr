@@ -5,7 +5,7 @@
   "private": false,
   "repository": "git@github.com:jscutlery/convoy.git",
   "scripts": {
-    "prepublishOnly": "cp -r ../../dist/libs/plugin-retry dist",
+    "prepublishOnly": "rm -rf dist && cp -r ../../dist/libs/plugin-retry dist",
     "postpublish": "rm -r dist"
   },
   "peerDependencies": {
