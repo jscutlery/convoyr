@@ -31,7 +31,7 @@ npm install @convoy/plugin-cache @convoy/core
 ## Usage
 
 ```ts
-import { HttpExtModule } from '@convoy/angular';
+import { ConvoyModule } from '@convoy/angular';
 import { createAuthPlugin } from '@convoy/plugin-auth';
 
 @NgModule({
@@ -39,7 +39,7 @@ import { createAuthPlugin } from '@convoy/plugin-auth';
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       deps: [AuthService],
       config: (authService: AuthService) =>
         createAuthPlugin({

@@ -1,4 +1,4 @@
-import { RequestCondition, HttpExtRequest } from '@convoy/core';
+import { RequestCondition, ConvoyRequest } from '@convoy/core';
 
 import { CacheHandler, HandlerOptions } from './cache-handler';
 import { MemoryStorage } from './storages/memory-storage';
@@ -10,7 +10,7 @@ export interface CachePluginOptions extends HandlerOptions {
 export const isGetMethodAndJsonResponseType = ({
   request,
 }: {
-  request: HttpExtRequest;
+  request: ConvoyRequest;
 }) => {
   return request.method === 'GET' && request.responseType === 'json';
 };

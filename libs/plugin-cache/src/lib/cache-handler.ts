@@ -1,7 +1,7 @@
 import {
   createResponse,
-  HttpExtRequest,
-  HttpExtResponse,
+  ConvoyRequest,
+  ConvoyResponse,
   PluginHandler,
   PluginHandlerArgs,
 } from '@convoy/core';
@@ -20,7 +20,7 @@ import {
   createCacheMetadata,
   createEmptyCacheMetadata,
 } from './cache-metadata';
-import { HttpExtCacheResponse, WithCacheMetadata } from './cache-response';
+import { ConvoyCacheResponse, WithCacheMetadata } from './cache-response';
 import { Storage } from './storages/storage';
 
 export interface HandlerOptions {
@@ -28,7 +28,7 @@ export interface HandlerOptions {
   storage: Storage;
 }
 
-export type CacheHandlerResponse = HttpExtResponse | HttpExtCacheResponse;
+export type CacheHandlerResponse = ConvoyResponse | ConvoyCacheResponse;
 
 export class CacheHandler implements PluginHandler {
   private _shouldAddCacheMetadata: boolean;
@@ -45,7 +45,7 @@ export class CacheHandler implements PluginHandler {
   }: PluginHandlerArgs): Observable<CacheHandlerResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
-    const fromNetwork$: Observable<HttpExtResponse> = next({
+    const fromNetwork$: Observable<ConvoyResponse> = next({
       request,
     }).pipe(
       mergeMap((response) => {
@@ -61,7 +61,7 @@ export class CacheHandler implements PluginHandler {
       })
     );
 
-    const fromCache$: Observable<HttpExtResponse> = defer(() =>
+    const fromCache$: Observable<ConvoyResponse> = defer(() =>
       this._load(request)
     ).pipe(
       map((cacheEntry) =>
@@ -94,8 +94,8 @@ export class CacheHandler implements PluginHandler {
 
   /* Store metadata belong cache. */
   private _store(
-    request: HttpExtRequest,
-    response: HttpExtResponse
+    request: ConvoyRequest,
+    response: ConvoyResponse
   ): Observable<void> {
     return defer(() => {
       const key = this._serializeCacheKey(request);
@@ -109,7 +109,7 @@ export class CacheHandler implements PluginHandler {
     });
   }
 
-  private _load(request: HttpExtRequest): Observable<CacheEntry> {
+  private _load(request: ConvoyRequest): Observable<CacheEntry> {
     return this._storage.get(this._serializeCacheKey(request)).pipe(
       mergeMap((rawCacheEntry) => {
         /* There's no entry. */
@@ -126,7 +126,7 @@ export class CacheHandler implements PluginHandler {
   }
 
   /* Create a unique key by request URI to retrieve cache later. */
-  private _serializeCacheKey(request: HttpExtRequest): string {
+  private _serializeCacheKey(request: ConvoyRequest): string {
     const { params } = request;
     const hasParams = Object.keys(params).length > 0;
 
@@ -141,10 +141,10 @@ export class CacheHandler implements PluginHandler {
     cacheMetadata,
     shouldAddCacheMetadata,
   }: {
-    response: HttpExtResponse;
+    response: ConvoyResponse;
     cacheMetadata: CacheMetadata;
     shouldAddCacheMetadata: boolean;
-  }): HttpExtResponse | HttpExtCacheResponse {
+  }): ConvoyResponse | ConvoyCacheResponse {
     const body = shouldAddCacheMetadata
       ? ({
           cacheMetadata,

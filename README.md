@@ -54,7 +54,7 @@ yarn add @convoy/plugin-cache @convoy/plugin-retry @convoy/plugin-auth # or npm 
 3. Import the module and define plugins you want to use.
 
 ```ts
-import { HttpExtModule } from '@convoy/angular';
+import { ConvoyModule } from '@convoy/angular';
 import { createCachePlugin } from '@convoy/plugin-cache';
 import { createRetryPlugin } from '@convoy/plugin-retry';
 import { createRetryPlugin } from '@convoy/plugin-auth';
@@ -65,7 +65,7 @@ import { AuthService } from './auth/auth.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       deps: [AuthService],
       config(authService: AuthService) {
         return {
@@ -118,7 +118,7 @@ const addHeaders = (headers) => ({
 
 @NgModule({
   imports: [
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       plugins: [
         {
           shouldHandleRequest: matchOrigin('https://github.com'),
@@ -136,7 +136,7 @@ export class AppModule {}
 ```ts
 @NgModule({
   imports: [
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       plugins: [
         {
           shouldHandleRequest: not(matchOrigin('https://github.com')),
@@ -157,10 +157,10 @@ export class AppModule {}
 
 ## Implementing Custom Plugins
 
-A plugin is an object that follows the `HttpExtPlugin` interface:
+A plugin is an object that follows the `ConvoyPlugin` interface:
 
 ```ts
-export interface HttpExtPlugin {
+export interface ConvoyPlugin {
   shouldHandleRequest?: RequestCondition;
   handler: PluginHandler;
 }
@@ -170,11 +170,11 @@ All the logic is hold by the `handler` object which follow the following interfa
 
 ```ts
 export interface PluginHandler {
-  handle({ request, next }: PluginHandlerArgs): SyncOrAsync<HttpExtResponse>;
+  handle({ request, next }: PluginHandlerArgs): SyncOrAsync<ConvoyResponse>;
 }
 ```
 
-The `handle` method lets you manipulate request and the response stream as well before passing it to the next plugin using the `next` function. The `SyncOrAsync<HttpExtResponse>` allows you to deal with:
+The `handle` method lets you manipulate request and the response stream as well before passing it to the next plugin using the `next` function. The `SyncOrAsync<ConvoyResponse>` allows you to deal with:
 
 - synchronous response,
 - Promise based response,
@@ -183,10 +183,10 @@ The `handle` method lets you manipulate request and the response stream as well 
 Note that Convoy internally transforms the response to a stream using Observables. Here is an example using a literal `handler` object and returns a Promise based response:
 
 ```ts
-import { HttpExtPlugin, PluginHandler } from '@convoy/core';
+import { ConvoyPlugin, PluginHandler } from '@convoy/core';
 import { LoggerHandler } from './handler';
 
-export function createLoggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): ConvoyPlugin {
   return {
     shouldHandleRequest: ({ request }) => request.url.includes('api.github.com')
     handler: {
@@ -218,7 +218,7 @@ export class LoggerHandler implements PluginHandler {
   }
 }
 
-export function createLoggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): ConvoyPlugin {
   return { handler: new LoggerHandler() };
 }
 ```
@@ -230,7 +230,7 @@ By piping the `next` function you can manipulate the response stream and leverag
 The `shouldHandleRequest` function checks for each outgoing request if the plugin handler should be executed:
 
 ```ts
-export function createLoggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): ConvoyPlugin {
   return {
     shouldHandleRequest: ({ request }) => {
       return request.method === 'GET' && request.url.includes('api.github.com');
@@ -252,9 +252,9 @@ Matchers are utils functions for conditional request handling.
 - _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
 
 ```ts
-import { matchOrigin, HttpExtPlugin } from '@convoy/core';
+import { matchOrigin, ConvoyPlugin } from '@convoy/core';
 
-export function createLoggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): ConvoyPlugin {
   return {
     shouldHandleRequest: matchOrigin('https://secure-origin.com'),
     handler: new LoggerHandler(),
@@ -273,9 +273,9 @@ Combiners are used to compose with matchers.
 - _not:_ `not(predicate: RequestCondition) => RequestCondition`
 
 ```ts
-import { matchOrigin, matchMethod, and, HttpExtPlugin } from '@convoy/core';
+import { matchOrigin, matchMethod, and, ConvoyPlugin } from '@convoy/core';
 
-export function createLoggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): ConvoyPlugin {
   return {
     shouldHandleRequest: and(
       matchMethod('GET'),

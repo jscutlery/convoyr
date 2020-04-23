@@ -1,6 +1,6 @@
-import { HttpExtPlugin, and, matchMethod, matchOrigin } from '@convoy/core';
+import { ConvoyPlugin, and, matchMethod, matchOrigin } from '@convoy/core';
 
-export function createLoggerPlugin(): HttpExtPlugin {
+export function createLoggerPlugin(): ConvoyPlugin {
   return {
     shouldHandleRequest: and(
       matchMethod('GET'),

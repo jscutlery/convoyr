@@ -1,4 +1,4 @@
-import { createResponse, HttpExtResponse } from '@convoy/core';
+import { createResponse } from '@convoy/core';
 import { advanceTo, clear } from 'jest-date-mock';
 
 import { createCacheEntry } from './cache-entry';

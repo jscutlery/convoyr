@@ -1,10 +1,10 @@
-import { HttpExtRequest } from '@convoy/core';
+import { ConvoyRequest } from '@convoy/core';
 
 /**
  * A plugin handle that just calls through the next plugin.
  */
 export function createSpyPlugin(
-  shouldHandleRequest: (request: HttpExtRequest) => boolean = () => true
+  shouldHandleRequest: (request: ConvoyRequest) => boolean = () => true
 ) {
   return {
     shouldHandleRequest: jest.fn(({ request }) => shouldHandleRequest(request)),

@@ -1,14 +1,14 @@
-import { HttpExtRequest } from '@convoy/core';
+import { ConvoyRequest } from '@convoy/core';
 
 export function setHeader({
   request,
   key,
   value,
 }: {
-  request: HttpExtRequest;
+  request: ConvoyRequest;
   key: string;
   value: string;
-}): HttpExtRequest {
+}): ConvoyRequest {
   return {
     ...request,
     headers: {

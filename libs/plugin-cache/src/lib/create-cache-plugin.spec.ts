@@ -1,8 +1,8 @@
 import {
   createRequest,
   createResponse,
-  HttpExtRequest,
-  HttpExtResponse,
+  ConvoyRequest,
+  ConvoyResponse,
 } from '@convoy/core';
 import { advanceTo, clear } from 'jest-date-mock';
 import { concat, of } from 'rxjs';
@@ -22,8 +22,8 @@ function createMemoryStorageSpy() {
 }
 
 describe('CachePlugin', () => {
-  let request: HttpExtRequest;
-  let response: HttpExtResponse;
+  let request: ConvoyRequest;
+  let response: ConvoyResponse;
 
   beforeEach(() => {
     request = createRequest({ url: 'https://ultimate-answer.com' });

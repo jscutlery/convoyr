@@ -25,7 +25,7 @@ npm install @convoy/plugin-retry
 The whole configuration object is optional.
 
 ```ts
-import { HttpExtModule } from '@convoy/angular';
+import { ConvoyModule } from '@convoy/angular';
 import { createRetryPlugin } from '@convoy/plugin-retry';
 
 @NgModule({
@@ -33,7 +33,7 @@ import { createRetryPlugin } from '@convoy/plugin-retry';
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       plugins: [createRetryPlugin()],
     }),
   ],
@@ -63,7 +63,7 @@ import { MemoryStorage } from '@convoy/plugin-cache';
 
 @NgModule({
   imports: [
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       plugins: [
         createRetryPlugin({
           initialIntervalMs: 500,

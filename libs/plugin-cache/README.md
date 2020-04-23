@@ -25,7 +25,7 @@ npm install @convoy/plugin-cache
 The whole configuration object is optional.
 
 ```ts
-import { HttpExtModule } from '@convoy/angular';
+import { ConvoyModule } from '@convoy/angular';
 import { createCachePlugin } from '@convoy/plugin-cache';
 
 @NgModule({
@@ -33,7 +33,7 @@ import { createCachePlugin } from '@convoy/plugin-cache';
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       plugins: [createCachePlugin()],
     }),
   ],
@@ -59,7 +59,7 @@ import { createCachePlugin, MemoryStorage } from '@convoy/plugin-cache';
 
 @NgModule({
   imports: [
-    HttpExtModule.forRoot({
+    ConvoyModule.forRoot({
       plugins: [
         createCachePlugin({
           addCacheMetadata: true,
@@ -115,7 +115,7 @@ Default's storage size of the `MemoryStorage` is 100 requests. Above this limit,
 `MemoryStorage` max size can be configured when initializing the storage and the cache plugin.
 
 ```ts
-HttpExtModule.forRoot({
+ConvoyModule.forRoot({
   plugins: [
     createCachePlugin({
       storage: new MemoryStorage({ maxSize: 2000 }),
@@ -127,7 +127,7 @@ HttpExtModule.forRoot({
 The `maxSize` can also be configured using human readable bytes format if a `string` is passed, for example:
 
 ```ts
-HttpExtModule.forRoot({
+ConvoyModule.forRoot({
   plugins: [
     createCachePlugin({
       storage: new MemoryStorage({ maxSize: '2000 b' }),

@@ -1,13 +1,13 @@
-import { HttpExtRequest } from './request';
+import { ConvoyRequest } from './request';
 import { NextFn } from './request-handler';
-import { HttpExtResponse } from './response';
+import { ConvoyResponse } from './response';
 import { SyncOrAsync } from './utils/from-sync-or-async';
 
 export interface PluginHandlerArgs {
-  request: HttpExtRequest;
+  request: ConvoyRequest;
   next: NextFn;
 }
 
 export interface PluginHandler {
-  handle({ request, next }: PluginHandlerArgs): SyncOrAsync<HttpExtResponse>;
+  handle({ request, next }: PluginHandlerArgs): SyncOrAsync<ConvoyResponse>;
 }

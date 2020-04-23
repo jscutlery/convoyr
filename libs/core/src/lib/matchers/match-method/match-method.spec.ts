@@ -1,4 +1,4 @@
-import { createRequest, HttpExtRequest, HttpMethod } from '../../request';
+import { createRequest, ConvoyRequest, HttpMethod } from '../../request';
 import { matchMethod } from './match-method';
 import { MatchMethodExpression } from './match-method-expression';
 
@@ -6,7 +6,7 @@ describe.each<[HttpMethod, MatchMethodExpression, boolean]>([
   ['GET', 'GET', true],
   ['GET', 'POST', false],
   ['GET', ['GET', 'PUT'], true],
-  ['GET', ['PUT', 'POST'], false]
+  ['GET', ['PUT', 'POST'], false],
 ])(
   'matchMethod with method: %p and matcher: %p => %p',
   (method, matchExpression, expected) => {
@@ -18,7 +18,7 @@ describe.each<[HttpMethod, MatchMethodExpression, boolean]>([
 );
 
 describe('matchMethod', () => {
-  let request: HttpExtRequest;
+  let request: ConvoyRequest;
 
   beforeEach(() => (request = createRequest({ url: 'https://test.com' })));
 

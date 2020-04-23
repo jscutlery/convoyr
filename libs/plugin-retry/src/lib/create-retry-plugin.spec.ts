@@ -1,11 +1,11 @@
-import { createRequest, HttpExtRequest, createResponse } from '@convoy/core';
+import { createRequest, ConvoyRequest, createResponse } from '@convoy/core';
 import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
 
 import { createRetryPlugin } from './create-retry-plugin';
 
 describe('RetryPlugin', () => {
-  let request: HttpExtRequest;
+  let request: ConvoyRequest;
 
   beforeEach(() => {
     request = createRequest({ url: 'https://ultimate-answer.com' });
