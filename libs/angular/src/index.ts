@@ -1,1 +1,1 @@
-export { ConvoyModule } from './lib/convoyr.module';
+export { ConvoyrModule } from './lib/convoyr.module';
