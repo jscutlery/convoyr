@@ -8,7 +8,7 @@ import {
 import { createRequest, createResponse, Convoyr } from '@convoyr/core';
 import { EMPTY, of } from 'rxjs';
 
-import { ConvoyInterceptor } from './convoyr.interceptor';
+import { ConvoyrInterceptor } from './convoyr.interceptor';
 
 function asMock<TReturn, TArgs extends any[]>(
   value: (...TArgs) => TReturn
@@ -16,13 +16,13 @@ function asMock<TReturn, TArgs extends any[]>(
   return value as jest.Mock<TReturn, TArgs>;
 }
 
-describe('ConvoyInterceptor', () => {
+describe('ConvoyrInterceptor', () => {
   let convoyr: Convoyr;
-  let interceptor: ConvoyInterceptor;
+  let interceptor: ConvoyrInterceptor;
   let next: HttpHandler;
 
   beforeEach(() => {
-    interceptor = new ConvoyInterceptor({ plugins: [] });
+    interceptor = new ConvoyrInterceptor({ plugins: [] });
 
     convoyr = interceptor['_convoy'];
 

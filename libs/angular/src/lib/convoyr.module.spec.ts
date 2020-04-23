@@ -9,7 +9,7 @@ import { _HTTP_EXT_CONFIG } from './convoyr.interceptor';
 
 import { ConvoyrModule } from './convoyr.module';
 
-describe('ConvoyModule', () => {
+describe('ConvoyrModule', () => {
   let spyPlugin;
 
   describe('with config', () => {

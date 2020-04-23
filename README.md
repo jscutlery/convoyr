@@ -54,7 +54,7 @@ yarn add @convoyr/plugin-cache @convoyr/plugin-retry @convoyr/plugin-auth # or n
 3. Import the module and define plugins you want to use.
 
 ```ts
-import { ConvoyModule } from '@convoyr/angular';
+import { ConvoyrModule } from '@convoyr/angular';
 import { createCachePlugin } from '@convoyr/plugin-cache';
 import { createRetryPlugin } from '@convoyr/plugin-retry';
 import { createRetryPlugin } from '@convoyr/plugin-auth';
@@ -65,7 +65,7 @@ import { AuthService } from './auth/auth.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    ConvoyModule.forRoot({
+    ConvoyrModule.forRoot({
       deps: [AuthService],
       config(authService: AuthService) {
         return {
@@ -118,7 +118,7 @@ const addHeaders = (headers) => ({
 
 @NgModule({
   imports: [
-    ConvoyModule.forRoot({
+    ConvoyrModule.forRoot({
       plugins: [
         {
           shouldHandleRequest: matchOrigin('https://github.com'),
@@ -136,7 +136,7 @@ export class AppModule {}
 ```ts
 @NgModule({
   imports: [
-    ConvoyModule.forRoot({
+    ConvoyrModule.forRoot({
       plugins: [
         {
           shouldHandleRequest: not(matchOrigin('https://github.com')),
