@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/jscutlery/convoy/compare/v2.1.1...v2.2.0) (2020-04-23)
+
+**Note:** Version bump only for package @convoy/plugin-auth
+
+
+
+
+
 ## [2.1.1](https://github.com/jscutlery/convoy/compare/v2.1.0...v2.1.1) (2020-04-16)
 
 **Note:** Version bump only for package @convoy/plugin-auth

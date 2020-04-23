@@ -1,8 +1,10 @@
 {
-  "version": "2.1.1",
+  "version": "2.2.0",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "packages": ["libs/*"],
+  "packages": [
+    "libs/*"
+  ],
   "command": {
     "version": {
       "conventionalCommits": true,

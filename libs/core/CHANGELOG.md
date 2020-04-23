@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/jscutlery/convoy/compare/v2.1.1...v2.2.0) (2020-04-23)
+
+
+### Features
+
+* **core:** ✅ add `not` operator ([1375107](https://github.com/jscutlery/convoy/commit/1375107e16852f2b896872254af55be5e9174fc3))
+* **core:** ✅ handle async conditions in `and` operator ([d0574a0](https://github.com/jscutlery/convoy/commit/d0574a0074685841bbd778c1cad2193673b3b40e))
+* **core:** ✅ handle async conditions in `or` operator ([172b321](https://github.com/jscutlery/convoy/commit/172b32116249d8a0de01d541c4ded4eae10199b8))
+
+
+
+
+
 ## [2.1.1](https://github.com/jscutlery/convoy/compare/v2.1.0...v2.1.1) (2020-04-16)
 
 **Note:** Version bump only for package @convoy/core

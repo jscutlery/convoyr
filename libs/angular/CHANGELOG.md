@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/jscutlery/convoy/compare/v2.1.1...v2.2.0) (2020-04-23)
+
+
+### Bug Fixes
+
+* 📦 update angular monorepo to v9.1.3 ([fb3a984](https://github.com/jscutlery/convoy/commit/fb3a984655ebbb0df68b43d32efcd57bc952a615))
+
+
+
+
+
 ## [2.1.1](https://github.com/jscutlery/convoy/compare/v2.1.0...v2.1.1) (2020-04-16)
 
 ### Bug Fixes
