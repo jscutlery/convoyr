@@ -7,7 +7,7 @@ import {
 import {
   createRequest,
   createResponse,
-  ConvoyRequest,
+  ConvoyrRequest,
   ConvoyrResponse,
   HttpMethod,
 } from '@convoyr/core';
@@ -22,7 +22,7 @@ export function fromNgClass(
 
 export function fromNgRequest(
   request: HttpRequest<unknown>
-): ConvoyRequest<unknown> {
+): ConvoyrRequest<unknown> {
   return createRequest({
     url: request.url,
     method: request.method as HttpMethod,
@@ -34,7 +34,7 @@ export function fromNgRequest(
 }
 
 export function toNgRequest(
-  request: ConvoyRequest<unknown>
+  request: ConvoyrRequest<unknown>
 ): HttpRequest<unknown> {
   const init = {
     headers: new HttpHeaders(request.headers),

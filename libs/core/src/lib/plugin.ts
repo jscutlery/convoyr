@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
 
-import { ConvoyRequest } from './request';
+import { ConvoyrRequest } from './request';
 import { PluginHandler } from './handler';
 
 export type RequestCondition = ({
   request,
 }: {
-  request: ConvoyRequest;
+  request: ConvoyrRequest;
 }) => boolean | Promise<boolean> | Observable<boolean>;
 
 export interface ConvoyrPlugin {

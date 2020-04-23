@@ -1,4 +1,4 @@
-import { createRequest, ConvoyRequest, HttpMethod } from '../../request';
+import { createRequest, ConvoyrRequest, HttpMethod } from '../../request';
 import { matchMethod } from './match-method';
 import { MatchMethodExpression } from './match-method-expression';
 
@@ -18,7 +18,7 @@ describe.each<[HttpMethod, MatchMethodExpression, boolean]>([
 );
 
 describe('matchMethod', () => {
-  let request: ConvoyRequest;
+  let request: ConvoyrRequest;
 
   beforeEach(() => (request = createRequest({ url: 'https://test.com' })));
 

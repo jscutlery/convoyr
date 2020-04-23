@@ -1,11 +1,11 @@
-import { createRequest, ConvoyRequest, createResponse } from '@convoyr/core';
+import { createRequest, ConvoyrRequest, createResponse } from '@convoyr/core';
 import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
 
 import { createRetryPlugin } from './create-retry-plugin';
 
 describe('RetryPlugin', () => {
-  let request: ConvoyRequest;
+  let request: ConvoyrRequest;
 
   beforeEach(() => {
     request = createRequest({ url: 'https://ultimate-answer.com' });

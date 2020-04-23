@@ -1,4 +1,4 @@
-import { createRequest, ConvoyRequest } from '../../request';
+import { createRequest, ConvoyrRequest } from '../../request';
 import { matchOrigin } from './match-origin';
 import { OriginMatchExpression } from './origin-match-expression';
 
@@ -47,7 +47,7 @@ describe.each<[string, boolean]>([
 );
 
 describe('matchOrigin', () => {
-  let request: ConvoyRequest;
+  let request: ConvoyrRequest;
 
   beforeEach(() => (request = createRequest({ url: 'https://test.com' })));
 

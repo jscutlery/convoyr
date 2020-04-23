@@ -1,6 +1,6 @@
 import {
   createResponse,
-  ConvoyRequest,
+  ConvoyrRequest,
   ConvoyrResponse,
   PluginHandler,
   ResponseArgs,
@@ -22,7 +22,7 @@ export function createPluginTester(
 
   return {
     next,
-    handle({ request }: { request: ConvoyRequest }) {
+    handle({ request }: { request: ConvoyrRequest }) {
       return handler.handle({ request, next }) as Observable<ConvoyrResponse>;
     },
   };

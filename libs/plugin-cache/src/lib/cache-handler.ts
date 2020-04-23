@@ -1,6 +1,6 @@
 import {
   createResponse,
-  ConvoyRequest,
+  ConvoyrRequest,
   ConvoyrResponse,
   PluginHandler,
   PluginHandlerArgs,
@@ -94,7 +94,7 @@ export class CacheHandler implements PluginHandler {
 
   /* Store metadata belong cache. */
   private _store(
-    request: ConvoyRequest,
+    request: ConvoyrRequest,
     response: ConvoyrResponse
   ): Observable<void> {
     return defer(() => {
@@ -109,7 +109,7 @@ export class CacheHandler implements PluginHandler {
     });
   }
 
-  private _load(request: ConvoyRequest): Observable<CacheEntry> {
+  private _load(request: ConvoyrRequest): Observable<CacheEntry> {
     return this._storage.get(this._serializeCacheKey(request)).pipe(
       mergeMap((rawCacheEntry) => {
         /* There's no entry. */
@@ -126,7 +126,7 @@ export class CacheHandler implements PluginHandler {
   }
 
   /* Create a unique key by request URI to retrieve cache later. */
-  private _serializeCacheKey(request: ConvoyRequest): string {
+  private _serializeCacheKey(request: ConvoyrRequest): string {
     const { params } = request;
     const hasParams = Object.keys(params).length > 0;
 

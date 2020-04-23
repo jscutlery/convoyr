@@ -11,7 +11,7 @@ export type HttpMethod =
   | 'PATCH'
   | 'DELETE';
 
-export interface ConvoyRequest<TBody = unknown> {
+export interface ConvoyrRequest<TBody = unknown> {
   readonly url: string;
   readonly method: HttpMethod;
   readonly body: TBody | null;
@@ -21,12 +21,12 @@ export interface ConvoyRequest<TBody = unknown> {
 }
 
 export type RequestArgs<TBody> = { url: string } & Partial<
-  ConvoyRequest<TBody>
+  ConvoyrRequest<TBody>
 >;
 
 export function createRequest<TBody>(
   request: RequestArgs<TBody>
-): ConvoyRequest {
+): ConvoyrRequest {
   return {
     url: request.url,
     method: request.method || 'GET',

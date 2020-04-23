@@ -2,7 +2,7 @@ import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { ConvoyrPlugin } from './plugin';
-import { ConvoyRequest } from './request';
+import { ConvoyrRequest } from './request';
 import { NextFn } from './request-handler';
 import { ConvoyrResponse } from './response';
 import { throwIfInvalidPluginCondition } from './throw-invalid-plugin-condition';
@@ -13,14 +13,14 @@ export function invalidHandleRequestConditionError() {
   return new Error('"shouldHandleRequest" should be a function.');
 }
 
-export interface ConvoyConfig {
+export interface ConvoyrConfig {
   plugins: ConvoyrPlugin[];
 }
 
 export class Convoyr {
   private _plugins: ConvoyrPlugin[];
 
-  constructor({ plugins }: ConvoyConfig) {
+  constructor({ plugins }: ConvoyrConfig) {
     this._plugins = plugins;
   }
 
@@ -28,7 +28,7 @@ export class Convoyr {
     request,
     httpHandler,
   }: {
-    request: ConvoyRequest;
+    request: ConvoyrRequest;
     httpHandler: NextFn;
   }): Observable<ConvoyrResponse> {
     return this._handle({
@@ -43,7 +43,7 @@ export class Convoyr {
     plugins,
     httpHandler,
   }: {
-    request: ConvoyRequest;
+    request: ConvoyrRequest;
     plugins: ConvoyrPlugin[];
     httpHandler: NextFn;
   }): Observable<ConvoyrResponse> {
@@ -88,7 +88,7 @@ export class Convoyr {
     request,
     plugin,
   }: {
-    request: ConvoyRequest;
+    request: ConvoyrRequest;
     plugin: ConvoyrPlugin;
   }): Observable<boolean> {
     if (

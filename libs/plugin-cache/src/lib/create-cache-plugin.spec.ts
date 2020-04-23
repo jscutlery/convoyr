@@ -1,7 +1,7 @@
 import {
   createRequest,
   createResponse,
-  ConvoyRequest,
+  ConvoyrRequest,
   ConvoyrResponse,
 } from '@convoyr/core';
 import { advanceTo, clear } from 'jest-date-mock';
@@ -22,7 +22,7 @@ function createMemoryStorageSpy() {
 }
 
 describe('CachePlugin', () => {
-  let request: ConvoyRequest;
+  let request: ConvoyrRequest;
   let response: ConvoyrResponse;
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
-import { ConvoyRequest } from '@convoyr/core';
+import { ConvoyrRequest } from '@convoyr/core';
 
 import { fromNgRequest, toNgRequest } from './http-converter';
 
@@ -38,7 +38,7 @@ describe('fromNgRequest', () => {
 
 describe('toNgRequest', () => {
   it('should convert Request with body to HttpRequest', () => {
-    const request: ConvoyRequest = {
+    const request: ConvoyrRequest = {
       url: 'https://presidents.com',
       method: 'PUT',
       body: { data: { name: 'Jacques Chirac' } },
@@ -59,7 +59,7 @@ describe('toNgRequest', () => {
   });
 
   it('should convert Request without body to HttpRequest', () => {
-    const request: ConvoyRequest = {
+    const request: ConvoyrRequest = {
       url: 'https://test.com',
       method: 'GET',
       body: null,
