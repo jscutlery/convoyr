@@ -1,3 +1,3 @@
-import { ConvoyResponse } from '@convoyr/core';
+import { ConvoyrResponse } from '@convoyr/core';
 
-export type OnUnauthorized = (response: ConvoyResponse) => void;
+export type OnUnauthorized = (response: ConvoyrResponse) => void;

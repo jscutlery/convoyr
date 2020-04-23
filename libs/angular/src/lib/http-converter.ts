@@ -8,7 +8,7 @@ import {
   createRequest,
   createResponse,
   ConvoyRequest,
-  ConvoyResponse,
+  ConvoyrResponse,
   HttpMethod,
 } from '@convoyr/core';
 
@@ -51,7 +51,7 @@ export function toNgRequest(
 
 export function fromNgResponse(
   ngResponse: HttpResponse<unknown>
-): ConvoyResponse<unknown> {
+): ConvoyrResponse<unknown> {
   return createResponse({
     body: ngResponse.body,
     headers: fromNgClass(ngResponse.headers),
@@ -61,7 +61,7 @@ export function fromNgResponse(
 }
 
 export function toNgResponse(
-  response: ConvoyResponse<unknown>
+  response: ConvoyrResponse<unknown>
 ): HttpResponse<unknown> {
   return new HttpResponse({
     body: response.body,

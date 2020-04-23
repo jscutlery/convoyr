@@ -1,5 +1,7 @@
 import { Observable } from 'rxjs';
 
-import { ConvoyResponse } from './response';
+import { ConvoyrResponse } from './response';
 
-export type NextFn = ({ request: ConvoyRequest }) => Observable<ConvoyResponse>;
+export type NextFn = ({
+  request: ConvoyRequest,
+}) => Observable<ConvoyrResponse>;

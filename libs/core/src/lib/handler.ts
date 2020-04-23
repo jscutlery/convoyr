@@ -1,6 +1,6 @@
 import { ConvoyRequest } from './request';
 import { NextFn } from './request-handler';
-import { ConvoyResponse } from './response';
+import { ConvoyrResponse } from './response';
 import { SyncOrAsync } from './utils/from-sync-or-async';
 
 export interface PluginHandlerArgs {
@@ -9,5 +9,5 @@ export interface PluginHandlerArgs {
 }
 
 export interface PluginHandler {
-  handle({ request, next }: PluginHandlerArgs): SyncOrAsync<ConvoyResponse>;
+  handle({ request, next }: PluginHandlerArgs): SyncOrAsync<ConvoyrResponse>;
 }

@@ -1,7 +1,7 @@
 import {
   createResponse,
   ConvoyRequest,
-  ConvoyResponse,
+  ConvoyrResponse,
   PluginHandler,
   ResponseArgs,
 } from '@convoyr/core';
@@ -23,7 +23,7 @@ export function createPluginTester(
   return {
     next,
     handle({ request }: { request: ConvoyRequest }) {
-      return handler.handle({ request, next }) as Observable<ConvoyResponse>;
+      return handler.handle({ request, next }) as Observable<ConvoyrResponse>;
     },
   };
 }

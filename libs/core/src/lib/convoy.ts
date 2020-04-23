@@ -4,7 +4,7 @@ import { mergeMap } from 'rxjs/operators';
 import { ConvoyPlugin } from './plugin';
 import { ConvoyRequest } from './request';
 import { NextFn } from './request-handler';
-import { ConvoyResponse } from './response';
+import { ConvoyrResponse } from './response';
 import { throwIfInvalidPluginCondition } from './throw-invalid-plugin-condition';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
 import { isFunction } from './utils/is-function';
@@ -30,7 +30,7 @@ export class Convoyr {
   }: {
     request: ConvoyRequest;
     httpHandler: NextFn;
-  }): Observable<ConvoyResponse> {
+  }): Observable<ConvoyrResponse> {
     return this._handle({
       request,
       plugins: this._plugins,
@@ -46,7 +46,7 @@ export class Convoyr {
     request: ConvoyRequest;
     plugins: ConvoyPlugin[];
     httpHandler: NextFn;
-  }): Observable<ConvoyResponse> {
+  }): Observable<ConvoyrResponse> {
     if (plugins.length === 0) {
       return httpHandler({ request });
     }

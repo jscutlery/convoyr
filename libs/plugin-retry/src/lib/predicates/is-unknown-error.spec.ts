@@ -1,7 +1,7 @@
-import { createResponse, ConvoyResponse } from '@convoyr/core';
+import { createResponse, ConvoyrResponse } from '@convoyr/core';
 import { isUnknownError } from './is-unknown-error';
 
-describe.each<[ConvoyResponse, boolean]>([
+describe.each<[ConvoyrResponse, boolean]>([
   [
     createResponse({
       status: 0,

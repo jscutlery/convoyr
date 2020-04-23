@@ -1,13 +1,13 @@
-import { ConvoyResponse } from '@convoyr/core';
+import { ConvoyrResponse } from '@convoyr/core';
 
 export interface CacheEntry {
   createdAt: Date;
-  response: ConvoyResponse;
+  response: ConvoyrResponse;
 }
 
 export interface CacheEntryArgs {
   createdAt: string | Date;
-  response: ConvoyResponse;
+  response: ConvoyrResponse;
 }
 
 export function createCacheEntry(cacheEntry: CacheEntryArgs): CacheEntry {

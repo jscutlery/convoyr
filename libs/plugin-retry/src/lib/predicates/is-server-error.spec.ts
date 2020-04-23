@@ -1,8 +1,8 @@
-import { createResponse, ConvoyResponse } from '@convoyr/core';
+import { createResponse, ConvoyrResponse } from '@convoyr/core';
 
 import { isServerError } from './is-server-error';
 
-describe.each<[ConvoyResponse, boolean]>([
+describe.each<[ConvoyrResponse, boolean]>([
   [
     createResponse({
       status: 500,

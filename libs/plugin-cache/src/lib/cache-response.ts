@@ -1,4 +1,4 @@
-import { ConvoyResponse } from '@convoyr/core';
+import { ConvoyrResponse } from '@convoyr/core';
 import { CacheMetadata } from './cache-metadata';
 
 export interface WithCacheMetadata<TData = unknown> {
@@ -6,6 +6,6 @@ export interface WithCacheMetadata<TData = unknown> {
   data: TData;
 }
 
-export type ConvoyCacheResponse<TData = unknown> = ConvoyResponse<
+export type ConvoyCacheResponse<TData = unknown> = ConvoyrResponse<
   WithCacheMetadata<TData>
 >;

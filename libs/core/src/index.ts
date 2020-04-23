@@ -4,4 +4,4 @@ export { matchOrigin, matchMethod, or, and, not } from './lib/matchers';
 export { Convoyr, ConvoyConfig } from './lib/convoyr';
 export { NextFn } from './lib/request-handler';
 export { ConvoyRequest, createRequest, HttpMethod } from './lib/request';
-export { ConvoyResponse, createResponse, ResponseArgs } from './lib/response';
+export { ConvoyrResponse, createResponse, ResponseArgs } from './lib/response';

@@ -1,3 +1,3 @@
-import { ConvoyResponse } from '@convoyr/core';
+import { ConvoyrResponse } from '@convoyr/core';
 
-export type RetryPredicate = (response: ConvoyResponse) => boolean;
+export type RetryPredicate = (response: ConvoyrResponse) => boolean;

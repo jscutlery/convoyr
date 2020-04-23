@@ -2,7 +2,7 @@ import {
   createRequest,
   createResponse,
   ConvoyRequest,
-  ConvoyResponse,
+  ConvoyrResponse,
 } from '@convoyr/core';
 import { advanceTo, clear } from 'jest-date-mock';
 import { concat, of } from 'rxjs';
@@ -23,7 +23,7 @@ function createMemoryStorageSpy() {
 
 describe('CachePlugin', () => {
   let request: ConvoyRequest;
-  let response: ConvoyResponse;
+  let response: ConvoyrResponse;
 
   beforeEach(() => {
     request = createRequest({ url: 'https://ultimate-answer.com' });

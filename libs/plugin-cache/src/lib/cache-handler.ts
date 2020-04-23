@@ -1,7 +1,7 @@
 import {
   createResponse,
   ConvoyRequest,
-  ConvoyResponse,
+  ConvoyrResponse,
   PluginHandler,
   PluginHandlerArgs,
 } from '@convoyr/core';
@@ -28,7 +28,7 @@ export interface HandlerOptions {
   storage: Storage;
 }
 
-export type CacheHandlerResponse = ConvoyResponse | ConvoyCacheResponse;
+export type CacheHandlerResponse = ConvoyrResponse | ConvoyCacheResponse;
 
 export class CacheHandler implements PluginHandler {
   private _shouldAddCacheMetadata: boolean;
@@ -45,7 +45,7 @@ export class CacheHandler implements PluginHandler {
   }: PluginHandlerArgs): Observable<CacheHandlerResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
-    const fromNetwork$: Observable<ConvoyResponse> = next({
+    const fromNetwork$: Observable<ConvoyrResponse> = next({
       request,
     }).pipe(
       mergeMap((response) => {
@@ -61,7 +61,7 @@ export class CacheHandler implements PluginHandler {
       })
     );
 
-    const fromCache$: Observable<ConvoyResponse> = defer(() =>
+    const fromCache$: Observable<ConvoyrResponse> = defer(() =>
       this._load(request)
     ).pipe(
       map((cacheEntry) =>
@@ -95,7 +95,7 @@ export class CacheHandler implements PluginHandler {
   /* Store metadata belong cache. */
   private _store(
     request: ConvoyRequest,
-    response: ConvoyResponse
+    response: ConvoyrResponse
   ): Observable<void> {
     return defer(() => {
       const key = this._serializeCacheKey(request);
@@ -141,10 +141,10 @@ export class CacheHandler implements PluginHandler {
     cacheMetadata,
     shouldAddCacheMetadata,
   }: {
-    response: ConvoyResponse;
+    response: ConvoyrResponse;
     cacheMetadata: CacheMetadata;
     shouldAddCacheMetadata: boolean;
-  }): ConvoyResponse | ConvoyCacheResponse {
+  }): ConvoyrResponse | ConvoyCacheResponse {
     const body = shouldAddCacheMetadata
       ? ({
           cacheMetadata,

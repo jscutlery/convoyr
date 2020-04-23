@@ -1,5 +1,5 @@
 import {
-  ConvoyResponse,
+  ConvoyrResponse,
   PluginHandler,
   PluginHandlerArgs,
 } from '@convoyr/core';
@@ -38,7 +38,7 @@ export class RetryHandler implements PluginHandler {
     this._shouldRetry = shouldRetry;
   }
 
-  handle({ request, next }: PluginHandlerArgs): Observable<ConvoyResponse> {
+  handle({ request, next }: PluginHandlerArgs): Observable<ConvoyrResponse> {
     return next({ request }).pipe(
       retryBackoff({
         initialInterval: this._initialInterval,
