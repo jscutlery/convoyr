@@ -10,4 +10,4 @@ execSync(
 );
 
 /* Publish to NPM */
-execSync('lerna publish --dist-tag latest --yes');
+execSync('lerna publish from-package --dist-tag latest --yes');
