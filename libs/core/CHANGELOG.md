@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/jscutlery/convoyr/compare/v2.2.0...v3.0.0) (2020-04-24)
+
+
+### Features
+
+* ✅ `NextFn` to `NextHandler` object ([530cb97](https://github.com/jscutlery/convoyr/commit/530cb97dab4404bfc9e2ad5b035a855a73b95a39))
+
+
+### BREAKING CHANGES
+
+* The `NextFn` type used for calling the next plugin and
+the final HTTP handler is removed in favor of an object following the `NextHandler` interface.
+
+
+
+
+
 # [2.2.0](https://github.com/jscutlery/convoyr/compare/v2.1.1...v2.2.0) (2020-04-23)
 
 ### Features
