@@ -1,11 +1,8 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ConvoyrConfig } from '@convoyr/core';
 
-import {
-  _HTTP_EXT_CONFIG,
-  ConvoyrConfig,
-  ConvoyrInterceptor,
-} from './convoyr.interceptor';
+import { _CONVOYR_CONFIG, ConvoyrInterceptor } from './convoyr.interceptor';
 
 export type ConvoyrModuleArgs =
   | ConvoyrConfig
@@ -21,7 +18,7 @@ export class ConvoyrModule {
       ngModule: ConvoyrModule,
       providers: [
         {
-          provide: _HTTP_EXT_CONFIG,
+          provide: _CONVOYR_CONFIG,
           ...('config' in args
             ? {
                 deps: args.deps,

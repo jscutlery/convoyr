@@ -5,8 +5,8 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { createSpyPlugin } from '@convoyr/core/testing';
-import { _HTTP_EXT_CONFIG } from './convoyr.interceptor';
 
+import { _CONVOYR_CONFIG } from './convoyr.interceptor';
 import { ConvoyrModule } from './convoyr.module';
 
 describe('ConvoyrModule', () => {
@@ -141,7 +141,7 @@ describe('ConvoyrModule', () => {
       configFn.mockReturnValue(config);
 
       /* Injecting config triggers the config factory. */
-      expect(TestBed.inject(_HTTP_EXT_CONFIG)).toEqual(config);
+      expect(TestBed.inject(_CONVOYR_CONFIG)).toEqual(config);
 
       expect(configFn).toHaveBeenCalledTimes(1);
       expect(configFn).toHaveBeenCalledWith(service);

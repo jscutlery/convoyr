@@ -43,8 +43,8 @@ describe('ConvoyrInterceptor', () => {
     interceptor.intercept(ngRequest, next);
   });
 
-  it('should convert Angular HttpRequest to ConvoyRequest before handing it to plugins', () => {
-    /* Check that request is transformed from Angular HttpRequest to ConvoyRequest and forwarded to `convoyr`. */
+  it('should convert Angular HttpRequest to ConvoyrRequest before handing it to plugins', () => {
+    /* Check that request is transformed from Angular HttpRequest to ConvoyrRequest and forwarded to `convoyr`. */
     expect(convoyr.handle).toHaveBeenCalledTimes(1);
     expect(convoyr.handle).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -53,8 +53,8 @@ describe('ConvoyrInterceptor', () => {
     );
   });
 
-  it('should convert ConvoyRequest to Angular HttpRequest after plugins transformations', () => {
-    /* Check that request is transformed from ConvoyRequest to Angular HttpRequest when forwarded to Angular. */
+  it('should convert ConvoyrRequest to Angular HttpRequest after plugins transformations', () => {
+    /* Check that request is transformed from ConvoyrRequest to Angular HttpRequest when forwarded to Angular. */
     expect(next.handle).toHaveBeenCalledTimes(1);
 
     const forwardedNgRequest = asMock(next.handle).mock.calls[0][0];
