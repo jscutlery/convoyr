@@ -93,11 +93,11 @@ Checkout the [demo app workspace](./apps/sandbox) for a concrete example.
 
 This project is a monorepo that includes the following packages.
 
-| Package                                      | Name         | Description                                                       | Size                                                                  |
-| -------------------------------------------- | ------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------- |
-| [@convoyr/plugin-auth](./libs/plugin-auth)   | Auth plugin  | Handle authentication                                             | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/plugin-auth)  |
-| [@convoyr/plugin-cache](./libs/plugin-cache) | Cache plugin | Respond with cached results first then with fresh data when ready | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/plugin-cache) |
-| [@convoyr/plugin-retry](./libs/plugin-retry) | Retry plugin | Retry failed requests with exponential backoff                    | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/plugin-retry) |
+| Package                                      | Name         | Description                                                       |
+| -------------------------------------------- | ------------ | ----------------------------------------------------------------- |
+| [@convoyr/plugin-auth](./libs/plugin-auth)   | Auth plugin  | Handle authentication                                             |
+| [@convoyr/plugin-cache](./libs/plugin-cache) | Cache plugin | Respond with cached results first then with fresh data when ready |
+| [@convoyr/plugin-retry](./libs/plugin-retry) | Retry plugin | Retry failed requests with exponential backoff                    |
 
 # Custom Plugins
 
@@ -293,10 +293,10 @@ Here only `GET` requests from `https://secure-origin.com` and `https://another-s
 
 This project is a monorepo that includes the following packages in addition to the [built-in plugins above](#built-in-plugins).
 
-| Name                               | Description    | Size                                                             |
-| ---------------------------------- | -------------- | ---------------------------------------------------------------- |
-| [@convoyr/core](./libs/core)       | Core           | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/core)    |
-| [@convoyr/angular](./libs/angular) | Angular module | ![cost](https://badgen.net/bundlephobia/minzip/@convoyr/angular) |
+| Name                               | Description    |
+| ---------------------------------- | -------------- |
+| [@convoyr/core](./libs/core)       | Core           |
+| [@convoyr/angular](./libs/angular) | Angular module |
 
 # Roadmap
 
