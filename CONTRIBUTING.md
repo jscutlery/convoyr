@@ -30,7 +30,7 @@ Meanwhile we provide a schematic for this, here are the steps to follow when add
 yarn nx g @nrwl/workspace:library --publishable plugin-xyz
 ```
 
-2. Setup `libs/plugin-xyz/package.json`
+2. Update `libs/plugin-xyz/package.json`
 
 ```json
 {
@@ -40,7 +40,7 @@ yarn nx g @nrwl/workspace:library --publishable plugin-xyz
   "private": false,
   "repository": "git@github.com:jscutlery/convoyr.git",
   "scripts": {
-    "publish": "yarn publish ../../dist/libs/plugin-xyz"
+    "prepublishOnly": "ng build plugin-xyz --prod"
   },
   "peerDependencies": {
     "@convoyr/core": "^2.0.0"
@@ -48,13 +48,13 @@ yarn nx g @nrwl/workspace:library --publishable plugin-xyz
 }
 ```
 
-3. Add test script to `package.json`
+3. Update `libs/plugin-xyz/ng-package.json`
 
-```json
+```
 {
-  "scripts": {
-    "test:plugin-xyz": "ng test plugin-xyz --watch"
-  }
+  ...,
+  "dest": "dist",
+  ...
 }
 ```
 
