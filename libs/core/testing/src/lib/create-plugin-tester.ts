@@ -19,7 +19,7 @@ export function createPluginTester(
     handler: undefined,
   }
 ) {
-  const next: NextHandler = {
+  const next = {
     handle: jest.fn().mockReturnValue(of(createResponse(response))),
   };
 
