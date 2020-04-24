@@ -5,8 +5,7 @@
   "private": false,
   "repository": "git@github.com:jscutlery/convoyr.git",
   "scripts": {
-    "prepublishOnly": "rm -rf dist && cp -r ../../dist/libs/angular dist",
-    "postpublish": "rm -r dist"
+    "prepublishOnly": "ng build angular --prod"
   },
   "peerDependencies": {
     "@angular/common": ">= 9.1.3",

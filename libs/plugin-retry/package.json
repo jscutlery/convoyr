@@ -5,8 +5,7 @@
   "private": false,
   "repository": "git@github.com:jscutlery/convoyr.git",
   "scripts": {
-    "prepublishOnly": "rm -rf dist && cp -r ../../dist/libs/plugin-retry dist",
-    "postpublish": "rm -r dist"
+    "prepublishOnly": "ng build plugin-retry --prod"
   },
   "peerDependencies": {
     "@convoyr/core": "^2.0.0",

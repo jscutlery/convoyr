@@ -27,7 +27,7 @@
     "limbo": "tools/limbo.sh",
     "tcr": "yarn affected:test --uncommitted && git recommit || git reset --hard",
     "merge-into-master": "tools/merge-into-master.sh",
-    "publish:libs": "node tools/release.js",
+    "publish:libs": "lerna publish from-package --dist-tag latest --yes",
     "update": "ng update @nrwl/workspace",
     "update:check": "ng update",
     "workspace-schematic": "nx workspace-schematic",
