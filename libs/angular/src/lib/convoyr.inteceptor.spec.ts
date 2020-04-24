@@ -85,7 +85,7 @@ describe('ConvoyrInterceptor', () => {
     const { request, httpHandler } = asMock(convoyr.handle).mock.calls[0][0];
     const observer = jest.fn();
 
-    httpHandler({ request }).subscribe(observer);
+    httpHandler.handle({ request }).subscribe(observer);
 
     /* Verify that Angular extra events are ignored in the final handler. */
     expect(observer).toHaveBeenCalledTimes(1);
@@ -100,7 +100,7 @@ describe('ConvoyrInterceptor', () => {
     const { request, httpHandler } = asMock(convoyr.handle).mock.calls[0][0];
     const observer = jest.fn();
 
-    httpHandler({ request }).subscribe(observer);
+    httpHandler.handle({ request }).subscribe(observer);
 
     expect(observer).toHaveBeenCalledTimes(1);
     const response = observer.mock.calls[0][0];

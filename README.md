@@ -112,7 +112,7 @@ const addHeaders = (headers) => ({
   handle({ request, next }) {
     headers = { ...request.headers, ...headers };
     request = { ...request, headers };
-    return next({ request });
+    return next.handle({ request });
   },
 });
 
@@ -191,7 +191,7 @@ export function createLoggerPlugin(): ConvoyrPlugin {
     shouldHandleRequest: ({ request }) => request.url.includes('api.github.com')
     handler: {
       async handle({ request, next }) {
-        const response = await next({ request }).toPromise();
+        const response = await next.handle({ request }).toPromise();
         console.log({ response });
         return response;
       }
@@ -210,7 +210,7 @@ import { tap } from 'rxjs/operators';
 
 export class LoggerHandler implements PluginHandler {
   handle({ request, next }: PluginHandlerArgs) {
-    return next({ request }).pipe(
+    return next.handle({ request }).pipe(
       tap((response) => {
         console.log({ response });
       })

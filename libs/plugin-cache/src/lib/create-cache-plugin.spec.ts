@@ -42,7 +42,7 @@ describe('CachePlugin', () => {
       advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
       /* Simulate final handler. */
-      const next = () => m.cold('-r|', { r: response });
+      const next = { handle: () => m.cold('-r|', { r: response }) };
 
       /* Run two requests with the same URL to fire cache response. */
       const requestA$ = handler.handle({ request, next });
@@ -83,7 +83,9 @@ describe('CachePlugin', () => {
     const cachePlugin = createCachePlugin();
     const cacheResponse = cachePlugin.handler.handle({
       request,
-      next: () => of(response),
+      next: {
+        handle: () => of(response),
+      },
     });
     const spyObserver = jest.fn();
 
@@ -116,7 +118,7 @@ describe('CachePlugin', () => {
   it('should use given storage implementation to store cache', async () => {
     const storage = createMemoryStorageSpy() as any;
     const cachePlugin = createCachePlugin({ storage });
-    const next = () => of(response);
+    const next = { handle: () => of(response) };
 
     const handler$ = cachePlugin.handler.handle({ request, next });
 
@@ -143,12 +145,14 @@ describe('CachePlugin', () => {
     'should handle query string in store key',
     marbles((m) => {
       const cachePlugin = createCachePlugin();
-      const nextFn = jest.fn().mockImplementation(({ request: _request }) => {
-        return {
-          a: m.cold('-n|', { n: createResponse({ body: { answer: 'A' } }) }),
-          b: m.cold('-n|', { n: createResponse({ body: { answer: 'B' } }) }),
-        }[_request.params.q];
-      });
+      const nextHandler = {
+        handle: jest.fn().mockImplementation(({ request: _request }) => {
+          return {
+            a: m.cold('-n|', { n: createResponse({ body: { answer: 'A' } }) }),
+            b: m.cold('-n|', { n: createResponse({ body: { answer: 'B' } }) }),
+          }[_request.params.q];
+        }),
+      };
 
       const requestA = createRequest({
         url: 'https://ultimate-answer.com',
@@ -161,15 +165,15 @@ describe('CachePlugin', () => {
 
       const response1$ = cachePlugin.handler.handle({
         request: requestA,
-        next: nextFn,
+        next: nextHandler,
       });
       const response2$ = cachePlugin.handler.handle({
         request: requestB,
-        next: nextFn,
+        next: nextHandler,
       });
       const response3$ = cachePlugin.handler.handle({
         request: requestA,
-        next: nextFn,
+        next: nextHandler,
       });
 
       const stream$ = concat(response1$, response2$, response3$);

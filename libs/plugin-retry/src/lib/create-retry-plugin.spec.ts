@@ -31,7 +31,10 @@ describe('RetryPlugin', () => {
 
       /* Simulate failure response */
       const errorResponse$ = m.cold('-#', undefined, errorResponse);
-      const source$ = handler.handle({ request, next: () => errorResponse$ });
+      const source$ = handler.handle({
+        request,
+        next: { handle: () => errorResponse$ },
+      });
       const expected$ = m.cold('-----------#', undefined, errorResponse);
 
       m.expect(source$).toBeObservable(expected$);
@@ -65,7 +68,10 @@ describe('RetryPlugin', () => {
 
       /* Simulate failure response */
       const errorResponse$ = m.cold('-#', undefined, errorResponse);
-      const source$ = handler.handle({ request, next: () => errorResponse$ });
+      const source$ = handler.handle({
+        request,
+        next: { handle: () => errorResponse$ },
+      });
       const expected$ = m.cold('-#', undefined, errorResponse);
 
       m.expect(source$).toBeObservable(expected$);

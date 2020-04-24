@@ -64,8 +64,11 @@ describe('ConvoyrModule', () => {
         responseType: 'json',
       });
       expect(typeof spyPlugin.handler.handle.mock.calls[0][0].next).toEqual(
-        'function'
+        'object'
       );
+      expect(
+        typeof spyPlugin.handler.handle.mock.calls[0][0].next.handle
+      ).toEqual('function');
     });
   });
 

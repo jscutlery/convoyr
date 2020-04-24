@@ -45,21 +45,23 @@ export class CacheHandler implements PluginHandler {
   }: PluginHandlerArgs): Observable<CacheHandlerResponse> {
     const shouldAddCacheMetadata = this._shouldAddCacheMetadata;
 
-    const fromNetwork$: Observable<ConvoyrResponse> = next({
-      request,
-    }).pipe(
-      mergeMap((response) => {
-        /* Return response immediately but store in cache as side effect. */
-        return merge(
-          of(response),
-          this._store(request, response).pipe(switchMapTo(EMPTY))
-        );
-      }),
-      shareReplay({
-        refCount: true,
-        bufferSize: 1,
+    const fromNetwork$: Observable<ConvoyrResponse> = next
+      .handle({
+        request,
       })
-    );
+      .pipe(
+        mergeMap((response) => {
+          /* Return response immediately but store in cache as side effect. */
+          return merge(
+            of(response),
+            this._store(request, response).pipe(switchMapTo(EMPTY))
+          );
+        }),
+        shareReplay({
+          refCount: true,
+          bufferSize: 1,
+        })
+      );
 
     const fromCache$: Observable<ConvoyrResponse> = defer(() =>
       this._load(request)

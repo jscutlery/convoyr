@@ -22,12 +22,14 @@ describe('Convoyr', () => {
 
     const response$ = convoyr.handle({
       request,
-      httpHandler: () =>
-        of(
-          createResponse({
-            body: { answer: 42 },
-          })
-        ),
+      httpHandler: {
+        handle: () =>
+          of(
+            createResponse({
+              body: { answer: 42 },
+            })
+          ),
+      },
     });
     const responseObserver = jest.fn();
 
@@ -37,7 +39,8 @@ describe('Convoyr', () => {
      * Make sure plugin A is called with the right args.
      */
     expect(pluginA.handler.handle).toHaveBeenCalledTimes(1);
-    expect(typeof pluginA.handler.handle.mock.calls[0][0].next).toBe(
+    expect(typeof pluginA.handler.handle.mock.calls[0][0].next).toBe('object');
+    expect(typeof pluginA.handler.handle.mock.calls[0][0].next.handle).toBe(
       'function'
     );
     expect(pluginA.handler.handle.mock.calls[0][0].request).toEqual(
@@ -51,7 +54,8 @@ describe('Convoyr', () => {
      * Make sure plugin B is called with the right args.
      */
     expect(pluginB.handler.handle).toHaveBeenCalledTimes(1);
-    expect(typeof pluginB.handler.handle.mock.calls[0][0].next).toBe(
+    expect(typeof pluginB.handler.handle.mock.calls[0][0].next).toBe('object');
+    expect(typeof pluginB.handler.handle.mock.calls[0][0].next.handle).toBe(
       'function'
     );
     expect(pluginB.handler.handle.mock.calls[0][0].request).toEqual(
@@ -85,12 +89,14 @@ describe('Convoyr', () => {
 
     const response$ = convoyr.handle({
       request,
-      httpHandler: () =>
-        of(
-          createResponse({
-            body: { answer: 42 },
-          })
-        ),
+      httpHandler: {
+        handle: () =>
+          of(
+            createResponse({
+              body: { answer: 42 },
+            })
+          ),
+      },
     });
     const responseObserver = jest.fn();
 
@@ -120,7 +126,7 @@ describe('Convoyr', () => {
     });
     const response$ = convoyr.handle({
       request,
-      httpHandler: () => of(createResponse({ body: null })),
+      httpHandler: { handle: () => of(createResponse({ body: null })) },
     });
 
     const errorObserver = jest.fn();

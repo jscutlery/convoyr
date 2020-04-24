@@ -9,7 +9,7 @@ export function createLoggerPlugin(): ConvoyrPlugin {
     handler: {
       handle({ request, next }) {
         console.log(`[${request.method}] ${request.url}`);
-        return next({ request });
+        return next.handle({ request });
       },
     },
   };

@@ -20,8 +20,8 @@ describe('AuthPlugin', () => {
 
       await pluginTester.handle({ request }).toPromise();
 
-      expect(pluginTester.next).toHaveBeenCalledTimes(1);
-      expect(pluginTester.next).toHaveBeenCalledWith({
+      expect(pluginTester.next.handle).toHaveBeenCalledTimes(1);
+      expect(pluginTester.next.handle).toHaveBeenCalledWith({
         request: expect.objectContaining({
           url: '/somewhere',
           headers: {},
@@ -43,8 +43,8 @@ describe('AuthPlugin', () => {
 
     await pluginTester.handle({ request }).toPromise();
 
-    expect(pluginTester.next).toHaveBeenCalledTimes(1);
-    expect(pluginTester.next).toHaveBeenCalledWith({
+    expect(pluginTester.next.handle).toHaveBeenCalledTimes(1);
+    expect(pluginTester.next.handle).toHaveBeenCalledWith({
       request: expect.objectContaining({
         url: '/somewhere',
         headers: {
@@ -77,7 +77,7 @@ describe('AuthPlugin', () => {
       const response = createResponse({ status: 200, statusText: 'Ok' });
       const response$ = m.cold('r|', { r: response });
 
-      pluginTester.next.mockReturnValue(response$);
+      pluginTester.next.handle.mockReturnValue(response$);
 
       const source$ = concat(wait$, pluginTester.handle({ request }));
 
@@ -86,8 +86,8 @@ describe('AuthPlugin', () => {
       m.expect(response$).toHaveSubscriptions(['-----^!']);
       m.flush();
 
-      expect(pluginTester.next).toHaveBeenCalledTimes(1);
-      expect(pluginTester.next).toHaveBeenCalledWith({
+      expect(pluginTester.next.handle).toHaveBeenCalledTimes(1);
+      expect(pluginTester.next.handle).toHaveBeenCalledWith({
         request: expect.objectContaining({
           headers: {
             Authorization: 'Bearer TOKEN_B',
@@ -114,7 +114,7 @@ describe('AuthPlugin', () => {
       statusText: 'Unauthorized',
     });
 
-    pluginTester.next.mockReturnValue(throwError(unauthorizedResponse));
+    pluginTester.next.handle.mockReturnValue(throwError(unauthorizedResponse));
 
     const observer = {
       next: jest.fn(),

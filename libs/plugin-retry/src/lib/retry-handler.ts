@@ -39,7 +39,7 @@ export class RetryHandler implements PluginHandler {
   }
 
   handle({ request, next }: PluginHandlerArgs): Observable<ConvoyrResponse> {
-    return next({ request }).pipe(
+    return next.handle({ request }).pipe(
       retryBackoff({
         initialInterval: this._initialInterval,
         maxInterval: this._maxInterval,

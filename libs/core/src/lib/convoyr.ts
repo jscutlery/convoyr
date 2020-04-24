@@ -3,7 +3,7 @@ import { mergeMap } from 'rxjs/operators';
 
 import { ConvoyrPlugin } from './plugin';
 import { ConvoyrRequest } from './request';
-import { NextFn } from './request-handler';
+import { NextHandler } from './request-handler';
 import { ConvoyrResponse } from './response';
 import { throwIfInvalidPluginCondition } from './throw-invalid-plugin-condition';
 import { fromSyncOrAsync } from './utils/from-sync-or-async';
@@ -29,7 +29,7 @@ export class Convoyr {
     httpHandler,
   }: {
     request: ConvoyrRequest;
-    httpHandler: NextFn;
+    httpHandler: NextHandler;
   }): Observable<ConvoyrResponse> {
     return this._handle({
       request,
@@ -45,10 +45,10 @@ export class Convoyr {
   }: {
     request: ConvoyrRequest;
     plugins: ConvoyrPlugin[];
-    httpHandler: NextFn;
+    httpHandler: NextHandler;
   }): Observable<ConvoyrResponse> {
     if (plugins.length === 0) {
-      return httpHandler({ request });
+      return httpHandler.handle({ request });
     }
 
     const [plugin] = plugins;
@@ -57,13 +57,15 @@ export class Convoyr {
     /**
      * Calls next plugins recursively.
      */
-    const next: NextFn = (args) => {
-      const response = this._handle({
-        request: args.request,
-        plugins: plugins.slice(1),
-        httpHandler,
-      });
-      return fromSyncOrAsync(response);
+    const next: NextHandler = {
+      handle: (args) => {
+        const response = this._handle({
+          request: args.request,
+          plugins: plugins.slice(1),
+          httpHandler,
+        });
+        return fromSyncOrAsync(response);
+      },
     };
 
     /**
@@ -73,7 +75,7 @@ export class Convoyr {
       mergeMap(throwIfInvalidPluginCondition),
       mergeMap((shouldHandle) => {
         if (shouldHandle === false) {
-          return next({ request });
+          return next.handle({ request });
         }
 
         return fromSyncOrAsync(handler.handle({ request, next }));

@@ -40,11 +40,13 @@ export class ConvoyrInterceptor implements HttpInterceptor {
     return this._convoyr
       .handle({
         request: fromNgRequest(ngRequest),
-        httpHandler: ({ request }) =>
-          next.handle(toNgRequest(request)).pipe(
-            filter((httpEvent) => httpEvent instanceof HttpResponse),
-            map(fromNgResponse)
-          ),
+        httpHandler: {
+          handle: ({ request }) =>
+            next.handle(toNgRequest(request)).pipe(
+              filter((httpEvent) => httpEvent instanceof HttpResponse),
+              map(fromNgResponse)
+            ),
+        },
       })
       .pipe(map(toNgResponse));
   }

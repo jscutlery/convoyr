@@ -9,7 +9,7 @@ export function createSpyPlugin(
   return {
     shouldHandleRequest: jest.fn(({ request }) => shouldHandleRequest(request)),
     handler: {
-      handle: jest.fn(({ request, next }) => next({ request })),
+      handle: jest.fn(({ request, next }) => next.handle({ request })),
     },
   };
 }

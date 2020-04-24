@@ -35,7 +35,7 @@ export class AuthHandler implements PluginHandler {
             value: `Bearer ${token}`,
           });
         }),
-        switchMap((request) => next({ request })),
+        switchMap((request) => next.handle({ request })),
         catchError((response) => {
           if (response.status === 401) {
             /* tslint:disable-next-line: no-unused-expression */

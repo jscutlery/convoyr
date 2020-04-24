@@ -4,6 +4,7 @@ import {
   ConvoyrResponse,
   PluginHandler,
   ResponseArgs,
+  NextHandler,
 } from '@convoyr/core';
 import { Observable, of } from 'rxjs';
 
@@ -18,7 +19,9 @@ export function createPluginTester(
     handler: undefined,
   }
 ) {
-  const next = jest.fn().mockReturnValue(of(createResponse(response)));
+  const next: NextHandler = {
+    handle: jest.fn().mockReturnValue(of(createResponse(response))),
+  };
 
   return {
     next,
