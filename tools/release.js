@@ -5,7 +5,7 @@ const exec = require('child_process').execSync;
 const execSync = (command) => exec(command, { stdio: 'inherit' });
 
 /* Build all libraries */
-execSync('nx affected:build --all --with-deps --prod');
+execSync('nx affected:build --all --prod --parallel');
 
 /* Publish to NPM */
-execSync('lerna publish from-package --dist-tag latest --yes');
+execSync('lerna publish --dist-tag latest --yes');
