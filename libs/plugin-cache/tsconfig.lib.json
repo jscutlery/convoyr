@@ -8,7 +8,7 @@
     "types": [],
     "lib": ["dom", "es2018"],
     "paths": {
-      "@convoyr/*": ["dist/libs/*"]
+      "@convoyr/core": ["libs/core/dist"]
     }
   },
   "angularCompilerOptions": {
