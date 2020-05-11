@@ -197,9 +197,9 @@
   integrity sha512-iXgPh5DebLwkMzLtQ6WKiv/mo4hpwMOwYex3O4F2CKToR2tKPnXbV5WC/ADGm0XYXiocSKQPiyL4ZrUjVeKEqA==
 
 "@angular/flex-layout@^9.0.0-beta.29":
-  version "9.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@angular/flex-layout/-/flex-layout-9.0.0-beta.29.tgz#a334ffd15c272e2d48cdaef3879625aadcc13a54"
-  integrity sha512-93sxR+kYfYMOdnlWL0Q77FZ428gg8XnBu0YZm6GsCdkw/vLggIT/G1ZAqHlCPIODt6pxmCJ5KXh4ShvniIYDsA==
+  version "9.0.0-beta.30"
+  resolved "https://registry.yarnpkg.com/@angular/flex-layout/-/flex-layout-9.0.0-beta.30.tgz#ca18411a8842dcfe3d175931a6ff765e8c76f950"
+  integrity sha512-aPiw9sfuXpV99oFtbIbTJYC+GtubdggP66qO0JH5MCX+J8btCGAOJMf9RPJWx2yyh/VoSBOt2nWSYqcY5OEv+g==
 
 "@angular/forms@^9.1.0":
   version "9.1.6"
