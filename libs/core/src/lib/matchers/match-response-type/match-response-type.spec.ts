@@ -1,6 +1,6 @@
-import { createRequest, ConvoyrRequest, ResponseType } from '../../request';
+import { ConvoyrRequest, createRequest, ResponseType } from '../../request';
 import { matchResponseType } from './match-response-type';
-import { ResponseTypeMatchExpression } from './response-type-match-expression';
+import { ResponseTypeMatchExpression } from './match-response-type-expression';
 
 describe.each<[ResponseType, ResponseTypeMatchExpression, boolean]>([
   /* Using a string */
@@ -27,13 +27,13 @@ describe('matchResponseType', () => {
 
   it('should throw when given an object', () => {
     expect(() => matchResponseType({} as any)({ request })).toThrow(
-      'InvalidOriginMatchExpression: {} is an invalid origin match expression.'
+      'InvalidResponseTypeMatchExpression: {} is an invalid origin match expression.'
     );
   });
 
   it('should throw when given an number', () => {
     expect(() => matchResponseType(123 as any)({ request })).toThrow(
-      'InvalidOriginMatchExpression: 123 is an invalid origin match expression.'
+      'InvalidResponseTypeMatchExpression: 123 is an invalid origin match expression.'
     );
   });
 });
