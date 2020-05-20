@@ -248,6 +248,7 @@ Note that the `shouldHandleRequest` function is optional, but if not provided Co
 
 Matchers are utils functions for conditional request handling.
 
+- _matchResponseType:_ `matchResponseType(expression: ResponseTypeMatchExpression) => RequestCondition`
 - _matchMethod:_ `matchMethod(expression: MethodMatchExpression) => RequestCondition`
 - _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
 
