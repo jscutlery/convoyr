@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/jscutlery/convoyr/compare/v3.0.0...v3.1.0) (2020-05-20)
+
+
+### Features
+
+* **core:** ✅ add `matchResponseType` matcher ([3071358](https://github.com/jscutlery/convoyr/commit/30713584c7fd099a1bf5f7e97b4e7b23c81c0b86))
+
+
+
+
+
 # [3.0.0](https://github.com/jscutlery/convoyr/compare/v2.2.0...v3.0.0) (2020-04-24)
 
 

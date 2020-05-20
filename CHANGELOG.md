@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/jscutlery/convoyr/compare/v3.0.0...v3.1.0) (2020-05-20)
+
+
+### Bug Fixes
+
+* 📦 update angular monorepo to v9.1.4 ([1d36585](https://github.com/jscutlery/convoyr/commit/1d365857e34d46231ddb2ecbf11b9385608f2309))
+* 📦 update angular monorepo to v9.1.5 ([c31b271](https://github.com/jscutlery/convoyr/commit/c31b2718efd2101982fe1d69db753e221f61ebe0))
+* 📦 update angular monorepo to v9.1.6 ([abe038d](https://github.com/jscutlery/convoyr/commit/abe038d6363b600e3f1116b605e739a22b0b85f8))
+* 📦 update angular monorepo to v9.1.7 ([1cd5b38](https://github.com/jscutlery/convoyr/commit/1cd5b38c66c1f70e62fbc5e0829839b5c5273810))
+* 📦 update angularmaterial monorepo to v9.2.2 ([64aab4a](https://github.com/jscutlery/convoyr/commit/64aab4ab00ceeba7128666c655469c44df5d7325))
+* 📦 update angularmaterial monorepo to v9.2.3 ([b845c02](https://github.com/jscutlery/convoyr/commit/b845c0245cd62e9f5afe224793db5c7797fa0a94))
+* 📦 update angularmaterial monorepo to v9.2.4 ([0cef06c](https://github.com/jscutlery/convoyr/commit/0cef06c4bd3e5e48a1e9faa191cf431c3e8fe48e))
+* 📦 update dependency @angular/flex-layout to v9.0.0-beta.30 ([10576f6](https://github.com/jscutlery/convoyr/commit/10576f64cb20b8673023087ddd2730ed3d4e6a7a))
+* 📦 update dependency @angular/flex-layout to v9.0.0-beta.31 ([bf481e5](https://github.com/jscutlery/convoyr/commit/bf481e5a1b5cac291e78e14de73bf3e7990000bb))
+* 📦 update dependency tslib to v1.11.2 ([1c9c1f9](https://github.com/jscutlery/convoyr/commit/1c9c1f992025e1e79a7c136e54a1f8f0eb18c50d))
+* 📦 update dependency tslib to v1.12.0 ([90620e7](https://github.com/jscutlery/convoyr/commit/90620e7440b438aae4c80482166ad9f81e46c548))
+* 📦 update dependency tslib to v1.13.0 ([cc0872f](https://github.com/jscutlery/convoyr/commit/cc0872f59b869cc674eaa7bdf9b9c0f810887b72))
+* 📦 update dependency tslib to v2 ([f3903a6](https://github.com/jscutlery/convoyr/commit/f3903a6bcd5f3a53d1b1333203705a9ff85cb02a))
+
+
+### Features
+
+* **core:** ✅ add `matchResponseType` matcher ([3071358](https://github.com/jscutlery/convoyr/commit/30713584c7fd099a1bf5f7e97b4e7b23c81c0b86))
+
+
+
+
+
 # [3.0.0](https://github.com/jscutlery/convoyr/compare/v2.2.0...v3.0.0) (2020-04-24)
 
 
