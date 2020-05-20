@@ -1,10 +1,7 @@
+import { and, matchMethod, matchResponseType } from '@convoyr/core';
 import { EMPTY } from 'rxjs';
-
 import { CacheHandler } from './cache-handler';
-import {
-  createCachePlugin,
-  isGetMethodAndJsonResponseType,
-} from './create-cache-plugin';
+import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorage } from './storages/memory-storage';
 
 jest.mock('./cache-handler');
@@ -17,7 +14,9 @@ describe('CachePlugin', () => {
 
     mockCacheHandler.mockReturnValue(EMPTY);
 
-    expect(plugin.shouldHandleRequest).toBe(isGetMethodAndJsonResponseType);
+    expect(plugin.shouldHandleRequest).toBe(
+      and(matchMethod('GET'), matchResponseType('json'))
+    );
     expect(CacheHandler).toHaveBeenCalledWith({
       addCacheMetadata: false,
       storage: new MemoryStorage({ maxSize: 100 }),
