@@ -43,7 +43,7 @@ yarn nx g @nrwl/workspace:library --publishable plugin-xyz
     "prepublishOnly": "ng build plugin-xyz --prod"
   },
   "peerDependencies": {
-    "@convoyr/core": "^2.0.0"
+    "@convoyr/core": ">= 3.0.0"
   }
 }
 ```

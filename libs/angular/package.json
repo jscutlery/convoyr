@@ -10,7 +10,7 @@
   "peerDependencies": {
     "@angular/common": ">= 9.1.9",
     "@angular/core": ">= 9.1.9",
-    "@convoyr/core": "^2.0.0",
+    "@convoyr/core": ">= 3.0.0",
     "rxjs": "^6.5.4"
   }
 }
