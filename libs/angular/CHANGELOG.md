@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/jscutlery/convoyr/compare/v3.1.0...v3.2.0) (2020-05-23)
+
+
+### Bug Fixes
+
+* 📦 update angular monorepo to v9.1.9 ([ebbf2c3](https://github.com/jscutlery/convoyr/commit/ebbf2c3a0813b6070b263ef6a0d2b697112876ad))
+* **angular:** 🐞 handle and convert `HttpErrorResponse` ([84dfb74](https://github.com/jscutlery/convoyr/commit/84dfb7485009b9bedfcab71142895fbc3e7abc62))
+
+
+
+
+
 # [3.1.0](https://github.com/jscutlery/convoyr/compare/v3.0.0...v3.1.0) (2020-05-20)
 
 

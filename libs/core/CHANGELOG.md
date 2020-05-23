@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/jscutlery/convoyr/compare/v3.1.0...v3.2.0) (2020-05-23)
+
+
+### Bug Fixes
+
+* **core:** 🐞 infer body correctly for `ConvoyrResponse` ([c6f92f0](https://github.com/jscutlery/convoyr/commit/c6f92f09f8eef2876121fda31b2a78f4bda76fe1))
+
+
+### Features
+
+* **core:** ✅ add `matchPath` matcher ([af9c348](https://github.com/jscutlery/convoyr/commit/af9c348106c2061bfcb9fb0a9ea1a8fc669d396d))
+
+
+
+
+
 # [3.1.0](https://github.com/jscutlery/convoyr/compare/v3.0.0...v3.1.0) (2020-05-20)
 
 
