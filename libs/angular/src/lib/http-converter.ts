@@ -82,7 +82,7 @@ export function toNgResponse(
 }
 
 export function toNgErrorResponse(
-  response: ConvoyrResponse<{ error: any | null }>
+  response: ConvoyrResponse<{ error: any }>
 ): HttpErrorResponse {
   return new HttpErrorResponse({
     error: response.body.error,
