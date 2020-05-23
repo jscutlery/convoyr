@@ -6,6 +6,7 @@ describe('Public API', () => {
     expect(publicApi.matchOrigin).toBeDefined();
     expect(publicApi.matchMethod).toBeDefined();
     expect(publicApi.matchResponseType).toBeDefined();
+    expect(publicApi.matchPath).toBeDefined();
     expect(publicApi.or).toBeDefined();
     expect(publicApi.and).toBeDefined();
     expect(publicApi.not).toBeDefined();

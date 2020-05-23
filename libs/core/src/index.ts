@@ -4,6 +4,7 @@ export {
   matchOrigin,
   matchMethod,
   matchResponseType,
+  matchPath,
   or,
   and,
   not,

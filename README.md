@@ -251,6 +251,7 @@ Matchers are utils functions for conditional request handling.
 - _matchResponseType:_ `matchResponseType(expression: ResponseTypeMatchExpression) => RequestCondition`
 - _matchMethod:_ `matchMethod(expression: MethodMatchExpression) => RequestCondition`
 - _matchOrigin:_ `matchOrigin(expression: OriginMatchExpression) => RequestCondition`
+- _matchPath:_ `matchOrigin(expression: string) => RequestCondition`
 
 ```ts
 import { matchOrigin, ConvoyrPlugin } from '@convoyr/core';
