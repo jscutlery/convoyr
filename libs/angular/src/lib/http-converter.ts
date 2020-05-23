@@ -3,6 +3,7 @@ import {
   HttpParams,
   HttpRequest,
   HttpResponse,
+  HttpErrorResponse,
 } from '@angular/common/http';
 import {
   createRequest,
@@ -49,11 +50,20 @@ export function toNgRequest(
   return new HttpRequest(request.method, request.url, init);
 }
 
-export function fromNgResponse(
-  ngResponse: HttpResponse<unknown>
-): ConvoyrResponse<unknown> {
+export function fromNgResponse(ngResponse: HttpResponse<unknown>) {
   return createResponse({
     body: ngResponse.body,
+    headers: fromNgClass(ngResponse.headers),
+    status: ngResponse.status,
+    statusText: ngResponse.statusText,
+  });
+}
+
+export function fromNgErrorResponse(
+  ngResponse: HttpErrorResponse
+): ConvoyrResponse<{ error: any }> {
+  return createResponse({
+    body: { error: ngResponse.error ?? null },
     headers: fromNgClass(ngResponse.headers),
     status: ngResponse.status,
     statusText: ngResponse.statusText,
@@ -65,6 +75,17 @@ export function toNgResponse(
 ): HttpResponse<unknown> {
   return new HttpResponse({
     body: response.body,
+    headers: new HttpHeaders(response.headers),
+    status: response.status,
+    statusText: response.statusText,
+  });
+}
+
+export function toNgErrorResponse(
+  response: ConvoyrResponse<{ error: any | null }>
+): HttpErrorResponse {
+  return new HttpErrorResponse({
+    error: response.body.error,
     headers: new HttpHeaders(response.headers),
     status: response.status,
     statusText: response.statusText,

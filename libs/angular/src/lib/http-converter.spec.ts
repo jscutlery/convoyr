@@ -4,7 +4,7 @@ import { ConvoyrRequest } from '@convoyr/core';
 import { fromNgRequest, toNgRequest } from './http-converter';
 
 describe('fromNgRequest', () => {
-  it('should convert HttpRequest with body to Request object', () => {
+  it('should convert HttpRequest with body to ConvoyrRequest object', () => {
     const ngRequest = new HttpRequest(
       'POST',
       'https://angular.io',
@@ -21,7 +21,7 @@ describe('fromNgRequest', () => {
     });
   });
 
-  it('should convert HttpRequest without body to Request object', () => {
+  it('should convert HttpRequest without body to ConvoyrRequest object', () => {
     const ngRequest = new HttpRequest('GET', 'https://wikipedia.com', {
       params: new HttpParams().set('id', '1'),
     });
@@ -37,7 +37,7 @@ describe('fromNgRequest', () => {
 });
 
 describe('toNgRequest', () => {
-  it('should convert Request with body to HttpRequest', () => {
+  it('should convert ConvoyrRequest with body to HttpRequest', () => {
     const request: ConvoyrRequest = {
       url: 'https://presidents.com',
       method: 'PUT',
@@ -58,7 +58,7 @@ describe('toNgRequest', () => {
     expect(ngRequest.headers.get('Authorization')).toEqual('Bearer token');
   });
 
-  it('should convert Request without body to HttpRequest', () => {
+  it('should convert ConvoyrRequest without body to HttpRequest', () => {
     const request: ConvoyrRequest = {
       url: 'https://test.com',
       method: 'GET',

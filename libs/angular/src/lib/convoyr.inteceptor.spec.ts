@@ -4,9 +4,10 @@ import {
   HttpRequest,
   HttpResponse,
   HttpSentEvent,
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { createRequest, createResponse, Convoyr } from '@convoyr/core';
-import { EMPTY, of } from 'rxjs';
+import { EMPTY, of, throwError } from 'rxjs';
 
 import { ConvoyrInterceptor } from './convoyr.interceptor';
 
@@ -118,6 +119,37 @@ describe('ConvoyrInterceptor', () => {
     );
   });
 
+  it('should convert Angular HttpErrorResponse to ConvoyrResponse before handling it back to plugins', () => {
+    asMock(next.handle).mockReturnValue(
+      throwError(
+        new HttpErrorResponse({
+          error: '42',
+          status: 500,
+          statusText: 'Server Error',
+        })
+      )
+    );
+    const { request, httpHandler } = asMock(convoyr.handle).mock.calls[0][0];
+    const nextObserver = jest.fn();
+    const errorObserver = jest.fn();
+
+    httpHandler.handle({ request }).subscribe(nextObserver, errorObserver);
+
+    expect(nextObserver).not.toHaveBeenCalled();
+    expect(errorObserver).toHaveBeenCalledTimes(1);
+    const response = errorObserver.mock.calls[0][0];
+
+    /* Just making sure that it's not an Angular HttpErrorResponse. */
+    expect(response).not.toBeInstanceOf(HttpErrorResponse);
+    expect(response).toEqual(
+      createResponse({
+        body: { error: '42' },
+        status: 500,
+        statusText: 'Server Error',
+      })
+    );
+  });
+
   it('should convert plugin ConvoyrResponse to Angular HttpResponse', () => {
     asMock(next.handle).mockReturnValue(
       of(new HttpResponse({ body: { answer: 42 } }))
@@ -132,5 +164,35 @@ describe('ConvoyrInterceptor', () => {
     /* Check there is no raw ConvoyrResponse given to the interceptor. */
     expect(response).toBeInstanceOf(HttpResponse);
     expect(response).toEqual(expect.objectContaining({ body: { answer: 42 } }));
+  });
+
+  it('should convert plugin ConvoyrResponse to Angular HttpErrorResponse', () => {
+    asMock(next.handle).mockReturnValue(
+      throwError(
+        new HttpErrorResponse({
+          error: '42',
+          status: 500,
+          statusText: 'Server Error',
+        })
+      )
+    );
+    const request = new HttpRequest('GET', 'https://test.com');
+    const nextObserver = jest.fn();
+    const errorObserver = jest.fn();
+
+    interceptor.intercept(request, next).subscribe(nextObserver, errorObserver);
+
+    const response = errorObserver.mock.calls[0][0];
+
+    /* Check there is no raw ConvoyrResponse given to the interceptor. */
+    expect(response).toBeInstanceOf(HttpErrorResponse);
+    expect(response).toEqual(
+      expect.objectContaining({
+        error: '42',
+        status: 500,
+        statusText: 'Server Error',
+      })
+    );
+    expect(nextObserver).not.toHaveBeenCalled();
   });
 });
