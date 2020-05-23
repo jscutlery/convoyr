@@ -12,7 +12,7 @@ export type ResponseArgs<TBody> = Partial<ConvoyrResponse<TBody>> &
 
 export function createResponse<TBody>(
   response: ResponseArgs<TBody>
-): ConvoyrResponse {
+): ConvoyrResponse<TBody> {
   return {
     body: response.body,
     status: response.status == null ? 200 : response.status,
