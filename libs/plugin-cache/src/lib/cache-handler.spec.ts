@@ -45,12 +45,20 @@ describe('CachePlugin', () => {
       /* Mock date. */
       advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
-      /* Simulate final handler. */
       const response$ = m.cold('-r|', { r: response });
+      const httpHandlerMock = pluginTester.mockHttpHandler({
+        response: response$,
+      });
 
       /* Run two requests with the same URL to fire cache response. */
-      const requestA$ = pluginTester.handle({ request, response: response$ });
-      const requestB$ = pluginTester.handle({ request, response: response$ });
+      const requestA$ = pluginTester.handleFake({
+        request,
+        httpHandlerMock,
+      });
+      const requestB$ = pluginTester.handleFake({
+        request,
+        httpHandlerMock,
+      });
 
       /* Execute requests in order. */
       const responses$ = concat(requestA$, requestB$);
@@ -92,10 +100,11 @@ describe('CachePlugin', () => {
     });
 
     const observer = jest.fn();
+    const httpHandlerMock = pluginTester.mockHttpHandler({ response });
 
-    pluginTester.handle({ request, response }).subscribe(observer);
+    pluginTester.handleFake({ request, httpHandlerMock }).subscribe(observer);
 
-    expect(pluginTester.next).toBeCalledTimes(1);
+    expect(httpHandlerMock).toBeCalledTimes(1);
     expect(observer).toBeCalledWith(
       expect.objectContaining({ body: { answer: 42 } })
     );
@@ -110,7 +119,8 @@ describe('CachePlugin', () => {
       }),
     });
 
-    const handler$ = pluginTester.handle({ request, response });
+    const httpHandlerMock = pluginTester.mockHttpHandler({ response });
+    const handler$ = pluginTester.handleFake({ request, httpHandlerMock });
 
     advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
@@ -157,17 +167,24 @@ describe('CachePlugin', () => {
         n: createResponse({ body: { answer: 'B' } }),
       });
 
-      const response1$ = pluginTester.handle({
-        request: requestA,
+      const httpHandlerMockA = pluginTester.mockHttpHandler({
         response: responseA$,
       });
-      const response2$ = pluginTester.handle({
-        request: requestB,
+      const httpHandlerMockB = pluginTester.mockHttpHandler({
         response: responseB$,
       });
-      const response3$ = pluginTester.handle({
+
+      const response1$ = pluginTester.handleFake({
         request: requestA,
-        response: responseA$,
+        httpHandlerMock: httpHandlerMockA,
+      });
+      const response2$ = pluginTester.handleFake({
+        request: requestB,
+        httpHandlerMock: httpHandlerMockB,
+      });
+      const response3$ = pluginTester.handleFake({
+        request: requestA,
+        httpHandlerMock: httpHandlerMockA,
       });
 
       const stream$ = concat(response1$, response2$, response3$);
