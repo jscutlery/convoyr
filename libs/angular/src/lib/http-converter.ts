@@ -61,7 +61,7 @@ export function fromNgResponse(ngResponse: HttpResponse<unknown>) {
 
 export function fromNgErrorResponse(
   ngResponse: HttpErrorResponse
-): ConvoyrResponse<{ error: any }> {
+): ConvoyrResponse<ErrorBody> {
   return createResponse({
     body: { error: ngResponse.error ?? null },
     headers: fromNgClass(ngResponse.headers),
@@ -82,7 +82,7 @@ export function toNgResponse(
 }
 
 export function toNgErrorResponse(
-  response: ConvoyrResponse<{ error: any }>
+  response: ConvoyrResponse<ErrorBody>
 ): HttpErrorResponse {
   return new HttpErrorResponse({
     error: response.body.error,
@@ -90,4 +90,8 @@ export function toNgErrorResponse(
     status: response.status,
     statusText: response.statusText,
   });
+}
+
+export interface ErrorBody {
+  error: unknown;
 }

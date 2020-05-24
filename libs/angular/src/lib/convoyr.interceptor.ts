@@ -18,6 +18,7 @@ import {
   toNgResponse,
   fromNgErrorResponse,
   toNgErrorResponse,
+  ErrorBody,
 } from './http-converter';
 
 /**
@@ -60,7 +61,7 @@ export class ConvoyrInterceptor implements HttpInterceptor {
       })
       .pipe(
         map(toNgResponse),
-        catchError((error: ConvoyrResponse<{ error: any }>) =>
+        catchError((error: ConvoyrResponse<ErrorBody>) =>
           throwError(toNgErrorResponse(error))
         )
       );
