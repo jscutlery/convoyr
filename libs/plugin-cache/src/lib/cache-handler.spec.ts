@@ -1,15 +1,15 @@
 import {
-  createRequest,
-  createResponse,
   ConvoyrRequest,
   ConvoyrResponse,
+  createRequest,
+  createResponse,
 } from '@convoyr/core';
+import { createPluginTester } from '@convoyr/core/testing';
 import { advanceTo, clear } from 'jest-date-mock';
-import { concat, of } from 'rxjs';
+import { concat } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-
+import { CacheHandler } from './cache-handler';
 import { WithCacheMetadata } from './cache-response';
-import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorage } from './storages/memory-storage';
 
 function createMemoryStorageSpy() {
@@ -35,18 +35,30 @@ describe('CachePlugin', () => {
   it(
     'should serve cache with metadata when hydrated',
     marbles((m) => {
-      const cachePlugin = createCachePlugin({ addCacheMetadata: true });
-      const handler = cachePlugin.handler;
+      const pluginTester = createPluginTester({
+        handler: new CacheHandler({
+          addCacheMetadata: true,
+          storage: new MemoryStorage(),
+        }),
+      });
 
       /* Mock date. */
       advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
-      /* Simulate final handler. */
-      const next = { handle: () => m.cold('-r|', { r: response }) };
+      const response$ = m.cold('-r|', { r: response });
+      const httpHandlerMock = pluginTester.mockHttpHandler({
+        response: response$,
+      });
 
       /* Run two requests with the same URL to fire cache response. */
-      const requestA$ = handler.handle({ request, next });
-      const requestB$ = handler.handle({ request, next });
+      const requestA$ = pluginTester.handleFake({
+        request,
+        httpHandlerMock,
+      });
+      const requestB$ = pluginTester.handleFake({
+        request,
+        httpHandlerMock,
+      });
 
       /* Execute requests in order. */
       const responses$ = concat(requestA$, requestB$);
@@ -79,48 +91,36 @@ describe('CachePlugin', () => {
     })
   );
 
-  it('should not apply metadata to response by default', () => {
-    const cachePlugin = createCachePlugin();
-    const cacheResponse = cachePlugin.handler.handle({
-      request,
-      next: {
-        handle: () => of(response),
-      },
+  it('should not apply metadata to response body', () => {
+    const pluginTester = createPluginTester({
+      handler: new CacheHandler({
+        addCacheMetadata: false,
+        storage: new MemoryStorage(),
+      }),
     });
-    const spyObserver = jest.fn();
 
-    cacheResponse.subscribe(spyObserver);
+    const observer = jest.fn();
+    const httpHandlerMock = pluginTester.mockHttpHandler({ response });
 
-    expect(spyObserver).toBeCalledTimes(1);
-    expect(spyObserver).toBeCalledWith(
+    pluginTester.handleFake({ request, httpHandlerMock }).subscribe(observer);
+
+    expect(httpHandlerMock).toBeCalledTimes(1);
+    expect(observer).toBeCalledWith(
       expect.objectContaining({ body: { answer: 42 } })
     );
   });
 
-  it('should use `MemoryAdapter` storage by default', () => {
-    const cachePlugin = createCachePlugin();
-
-    expect(cachePlugin.handler['_storage']).toBeDefined();
-    expect(cachePlugin.handler['_storage']).toBeInstanceOf(MemoryStorage);
-  });
-
-  it('should use given request condition', () => {
-    const spyCondition = jest.fn().mockReturnValue(true);
-    const cachePlugin = createCachePlugin({
-      shouldHandleRequest: spyCondition,
-    });
-
-    cachePlugin.shouldHandleRequest({ request });
-
-    expect(spyCondition).toHaveBeenCalledWith({ request });
-  });
-
   it('should use given storage implementation to store cache', async () => {
     const storage = createMemoryStorageSpy() as any;
-    const cachePlugin = createCachePlugin({ storage });
-    const next = { handle: () => of(response) };
+    const pluginTester = createPluginTester({
+      handler: new CacheHandler({
+        addCacheMetadata: false,
+        storage,
+      }),
+    });
 
-    const handler$ = cachePlugin.handler.handle({ request, next });
+    const httpHandlerMock = pluginTester.mockHttpHandler({ response });
+    const handler$ = pluginTester.handleFake({ request, httpHandlerMock });
 
     advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
@@ -144,15 +144,12 @@ describe('CachePlugin', () => {
   it(
     'should handle query string in store key',
     marbles((m) => {
-      const cachePlugin = createCachePlugin();
-      const nextHandler = {
-        handle: jest.fn().mockImplementation(({ request: _request }) => {
-          return {
-            a: m.cold('-n|', { n: createResponse({ body: { answer: 'A' } }) }),
-            b: m.cold('-n|', { n: createResponse({ body: { answer: 'B' } }) }),
-          }[_request.params.q];
+      const pluginTester = createPluginTester({
+        handler: new CacheHandler({
+          addCacheMetadata: false,
+          storage: new MemoryStorage(),
         }),
-      };
+      });
 
       const requestA = createRequest({
         url: 'https://ultimate-answer.com',
@@ -163,17 +160,31 @@ describe('CachePlugin', () => {
         params: { q: 'b' },
       });
 
-      const response1$ = cachePlugin.handler.handle({
-        request: requestA,
-        next: nextHandler,
+      const responseA$ = m.cold('-n|', {
+        n: createResponse({ body: { answer: 'A' } }),
       });
-      const response2$ = cachePlugin.handler.handle({
+      const responseB$ = m.cold('-n|', {
+        n: createResponse({ body: { answer: 'B' } }),
+      });
+
+      const httpHandlerMockA = pluginTester.mockHttpHandler({
+        response: responseA$,
+      });
+      const httpHandlerMockB = pluginTester.mockHttpHandler({
+        response: responseB$,
+      });
+
+      const response1$ = pluginTester.handleFake({
+        request: requestA,
+        httpHandlerMock: httpHandlerMockA,
+      });
+      const response2$ = pluginTester.handleFake({
         request: requestB,
-        next: nextHandler,
+        httpHandlerMock: httpHandlerMockB,
       });
-      const response3$ = cachePlugin.handler.handle({
+      const response3$ = pluginTester.handleFake({
         request: requestA,
-        next: nextHandler,
+        httpHandlerMock: httpHandlerMockA,
       });
 
       const stream$ = concat(response1$, response2$, response3$);

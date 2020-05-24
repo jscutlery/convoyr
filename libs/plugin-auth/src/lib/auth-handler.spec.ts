@@ -3,7 +3,6 @@ import { createPluginTester } from '@convoyr/core/testing';
 import { concat, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';
-
 import { AuthHandler } from './auth-handler';
 
 describe('AuthPlugin', () => {
@@ -17,11 +16,17 @@ describe('AuthPlugin', () => {
       });
 
       const request = createRequest({ url: '/somewhere' });
+      const httpHandlerMock = pluginTester.mockHttpHandler();
 
-      await pluginTester.handle({ request }).toPromise();
+      await pluginTester
+        .handleFake({
+          request,
+          httpHandlerMock,
+        })
+        .toPromise();
 
-      expect(pluginTester.next.handle).toHaveBeenCalledTimes(1);
-      expect(pluginTester.next.handle).toHaveBeenCalledWith({
+      expect(httpHandlerMock).toHaveBeenCalledTimes(1);
+      expect(httpHandlerMock).toHaveBeenCalledWith({
         request: expect.objectContaining({
           url: '/somewhere',
           headers: {},
@@ -40,11 +45,12 @@ describe('AuthPlugin', () => {
     });
 
     const request = createRequest({ url: '/somewhere' });
+    const httpHandlerMock = pluginTester.mockHttpHandler();
 
-    await pluginTester.handle({ request }).toPromise();
+    await pluginTester.handleFake({ request, httpHandlerMock }).toPromise();
 
-    expect(pluginTester.next.handle).toHaveBeenCalledTimes(1);
-    expect(pluginTester.next.handle).toHaveBeenCalledWith({
+    expect(httpHandlerMock).toHaveBeenCalledTimes(1);
+    expect(httpHandlerMock).toHaveBeenCalledWith({
       request: expect.objectContaining({
         url: '/somewhere',
         headers: {
@@ -76,18 +82,22 @@ describe('AuthPlugin', () => {
       const request = createRequest({ url: '/somewhere' });
       const response = createResponse({ status: 200, statusText: 'Ok' });
       const response$ = m.cold('r|', { r: response });
+      const httpHandlerMock = pluginTester.mockHttpHandler({
+        response: response$,
+      });
 
-      pluginTester.next.handle.mockReturnValue(response$);
-
-      const source$ = concat(wait$, pluginTester.handle({ request }));
+      const source$ = concat(
+        wait$,
+        pluginTester.handleFake({ request, httpHandlerMock })
+      );
 
       m.expect(token$).toBeObservable('         x-a-b-c', tokens);
       m.expect(source$).toBeObservable('        -----b|', { b: response });
       m.expect(response$).toHaveSubscriptions(['-----^!']);
       m.flush();
 
-      expect(pluginTester.next.handle).toHaveBeenCalledTimes(1);
-      expect(pluginTester.next.handle).toHaveBeenCalledWith({
+      expect(httpHandlerMock).toHaveBeenCalledTimes(1);
+      expect(httpHandlerMock).toHaveBeenCalledWith({
         request: expect.objectContaining({
           headers: {
             Authorization: 'Bearer TOKEN_B',
@@ -114,13 +124,15 @@ describe('AuthPlugin', () => {
       statusText: 'Unauthorized',
     });
 
-    pluginTester.next.handle.mockReturnValue(throwError(unauthorizedResponse));
-
     const observer = {
       next: jest.fn(),
       error: jest.fn(),
     };
-    pluginTester.handle({ request }).subscribe(observer);
+    const httpHandlerMock = pluginTester.mockHttpHandler({
+      response: throwError(unauthorizedResponse),
+    });
+
+    pluginTester.handleFake({ request, httpHandlerMock }).subscribe(observer);
 
     expect(observer.next).not.toHaveBeenCalled();
     expect(observer.error).toHaveBeenCalledTimes(1);

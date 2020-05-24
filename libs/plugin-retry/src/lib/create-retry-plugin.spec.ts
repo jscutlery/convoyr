@@ -1,14 +1,17 @@
-import { createRequest, ConvoyrRequest, createResponse } from '@convoyr/core';
+import { ConvoyrRequest, createRequest, createResponse } from '@convoyr/core';
+import { createPluginTester } from '@convoyr/core/testing';
 import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
-
-import { createRetryPlugin } from './create-retry-plugin';
+import { RetryHandler } from './retry-handler';
+import { isServerOrUnknownError } from './predicates/is-server-or-unknown-error';
 
 describe('RetryPlugin', () => {
   let request: ConvoyrRequest;
 
   beforeEach(() => {
-    request = createRequest({ url: 'https://ultimate-answer.com' });
+    request = createRequest({
+      url: 'https://ultimate-answer.com',
+    });
   });
 
   it(
@@ -17,28 +20,35 @@ describe('RetryPlugin', () => {
       /* Setting every frame duration to 100ms. */
       TestScheduler['frameTimeFactor'] = 100;
 
-      const retryPlugin = createRetryPlugin({
-        initialInterval: 100,
-        maxRetries: 3,
+      const pluginTester = createPluginTester({
+        handler: new RetryHandler({
+          initialInterval: 100,
+          maxInterval: 10_000,
+          maxRetries: 3,
+          shouldRetry: isServerOrUnknownError,
+        }),
       });
-      const { handler } = retryPlugin;
 
       /* Create an error response */
-      const errorResponse = createResponse({
+      const response = createResponse({
         status: 500,
         statusText: 'Internal Server Error',
       });
 
       /* Simulate failure response */
-      const errorResponse$ = m.cold('-#', undefined, errorResponse);
-      const source$ = handler.handle({
-        request,
-        next: { handle: () => errorResponse$ },
+      const response$ = m.cold('-#', undefined, response);
+      const httpHandlerMock = pluginTester.mockHttpHandler({
+        response: response$,
       });
-      const expected$ = m.cold('-----------#', undefined, errorResponse);
 
+      const source$ = pluginTester.handleFake({
+        request,
+        httpHandlerMock,
+      });
+
+      const expected$ = m.cold('-----------#', undefined, response);
       m.expect(source$).toBeObservable(expected$);
-      m.expect(errorResponse$).toHaveSubscriptions([
+      m.expect(response$).toHaveSubscriptions([
         /* First try. */
         '^!',
         /* First retry after 100ms which makes it happen in frame 2 (200ms): 100ms (error response delay) + 100ms. */
@@ -52,30 +62,37 @@ describe('RetryPlugin', () => {
   );
 
   it(
-    'should not retry the handler when no server error occurs',
+    `should retry only when its 5xx or unknown errors`,
     marbles((m) => {
-      const retryPlugin = createRetryPlugin({
-        initialInterval: 1,
-        maxRetries: 3,
+      const pluginTester = createPluginTester({
+        handler: new RetryHandler({
+          initialInterval: 1,
+          maxInterval: 10_000,
+          maxRetries: 3,
+          shouldRetry: isServerOrUnknownError,
+        }),
       });
-      const { handler } = retryPlugin;
 
       /* Create a 404 response */
-      const errorResponse = createResponse({
+      const response = createResponse({
         status: 404,
         statusText: 'Resource not found',
       });
 
       /* Simulate failure response */
-      const errorResponse$ = m.cold('-#', undefined, errorResponse);
-      const source$ = handler.handle({
-        request,
-        next: { handle: () => errorResponse$ },
+      const response$ = m.cold('-#', undefined, response);
+      const httpHandlerMock = pluginTester.mockHttpHandler({
+        response: response$,
       });
-      const expected$ = m.cold('-#', undefined, errorResponse);
 
+      const source$ = pluginTester.handleFake({
+        request,
+        httpHandlerMock,
+      });
+
+      const expected$ = m.cold('-#', undefined, response);
       m.expect(source$).toBeObservable(expected$);
-      m.expect(errorResponse$).toHaveSubscriptions(['^!']);
+      m.expect(response$).toHaveSubscriptions(['^!']);
     })
   );
 });
