@@ -3,6 +3,7 @@ import { createPluginTester } from '@convoyr/core/testing';
 import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
 import { RetryHandler } from './retry-handler';
+import { isServerOrUnknownError } from './predicates/is-server-or-unknown-error';
 
 describe('RetryPlugin', () => {
   let request: ConvoyrRequest;
@@ -23,8 +24,8 @@ describe('RetryPlugin', () => {
         handler: new RetryHandler({
           initialInterval: 100,
           maxInterval: 10_000,
-          maxRetries: 10,
-          shouldRetry: () => true,
+          maxRetries: 3,
+          shouldRetry: isServerOrUnknownError,
         }),
       });
 
@@ -36,10 +37,13 @@ describe('RetryPlugin', () => {
 
       /* Simulate failure response */
       const response$ = m.cold('-#', undefined, response);
-
-      const source$ = pluginTester.handle({
-        request,
+      const httpHandlerMock = pluginTester.mockHttpHandler({
         response: response$,
+      });
+
+      const source$ = pluginTester.handleFake({
+        request,
+        httpHandlerMock,
       });
 
       const expected$ = m.cold('-----------#', undefined, response);
@@ -58,14 +62,14 @@ describe('RetryPlugin', () => {
   );
 
   it(
-    'should not retry the handler when no server error occurs',
+    `should retry only when its 5xx or unknown errors`,
     marbles((m) => {
       const pluginTester = createPluginTester({
         handler: new RetryHandler({
           initialInterval: 1,
           maxInterval: 10_000,
           maxRetries: 3,
-          shouldRetry: () => true,
+          shouldRetry: isServerOrUnknownError,
         }),
       });
 
@@ -77,9 +81,13 @@ describe('RetryPlugin', () => {
 
       /* Simulate failure response */
       const response$ = m.cold('-#', undefined, response);
-      const source$ = pluginTester.handle({
-        request,
+      const httpHandlerMock = pluginTester.mockHttpHandler({
         response: response$,
+      });
+
+      const source$ = pluginTester.handleFake({
+        request,
+        httpHandlerMock,
       });
 
       const expected$ = m.cold('-#', undefined, response);
