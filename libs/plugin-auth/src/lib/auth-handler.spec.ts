@@ -107,37 +107,38 @@ describe('AuthPlugin', () => {
     })
   );
 
-  // it('should call onUnauthorized callback on 401 response', async () => {
-  //   const token$ = of('TOKEN');
-  //   const onUnauthorizedSpy = jest.fn();
+  it('should call onUnauthorized callback on 401 response', async () => {
+    const token$ = of('TOKEN');
+    const onUnauthorizedSpy = jest.fn();
 
-  //   const pluginTester = createPluginTester({
-  //     handler: new AuthHandler({
-  //       token: token$,
-  //       onUnauthorized: onUnauthorizedSpy,
-  //     }),
-  //   });
+    const pluginTester = createPluginTester({
+      handler: new AuthHandler({
+        token: token$,
+        onUnauthorized: onUnauthorizedSpy,
+      }),
+    });
 
-  //   const request = createRequest({ url: '/somewhere' });
-  //   const unauthorizedResponse = createResponse({
-  //     status: 401,
-  //     statusText: 'Unauthorized',
-  //   });
+    const request = createRequest({ url: '/somewhere' });
+    const unauthorizedResponse = createResponse({
+      status: 401,
+      statusText: 'Unauthorized',
+    });
 
-  //   const observer = {
-  //     next: jest.fn(),
-  //     error: jest.fn(),
-  //   };
+    const observer = {
+      next: jest.fn(),
+      error: jest.fn(),
+    };
+    const httpHandlerMock = pluginTester.mockHttpHandler({
+      response: throwError(unauthorizedResponse),
+    });
 
-  //   pluginTester
-  //     .handle({ request, response: throwError(unauthorizedResponse) })
-  //     .subscribe(observer);
+    pluginTester.handleFake({ request, httpHandlerMock }).subscribe(observer);
 
-  //   expect(observer.next).not.toHaveBeenCalled();
-  //   expect(observer.error).toHaveBeenCalledTimes(1);
-  //   expect(observer.error).toHaveBeenCalledWith(unauthorizedResponse);
-  //   expect(onUnauthorizedSpy).toBeCalledWith(
-  //     expect.objectContaining(unauthorizedResponse)
-  //   );
-  // });
+    expect(observer.next).not.toHaveBeenCalled();
+    expect(observer.error).toHaveBeenCalledTimes(1);
+    expect(observer.error).toHaveBeenCalledWith(unauthorizedResponse);
+    expect(onUnauthorizedSpy).toBeCalledWith(
+      expect.objectContaining(unauthorizedResponse)
+    );
+  });
 });
