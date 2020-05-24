@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-import { createRequest, ConvoyrRequest, createResponse } from '@convoyr/core';
-=======
-import { createRequest, HttpExtRequest, createResponse } from '@http-ext/core';
-import { createPluginTester } from '@http-ext/core/testing';
->>>>>>> wip: 🚧 refactor tester plugin
+import { ConvoyrRequest, createRequest, createResponse } from '@convoyr/core';
+import { createPluginTester } from '@convoyr/core/testing';
 import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
-
 import { RetryHandler } from './retry-handler';
 
 describe('RetryPlugin', () => {
@@ -24,11 +19,6 @@ describe('RetryPlugin', () => {
       /* Setting every frame duration to 100ms. */
       TestScheduler['frameTimeFactor'] = 100;
 
-<<<<<<< HEAD
-      const retryPlugin = createRetryPlugin({
-        initialInterval: 100,
-        maxRetries: 3,
-=======
       const pluginTester = createPluginTester({
         handler: new RetryHandler({
           initialInterval: 100,
@@ -36,7 +26,6 @@ describe('RetryPlugin', () => {
           maxRetries: 10,
           shouldRetry: () => true,
         }),
->>>>>>> wip: 🚧 refactor tester plugin
       });
 
       /* Create an error response */
@@ -46,16 +35,7 @@ describe('RetryPlugin', () => {
       });
 
       /* Simulate failure response */
-<<<<<<< HEAD
-      const errorResponse$ = m.cold('-#', undefined, errorResponse);
-      const source$ = handler.handle({
-        request,
-        next: { handle: () => errorResponse$ },
-      });
-      const expected$ = m.cold('-----------#', undefined, errorResponse);
-=======
       const response$ = m.cold('-#', undefined, response);
->>>>>>> wip: 🚧 refactor tester plugin
 
       const source$ = pluginTester.handle({
         request,
@@ -80,11 +60,6 @@ describe('RetryPlugin', () => {
   it(
     'should not retry the handler when no server error occurs',
     marbles((m) => {
-<<<<<<< HEAD
-      const retryPlugin = createRetryPlugin({
-        initialInterval: 1,
-        maxRetries: 3,
-=======
       const pluginTester = createPluginTester({
         handler: new RetryHandler({
           initialInterval: 1,
@@ -92,7 +67,6 @@ describe('RetryPlugin', () => {
           maxRetries: 3,
           shouldRetry: () => true,
         }),
->>>>>>> wip: 🚧 refactor tester plugin
       });
 
       /* Create a 404 response */
@@ -102,20 +76,11 @@ describe('RetryPlugin', () => {
       });
 
       /* Simulate failure response */
-<<<<<<< HEAD
-      const errorResponse$ = m.cold('-#', undefined, errorResponse);
-      const source$ = handler.handle({
-        request,
-        next: { handle: () => errorResponse$ },
-      });
-      const expected$ = m.cold('-#', undefined, errorResponse);
-=======
       const response$ = m.cold('-#', undefined, response);
       const source$ = pluginTester.handle({
         request,
         response: response$,
       });
->>>>>>> wip: 🚧 refactor tester plugin
 
       const expected$ = m.cold('-#', undefined, response);
       m.expect(source$).toBeObservable(expected$);
