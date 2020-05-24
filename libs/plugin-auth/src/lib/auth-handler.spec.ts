@@ -35,73 +35,77 @@ describe('AuthPlugin', () => {
     }
   );
 
-  // it('should add bearer token to each request', async () => {
-  //   /* Providing an observable with a replay buffer containing an old token
-  //    * Let's make sure we are using the latest available token. */
-  //   const token$ = of('OLD_TOKEN', 'TOKEN');
+  it('should add bearer token to each request', async () => {
+    /* Providing an observable with a replay buffer containing an old token
+     * Let's make sure we are using the latest available token. */
+    const token$ = of('OLD_TOKEN', 'TOKEN');
 
-  //   const pluginTester = createPluginTester({
-  //     handler: new AuthHandler({ token: token$ }),
-  //   });
+    const pluginTester = createPluginTester({
+      handler: new AuthHandler({ token: token$ }),
+    });
 
-  //   const request = createRequest({ url: '/somewhere' });
+    const request = createRequest({ url: '/somewhere' });
+    const httpHandlerMock = pluginTester.mockHttpHandler();
 
-  //   await pluginTester.handle({ request }).toPromise();
+    await pluginTester.handleFake({ request, httpHandlerMock }).toPromise();
 
-  //   expect(pluginTester.next.handle).toHaveBeenCalledTimes(1);
-  //   expect(pluginTester.next.handle).toHaveBeenCalledWith({
-  //     request: expect.objectContaining({
-  //       url: '/somewhere',
-  //       headers: {
-  //         Authorization: 'Bearer TOKEN',
-  //       },
-  //     }),
-  //   });
-  // });
+    expect(httpHandlerMock).toHaveBeenCalledTimes(1);
+    expect(httpHandlerMock).toHaveBeenCalledWith({
+      request: expect.objectContaining({
+        url: '/somewhere',
+        headers: {
+          Authorization: 'Bearer TOKEN',
+        },
+      }),
+    });
+  });
 
-  // it(
-  //   'should grab the last token value only and run request once',
-  //   marbles((m) => {
-  //     const wait$ = m.cold('-----|');
-  //     const tokens = {
-  //       x: null,
-  //       a: 'TOKEN_A',
-  //       b: 'TOKEN_B',
-  //       c: 'TOKEN_C',
-  //     };
-  //     /* Simulate state management with shareReplay. */
-  //     const token$ = m
-  //       .hot('x-a-b-c', tokens)
-  //       .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+  it(
+    'should grab the last token value only and run request once',
+    marbles((m) => {
+      const wait$ = m.cold('-----|');
+      const tokens = {
+        x: null,
+        a: 'TOKEN_A',
+        b: 'TOKEN_B',
+        c: 'TOKEN_C',
+      };
+      /* Simulate state management with shareReplay. */
+      const token$ = m
+        .hot('x-a-b-c', tokens)
+        .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
-  //     const pluginTester = createPluginTester({
-  //       handler: new AuthHandler({ token: token$ }),
-  //     });
+      const pluginTester = createPluginTester({
+        handler: new AuthHandler({ token: token$ }),
+      });
 
-  //     const request = createRequest({ url: '/somewhere' });
-  //     const response = createResponse({ status: 200, statusText: 'Ok' });
-  //     const response$ = m.cold('r|', { r: response });
+      const request = createRequest({ url: '/somewhere' });
+      const response = createResponse({ status: 200, statusText: 'Ok' });
+      const response$ = m.cold('r|', { r: response });
+      const httpHandlerMock = pluginTester.mockHttpHandler({
+        response: response$,
+      });
 
-  //     const source$ = concat(
-  //       wait$,
-  //       pluginTester.handle({ request, response: response$ })
-  //     );
+      const source$ = concat(
+        wait$,
+        pluginTester.handleFake({ request, httpHandlerMock })
+      );
 
-  //     m.expect(token$).toBeObservable('         x-a-b-c', tokens);
-  //     m.expect(source$).toBeObservable('        -----b|', { b: response });
-  //     m.expect(response$).toHaveSubscriptions(['-----^!']);
-  //     m.flush();
+      m.expect(token$).toBeObservable('         x-a-b-c', tokens);
+      m.expect(source$).toBeObservable('        -----b|', { b: response });
+      m.expect(response$).toHaveSubscriptions(['-----^!']);
+      m.flush();
 
-  //     expect(pluginTester.next.handle).toHaveBeenCalledTimes(1);
-  //     expect(pluginTester.next.handle).toHaveBeenCalledWith({
-  //       request: expect.objectContaining({
-  //         headers: {
-  //           Authorization: 'Bearer TOKEN_B',
-  //         },
-  //       }),
-  //     });
-  //   })
-  // );
+      expect(httpHandlerMock).toHaveBeenCalledTimes(1);
+      expect(httpHandlerMock).toHaveBeenCalledWith({
+        request: expect.objectContaining({
+          headers: {
+            Authorization: 'Bearer TOKEN_B',
+          },
+        }),
+      });
+    })
+  );
 
   // it('should call onUnauthorized callback on 401 response', async () => {
   //   const token$ = of('TOKEN');
