@@ -1,5 +1,6 @@
-import { PluginTester, createPluginTester } from './create-plugin-tester';
 import { createRequest, createResponse } from '@convoyr/core';
+import { isObservable } from 'rxjs';
+import { createPluginTester, PluginTester } from './create-plugin-tester';
 import { createSpyPlugin } from './create-spy-plugin';
 
 describe('PluginTester', () => {
@@ -25,12 +26,14 @@ describe('PluginTester', () => {
       response: createResponse({ body: 'Edward Whymper' }),
     });
 
-    const response = await pluginTester
-      .handleFake({
-        request,
-        httpHandlerMock,
-      })
-      .toPromise();
+    const fakeHandler$ = pluginTester.handleFake({
+      request,
+      httpHandlerMock,
+    });
+
+    expect(isObservable(fakeHandler$)).toBe(true);
+
+    const response = await fakeHandler$.toPromise();
 
     expect(pluginHandler.handle).toBeCalledTimes(1);
     expect(pluginHandler.handle.mock.calls[0][0]).toEqual(
