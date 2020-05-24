@@ -1,19 +1,48 @@
 import { PluginTester, createPluginTester } from './create-plugin-tester';
+import { createRequest, createResponse } from '@convoyr/core';
+import { createSpyPlugin } from './create-spy-plugin';
 
 describe('PluginTester', () => {
-  let pluginHandler: { handle: () => jest.Mock<any, any> };
+  const request = createRequest({ url: 'http://test.com' });
   let pluginTester: PluginTester;
+  let pluginHandler: {
+    handle: jest.Mock<any, [any]>;
+  };
 
-  beforeEach(() => (pluginHandler = { handle: jest.fn() }));
+  beforeEach(() => (pluginHandler = createSpyPlugin().handler));
   beforeEach(
-    () => (pluginTester = createPluginTester({ handler: pluginHandler as any }))
+    () => (pluginTester = createPluginTester({ handler: pluginHandler }))
   );
 
-  it('should mock Http handler', () => {
+  it('should mock the Http handler', () => {
     const httpHandlerMock = pluginTester.mockHttpHandler();
 
     expect(jest.isMockFunction(httpHandlerMock)).toBeTruthy();
   });
 
-  it.todo('should run the Http handler using the mock');
+  it('should run the Http handler using mock implementation', async () => {
+    const httpHandlerMock = pluginTester.mockHttpHandler({
+      response: createResponse({ body: 'Edward Whymper' }),
+    });
+
+    const response = await pluginTester
+      .handleFake({
+        request,
+        httpHandlerMock,
+      })
+      .toPromise();
+
+    expect(pluginHandler.handle).toBeCalledTimes(1);
+    expect(pluginHandler.handle.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        next: { handle: httpHandlerMock },
+        request,
+      })
+    );
+    expect(response).toEqual(
+      expect.objectContaining({
+        body: 'Edward Whymper',
+      })
+    );
+  });
 });
