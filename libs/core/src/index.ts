@@ -13,3 +13,4 @@ export { Convoyr, ConvoyrConfig } from './lib/convoyr';
 export { NextHandler } from './lib/request-handler';
 export { ConvoyrRequest, createRequest, HttpMethod } from './lib/request';
 export { ConvoyrResponse, createResponse, ResponseArgs } from './lib/response';
+export { fromSyncOrAsync } from './lib/utils/from-sync-or-async';

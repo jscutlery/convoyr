@@ -6,7 +6,7 @@ import {
   createResponse,
 } from '@convoyr/core';
 import { Observable } from 'rxjs';
-import { fromSyncOrAsync } from '../../../src/lib/utils/from-sync-or-async';
+import { fromSyncOrAsync } from '@convoyr/core';
 
 export type TestResponse = ConvoyrResponse | Observable<ConvoyrResponse>;
 

@@ -12,5 +12,6 @@ describe('Public API', () => {
     expect(publicApi.not).toBeDefined();
     expect(publicApi.createRequest).toBeDefined();
     expect(publicApi.createResponse).toBeDefined();
+    expect(publicApi.fromSyncOrAsync).toBeDefined();
   });
 });
