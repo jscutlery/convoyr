@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/jscutlery/convoyr/compare/v3.2.0...v4.0.0) (2020-05-30)
+
+
+### Features
+
+* **testing:** ✅ run Convoyr core in `PluginTester` ([6f646b1](https://github.com/jscutlery/convoyr/commit/6f646b10ef5d8340bff9071090fd3fd950024e8a))
+
+
+### BREAKING CHANGES
+
+* **testing:** PluginTester args are changed to the following `PluginTesterArgs` interface. Now the plugin-tester executes the `shouldHandleRequest` function throught Convoyr core.
+
+
+
+
+
 # [3.2.0](https://github.com/jscutlery/convoyr/compare/v3.1.0...v3.2.0) (2020-05-23)
 
 

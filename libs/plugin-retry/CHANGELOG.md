@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/jscutlery/convoyr/compare/v3.2.0...v4.0.0) (2020-05-30)
+
+**Note:** Version bump only for package @convoyr/plugin-retry
+
+
+
+
+
 # [3.2.0](https://github.com/jscutlery/convoyr/compare/v3.1.0...v3.2.0) (2020-05-23)
 
 **Note:** Version bump only for package @convoyr/plugin-retry
