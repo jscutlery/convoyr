@@ -5,15 +5,10 @@ import { createSpyPlugin } from './create-spy-plugin';
 
 describe('PluginTester', () => {
   const request = createRequest({ url: 'http://test.com' });
-  let pluginTester: PluginTester;
-  let pluginHandler: {
-    handle: jest.Mock<any, [any]>;
-  };
+  const spyPlugin = createSpyPlugin(() => true);
 
-  beforeEach(() => (pluginHandler = createSpyPlugin().handler));
-  beforeEach(
-    () => (pluginTester = createPluginTester({ handler: pluginHandler }))
-  );
+  let pluginTester: PluginTester;
+  beforeEach(() => (pluginTester = createPluginTester({ plugin: spyPlugin })));
 
   it('should mock the Http handler with a default ok response', async () => {
     const httpHandlerMock = pluginTester.mockHttpHandler();
@@ -27,27 +22,29 @@ describe('PluginTester', () => {
     );
   });
 
-  it('should run the Http handler using mock implementation', async () => {
+  it('should run the plugin correctly', async () => {
     const httpHandlerMock = pluginTester.mockHttpHandler({
       response: createResponse({ body: 'Edward Whymper' }),
     });
 
-    const fakeHandler$ = pluginTester.handleFake({
+    const response$ = pluginTester.handleFake({
       request,
       httpHandlerMock,
     });
 
-    expect(isObservable(fakeHandler$)).toBeTruthy();
+    expect(isObservable(response$)).toBeTruthy();
 
-    const response = await fakeHandler$.toPromise();
+    const response = await response$.toPromise();
 
-    expect(pluginHandler.handle).toBeCalledTimes(1);
-    expect(pluginHandler.handle.mock.calls[0][0]).toEqual(
-      expect.objectContaining({
-        next: { handle: httpHandlerMock },
-        request,
-      })
-    );
+    expect(spyPlugin.shouldHandleRequest).toHaveBeenCalledTimes(1);
+    expect(spyPlugin.shouldHandleRequest.mock.calls[0][0]).toEqual({
+      request,
+    });
+    expect(spyPlugin.handler.handle).toBeCalledTimes(1);
+    expect(spyPlugin.handler.handle.mock.calls[0][0]).toEqual({
+      next: { handle: expect.any(Function) },
+      request,
+    });
     expect(response).toEqual(
       expect.objectContaining({
         body: 'Edward Whymper',

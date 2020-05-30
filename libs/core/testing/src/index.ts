@@ -3,4 +3,5 @@ export {
   createPluginTester,
   PluginTester,
   TestResponse,
+  PluginTesterArgs,
 } from './lib/create-plugin-tester';

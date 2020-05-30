@@ -1,22 +1,30 @@
 import {
-  createResponse,
-  ConvoyrResponse,
-  PluginHandler,
+  Convoyr,
+  ConvoyrPlugin,
   ConvoyrRequest,
+  ConvoyrResponse,
+  createResponse,
 } from '@convoyr/core';
-import { Observable, of, isObservable } from 'rxjs';
+import { fromSyncOrAsync } from 'libs/core/src/lib/utils/from-sync-or-async';
+import { Observable } from 'rxjs';
 
 export type TestResponse = ConvoyrResponse | Observable<ConvoyrResponse>;
 
-export function createPluginTester({ handler }: { handler: PluginHandler }) {
-  return new PluginTester({ handler });
+export interface PluginTesterArgs {
+  plugin: ConvoyrPlugin;
+}
+
+export function createPluginTester({ plugin }: PluginTesterArgs) {
+  return new PluginTester({ plugin });
 }
 
 export class PluginTester {
-  private _handler: PluginHandler;
+  private _convoyr: Convoyr;
 
-  constructor({ handler }: { handler: PluginHandler }) {
-    this._handler = handler;
+  constructor({ plugin }: PluginTesterArgs) {
+    this._convoyr = new Convoyr({
+      plugins: [plugin],
+    });
   }
 
   mockHttpHandler({
@@ -24,20 +32,19 @@ export class PluginTester {
   }: {
     response?: TestResponse;
   } = {}): jest.Mock<Observable<ConvoyrResponse<unknown>>> {
-    const fakeHttpResponse = isObservable(response) ? response : of(response);
-    return jest.fn(() => fakeHttpResponse);
+    return jest.fn(() => fromSyncOrAsync(response));
   }
 
-  handleFake<T = Observable<ConvoyrResponse<unknown>>>({
+  handleFake({
     request,
     httpHandlerMock,
   }: {
     request: ConvoyrRequest;
-    httpHandlerMock: jest.Mock<T>;
-  }): T {
-    return this._handler.handle({
+    httpHandlerMock: jest.Mock<Observable<ConvoyrResponse>>;
+  }): Observable<ConvoyrResponse> {
+    return this._convoyr.handle({
       request,
-      next: { handle: httpHandlerMock as any },
-    }) as any;
+      httpHandler: { handle: httpHandlerMock },
+    });
   }
 }
