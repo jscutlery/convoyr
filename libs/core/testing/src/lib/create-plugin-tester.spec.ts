@@ -15,10 +15,16 @@ describe('PluginTester', () => {
     () => (pluginTester = createPluginTester({ handler: pluginHandler }))
   );
 
-  it('should mock the Http handler', () => {
+  it('should mock the Http handler with a default ok response', async () => {
     const httpHandlerMock = pluginTester.mockHttpHandler();
 
+    const httpResponse$ = httpHandlerMock();
+
     expect(jest.isMockFunction(httpHandlerMock)).toBeTruthy();
+    expect(isObservable(httpResponse$)).toBeTruthy();
+    expect(await httpResponse$.toPromise()).toEqual(
+      createResponse({ status: 200, statusText: 'ok' })
+    );
   });
 
   it('should run the Http handler using mock implementation', async () => {
@@ -31,7 +37,7 @@ describe('PluginTester', () => {
       httpHandlerMock,
     });
 
-    expect(isObservable(fakeHandler$)).toBe(true);
+    expect(isObservable(fakeHandler$)).toBeTruthy();
 
     const response = await fakeHandler$.toPromise();
 
