@@ -12,7 +12,7 @@ describe('rejectUnknownOriginsPlugin', () => {
   });
 
   it('should reject unknown origins', () => {
-    const httpHandlerMock = pluginTester.mockHttpHandler({
+    const httpHandlerMock = pluginTester.createHttpHandlerMock({
       response: createResponse({ body: null }),
     });
 

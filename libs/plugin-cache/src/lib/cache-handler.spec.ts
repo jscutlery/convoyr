@@ -46,7 +46,7 @@ describe('CachePlugin', () => {
       advanceTo(new Date('2019-01-01T00:00:00.000Z'));
 
       const response$ = m.cold('-r|', { r: response });
-      const httpHandlerMock = pluginTester.mockHttpHandler({
+      const httpHandlerMock = pluginTester.createHttpHandlerMock({
         response: response$,
       });
 
@@ -100,7 +100,7 @@ describe('CachePlugin', () => {
     });
 
     const observer = jest.fn();
-    const httpHandlerMock = pluginTester.mockHttpHandler({ response });
+    const httpHandlerMock = pluginTester.createHttpHandlerMock({ response });
 
     pluginTester.handleFake({ request, httpHandlerMock }).subscribe(observer);
 
@@ -119,7 +119,7 @@ describe('CachePlugin', () => {
       }),
     });
 
-    const httpHandlerMock = pluginTester.mockHttpHandler({ response });
+    const httpHandlerMock = pluginTester.createHttpHandlerMock({ response });
     const handler$ = pluginTester.handleFake({ request, httpHandlerMock });
 
     advanceTo(new Date('2019-01-01T00:00:00.000Z'));
@@ -167,10 +167,10 @@ describe('CachePlugin', () => {
         n: createResponse({ body: { answer: 'B' } }),
       });
 
-      const httpHandlerMockA = pluginTester.mockHttpHandler({
+      const httpHandlerMockA = pluginTester.createHttpHandlerMock({
         response: responseA$,
       });
-      const httpHandlerMockB = pluginTester.mockHttpHandler({
+      const httpHandlerMockB = pluginTester.createHttpHandlerMock({
         response: responseB$,
       });
 

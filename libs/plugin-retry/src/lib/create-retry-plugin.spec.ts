@@ -37,7 +37,7 @@ describe('RetryPlugin', () => {
 
       /* Simulate failure response */
       const response$ = m.cold('-#', undefined, response);
-      const httpHandlerMock = pluginTester.mockHttpHandler({
+      const httpHandlerMock = pluginTester.createHttpHandlerMock({
         response: response$,
       });
 
@@ -81,7 +81,7 @@ describe('RetryPlugin', () => {
 
       /* Simulate failure response */
       const response$ = m.cold('-#', undefined, response);
-      const httpHandlerMock = pluginTester.mockHttpHandler({
+      const httpHandlerMock = pluginTester.createHttpHandlerMock({
         response: response$,
       });
 

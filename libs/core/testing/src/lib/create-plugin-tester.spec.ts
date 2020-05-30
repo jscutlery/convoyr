@@ -11,7 +11,7 @@ describe('PluginTester', () => {
   beforeEach(() => (pluginTester = createPluginTester({ plugin: spyPlugin })));
 
   it('should mock the Http handler with a default ok response', async () => {
-    const httpHandlerMock = pluginTester.mockHttpHandler();
+    const httpHandlerMock = pluginTester.createHttpHandlerMock();
 
     const httpResponse$ = httpHandlerMock();
 
@@ -23,7 +23,7 @@ describe('PluginTester', () => {
   });
 
   it('should run the plugin correctly', async () => {
-    const httpHandlerMock = pluginTester.mockHttpHandler({
+    const httpHandlerMock = pluginTester.createHttpHandlerMock({
       response: createResponse({ body: 'Edward Whymper' }),
     });
 

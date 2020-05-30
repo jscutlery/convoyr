@@ -18,7 +18,7 @@ describe('AuthPlugin', () => {
       });
 
       const request = createRequest({ url: '/somewhere' });
-      const httpHandlerMock = pluginTester.mockHttpHandler();
+      const httpHandlerMock = pluginTester.createHttpHandlerMock();
 
       await pluginTester
         .handleFake({
@@ -49,7 +49,7 @@ describe('AuthPlugin', () => {
     });
 
     const request = createRequest({ url: '/somewhere' });
-    const httpHandlerMock = pluginTester.mockHttpHandler();
+    const httpHandlerMock = pluginTester.createHttpHandlerMock();
 
     await pluginTester.handleFake({ request, httpHandlerMock }).toPromise();
 
@@ -88,7 +88,7 @@ describe('AuthPlugin', () => {
       const request = createRequest({ url: '/somewhere' });
       const response = createResponse({ status: 200, statusText: 'Ok' });
       const response$ = m.cold('r|', { r: response });
-      const httpHandlerMock = pluginTester.mockHttpHandler({
+      const httpHandlerMock = pluginTester.createHttpHandlerMock({
         response: response$,
       });
 
@@ -134,7 +134,7 @@ describe('AuthPlugin', () => {
       next: jest.fn(),
       error: jest.fn(),
     };
-    const httpHandlerMock = pluginTester.mockHttpHandler({
+    const httpHandlerMock = pluginTester.createHttpHandlerMock({
       response: throwError(unauthorizedResponse),
     });
 

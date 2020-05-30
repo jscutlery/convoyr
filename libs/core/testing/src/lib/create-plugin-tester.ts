@@ -27,7 +27,7 @@ export class PluginTester {
     });
   }
 
-  mockHttpHandler({
+  createHttpHandlerMock({
     response = createResponse({ status: 200, statusText: 'ok' }),
   }: {
     response?: TestResponse;
