@@ -1,4 +1,4 @@
-export { createSpyPlugin } from './lib/create-spy-plugin';
+export { createSpyPlugin, SpyPlugin } from './lib/create-spy-plugin';
 export {
   createPluginTester,
   PluginTester,

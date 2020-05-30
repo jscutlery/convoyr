@@ -76,12 +76,16 @@ describe('Convoyr', () => {
   });
 
   it('should conditionally handle plugins', () => {
-    const pluginA = createSpyPlugin((req) =>
-      req.url.startsWith('https://answer-to-the-ultimate-question-of-life.com/')
-    );
-    const pluginB = createSpyPlugin((req) =>
-      req.url.startsWith('https://something-else-that-do-not-match.com/')
-    );
+    const pluginA = createSpyPlugin({
+      shouldHandleRequest: ({ request: req }) =>
+        req.url.startsWith(
+          'https://answer-to-the-ultimate-question-of-life.com/'
+        ),
+    });
+    const pluginB = createSpyPlugin({
+      shouldHandleRequest: ({ request: req }) =>
+        req.url.startsWith('https://something-else-that-do-not-match.com/'),
+    });
     const convoyr = new Convoyr({ plugins: [pluginA, pluginB] });
     const request = createRequest({
       url: 'https://answer-to-the-ultimate-question-of-life.com/',
@@ -119,7 +123,9 @@ describe('Convoyr', () => {
   });
 
   it('should throw when a plugin condition returns an invalid value', () => {
-    const plugin = createSpyPlugin(() => '' as any /* 👈🏻 invalid condition */);
+    const plugin = createSpyPlugin({
+      shouldHandleRequest: () => '' as any /* 👈🏻 invalid condition */,
+    });
     const convoyr = new Convoyr({ plugins: [plugin] });
     const request = createRequest({
       url: 'https://test.com/',

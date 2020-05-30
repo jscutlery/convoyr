@@ -5,7 +5,7 @@ import { createSpyPlugin } from './create-spy-plugin';
 
 describe('PluginTester', () => {
   const request = createRequest({ url: 'http://test.com' });
-  const spyPlugin = createSpyPlugin(() => true);
+  const spyPlugin = createSpyPlugin();
 
   let pluginTester: PluginTester;
   beforeEach(() => (pluginTester = createPluginTester({ plugin: spyPlugin })));
