@@ -1,2 +1,6 @@
 export { createSpyPlugin } from './lib/create-spy-plugin';
-export { createPluginTester } from './lib/create-plugin-tester';
+export {
+  createPluginTester,
+  PluginTester,
+  TestResponse,
+} from './lib/create-plugin-tester';
