@@ -2,7 +2,7 @@ import { ConvoyrRequest, createRequest, createResponse } from '@convoyr/core';
 import { createPluginTester } from '@convoyr/core/testing';
 import { marbles } from 'rxjs-marbles/jest';
 import { TestScheduler } from 'rxjs/testing';
-import { RetryHandler } from './retry-handler';
+import { createRetryPlugin } from './create-retry-plugin';
 import { isServerOrUnknownError } from './predicates/is-server-or-unknown-error';
 
 describe('RetryPlugin', () => {
@@ -21,7 +21,7 @@ describe('RetryPlugin', () => {
       TestScheduler['frameTimeFactor'] = 100;
 
       const pluginTester = createPluginTester({
-        handler: new RetryHandler({
+        plugin: createRetryPlugin({
           initialInterval: 100,
           maxInterval: 10_000,
           maxRetries: 3,
@@ -65,8 +65,8 @@ describe('RetryPlugin', () => {
     `should retry only when its 5xx or unknown errors`,
     marbles((m) => {
       const pluginTester = createPluginTester({
-        handler: new RetryHandler({
-          initialInterval: 1,
+        plugin: createRetryPlugin({
+          initialInterval: 100,
           maxInterval: 10_000,
           maxRetries: 3,
           shouldRetry: isServerOrUnknownError,

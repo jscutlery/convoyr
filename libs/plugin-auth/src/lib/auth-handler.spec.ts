@@ -3,7 +3,7 @@ import { createPluginTester } from '@convoyr/core/testing';
 import { concat, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';
-import { AuthHandler } from './auth-handler';
+import { createAuthPlugin } from './create-auth-plugin';
 
 describe('AuthPlugin', () => {
   it.each([null, undefined])(
@@ -12,7 +12,9 @@ describe('AuthPlugin', () => {
       const token$ = of(token);
 
       const pluginTester = createPluginTester({
-        handler: new AuthHandler({ token: token$ }),
+        plugin: createAuthPlugin({
+          token: token$,
+        }),
       });
 
       const request = createRequest({ url: '/somewhere' });
@@ -41,7 +43,9 @@ describe('AuthPlugin', () => {
     const token$ = of('OLD_TOKEN', 'TOKEN');
 
     const pluginTester = createPluginTester({
-      handler: new AuthHandler({ token: token$ }),
+      plugin: createAuthPlugin({
+        token: token$,
+      }),
     });
 
     const request = createRequest({ url: '/somewhere' });
@@ -76,7 +80,9 @@ describe('AuthPlugin', () => {
         .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
       const pluginTester = createPluginTester({
-        handler: new AuthHandler({ token: token$ }),
+        plugin: createAuthPlugin({
+          token: token$,
+        }),
       });
 
       const request = createRequest({ url: '/somewhere' });
@@ -112,7 +118,7 @@ describe('AuthPlugin', () => {
     const onUnauthorizedSpy = jest.fn();
 
     const pluginTester = createPluginTester({
-      handler: new AuthHandler({
+      plugin: createAuthPlugin({
         token: token$,
         onUnauthorized: onUnauthorizedSpy,
       }),

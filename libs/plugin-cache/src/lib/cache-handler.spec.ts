@@ -8,8 +8,8 @@ import { createPluginTester } from '@convoyr/core/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 import { concat } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
-import { CacheHandler } from './cache-handler';
 import { WithCacheMetadata } from './cache-response';
+import { createCachePlugin } from './create-cache-plugin';
 import { MemoryStorage } from './storages/memory-storage';
 
 function createMemoryStorageSpy() {
@@ -36,7 +36,7 @@ describe('CachePlugin', () => {
     'should serve cache with metadata when hydrated',
     marbles((m) => {
       const pluginTester = createPluginTester({
-        handler: new CacheHandler({
+        plugin: createCachePlugin({
           addCacheMetadata: true,
           storage: new MemoryStorage(),
         }),
@@ -51,17 +51,17 @@ describe('CachePlugin', () => {
       });
 
       /* Run two requests with the same URL to fire cache response. */
-      const requestA$ = pluginTester.handleFake({
+      const responseA$ = pluginTester.handleFake({
         request,
         httpHandlerMock,
       });
-      const requestB$ = pluginTester.handleFake({
+      const responseB$ = pluginTester.handleFake({
         request,
         httpHandlerMock,
       });
 
       /* Execute requests in order. */
-      const responses$ = concat(requestA$, requestB$);
+      const responses$ = concat(responseA$, responseB$);
 
       const networkResponse = createResponse({
         body: {
@@ -93,7 +93,7 @@ describe('CachePlugin', () => {
 
   it('should not apply metadata to response body', () => {
     const pluginTester = createPluginTester({
-      handler: new CacheHandler({
+      plugin: createCachePlugin({
         addCacheMetadata: false,
         storage: new MemoryStorage(),
       }),
@@ -113,7 +113,7 @@ describe('CachePlugin', () => {
   it('should use given storage implementation to store cache', async () => {
     const storage = createMemoryStorageSpy() as any;
     const pluginTester = createPluginTester({
-      handler: new CacheHandler({
+      plugin: createCachePlugin({
         addCacheMetadata: false,
         storage,
       }),
@@ -145,7 +145,7 @@ describe('CachePlugin', () => {
     'should handle query string in store key',
     marbles((m) => {
       const pluginTester = createPluginTester({
-        handler: new CacheHandler({
+        plugin: createCachePlugin({
           addCacheMetadata: false,
           storage: new MemoryStorage(),
         }),
