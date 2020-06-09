@@ -35,7 +35,7 @@ Enriching HTTP clients with capabilities related to **security**, **performance*
 
 # How It Works
 
-The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](#built-in-plugins) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](#custom-plugin) for handling custom behaviors. Learn more about [convoyr](https://www.codamit.dev/introducing-convoyr).
+The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](#built-in-plugins) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](#implementing-custom-plugins) for handling custom behaviors. Learn more about [convoyr](https://www.codamit.dev/introducing-convoyr).
 
 # Quick Start
 
@@ -288,8 +288,6 @@ export function createLoggerPlugin(): ConvoyrPlugin {
   };
 }
 ```
-
-## Plugin Testing
 
 Here only `GET` requests from `https://secure-origin.com` and `https://another-secure-origin.com` origins will be logged.
 
