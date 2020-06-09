@@ -289,6 +289,8 @@ export function createLoggerPlugin(): ConvoyrPlugin {
 }
 ```
 
+## Plugin Testing
+
 Here only `GET` requests from `https://secure-origin.com` and `https://another-secure-origin.com` origins will be logged.
 
 # Packages
@@ -340,9 +342,14 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://www.it-dir.co"><img src="https://avatars0.githubusercontent.com/u/2479323?v=4" width="100px;" alt=""/><br /><sub><b>Pierre-Edouard Galtier</b></sub></a><br /><a href="https://github.com/jscutlery/convoyr/commits?author=pegaltier" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 # License

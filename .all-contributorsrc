@@ -9,6 +9,16 @@
   "imageSize": 100,
   "commit": true,
   "commitConvention": "angular",
-  "contributors": [],
+  "contributors": [
+    {
+      "login": "pegaltier",
+      "name": "Pierre-Edouard Galtier",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/2479323?v=4",
+      "profile": "https://www.it-dir.co",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
   "contributorsPerLine": 7
 }
