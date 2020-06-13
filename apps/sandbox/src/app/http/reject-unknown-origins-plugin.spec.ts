@@ -27,8 +27,8 @@ describe('rejectUnknownOriginsPlugin', () => {
     response$.subscribe(observerSpy);
 
     expect(httpHandlerMock).not.toHaveBeenCalled();
+    expect(observerSpy.receivedNext()).toBe(false);
     expect(observerSpy.receivedError()).toBe(true);
-    expect(observerSpy.receivedError).toBe(true);
     expect(observerSpy.getError()).toBe(
       `🛑 Requesting invalid origin, url: https://rejected-origin.com`
     );
