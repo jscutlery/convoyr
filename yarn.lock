@@ -2365,13 +2365,13 @@
     mkdirp "^1.0.4"
 
 "@nrwl/angular@^9.1.4":
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/angular/-/angular-9.3.0.tgz#6da4e03d7f3f001f2f37c0e91a61ba2c78d2c4c9"
-  integrity sha512-9dOveCWwOvKSj+GT8nhEnsF9Tqk6YEu1C7X7H7fMMUtNCO8/67MSsMvgbfF5gRXAMxWwtmx1wj8sTo/K6icEZQ==
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/angular/-/angular-9.4.0.tgz#7140051390bd6a84f2ae492087a1794b4170d049"
+  integrity sha512-Dxng+vU4CeYDcXlhxJ/9L3704qK+bgNZorw/pnOjnEIh4tXzEZFQjkKCdzlmKNX2rQzez1Do0XervbyLV6AlaQ==
   dependencies:
     "@angular-devkit/schematics" "~9.1.0"
-    "@nrwl/cypress" "9.3.0"
-    "@nrwl/jest" "9.3.0"
+    "@nrwl/cypress" "9.4.0"
+    "@nrwl/jest" "9.4.0"
     "@schematics/angular" "~9.1.0"
     jasmine-marbles "~0.6.0"
 
@@ -2400,14 +2400,28 @@
     tsconfig-paths-webpack-plugin "3.2.0"
     webpack-node-externals "1.7.2"
 
+"@nrwl/cypress@9.4.0":
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-9.4.0.tgz#46dbc964f2216bf15944e747bbb66970b8db744e"
+  integrity sha512-Lz0Nj910SCYBSTikdk91vjnWrCbLupp+bsV+7Duy1z8tPg0HVB38jkO+7WX0H9ONqrWguJQokCoGAxCtA9UrFg==
+  dependencies:
+    "@angular-devkit/architect" "~0.901.0"
+    "@angular-devkit/core" "~9.1.0"
+    "@cypress/webpack-preprocessor" "~4.1.2"
+    fork-ts-checker-webpack-plugin "^3.1.1"
+    tree-kill "1.2.2"
+    ts-loader "^5.3.1"
+    tsconfig-paths-webpack-plugin "3.2.0"
+    webpack-node-externals "1.7.2"
+
 "@nrwl/express@^9.1.4":
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/express/-/express-9.3.0.tgz#b0d4509a95d5e27317359f23cf8c7ef9477fd6f4"
-  integrity sha512-O4BE4OMqoA2QHB9STWBoD+Sv6YxlsV8bdHV2ELmTLOQ/hAAJkqCj33DZbSyW5tBxP8AX94YqFQ+f00FrUAawHw==
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/express/-/express-9.4.0.tgz#a2a1116604d6e8a9313acfebd7ed274d86bc41e1"
+  integrity sha512-/ubOywYhx+DwvnykOouKRKpmg38N0tUVSriT0HFnpxYjI/rPf46LwsC4H0yvdr4DUEWOBS9RImBRGXmOE+QaTw==
   dependencies:
     "@angular-devkit/schematics" "~9.1.0"
-    "@nrwl/jest" "9.3.0"
-    "@nrwl/node" "9.3.0"
+    "@nrwl/jest" "9.4.0"
+    "@nrwl/node" "9.4.0"
 
 "@nrwl/jest@9.3.0":
   version "9.3.0"
@@ -2418,10 +2432,26 @@
     "@angular-devkit/core" "~9.1.0"
     "@angular-devkit/schematics" "~9.1.0"
 
+"@nrwl/jest@9.4.0":
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-9.4.0.tgz#f16b5c1edfd68535f196a8db70124c30576936bc"
+  integrity sha512-+224iRwA6BbnctldZ0WMO5EoGE929etsHP7zcPdVhdJYRCqH7jgcNHoqjF+zOgWVbmWIfq7aLzMf90ELjKJUsg==
+  dependencies:
+    "@angular-devkit/architect" "~0.901.0"
+    "@angular-devkit/core" "~9.1.0"
+    "@angular-devkit/schematics" "~9.1.0"
+
 "@nrwl/linter@9.3.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-9.3.0.tgz#9167b709cbb17d0012ab29a54a4a10c1a7228c47"
   integrity sha512-3FxY2RKt2TUuOSPq9zhGfk48JPA51hoBoEcJ2Na/b87bKGMBspYoHV7k0TgF5/B3g2lQdk0/xARRBWAOJkAJjg==
+  dependencies:
+    "@angular-devkit/architect" "~0.901.0"
+
+"@nrwl/linter@9.4.0":
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-9.4.0.tgz#6bc3fc699868e5cafb30235dcbef3334b9d6ff85"
+  integrity sha512-QD1Dn4xk4u7Z+k/+YduhCZe9q+UokuYO5Gkrzy3dRLjUG2AtRauXVSaisVyoe6Zzcy1Vv3+jynputXbBgKjwRw==
   dependencies:
     "@angular-devkit/architect" "~0.901.0"
 
@@ -2436,6 +2466,30 @@
     "@angular-devkit/schematics" "~9.1.0"
     "@nrwl/jest" "9.3.0"
     "@nrwl/linter" "9.3.0"
+    circular-dependency-plugin "5.2.0"
+    copy-webpack-plugin "5.1.1"
+    fork-ts-checker-webpack-plugin "^3.1.1"
+    license-webpack-plugin "2.1.2"
+    source-map-support "0.5.12"
+    tree-kill "1.2.2"
+    ts-loader "5.4.5"
+    tsconfig-paths-webpack-plugin "3.2.0"
+    webpack "4.42.0"
+    webpack-dev-server "3.9.0"
+    webpack-merge "4.2.1"
+    webpack-node-externals "1.7.2"
+
+"@nrwl/node@9.4.0":
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-9.4.0.tgz#2f10cecb0de1a61e53eb2b1fd2fa2037c08e82ed"
+  integrity sha512-EOHt5F2yLP77w+VgHKQc1Iy+So9kyJ3NnxXuTw3dCrGtaccC5hmZrXCbvw9i31+V6CCFw7QhNpPdVDU6s6vOJg==
+  dependencies:
+    "@angular-devkit/architect" "~0.901.0"
+    "@angular-devkit/build-webpack" "~0.901.0"
+    "@angular-devkit/core" "~9.1.0"
+    "@angular-devkit/schematics" "~9.1.0"
+    "@nrwl/jest" "9.4.0"
+    "@nrwl/linter" "9.4.0"
     circular-dependency-plugin "5.2.0"
     copy-webpack-plugin "5.1.1"
     fork-ts-checker-webpack-plugin "^3.1.1"
@@ -5798,9 +5852,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.413:
-  version "1.3.467"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.467.tgz#84eeb332134d49f0e49b88588824e56b20af9e27"
-  integrity sha512-U+QgsL8TZDU/n+rDnYDa3hY5uy3C4iry9mrJS0PNBBGwnocuQ+aHSfgY44mdlaK9744X5YqrrGUvD9PxCLY1HA==
+  version "1.3.469"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.469.tgz#05a06ec9c915127ed6c9f5b657cd1d7e11a3f944"
+  integrity sha512-O9JM6ZsFhS0uy0S2Y3G8EoNfqio3srdxCuwuJh8tKgQKa6rf7je/xQ3TIoiEaEtpf2/qFFLAGt/xB4MjuUZqRw==
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
