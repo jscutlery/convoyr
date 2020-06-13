@@ -105,7 +105,7 @@ export class Convoyr {
     }
 
     /**
-     * The `plugin.shouldHandleRequest` function can synchronously throw an error
+     * The `plugin.shouldHandleRequest` function can synchronously throws an error
      * which is not caught in the observable chain without a try catch.
      */
     try {

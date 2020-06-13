@@ -6,6 +6,8 @@ import {
   HttpSentEvent,
   HttpErrorResponse,
 } from '@angular/common/http';
+import { ObserverSpy } from '@hirez_io/observer-spy';
+
 import { createRequest, createResponse, Convoyr } from '@convoyr/core';
 import { EMPTY, of, throwError } from 'rxjs';
 
@@ -21,10 +23,11 @@ describe('ConvoyrInterceptor', () => {
   let convoyr: Convoyr;
   let interceptor: ConvoyrInterceptor;
   let next: HttpHandler;
+  let observerSpy: ObserverSpy<HttpResponse<unknown>>;
 
   beforeEach(() => {
     interceptor = new ConvoyrInterceptor({ plugins: [] });
-
+    observerSpy = new ObserverSpy();
     convoyr = interceptor['_convoyr'];
 
     /* Mock `Convoyr.handle`. */
@@ -84,14 +87,16 @@ describe('ConvoyrInterceptor', () => {
       )
     );
     const { request, httpHandler } = asMock(convoyr.handle).mock.calls[0][0];
-    const observer = jest.fn();
 
-    httpHandler.handle({ request }).subscribe(observer);
+    httpHandler.handle({ request }).subscribe(observerSpy);
 
     /* Verify that Angular extra events are ignored in the final handler. */
-    expect(observer).toHaveBeenCalledTimes(1);
-    const response = observer.mock.calls[0][0];
-    expect(response).toEqual(createResponse({ body: { answer: 42 } }));
+    expect(observerSpy.receivedNext()).toBe(true);
+    expect(observerSpy.receivedComplete()).toBe(true);
+    expect(observerSpy.getValuesLength()).toBe(1);
+    expect(observerSpy.getLastValue()).toEqual(
+      createResponse({ body: { answer: 42 } })
+    );
   });
 
   it('should convert Angular HttpResponse to ConvoyrResponse before handling it back to plugins', () => {
@@ -99,16 +104,16 @@ describe('ConvoyrInterceptor', () => {
       of(new HttpResponse({ body: { answer: 42 } }))
     );
     const { request, httpHandler } = asMock(convoyr.handle).mock.calls[0][0];
-    const observer = jest.fn();
 
-    httpHandler.handle({ request }).subscribe(observer);
+    httpHandler.handle({ request }).subscribe(observerSpy);
 
-    expect(observer).toHaveBeenCalledTimes(1);
-    const response = observer.mock.calls[0][0];
+    expect(observerSpy.receivedNext()).toBe(true);
+    expect(observerSpy.receivedComplete()).toBe(true);
+    expect(observerSpy.getValuesLength()).toBe(1);
 
     /* 😜 Just making sure that it's not an Angular HttpResponse. */
-    expect(response).not.toBeInstanceOf(HttpResponse);
-    expect(response).toEqual(
+    expect(observerSpy.getLastValue()).not.toBeInstanceOf(HttpResponse);
+    expect(observerSpy.getLastValue()).toEqual(
       createResponse({
         status: 200,
         statusText: 'OK',
@@ -130,18 +135,15 @@ describe('ConvoyrInterceptor', () => {
       )
     );
     const { request, httpHandler } = asMock(convoyr.handle).mock.calls[0][0];
-    const nextObserver = jest.fn();
-    const errorObserver = jest.fn();
 
-    httpHandler.handle({ request }).subscribe(nextObserver, errorObserver);
+    httpHandler.handle({ request }).subscribe(observerSpy);
 
-    expect(nextObserver).not.toHaveBeenCalled();
-    expect(errorObserver).toHaveBeenCalledTimes(1);
-    const response = errorObserver.mock.calls[0][0];
+    expect(observerSpy.receivedNext()).toBe(false);
+    expect(observerSpy.receivedError()).toBe(true);
 
     /* Just making sure that it's not an Angular HttpErrorResponse. */
-    expect(response).not.toBeInstanceOf(HttpErrorResponse);
-    expect(response).toEqual(
+    expect(observerSpy.getError()).not.toBeInstanceOf(HttpErrorResponse);
+    expect(observerSpy.getError()).toEqual(
       createResponse({
         body: { error: '42' },
         status: 500,
@@ -155,15 +157,14 @@ describe('ConvoyrInterceptor', () => {
       of(new HttpResponse({ body: { answer: 42 } }))
     );
     const request = new HttpRequest('GET', 'https://test.com');
-    const observer = jest.fn();
 
-    interceptor.intercept(request, next).subscribe(observer);
-
-    const response = observer.mock.calls[0][0];
+    interceptor.intercept(request, next).subscribe(observerSpy);
 
     /* Check there is no raw ConvoyrResponse given to the interceptor. */
-    expect(response).toBeInstanceOf(HttpResponse);
-    expect(response).toEqual(expect.objectContaining({ body: { answer: 42 } }));
+    expect(observerSpy.getLastValue()).toBeInstanceOf(HttpResponse);
+    expect(observerSpy.getLastValue()).toEqual(
+      expect.objectContaining({ body: { answer: 42 } })
+    );
   });
 
   it('should convert plugin ConvoyrResponse to Angular HttpErrorResponse', () => {
@@ -177,22 +178,20 @@ describe('ConvoyrInterceptor', () => {
       )
     );
     const request = new HttpRequest('GET', 'https://test.com');
-    const nextObserver = jest.fn();
-    const errorObserver = jest.fn();
 
-    interceptor.intercept(request, next).subscribe(nextObserver, errorObserver);
+    interceptor.intercept(request, next).subscribe(observerSpy);
 
-    const response = errorObserver.mock.calls[0][0];
+    expect(observerSpy.receivedError()).toBe(true);
+    expect(observerSpy.receivedNext()).toBe(false);
 
     /* Check there is no raw ConvoyrResponse given to the interceptor. */
-    expect(response).toBeInstanceOf(HttpErrorResponse);
-    expect(response).toEqual(
+    expect(observerSpy.getError()).toBeInstanceOf(HttpErrorResponse);
+    expect(observerSpy.getError()).toEqual(
       expect.objectContaining({
         error: '42',
         status: 500,
         statusText: 'Server Error',
       })
     );
-    expect(nextObserver).not.toHaveBeenCalled();
   });
 });
