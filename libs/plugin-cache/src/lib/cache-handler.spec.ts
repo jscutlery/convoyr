@@ -5,6 +5,7 @@ import {
   createResponse,
 } from '@convoyr/core';
 import { createPluginTester } from '@convoyr/core/testing';
+import { ObserverSpy } from '@hirez_io/observer-spy';
 import { advanceTo, clear } from 'jest-date-mock';
 import { concat } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
@@ -99,13 +100,15 @@ describe('CachePlugin', () => {
       }),
     });
 
-    const observer = jest.fn();
+    const observerSpy = new ObserverSpy<ConvoyrResponse>();
     const httpHandlerMock = pluginTester.createHttpHandlerMock({ response });
 
-    pluginTester.handleFake({ request, httpHandlerMock }).subscribe(observer);
+    pluginTester
+      .handleFake({ request, httpHandlerMock })
+      .subscribe(observerSpy);
 
     expect(httpHandlerMock).toBeCalledTimes(1);
-    expect(observer).toBeCalledWith(
+    expect(observerSpy.getLastValue()).toEqual(
       expect.objectContaining({ body: { answer: 42 } })
     );
   });

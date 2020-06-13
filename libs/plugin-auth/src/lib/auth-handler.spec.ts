@@ -1,5 +1,6 @@
 import { createRequest, createResponse } from '@convoyr/core';
 import { createPluginTester } from '@convoyr/core/testing';
+import { ObserverSpy } from '@hirez_io/observer-spy';
 import { concat, of, throwError } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import { shareReplay } from 'rxjs/operators';
@@ -116,6 +117,7 @@ describe('AuthPlugin', () => {
   it('should call onUnauthorized callback on 401 response', async () => {
     const token$ = of('TOKEN');
     const onUnauthorizedSpy = jest.fn();
+    const observerSpy = new ObserverSpy();
 
     const pluginTester = createPluginTester({
       plugin: createAuthPlugin({
@@ -130,19 +132,17 @@ describe('AuthPlugin', () => {
       statusText: 'Unauthorized',
     });
 
-    const observer = {
-      next: jest.fn(),
-      error: jest.fn(),
-    };
     const httpHandlerMock = pluginTester.createHttpHandlerMock({
       response: throwError(unauthorizedResponse),
     });
 
-    pluginTester.handleFake({ request, httpHandlerMock }).subscribe(observer);
+    pluginTester
+      .handleFake({ request, httpHandlerMock })
+      .subscribe(observerSpy);
 
-    expect(observer.next).not.toHaveBeenCalled();
-    expect(observer.error).toHaveBeenCalledTimes(1);
-    expect(observer.error).toHaveBeenCalledWith(unauthorizedResponse);
+    expect(observerSpy.receivedNext()).toBe(false);
+    expect(observerSpy.receivedError()).toBe(true);
+    expect(observerSpy.getError()).toEqual(unauthorizedResponse);
     expect(onUnauthorizedSpy).toBeCalledWith(
       expect.objectContaining(unauthorizedResponse)
     );

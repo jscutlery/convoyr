@@ -1,11 +1,14 @@
-import { rejectUnknownOriginsPlugin } from './reject-unknown-origins-plugin';
-import { createResponse, createRequest } from '@convoyr/core';
+import { createRequest, createResponse, ConvoyrResponse } from '@convoyr/core';
 import { createPluginTester, PluginTester } from '@convoyr/core/testing';
+import { ObserverSpy } from '@hirez_io/observer-spy';
+import { rejectUnknownOriginsPlugin } from './reject-unknown-origins-plugin';
 
 describe('rejectUnknownOriginsPlugin', () => {
   let pluginTester: PluginTester;
+  let observerSpy: ObserverSpy<ConvoyrResponse>;
 
   beforeEach(() => {
+    observerSpy = new ObserverSpy();
     pluginTester = createPluginTester({
       plugin: rejectUnknownOriginsPlugin,
     });
@@ -21,16 +24,12 @@ describe('rejectUnknownOriginsPlugin', () => {
       httpHandlerMock,
     });
 
-    const observer = {
-      next: jest.fn(),
-      error: jest.fn(),
-    };
-    response$.subscribe(observer);
+    response$.subscribe(observerSpy);
 
     expect(httpHandlerMock).not.toHaveBeenCalled();
-    expect(observer.next).not.toHaveBeenCalled();
-    expect(observer.error).toHaveBeenCalledTimes(1);
-    expect(observer.error).toHaveBeenCalledWith(
+    expect(observerSpy.receivedError()).toBe(true);
+    expect(observerSpy.receivedError).toBe(true);
+    expect(observerSpy.getError()).toBe(
       `🛑 Requesting invalid origin, url: https://rejected-origin.com`
     );
   });
