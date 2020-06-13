@@ -3,11 +3,7 @@ import bytes from 'bytes';
 import LRU from 'lru-cache';
 import { defer, EMPTY, Observable, of } from 'rxjs';
 
-import { Storage } from './storage';
-
-export interface StorageArgs {
-  maxSize?: number | string;
-}
+import { Storage, StorageArgs } from './storage';
 
 export class MemoryStorage implements Storage {
   private _lruCache: LRU<string, string>;
@@ -51,13 +47,13 @@ export class MemoryStorage implements Storage {
         /* Length is based on the size in bytes */
         length(value) {
           return Buffer.from(value).length;
-        }
+        },
       };
     }
 
     /* Otherwise it's a "count like" max size */
     return {
-      max: maxSize
+      max: maxSize,
     };
   }
 }

@@ -5,3 +5,7 @@ export interface Storage {
   set(key: string, value: string): Observable<void>;
   delete(key: string): Observable<void>;
 }
+
+export interface StorageArgs {
+  maxSize?: number | string;
+}
