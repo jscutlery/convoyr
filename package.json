@@ -66,6 +66,7 @@
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-angular": "^8.3.4",
     "@commitlint/config-conventional": "^8.3.4",
+    "@hirez_io/observer-spy": "^1.2.0",
     "@nrwl/cypress": "9.4.0",
     "@nrwl/express": "^9.1.4",
     "@nrwl/jest": "9.4.0",

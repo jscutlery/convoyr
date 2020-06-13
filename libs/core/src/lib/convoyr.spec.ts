@@ -1,4 +1,6 @@
 import { createSpyPlugin } from '@convoyr/core/testing';
+import { ObserverSpy } from '@hirez_io/observer-spy';
+import { ConvoyrResponse } from 'libs/core/dist';
 import { of } from 'rxjs';
 import { Convoyr } from './convoyr';
 import { invalidOriginMatchExpression } from './matchers/match-origin/invalid-origin-match-expression';
@@ -8,6 +10,12 @@ import { createResponse } from './response';
 import { invalidPluginConditionError } from './throw-invalid-plugin-condition';
 
 describe('Convoyr', () => {
+  let observerSpy: ObserverSpy<ConvoyrResponse>;
+
+  beforeEach(() => {
+    observerSpy = new ObserverSpy();
+  });
+
   it('should handle multiple plugins', () => {
     const pluginA = createSpyPlugin();
     const pluginB = createSpyPlugin();
@@ -28,9 +36,8 @@ describe('Convoyr', () => {
           ),
       },
     });
-    const responseObserver = jest.fn();
 
-    response$.subscribe(responseObserver);
+    response$.subscribe(observerSpy);
 
     /*
      * Make sure plugin A is called with the right args.
@@ -62,8 +69,9 @@ describe('Convoyr', () => {
       })
     );
 
-    expect(responseObserver).toHaveBeenCalledTimes(1);
-    expect(responseObserver).toHaveBeenCalledWith(
+    expect(observerSpy.getValuesLength()).toBe(1);
+    expect(observerSpy.receivedComplete()).toBe(true);
+    expect(observerSpy.getLastValue()).toEqual(
       expect.objectContaining({
         body: {
           answer: 42,
@@ -99,9 +107,8 @@ describe('Convoyr', () => {
           ),
       },
     });
-    const responseObserver = jest.fn();
 
-    response$.subscribe(responseObserver);
+    response$.subscribe(observerSpy);
 
     /* The first plugin should match the condition and handle the request. */
     expect(pluginA.handler.handle).toHaveBeenCalledTimes(1);
@@ -109,8 +116,8 @@ describe('Convoyr', () => {
     /* The second plugin should not be called as it doesn't match the condition. */
     expect(pluginB.handler.handle).not.toBeCalled();
 
-    expect(responseObserver).toHaveBeenCalledTimes(1);
-    expect(responseObserver).toHaveBeenCalledWith(
+    expect(observerSpy.getValuesLength()).toBe(1);
+    expect(observerSpy.getLastValue()).toEqual(
       expect.objectContaining({
         body: {
           answer: 42,
@@ -121,17 +128,11 @@ describe('Convoyr', () => {
 
   describe('Plugin condition error handling', () => {
     let request: ConvoyrRequest;
-    let observerSpy: any;
 
     beforeEach(() => {
       request = createRequest({
         url: 'https://test.com/',
       });
-
-      observerSpy = {
-        next: jest.fn(),
-        error: jest.fn(),
-      };
     });
 
     it('should handle condition error when `shouldHandleRequest` returns an invalid value', () => {
@@ -148,12 +149,12 @@ describe('Convoyr', () => {
       });
       response$.subscribe(observerSpy);
 
-      expect(observerSpy.next).not.toHaveBeenCalled();
-      expect(observerSpy.error).toHaveBeenCalledTimes(1);
-      expect((convoyr as any)._logErrorNotification).toHaveBeenCalledWith(
+      expect(observerSpy.receivedNext()).toBe(false);
+      expect(observerSpy.receivedError()).toBe(true);
+      expect(observerSpy.getError()).toEqual(
         invalidPluginConditionError(typeof '')
       );
-      expect(observerSpy.error).toHaveBeenCalledWith(
+      expect((convoyr as any)._logErrorNotification).toHaveBeenCalledWith(
         invalidPluginConditionError(typeof '')
       );
     });
@@ -175,12 +176,10 @@ describe('Convoyr', () => {
 
       response$.subscribe(observerSpy);
 
-      expect(observerSpy.next).not.toHaveBeenCalled();
-      expect(observerSpy.error).toHaveBeenCalledTimes(1);
+      expect(observerSpy.receivedNext()).toBe(false);
+      expect(observerSpy.receivedError()).toBe(true);
+      expect(observerSpy.getError()).toEqual(invalidOriginMatchExpression(42));
       expect((convoyr as any)._logErrorNotification).toHaveBeenCalledWith(
-        invalidOriginMatchExpression(42)
-      );
-      expect(observerSpy.error).toHaveBeenCalledWith(
         invalidOriginMatchExpression(42)
       );
     });

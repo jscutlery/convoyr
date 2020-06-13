@@ -1424,6 +1424,11 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
+"@hirez_io/observer-spy@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@hirez_io/observer-spy/-/observer-spy-1.2.0.tgz#7c0c86febadd0c22e6c336566f6c41807f122876"
+  integrity sha512-LQEUKBnbGNZdLq8y30mVzzhsJ+EFnnzBn3qpo+uRDxnoUk8SGvcn/2uMMSbUYEYDc8jwjKQ78LnMAJoD3f7L9w==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
