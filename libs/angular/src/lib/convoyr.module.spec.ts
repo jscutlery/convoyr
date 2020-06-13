@@ -1,20 +1,22 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { createSpyPlugin } from '@convoyr/core/testing';
-
+import { createSpyPlugin, SpyPlugin } from '@convoyr/core/testing';
+import { ObserverSpy } from '@hirez_io/observer-spy';
 import { _CONVOYR_CONFIG } from './convoyr.interceptor';
 import { ConvoyrModule } from './convoyr.module';
 
 describe('ConvoyrModule', () => {
-  let spyPlugin;
+  let spyPlugin: SpyPlugin;
+  let observerSpy: ObserverSpy<HttpResponse<unknown>>;
 
   describe('with config', () => {
     beforeEach(() => {
       spyPlugin = createSpyPlugin();
+      observerSpy = new ObserverSpy();
 
       TestBed.configureTestingModule({
         imports: [
@@ -35,11 +37,9 @@ describe('ConvoyrModule', () => {
     afterEach(() => httpController.verify());
 
     it('should handle http request', () => {
-      const observer = jest.fn();
-
       httpClient
         .get('https://jscutlery.github.io/items/ITEM_ID')
-        .subscribe(observer);
+        .subscribe(observerSpy);
 
       httpController
         .expectOne('https://jscutlery.github.io/items/ITEM_ID')
@@ -48,8 +48,9 @@ describe('ConvoyrModule', () => {
           title: 'ITEM_TITLE',
         });
 
-      expect(observer).toHaveBeenCalledTimes(1);
-      expect(observer.mock.calls[0][0]).toEqual({
+      expect(observerSpy.receivedNext()).toBe(true);
+      expect(observerSpy.receivedComplete()).toBe(true);
+      expect(observerSpy.getLastValue()).toEqual({
         id: 'ITEM_ID',
         title: 'ITEM_TITLE',
       });
@@ -75,6 +76,7 @@ describe('ConvoyrModule', () => {
   describe('with dynamic config', () => {
     beforeEach(() => {
       spyPlugin = createSpyPlugin();
+      observerSpy = new ObserverSpy();
 
       TestBed.configureTestingModule({
         imports: [
@@ -97,17 +99,16 @@ describe('ConvoyrModule', () => {
     afterEach(() => httpController.verify());
 
     it('should handle http request', () => {
-      const observer = jest.fn();
-
       httpClient
         .get('https://jscutlery.github.io/items/ITEM_ID')
-        .subscribe(observer);
+        .subscribe(observerSpy);
 
       httpController
         .expectOne('https://jscutlery.github.io/items/ITEM_ID')
         .flush({});
 
-      expect(observer).toHaveBeenCalledTimes(1);
+      expect(observerSpy.receivedNext()).toBe(true);
+      expect(observerSpy.receivedComplete()).toBe(true);
       expect(spyPlugin.handler.handle).toHaveBeenCalledTimes(1);
     });
   });
