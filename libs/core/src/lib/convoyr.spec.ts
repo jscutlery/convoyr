@@ -1,6 +1,6 @@
+import { ConvoyrResponse } from '@convoyr/core';
 import { createSpyPlugin } from '@convoyr/core/testing';
 import { ObserverSpy } from '@hirez_io/observer-spy';
-import { ConvoyrResponse } from 'libs/core/dist';
 import { of } from 'rxjs';
 import { Convoyr } from './convoyr';
 import { invalidOriginMatchExpression } from './matchers/match-origin/invalid-origin-match-expression';
