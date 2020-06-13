@@ -1,6 +1,5 @@
-import { Observable, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
-
+import { Observable, of, throwError } from 'rxjs';
+import { mergeMap, tap } from 'rxjs/operators';
 import { ConvoyrPlugin } from './plugin';
 import { ConvoyrRequest } from './request';
 import { NextHandler } from './request-handler';
@@ -79,7 +78,8 @@ export class Convoyr {
         }
 
         return fromSyncOrAsync(handler.handle({ request, next }));
-      })
+      }),
+      tap({ error: this._logErrorNotification })
     );
   }
 
@@ -97,13 +97,26 @@ export class Convoyr {
       plugin.shouldHandleRequest != null &&
       !isFunction(plugin.shouldHandleRequest)
     ) {
-      throw invalidHandleRequestConditionError();
+      return throwError(invalidHandleRequestConditionError());
     }
 
     if (plugin.shouldHandleRequest == null) {
       return of(true);
     }
 
-    return fromSyncOrAsync(plugin.shouldHandleRequest({ request }));
+    /**
+     * plugin.shouldHandleRequest function can synchronously return an error
+     * which is not caught in the observable chain without a try catch.
+     */
+    try {
+      const shouldHandleRequest = plugin.shouldHandleRequest({ request });
+      return fromSyncOrAsync(shouldHandleRequest);
+    } catch (error) {
+      return throwError(error);
+    }
   }
+
+  private _logErrorNotification = (error: any): void => {
+    console.error(error);
+  };
 }

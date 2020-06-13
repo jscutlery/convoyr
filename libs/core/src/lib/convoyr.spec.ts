@@ -5,10 +5,12 @@
  */
 import { createSpyPlugin } from '../../testing/src/index';
 import { of } from 'rxjs';
-
 import { Convoyr } from './convoyr';
-import { createRequest } from './request';
+import { invalidOriginMatchExpression } from './matchers/match-origin/invalid-origin-match-expression';
+import { matchOrigin } from './matchers/match-origin/match-origin';
+import { ConvoyrRequest, createRequest } from './request';
 import { createResponse } from './response';
+import { invalidPluginConditionError } from './throw-invalid-plugin-condition';
 
 describe('Convoyr', () => {
   it('should handle multiple plugins', () => {
@@ -122,26 +124,70 @@ describe('Convoyr', () => {
     );
   });
 
-  it('should throw when a plugin condition returns an invalid value', () => {
-    const plugin = createSpyPlugin({
-      shouldHandleRequest: () => '' as any /* 👈🏻 invalid condition */,
-    });
-    const convoyr = new Convoyr({ plugins: [plugin] });
-    const request = createRequest({
-      url: 'https://test.com/',
-    });
-    const response$ = convoyr.handle({
-      request,
-      httpHandler: { handle: () => of(createResponse({ body: null })) },
+  describe('Plugin condition error handling', () => {
+    let request: ConvoyrRequest;
+    let observerSpy: any;
+
+    beforeEach(() => {
+      request = createRequest({
+        url: 'https://test.com/',
+      });
+
+      observerSpy = {
+        next: jest.fn(),
+        error: jest.fn(),
+      };
     });
 
-    const errorObserver = jest.fn();
+    it('should handle condition error when `shouldHandleRequest` returns an invalid value', () => {
+      const plugin = createSpyPlugin({
+        shouldHandleRequest: () => '' as any /* 👈🏻 invalid condition */,
+      });
 
-    response$.subscribe({ error: errorObserver });
+      const convoyr = new Convoyr({ plugins: [plugin] });
+      (convoyr as any)._logErrorNotification = jest.fn();
 
-    expect(errorObserver).toHaveBeenCalledTimes(1);
-    expect(errorObserver).toHaveBeenCalledWith(
-      `InvalidPluginConditionError: expect boolean got string.`
-    );
+      const response$ = convoyr.handle({
+        request,
+        httpHandler: { handle: () => of(createResponse({ body: null })) },
+      });
+      response$.subscribe(observerSpy);
+
+      expect(observerSpy.next).not.toHaveBeenCalled();
+      expect(observerSpy.error).toHaveBeenCalledTimes(1);
+      expect((convoyr as any)._logErrorNotification).toHaveBeenCalledWith(
+        invalidPluginConditionError(typeof '')
+      );
+      expect(observerSpy.error).toHaveBeenCalledWith(
+        invalidPluginConditionError(typeof '')
+      );
+    });
+
+    it('should handle matcher error when used with an invalid argument', () => {
+      const plugin = createSpyPlugin({
+        shouldHandleRequest: matchOrigin(
+          42 as any /* 👈🏻 invalid matcher argument */
+        ),
+      });
+
+      const convoyr = new Convoyr({ plugins: [plugin] });
+      (convoyr as any)._logErrorNotification = jest.fn();
+
+      const response$ = convoyr.handle({
+        request,
+        httpHandler: { handle: () => of(createResponse({ body: null })) },
+      });
+
+      response$.subscribe(observerSpy);
+
+      expect(observerSpy.next).not.toHaveBeenCalled();
+      expect(observerSpy.error).toHaveBeenCalledTimes(1);
+      expect((convoyr as any)._logErrorNotification).toHaveBeenCalledWith(
+        invalidOriginMatchExpression(42)
+      );
+      expect(observerSpy.error).toHaveBeenCalledWith(
+        invalidOriginMatchExpression(42)
+      );
+    });
   });
 });
