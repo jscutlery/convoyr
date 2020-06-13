@@ -14,7 +14,7 @@ export const responseTypeArrayMatcher: Matcher<ResponseTypeMatcher[]> = {
       const matcher = findMatcherOrThrow({
         matchExpression: childExpression,
         matcherList: [responseTypeStringMatcher],
-        errorFactory: invalidResponseTypeMatchExpression,
+        matcherError: invalidResponseTypeMatchExpression(matchExpression),
       });
 
       return matcher.handle({

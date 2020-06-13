@@ -11,24 +11,20 @@ import { originStringMatcher } from './origin-string-matcher';
 export const matchOrigin = (
   matchExpression: OriginMatchExpression
 ): RequestCondition => ({ request }): boolean => {
-  /* Extract origin from URL. */
   const origin = getOrigin(request.url);
-
-  /* Find the right matcher. */
   const matcher = findMatcherOrThrow({
     matchExpression: matchExpression,
     matcherList: [
       originStringMatcher,
       originArrayMatcher,
       originRegExpMatcher,
-      originPredicateMatcher
+      originPredicateMatcher,
     ],
-    errorFactory: invalidOriginMatchExpression
+    matcherError: invalidOriginMatchExpression(matchExpression),
   });
 
-  /* Handle the origin with the right matcher. */
   return matcher.handle({
     matchExpression,
-    value: origin
+    value: origin,
   });
 };

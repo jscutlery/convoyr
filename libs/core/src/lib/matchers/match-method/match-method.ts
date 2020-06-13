@@ -9,17 +9,14 @@ export const matchMethod = (
   matchExpression: MatchMethodExpression
 ): RequestCondition => ({ request }): boolean => {
   const { method } = request;
-
-  /* Find the right matcher. */
   const matcher = findMatcherOrThrow({
     matchExpression: matchExpression,
     matcherList: [methodStringMatcher, methodArrayMatcher],
-    errorFactory: invalidMethodMatchExpression
+    matcherError: invalidMethodMatchExpression(matchExpression),
   });
 
-  /* Handle the method with the right matcher. */
   return matcher.handle({
     matchExpression,
-    value: method
+    value: method,
   });
 };

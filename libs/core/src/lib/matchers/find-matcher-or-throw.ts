@@ -1,19 +1,29 @@
 import { Matcher } from './matcher';
 
+export function invalidMatchExpressionError(matchExpression) {
+  return new Error(
+    `InvalidMatchExpression: ${JSON.stringify(
+      matchExpression
+    )} is not a valid match expression.`
+  );
+}
+
 export function findMatcherOrThrow({
   matchExpression,
   matcherList,
-  errorFactory
+  matcherError = invalidMatchExpressionError(matchExpression),
 }: {
   matchExpression: any;
   matcherList: Matcher[];
-  errorFactory: (matchExpression: any) => Error;
-}) {
-  const matcher = matcherList.find(_matcher =>
+  matcherError: Error;
+}): Matcher<any, any> {
+  const matcher = matcherList.find((_matcher) =>
     _matcher.canHandle(matchExpression)
   );
+
   if (matcher == null) {
-    throw errorFactory(matchExpression);
+    throw matcherError;
   }
+
   return matcher;
 }

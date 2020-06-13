@@ -12,7 +12,7 @@ export const matchPath = (matchExpression: string): RequestCondition => ({
   const matcher = findMatcherOrThrow({
     matchExpression: matchExpression,
     matcherList: [pathStringMatcher],
-    errorFactory: invalidPathExpression,
+    matcherError: invalidPathExpression(matchExpression),
   });
 
   return matcher.handle({

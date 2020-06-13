@@ -8,11 +8,11 @@ export const methodArrayMatcher: MethodMatcher = {
   },
   handle({
     value,
-    matchExpression
+    matchExpression,
   }: {
     value: HttpMethod;
     matchExpression: HttpMethod[];
   }) {
     return matchExpression.includes(value);
-  }
+  },
 };

@@ -10,20 +10,17 @@ export const originArrayMatcher: Matcher<OriginMatcher[]> = {
     return isArray(matchExpression);
   },
   handle({ value, matchExpression }) {
-    /* Loop through expressions... */
-    return matchExpression.some(childExpression => {
-      /* ... find the right matcher for each expression... */
+    return matchExpression.some((childExpression) => {
       const matcher = findMatcherOrThrow({
         matchExpression: childExpression,
         matcherList: [originStringMatcher],
-        errorFactory: invalidOriginMatchExpression
+        matcherError: invalidOriginMatchExpression(matchExpression),
       });
 
-      /* ... and handle the expression. */
       return matcher.handle({
         value,
-        matchExpression: childExpression
+        matchExpression: childExpression,
       });
     });
-  }
+  },
 };

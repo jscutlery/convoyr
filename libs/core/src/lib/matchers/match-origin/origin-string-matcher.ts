@@ -7,11 +7,11 @@ export const originStringMatcher: OriginMatcher = {
   },
   handle({
     value,
-    matchExpression
+    matchExpression,
   }: {
     matchExpression: string;
     value: string;
   }) {
     return value === matchExpression;
-  }
+  },
 };

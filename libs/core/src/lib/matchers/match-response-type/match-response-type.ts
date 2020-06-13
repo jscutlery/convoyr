@@ -11,7 +11,7 @@ export const matchResponseType = (
   const matcher = findMatcherOrThrow({
     matchExpression: matchExpression,
     matcherList: [responseTypeStringMatcher, responseTypeArrayMatcher],
-    errorFactory: invalidResponseTypeMatchExpression,
+    matcherError: invalidResponseTypeMatchExpression(matchExpression),
   });
 
   return matcher.handle({
