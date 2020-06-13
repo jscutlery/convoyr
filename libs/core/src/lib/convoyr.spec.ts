@@ -1,9 +1,4 @@
-/**
- * @hack relative import of `createSpyPlugin`:
- *   If we import `@convoyr/core/testing`, it fails building the core library.
- *   Somehow, `convoyr.spec.ts` is considered part of `@convoyr/core` by ng-packagr and creates an import loop between core and core/testing.
- */
-import { createSpyPlugin } from '../../testing/src/index';
+import { createSpyPlugin } from '@convoyr/core/testing';
 import { of } from 'rxjs';
 import { Convoyr } from './convoyr';
 import { invalidOriginMatchExpression } from './matchers/match-origin/invalid-origin-match-expression';
