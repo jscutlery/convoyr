@@ -22,9 +22,7 @@ export class PluginTester {
   private _convoyr: Convoyr;
 
   constructor({ plugin }: PluginTesterArgs) {
-    this._convoyr = new Convoyr({
-      plugins: [plugin],
-    });
+    this._convoyr = this._createConvoyr(plugin);
   }
 
   createHttpHandlerMock({
@@ -46,5 +44,16 @@ export class PluginTester {
       request,
       httpHandler: { handle: httpHandlerMock },
     });
+  }
+
+  private _createConvoyr(plugin: ConvoyrPlugin): Convoyr {
+    const convoyr = new Convoyr({
+      plugins: [plugin],
+    });
+
+    /* Mock error logging in test environment to not pollute console output. */
+    (convoyr as any)._logErrorNotification = jest.fn();
+
+    return convoyr;
   }
 }
