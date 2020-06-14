@@ -21,7 +21,8 @@
       "@convoyr/core/testing": ["libs/core/testing/src/index.ts"],
       "@convoyr/plugin-auth": ["libs/plugin-auth/src/index.ts"],
       "@convoyr/plugin-cache": ["libs/plugin-cache/src/index.ts"],
-      "@convoyr/plugin-retry": ["libs/plugin-retry/src/index.ts"]
+      "@convoyr/plugin-retry": ["libs/plugin-retry/src/index.ts"],
+      "@convoyr/lru-storage": ["libs/lru-storage/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

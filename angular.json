@@ -371,6 +371,46 @@
         }
       },
       "schematics": {}
+    },
+    "lru-storage": {
+      "projectType": "library",
+      "root": "libs/lru-storage",
+      "sourceRoot": "libs/lru-storage/src",
+      "prefix": "convoyr",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/lru-storage/tsconfig.lib.json",
+            "project": "libs/lru-storage/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/lru-storage/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lru-storage/tsconfig.lib.json",
+              "libs/lru-storage/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lru-storage/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lru-storage/jest.config.js",
+            "tsConfig": "libs/lru-storage/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lru-storage/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {
