@@ -77,6 +77,11 @@ export class LRUStorage {
     return hit.value;
   }
 
+  has(key: string): boolean {
+    const hit = this._findEntry(key);
+    return hit != null;
+  }
+
   set(key: string, value: unknown): void {
     const entry = new Entry({
       key,
