@@ -3,13 +3,13 @@ import * as Yallist from 'yallist';
 export const naiveEntryLength = () => 1;
 
 export interface Cache {
-  [key: string]: Yallist.Node<Entry>;
+  entries: Entry[];
 }
 
 export type GetEntryLengthFn = (entry: Entry) => number;
 
 export interface LRUStorageOptions {
-  max?: number;
+  maxSize?: number;
   maxAge?: number;
   getEntryLength?: GetEntryLengthFn;
 }
@@ -18,114 +18,149 @@ export class Entry<T = unknown> {
   key: string;
   value: T;
   length: number;
-  createdAt: number;
+  lastUsageAt: number;
 
-  constructor({ key, value, length, createdAt }) {
+  constructor({ key, value, length, lastUsageAt }) {
     this.key = key;
     this.value = value;
     this.length = length;
-    this.createdAt = createdAt;
+    this.lastUsageAt = lastUsageAt;
   }
 }
 
 export class LRUStorage {
-  private _lruList = new Yallist<Entry>();
-  private _cache = localStorage;
+  private _linkedList: Yallist<Entry>;
+  private _cache: Map<string, Yallist.Node<Entry>>;
+  private _store = localStorage;
   private _cacheKey = '__lru__cache';
-  private _max: number;
+  private _maxSize: number;
   private _maxAge: number;
   private _getEntryLength: GetEntryLengthFn;
 
   constructor({
-    max = Infinity,
+    maxSize: max = Infinity,
     maxAge = 0,
     getEntryLength = naiveEntryLength,
   }: LRUStorageOptions = {}) {
-    this._getEntryLength = getEntryLength;
     if (Number.isFinite(max) && (!Number.isInteger(max) || max < 0)) {
       throw TypeError(
         `Invalid max option: ${max}, must be a positive integer.`
       );
     }
-    this._max = max;
-
+    this._maxSize = max;
     if (!Number.isInteger(maxAge) || maxAge < 0) {
       throw TypeError(
         `Invalid maxAge option: ${maxAge}, must be a positive integer.`
       );
     }
     this._maxAge = maxAge;
+    this._getEntryLength = getEntryLength;
+    this._linkedList = this._createLruListFromStorage();
+    this._cache = this._createCacheFromLruList();
   }
 
   get length(): number {
-    const cache = this._getCache();
-    return Object.values(cache).reduce(
-      (length, entry) => length + entry.value.length,
-      0
-    );
+    let length = 0;
+    for (const { value } of this._cache.values()) {
+      length += value.length;
+    }
+    return length;
   }
 
   get count(): number {
-    const cache = this._getCache();
-    return Object.keys(cache).length;
+    return this._linkedList.length;
   }
 
   get(key: string): unknown {
-    const hit = this._findEntry(key);
-    if (hit == null) {
-      throw new Error(`Invalid cache key: ${key}`);
+    const node = this._cache.get(key);
+    if (node == null) {
+      return null;
     }
-    return hit.value;
-  }
 
-  has(key: string): boolean {
-    const hit = this._findEntry(key);
-    return hit != null;
+    if (this._isStale(node.value)) {
+      this.delete(node.value.key);
+      return null;
+    }
+
+    const entry = node.value;
+    entry.lastUsageAt = Date.now();
+    this._linkedList.unshiftNode(node);
+    return entry.value;
   }
 
   set(key: string, value: unknown): void {
-    const hit = new Entry({
+    const now = Date.now();
+
+    if (this.has(key)) {
+      const node = this._cache.get(key);
+
+      if (this._calculateLength(node.value) > this._maxSize) {
+        return this.delete(key);
+      }
+
+      node.value.value = value;
+      node.value.lastUsageAt = now;
+      this._linkedList.unshiftNode(node);
+      return this._flush();
+    }
+
+    const entry = new Entry({
       key,
       value,
       length: 1,
-      createdAt: Date.now(),
+      lastUsageAt: now,
     });
-    this._lruList.unshift(hit);
-    const cache: Cache = {
-      [key]: this._lruList.head,
-      ...this._getCache(),
-    };
-    this._saveCache(cache);
+
+    this._linkedList.unshift(entry);
+    this._cache.set(key, this._linkedList.head);
+    this._flush();
+  }
+
+  has(key: string): boolean {
+    const node = this._cache.get(key);
+    return node != null && !this._isStale(node.value);
   }
 
   delete(key: string): void {
-    const cache = this._getCache();
-    const { [key]: node, ...rest } = cache;
-    this._lruList.removeNode(node);
-    this._saveCache(rest);
+    const node = this._cache.get(key);
+    this._linkedList.removeNode(node);
+    this._cache.delete(key);
+    this._flush();
   }
 
   forEach(fn: (entry: Entry, key: string) => void): void {
-    this._lruList.forEach((entry) => fn(entry, entry.key));
+    this._linkedList.forEach((entry) => fn(entry, entry.key));
   }
 
   keys(): string[] {
-    return this._lruList.map((entry) => entry.key).toArray();
+    return this._linkedList.map((entry) => entry.key).toArray();
   }
 
   values(): unknown[] {
-    return this._lruList.map((entry) => entry.value).toArray();
+    return this._linkedList.map((entry) => entry.value).toArray();
   }
 
   reset(): void {
-    this._cache.removeItem(this._cacheKey);
-    this._lruList = new Yallist<Entry>();
+    this._store.removeItem(this._cacheKey);
+    this._linkedList = new Yallist<Entry>();
+  }
+
+  private _calculateLength(entry: Entry): number {
+    const entryLength = this._getEntryLength(entry);
+    const length = this.length + entryLength;
+    return length;
+  }
+
+  private _isStale(entry: Entry): boolean {
+    const node = this._cache.get(entry.key);
+    const diff = Date.now() - node.value.lastUsageAt;
+    return this._maxAge !== 0 && diff > this._maxAge;
   }
 
   private _trim(): void {
-    if (this.length > this._max) {
-      let walker = this._lruList.tail;
-      while (this.length > this._max && walker != null) {
+    if (this.length > this._maxSize) {
+      let walker = this._linkedList.tail;
+      while (this.length > this._maxSize && walker !== null) {
         const prev = walker.prev;
         this.delete(walker.value.key);
         walker = prev;
@@ -133,24 +168,31 @@ export class LRUStorage {
     }
   }
 
-  private _saveCache(cache: Cache): void {
-    this._cache.setItem(this._cacheKey, JSON.stringify(cache));
+  private _flush(): void {
+    const cache: Cache = { entries: this._linkedList.toArray() };
+    this._store.setItem(this._cacheKey, JSON.stringify(cache));
     this._trim();
   }
 
-  private _findEntry(key: string): Entry | null {
-    const cache = this._getCache();
-    const hit = cache[key] ?? null;
-    return hit.value;
+  private _getCacheFromStorage(): Cache {
+    const raw = this._store.getItem(this._cacheKey);
+    const cache = JSON.parse(raw);
+    return cache ?? { entries: [] };
   }
 
-  private _getCache(): Cache {
-    const raw = this._cache.getItem(this._cacheKey);
-    const cache = this._parse(raw);
+  private _createLruListFromStorage(): Yallist<Entry> {
+    const cache = this._getCacheFromStorage();
+    return new Yallist<Entry>(cache.entries);
+  }
+
+  private _createCacheFromLruList(): Map<string, Yallist.Node<Entry>> {
+    const cache = new Map();
+    let walker = this._linkedList.tail;
+    while (walker !== null) {
+      const prev = walker.prev;
+      cache.set(walker.value.key, walker);
+      walker = prev;
+    }
     return cache;
-  }
-
-  private _parse(cache: string): Cache {
-    return JSON.parse(cache) as Cache;
   }
 }
