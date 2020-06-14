@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ConvoyrModule } from '@convoyr/angular';
 import { createAuthPlugin } from '@convoyr/plugin-auth';
-import { createCachePlugin } from '@convoyr/plugin-cache';
+import { createCachePlugin, LocalStorage } from '@convoyr/plugin-cache';
 import { createRetryPlugin } from '@convoyr/plugin-retry';
 import { AuthService } from '../auth/auth.service';
 import { createLoggerPlugin } from './create-logger-plugin';
@@ -20,7 +20,7 @@ import { rejectUnknownOriginsPlugin } from './reject-unknown-origins-plugin';
           plugins: [
             rejectUnknownOriginsPlugin,
             createLoggerPlugin(),
-            createCachePlugin(),
+            createCachePlugin({ storage: new LocalStorage() }),
             createRetryPlugin(),
             createAuthPlugin({
               token: auth.token$,

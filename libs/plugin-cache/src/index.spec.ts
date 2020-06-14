@@ -4,5 +4,6 @@ describe('Public API', () => {
   it('should expose the cache plugin', () => {
     expect(publicApi.createCachePlugin).toBeDefined();
     expect(publicApi.MemoryStorage).toBeDefined();
+    expect(publicApi.LocalStorage).toBeDefined();
   });
 });
