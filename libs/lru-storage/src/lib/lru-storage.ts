@@ -71,7 +71,7 @@ export class LRUStorage {
     return this._linkedList.length;
   }
 
-  get(key: string): unknown {
+  get<T = unknown>(key: string): T {
     const node = this._cache.get(key);
     if (node == null) {
       return null;
@@ -85,7 +85,8 @@ export class LRUStorage {
     const entry = node.value;
     entry.lastUsageAt = Date.now();
     this._linkedList.unshiftNode(node);
-    return entry.value;
+
+    return entry.value as T;
   }
 
   set(key: string, value: unknown): void {
@@ -126,25 +127,6 @@ export class LRUStorage {
     this._linkedList.removeNode(node);
     this._cache.delete(key);
     this._flush();
-  }
-
-  forEach(fn: (entry: unknown, key: string) => void): void {
-    let walker = this._linkedList.head;
-    while (walker !== null) {
-      let entry = walker.value;
-      const next = walker.next;
-
-      if (this._isStale(walker.value)) {
-        this.delete(walker.value.key);
-        entry = null;
-      }
-
-      entry.lastUsageAt = Date.now();
-      this._linkedList.unshiftNode(walker);
-
-      fn(entry.value, entry.key);
-      walker = next;
-    }
   }
 
   keys(): string[] {
