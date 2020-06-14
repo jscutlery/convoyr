@@ -128,8 +128,23 @@ export class LRUStorage {
     this._flush();
   }
 
-  forEach(fn: (entry: Entry, key: string) => void): void {
-    this._linkedList.forEach((entry) => fn(entry, entry.key));
+  forEach(fn: (entry: unknown, key: string) => void): void {
+    let walker = this._linkedList.head;
+    while (walker !== null) {
+      let entry = walker.value;
+      const next = walker.next;
+
+      if (this._isStale(walker.value)) {
+        this.delete(walker.value.key);
+        entry = null;
+      }
+
+      entry.lastUsageAt = Date.now();
+      this._linkedList.unshiftNode(walker);
+
+      fn(entry.value, entry.key);
+      walker = next;
+    }
   }
 
   keys(): string[] {
@@ -141,6 +156,7 @@ export class LRUStorage {
   }
 
   reset(): void {
+    this._cache = new Map();
     this._store.removeItem(this._cacheKey);
     this._linkedList = new Yallist<Entry>();
   }
