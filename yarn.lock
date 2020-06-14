@@ -2935,6 +2935,11 @@
     "@types/source-list-map" "*"
     source-map "^0.6.1"
 
+"@types/yallist@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/yallist/-/yallist-3.0.1.tgz#3f43dac55d779e3058ba10334659d9fbb373807c"
+  integrity sha512-nky1uSaFye8rZctRgEd+hC0rNZuDDH49DwOHdSIvgiRZPERVvcEFfV3kUReE60GMFNjG1z8x9ncSb+WKj3cMcA==
+
 "@types/yargs-parser@*":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-15.0.0.tgz#cb3f9f741869e20cce330ffbeb9271590483882d"

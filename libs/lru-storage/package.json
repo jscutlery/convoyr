@@ -1,4 +1,12 @@
 {
-  "name": "@convoyr/lru-storage",
-  "version": "0.0.1"
+  "name": "lru-storage",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "yallist": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/yallist": "^3.0.1"
+  }
 }
