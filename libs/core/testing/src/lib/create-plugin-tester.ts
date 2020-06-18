@@ -51,9 +51,6 @@ export class PluginTester {
       plugins: [plugin],
     });
 
-    /* Mock error logging in test environment to not pollute console output. */
-    (convoyr as any)._logErrorNotification = jest.fn();
-
     return convoyr;
   }
 }

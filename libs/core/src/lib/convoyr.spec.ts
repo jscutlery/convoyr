@@ -141,7 +141,6 @@ describe('Convoyr', () => {
       });
 
       const convoyr = new Convoyr({ plugins: [plugin] });
-      (convoyr as any)._logErrorNotification = jest.fn();
 
       const response$ = convoyr.handle({
         request,
@@ -154,9 +153,6 @@ describe('Convoyr', () => {
       expect(observerSpy.getError()).toEqual(
         invalidPluginConditionError(typeof '')
       );
-      expect((convoyr as any)._logErrorNotification).toHaveBeenCalledWith(
-        invalidPluginConditionError(typeof '')
-      );
     });
 
     it('should handle matcher error when used with an invalid argument', () => {
@@ -167,7 +163,6 @@ describe('Convoyr', () => {
       });
 
       const convoyr = new Convoyr({ plugins: [plugin] });
-      (convoyr as any)._logErrorNotification = jest.fn();
 
       const response$ = convoyr.handle({
         request,
@@ -179,9 +174,6 @@ describe('Convoyr', () => {
       expect(observerSpy.receivedNext()).toBe(false);
       expect(observerSpy.receivedError()).toBe(true);
       expect(observerSpy.getError()).toEqual(invalidOriginMatchExpression(42));
-      expect((convoyr as any)._logErrorNotification).toHaveBeenCalledWith(
-        invalidOriginMatchExpression(42)
-      );
     });
   });
 });

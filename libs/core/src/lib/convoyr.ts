@@ -78,8 +78,7 @@ export class Convoyr {
         }
 
         return fromSyncOrAsync(handler.handle({ request, next }));
-      }),
-      tap({ error: this._logErrorNotification })
+      })
     );
   }
 
@@ -115,8 +114,4 @@ export class Convoyr {
       return throwError(error);
     }
   }
-
-  private _logErrorNotification = (error: any): void => {
-    console.error(error);
-  };
 }
