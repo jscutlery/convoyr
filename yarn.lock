@@ -6088,9 +6088,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.483:
-  version "1.3.484"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.484.tgz#75f5a1eee5fe3168758b7c2cf375ae73c1ccf5e6"
-  integrity sha512-esh5mmjAGl6HhAaYgHlDZme+jCIc+XIrLrBTwxviE+pM64UBmdLUIHLlrPzJGbit7hQI1TR/oGDQWCvQZ5yrFA==
+  version "1.3.487"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.487.tgz#8075e6ea33ee2e79a2dfb2a2467033f014017258"
+  integrity sha512-m4QS3IDShxauFfYFpnEzRCcUI55oKB9acEnHCuY/hSCZMz9Pz2KJj+UBnGHxRxS/mS1aphqOQ5wI6gc3yDZ7ew==
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -7874,9 +7874,11 @@ init-package-json@^1.10.3:
     validate-npm-package-name "^3.0.0"
 
 injection-js@^2.2.1:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/injection-js/-/injection-js-2.3.0.tgz#56d807282dfaf2f9663f45373c4206d7793c5dd6"
-  integrity sha512-rhS6E5jv603kbaO72ylOt0hGF1LT03oqQ4GU5KOO0qSaRbIWmdUCHjXq+VT79jL6/NmXtw9ccfK6dh/CzjoYjA==
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/injection-js/-/injection-js-2.3.1.tgz#c6b7594ab0bd5da73eb8ea246fe19d98d74508cc"
+  integrity sha512-t+kpDAOL/DUZ68JncAhsb8C91qhJ6dXRMcOuvJfNA7sp63etdiQe6KQoxE/nZ5b2eTi0TQX6OothOCm89cLAJQ==
+  dependencies:
+    tslib "^1.9.3"
 
 inquirer@7.1.0:
   version "7.1.0"
@@ -9189,9 +9191,9 @@ listr-verbose-renderer@^0.5.0:
     figures "^2.0.0"
 
 listr2@^2.1.0:
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/listr2/-/listr2-2.1.9.tgz#ec4ba417831197f71f63d716ff8869b292be096b"
-  integrity sha512-29IJuXMIDV6GYAW3SGfRl56EInP2Hr7gk4GNUPjUFkSq6jpKHqr5OpH3z8r6yj0XvHBIkhFSE14ytFoBLBfCLA==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/listr2/-/listr2-2.2.0.tgz#cb88631258abc578c7fb64e590fe5742f28e4aac"
+  integrity sha512-Q8qbd7rgmEwDo1nSyHaWQeztfGsdL6rb4uh7BA+Q80AZiDET5rVntiU1+13mu2ZTDVaBVbvAD1Db11rnu3l9sg==
   dependencies:
     chalk "^4.0.0"
     cli-truncate "^2.1.0"
@@ -13851,7 +13853,7 @@ tslib@2.0.0, tslib@^2.0.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.0.tgz#18d13fc2dce04051e20f074cc8387fd8089ce4f3"
   integrity sha512-lTqkx847PI7xEDYJntxZH89L2/aXInsyF2luSafe/+0fHOMjlBNXdH6th7f70qxLDhul7KZK0zC8V5ZIyHl0/g==
 
-tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
   integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
