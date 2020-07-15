@@ -161,10 +161,12 @@
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-9.1.12.tgz#1c9c1a792be4b52b196cab1e5c88bd319b60716d"
   integrity sha512-tphpf9QHnOPoL2Jl7KpR+R5aHNW3oifLEmRUTajJYJGvo1uzdUDE82+V9OGOinxJsYseCth9gYJhN24aYTB9NA==
 
-"@angular/cdk@^9.2.0":
-  version "9.2.4"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-9.2.4.tgz#8413958bd275e4c34be3b96f56444671dd30ba93"
-  integrity sha512-iw2+qHMXHYVC6K/fttHeNHIieSKiTEodVutZoOEcBu9rmRTGbLB26V/CRsfIRmA1RBk+uFYWc6UQZnMC3RdnJQ==
+"@angular/cdk@^10.0.0":
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-10.0.2.tgz#9d2770fc4ed6ccdaf1088cc8c68bcb9d28cb4c9c"
+  integrity sha512-ZvZkeh7qXllAGSOFvWSYurCslflTmB0JD3gonmUKOBl/O/AcOTPntP+iOrUaC3+eR3ohsfL5SswxChW0NF+oHQ==
+  dependencies:
+    tslib "^2.0.0"
   optionalDependencies:
     parse5 "^5.0.0"
 
@@ -252,10 +254,12 @@
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-9.1.12.tgz#c61392c0615654810cf99ee7ff46335bd0f2660b"
   integrity sha512-0qfIAn5fP5lD+JW6il5HBHGS89rv+idRv5aooDkHqBhuBo4V2VuB1wNy5eP49GZbHKMW1xPAzv1MqeMdk+zwQA==
 
-"@angular/material@^9.2.0":
-  version "9.2.4"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-9.2.4.tgz#2666ef606fbb88d60f8e2f18c5e4f94a3dd572d8"
-  integrity sha512-LkoTXE6B0slvMhvfZDdPWaz4yaYLkaAp5VSPunI9pxGsPxzqEV9e210wC1/sjG/76Nk8Ep7/2z9XKac8Q9bMwA==
+"@angular/material@^10.0.0":
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-10.0.2.tgz#a240d6324c29508f716e1b61d005b0f8aca0bb47"
+  integrity sha512-xG8lCG+QS+r61aDoBauH6RyNuOHai4yxhn3e8cb2ua86liarJmF9jqlW0tB49tE1ZLz9U/+ybJKkos2kX1eF1Q==
+  dependencies:
+    tslib "^2.0.0"
 
 "@angular/platform-browser-dynamic@^9.1.0":
   version "9.1.12"
