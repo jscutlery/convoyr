@@ -2507,7 +2507,7 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@nrwl/angular@^10.0.0":
+"@nrwl/angular@^10.1.0":
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@nrwl/angular/-/angular-10.1.0.tgz#ce7db854d6b619b58a07fa0449f0642e0763b558"
   integrity sha512-gLfPLnQ0n7uNFp9SRIUI9viU23863XnBE3+RWu5yqQiwqt7ZoWikTV/serOsmzSEfseiV29wUqzwlW3Xpj6y6A==
@@ -2543,7 +2543,7 @@
     tsconfig-paths-webpack-plugin "3.2.0"
     webpack-node-externals "1.7.2"
 
-"@nrwl/express@^10.0.0":
+"@nrwl/express@^10.1.0":
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@nrwl/express/-/express-10.1.0.tgz#06e7459e20de4a742a32b566401e361bb91501d1"
   integrity sha512-XO3TekI+E6cMocQCBigFc8CnkWVNRLXIkpvl5t3eBApaoiJaBjUhLeD1LH3tC+b9rsWFkga8qYW4bbBMEWLMFA==
