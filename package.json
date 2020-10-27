@@ -80,7 +80,7 @@
     "codelyzer": "^6.0.0",
     "cypress": "4.12.1",
     "dotenv": "8.2.0",
-    "eslint": "7.12.0",
+    "eslint": "7.12.1",
     "husky": "^4.0.0",
     "jest": "25.5.4",
     "jest-date-mock": "^1.0.8",
