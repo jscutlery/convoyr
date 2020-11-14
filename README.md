@@ -41,7 +41,7 @@ yarn add @convoyr/core @convoyr/angular # or npm install @convoyr/core @convoyr/
 2. Install plugins packages.
 
 ```bash
-yarn add @convoyr/plugin-cache @convoyr/plugin-retry @convoyr/plugin-auth # or npm install @convoyr/plugin-cache @convoyr/plugin-retry @convoyr/plugin-auth
+yarn add @convoyr/plugin-cache @convoyr/plugin-retry # or npm install @convoyr/plugin-cache @convoyr/plugin-retry
 ```
 
 3. Import the module and define plugins you want to use.
@@ -50,43 +50,29 @@ yarn add @convoyr/plugin-cache @convoyr/plugin-retry @convoyr/plugin-auth # or n
 import { ConvoyrModule } from '@convoyr/angular';
 import { createCachePlugin } from '@convoyr/plugin-cache';
 import { createRetryPlugin } from '@convoyr/plugin-retry';
-import { createRetryPlugin } from '@convoyr/plugin-auth';
-import { AuthService } from './auth/auth.service';
 
 @NgModule({
-  declarations: [AppComponent],
   imports: [
-    BrowserModule,
-    HttpClientModule,
     ConvoyrModule.forRoot({
-      deps: [AuthService],
-      config(authService: AuthService) {
-        return {
-          plugins: [
-            createCachePlugin(),
-            createRetryPlugin(),
-            createAuthPlugin({
-              token: authService.getToken(),
-            }),
-          ],
-        };
-      },
+      plugins: [
+        createCachePlugin(), /* 👈🏻 Cache network requests */
+        createRetryPlugin(), /* 👈🏻 Retry failed requests */
+      ],
     }),
-  ],
-  bootstrap: [AppComponent],
+  ]
 })
 export class AppModule {}
 ```
 
 # How It Works
 
-The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](#built-in-plugins) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](./docs/custom-plugin#implementing-custom-plugins) for handling custom behaviors. Learn more about [convoyr](https://www.codamit.dev/introducing-convoyr).
+The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](#built-in-plugins) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](./docs/custom-plugin.md#implementing-custom-plugins) for handling custom behaviors. Learn more about [convoyr](https://www.codamit.dev/introducing-convoyr).
 
 ## Demo
 
 Checkout the [demo app workspace](./apps/sandbox) for a concrete example.
 
-# Built-in Plugins
+## Built-in Plugins
 
 This project is a monorepo that includes the following packages.
 
@@ -96,11 +82,11 @@ This project is a monorepo that includes the following packages.
 | [@convoyr/plugin-cache](./libs/plugin-cache) | Cache plugin | Respond with cached results first then with fresh data when ready |
 | [@convoyr/plugin-retry](./libs/plugin-retry) | Retry plugin | Retry failed requests with exponential backoff                    |
 
-# Custom Plugins
+## Custom Plugins
 
-You can write your own [custom plugins](./docs/custom-plugin).
+Follow the guide to [create your own custom plugins](./docs/custom-plugin.md).
 
-# Core Packages
+## Core Packages
 
 This project is a monorepo that includes the following packages in addition to the [built-in plugins above](#built-in-plugins).
 
