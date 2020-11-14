@@ -22,7 +22,7 @@
 
 Enriching HTTP clients with capabilities related to **security**, **performance** or **resilience** is a common need but it is also an error-prone and sometimes complex task.
 
-🎯 **Convoyr** has been built with one goal in mind: helping you focus on your apps' features instead of the transport layer's boilerplate and matters... and without any trade-off.
+**Convoyr** has been built with one goal in mind: helping you focus on your apps' features instead of the transport layer's boilerplate and matters... and without any trade-off.
 
 - 🅰️ **Convoyr** is **Angular-ready** and makes [interceptors](https://angular.io/api/common/http/HttpInterceptor) implementation safe and easy,
 - ⚡️ **Convoyr** is **fully reactive** and based on [RxJS](https://rxjs-dev.firebaseapp.com/),
@@ -55,8 +55,8 @@ import { createRetryPlugin } from '@convoyr/plugin-retry';
   imports: [
     ConvoyrModule.forRoot({
       plugins: [
-        createCachePlugin(), /* 👈🏻 Cache network requests */
-        createRetryPlugin(), /* 👈🏻 Retry failed requests */
+        createCachePlugin(),
+        createRetryPlugin(),
       ],
     }),
   ]
@@ -66,13 +66,9 @@ export class AppModule {}
 
 # How It Works
 
-The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an _HttpInterceptor_ a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](#built-in-plugins) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](./docs/custom-plugin.md#implementing-custom-plugins) for handling custom behaviors. Learn more about [convoyr](https://www.codamit.dev/introducing-convoyr).
+The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an `HttpInterceptor` a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](#built-in-plugins) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](./docs/custom-plugin.md#implementing-custom-plugins) for handling custom behaviors.
 
-## Demo
-
-Checkout the [demo app workspace](./apps/sandbox) for a concrete example.
-
-## Built-in Plugins
+# Built-in Plugins
 
 This project is a monorepo that includes the following packages.
 
@@ -82,18 +78,16 @@ This project is a monorepo that includes the following packages.
 | [@convoyr/plugin-cache](./libs/plugin-cache) | Cache plugin | Respond with cached results first then with fresh data when ready |
 | [@convoyr/plugin-retry](./libs/plugin-retry) | Retry plugin | Retry failed requests with exponential backoff                    |
 
-## Custom Plugins
+# Custom Plugins
 
 Follow the guide to [create your own custom plugins](./docs/custom-plugin.md).
 
-## Core Packages
+# Resources
 
-This project is a monorepo that includes the following packages in addition to the [built-in plugins above](#built-in-plugins).
+Here is a list of useful resources related to Convoyr.
 
-| Name                               | Description    |
-| ---------------------------------- | -------------- |
-| [@convoyr/core](./libs/core)       | Core           |
-| [@convoyr/angular](./libs/angular) | Angular module |
+- 📝 Blog post [Introducing Convoyr, the reactive HTTP extensions for Angular](https://www.codamit.dev/introducing-convoyr)
+- 📝 Blog post [Plugin Testing in Convoyr](https://www.codamit.dev/plugin-testing-in-convoyr)
 
 # Roadmap
 
