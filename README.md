@@ -66,7 +66,9 @@ export class AppModule {}
 
 # How It Works
 
-The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an `HttpInterceptor` a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. The library comes with a built-in [plugin collection](#built-in-plugins) to provide useful behaviors for your apps and to tackle the need to rewrite redundant logic between projects. It's also possible to [create your own plugin](./docs/custom-plugin.md#implementing-custom-plugins) for handling custom behaviors.
+The main building block is the plugin. A plugin is a simple object that lets you intercept network communications and control or transform them easily. Like an [`HttpInterceptor`](https://angular.io/api/common/http/HttpInterceptor) a plugin may transform outgoing request and the response stream as well before passing it to the next plugin. 
+
+Convoyr comes with its built-in plugin collection to provide useful features to your apps and to tackle the need to rewrite redundant logic between projects.
 
 # Built-in Plugins
 
@@ -86,8 +88,8 @@ Follow the guide to [create your own custom plugins](./docs/custom-plugin.md).
 
 Here is a list of useful resources related to Convoyr.
 
-- 📝 Blog post [Introducing Convoyr, the reactive HTTP extensions for Angular](https://www.codamit.dev/introducing-convoyr)
-- 📝 Blog post [Plugin Testing in Convoyr](https://www.codamit.dev/plugin-testing-in-convoyr)
+- 📝 [Introducing Convoyr, the reactive HTTP extensions for Angular](https://www.codamit.dev/introducing-convoyr)
+- 📝 [Plugin Testing in Convoyr](https://www.codamit.dev/plugin-testing-in-convoyr)
 
 # Roadmap
 
