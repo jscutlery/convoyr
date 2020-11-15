@@ -117,7 +117,7 @@ describe('AuthPlugin', () => {
   it('should call onUnauthorized callback on 401 response', async () => {
     const token$ = of('TOKEN');
     const onUnauthorizedSpy = jest.fn();
-    const observerSpy = new ObserverSpy();
+    const observerSpy = new ObserverSpy({ expectErrors: true });
 
     const pluginTester = createPluginTester({
       plugin: createAuthPlugin({

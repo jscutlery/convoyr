@@ -8,7 +8,7 @@ describe('rejectUnknownOriginsPlugin', () => {
   let observerSpy: ObserverSpy<ConvoyrResponse>;
 
   beforeEach(() => {
-    observerSpy = new ObserverSpy();
+    observerSpy = new ObserverSpy({ expectErrors: true });
     pluginTester = createPluginTester({
       plugin: rejectUnknownOriginsPlugin,
     });

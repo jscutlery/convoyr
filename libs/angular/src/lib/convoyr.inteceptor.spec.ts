@@ -27,7 +27,7 @@ describe('ConvoyrInterceptor', () => {
 
   beforeEach(() => {
     interceptor = new ConvoyrInterceptor({ plugins: [] });
-    observerSpy = new ObserverSpy();
+    observerSpy = new ObserverSpy({ expectErrors: true });
     convoyr = interceptor['_convoyr'];
 
     /* Mock `Convoyr.handle`. */
