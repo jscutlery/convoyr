@@ -90,6 +90,7 @@ Here is a list of useful resources related to Convoyr.
 
 - 📝 [Introducing Convoyr, the reactive HTTP extensions for Angular](https://www.codamit.dev/introducing-convoyr)
 - 📝 [Plugin Testing in Convoyr](https://www.codamit.dev/plugin-testing-in-convoyr)
+- 📝 [Spice Up your Caching with Convoyr](https://medium.com/marmicode/spice-up-your-caching-with-convoyr-d79347809110)
 
 # Roadmap
 
