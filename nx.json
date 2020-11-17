@@ -13,9 +13,7 @@
     },
     "sandbox": {
       "tags": [],
-      "implicitDependencies": [
-        "sandbox-api"
-      ]
+      "implicitDependencies": ["sandbox-api"]
     },
     "core": {
       "tags": []
@@ -34,22 +32,6 @@
     },
     "plugin-auth": {
       "tags": []
-    }
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/nx-cloud",
-      "options": {
-        "accessToken": "NTU2ZDQ1YWQtOTMyMS00ODFhLWI0YjUtZTA4NjgwYTZmZDE5fHJlYWQtd3JpdGU=",
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "e2e"
-        ],
-        "canTrackAnalytics": false,
-        "showUsageWarnings": true
-      }
     }
   }
 }
