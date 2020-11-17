@@ -72,7 +72,7 @@ import { createCachePlugin, MemoryStorage } from '@convoyr/plugin-cache';
 export class AppModule {}
 ```
 
-To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/convoyr#conditional-handling).
+To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/convoyr/blob/master/docs/custom-plugin.md#conditional-handling).
 
 ### Metadata
 
