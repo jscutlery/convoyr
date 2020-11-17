@@ -24,10 +24,6 @@ import { rejectUnknownOriginsPlugin } from './reject-unknown-origins-plugin';
             createLoggerPlugin(),
             createCachePlugin({
               addCacheMetadata: true,
-              shouldHandleRequest: and(
-                matchMethod('GET'),
-                matchPath('/api/bikes')
-              ),
             }),
             createRetryPlugin(),
             createAuthPlugin({
