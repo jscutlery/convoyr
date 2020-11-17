@@ -43,7 +43,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
               Menu
             </button>
             <img class="logo" src="/assets/logo.svg" alt="convoyr logo" />
-            <strong>Http-ext</strong>demo
+            Convoyr
           </span>
           <span class="signed-in" *ngIf="isAuthenticated$ | async">
             <img class="authorized" src="/assets/verified_user.svg" />
