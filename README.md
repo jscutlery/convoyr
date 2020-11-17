@@ -15,7 +15,7 @@
 </div>
 
 <p align="center">
-  Reactive <strong>HTTP extensions</strong> for Angular.
+  <strong>Modular HTTP extensions</strong> for Angular.
 </p>
 
 # Motivation
