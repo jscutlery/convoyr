@@ -99,7 +99,7 @@ export function createLoggerPlugin(): ConvoyrPlugin {
 }
 ```
 
-In this example the `handler` will be executed only if the URL includes `api.github.com`. Note that the `shouldHandleRequest` function is optional. Learn more about [conditional handling](https://github.com/jscutlery/convoyr#conditional-handling).
+In this example the `handler` will be executed only if the URL includes `api.github.com`. Note that the `shouldHandleRequest` function is optional. Learn more about [conditional handling](https://github.com/jscutlery/convoyr/blob/master/docs/custom-plugin.md#conditional-handling).
 
 The following example uses a class to implement the `PluginHandler` interface and an Observable for handling the response:
 

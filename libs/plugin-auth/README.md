@@ -67,4 +67,4 @@ You can give a partial configuration object it will be merged with default value
 | `onUnauthorized`      | `OnUnauthorized`     | No       | `undefined`   | A function executed when an unauthorized response is thrown.                                 |
 | `shouldHandleRequest` | `RequestCondition`   | No       | `undefined`   | Predicate function to know which request the plugin should handle.                           |
 
-To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/convoyr#conditional-handling).
+To know more about the `shouldHandleRequest` property check-out the [conditional handling section](https://github.com/jscutlery/convoyr/blob/master/docs/custom-plugin.md#conditional-handling).
