@@ -64,7 +64,7 @@ import { createRetryPlugin } from '@convoyr/plugin-retry';
 export class AppModule {}
 ```
 
-4. Check out [built-in plugins documentation](.#built-in-plugins) and learn how to configure them.
+4. Check out [built-in plugins documentation](./#built-in-plugins) and learn how to configure them.
 
 # How It Works
 
