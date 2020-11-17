@@ -6,8 +6,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { WithCacheMetadata } from '@convoyr/plugin-cache';
 import { Subscription } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
+import { map, pluck, startWith, switchMap, shareReplay } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Bike } from '../bike/bike';
@@ -26,10 +27,15 @@ import { BikeCardModule } from '../bike/bike-card.component';
         />
       </mat-form-field>
     </div>
-    <div fxLayout="row wrap" fxLayoutAlign="space-around">
+    <div
+      class="bikes"
+      fxLayout="row wrap"
+      fxLayoutAlign="space-around"
+      [class.is-from-cache]="isFromCache$ | async"
+    >
       <app-bike-card
         class="bike"
-        *ngFor="let bike of bikes"
+        *ngFor="let bike of bikes$ | async"
         [bike]="bike"
         [routerLink]="['/bikes', bike.id]"
       ></app-bike-card>
@@ -44,38 +50,42 @@ import { BikeCardModule } from '../bike/bike-card.component';
         margin: 10px;
       }
 
+      .bikes {
+        transition: filter 0.2s;
+      }
+
+      .is-from-cache {
+        filter: blur(1px) grayscale(80%);
+      }
+
       mat-form-field {
         margin-top: 8px;
       }
     `,
   ],
 })
-export class BikeSearchComponent implements OnInit, OnDestroy {
-  bikes: Bike[] = [];
+export class BikeSearchComponent {
   searchControl = new FormControl();
-
-  private _subscription: Subscription;
+  bikesResponse$ = this.searchControl.valueChanges.pipe(
+    startWith(''),
+    switchMap((query) =>
+      this.http.get<WithCacheMetadata<{ bikes: Bike[] }>>(
+        environment.apiBaseUrl + '/bikes',
+        {
+          params: {
+            q: query,
+          },
+        }
+      )
+    ),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+  bikes$ = this.bikesResponse$.pipe(map(({ data }) => data.bikes));
+  isFromCache$ = this.bikesResponse$.pipe(
+    map(({ cacheMetadata }) => cacheMetadata.isFromCache)
+  );
 
   constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this._subscription = this.searchControl.valueChanges
-      .pipe(
-        startWith(''),
-        switchMap((query) =>
-          this.http.get<{ bikes: Bike[] }>(environment.apiBaseUrl + '/bikes', {
-            params: {
-              q: query,
-            },
-          })
-        )
-      )
-      .subscribe(({ bikes }) => (this.bikes = bikes));
-  }
-
-  ngOnDestroy() {
-    this._subscription.unsubscribe();
-  }
 }
 
 @NgModule({

@@ -1,3 +1,5 @@
+import { and, matchMethod } from '@convoyr/core';
+import { matchPath } from './../../../../../libs/core/src/lib/matchers/match-path/match-path';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,7 +22,13 @@ import { rejectUnknownOriginsPlugin } from './reject-unknown-origins-plugin';
           plugins: [
             rejectUnknownOriginsPlugin,
             createLoggerPlugin(),
-            createCachePlugin(),
+            createCachePlugin({
+              addCacheMetadata: true,
+              shouldHandleRequest: and(
+                matchMethod('GET'),
+                matchPath('/api/bikes')
+              ),
+            }),
             createRetryPlugin(),
             createAuthPlugin({
               token: auth.token$,
@@ -28,7 +36,7 @@ import { rejectUnknownOriginsPlugin } from './reject-unknown-origins-plugin';
                 auth.setToken(undefined);
                 router.navigate(['signin']);
                 snackBar.open(
-                  "Unauthorized response handled. You've been redirect to the signin form.",
+                  `Unauthorized response handled. You've been redirect to the signin form.`,
                   'ok',
                   {
                     duration: 12000,

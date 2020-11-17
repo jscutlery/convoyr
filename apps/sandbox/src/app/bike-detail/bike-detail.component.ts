@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { WithCacheMetadata } from '@convoyr/plugin-cache';
 import { map, switchMap } from 'rxjs/operators';
 
 import { Bike } from '../bike/bike';
@@ -57,10 +58,11 @@ export class BikeDetailComponent {
   bike$ = this.route.paramMap.pipe(
     map((paramMap) => paramMap.get('bikeId')),
     switchMap((bikeId) =>
-      this.httpClient.get<Bike>(
+      this.httpClient.get<WithCacheMetadata<Bike>>(
         `${environment.apiBaseUrl}/bikes/${encodeURIComponent(bikeId)}`
       )
-    )
+    ),
+    map(({ data }) => data)
   );
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute) {}
