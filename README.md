@@ -55,14 +55,16 @@ import { createRetryPlugin } from '@convoyr/plugin-retry';
   imports: [
     ConvoyrModule.forRoot({
       plugins: [
-        createCachePlugin(),
-        createRetryPlugin(),
+        createCachePlugin(), // enable caching of all GET requests (Cf. @convoyr/plugin-cache)
+        createRetryPlugin(), // automatically retry failed requests (Cf. @convoyr/plugin-retry)
       ],
     }),
   ]
 })
 export class AppModule {}
 ```
+
+4. Check out [built-in plugins documentation](.#built-in-plugins) and learn how to configure them.
 
 # How It Works
 
