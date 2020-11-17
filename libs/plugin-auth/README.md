@@ -41,12 +41,15 @@ import { createAuthPlugin } from '@convoyr/plugin-auth';
     HttpClientModule,
     ConvoyrModule.forRoot({
       deps: [AuthService],
-      config: (authService: AuthService) =>
-        createAuthPlugin({
-          shouldHandleRequest: matchOrigin('https://secure-origin.com'),
-          token: authService.getToken(), // Returns an Observable<string>.
-          onUnauthorized: () => authService.markTokenExpired(),
-        }),
+      config: (authService: AuthService) => ({
+        plugins: [
+          createAuthPlugin({
+            shouldHandleRequest: matchOrigin('https://secure-origin.com'),
+            token: authService.getToken(), // Returns an Observable<string>.
+            onUnauthorized: () => authService.markTokenExpired(),
+          }),
+        ],
+      }),
     }),
   ],
   bootstrap: [AppComponent],
