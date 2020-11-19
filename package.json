@@ -6,7 +6,7 @@
     "ng": "ng",
     "nx": "nx",
     "start": "run-p start:*",
-    "start:app": "ng serve",
+    "start:app": "ng serve --hmr",
     "start:api": "ng serve sandbox-api",
     "build": "ng build",
     "test": "ng test",
