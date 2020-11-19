@@ -7,6 +7,9 @@
   "scripts": {
     "prepublishOnly": "ng build core --prod"
   },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "rxjs": "^6.5.4"
   }

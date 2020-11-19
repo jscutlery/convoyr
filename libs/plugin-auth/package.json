@@ -7,6 +7,9 @@
   "scripts": {
     "prepublishOnly": "ng build plugin-auth --prod"
   },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "@convoyr/core": ">= 3.0.0",
     "rxjs": "^6.5.4"
