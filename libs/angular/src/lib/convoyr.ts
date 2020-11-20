@@ -1,36 +1,82 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ConvoyrConfig, createRequest } from '@convoyr/core';
+import {
+  ConvoyrClient,
+  ConvoyrConfig,
+  ConvoyrRequest,
+  createRequest,
+  NextHandler,
+  RequestOptions,
+} from '@convoyr/core';
 import { Observable } from 'rxjs';
 
 import { ConvoyrService } from './convoyr.service';
 
-@Injectable({ providedIn: 'root' })
-export class Convoyr {
-  constructor(private _convoyr: ConvoyrService, private _http: HttpClient) {}
+@Injectable()
+export class Convoyr implements ConvoyrClient {
+  constructor(private _http: HttpClient, private _convoyr: ConvoyrService) {}
 
-  get<TBody = unknown>(
+  get<TBody>(
     url: string,
-    options: any,
-    config: ConvoyrConfig = { plugins: [] }
-  ) {
-    const httpHandler$ = this._http.get<TBody>(url, options);
-    return this._buildRequest(url, config, httpHandler$);
+    options?: Partial<RequestOptions>
+  ): Observable<TBody> {
+    return this._buildRequest({
+      url,
+      options,
+      httpHandler$: this._http.get<TBody>(url, options),
+    });
   }
 
-  private _buildRequest(
+  post<TBody>(
     url: string,
-    config: ConvoyrConfig,
-    httpHandler$
-  ): Observable<any> {
+    data: unknown,
+    options?: Partial<RequestOptions>
+  ): Observable<TBody> {
+    throw new Error('Method not implemented.');
+  }
+
+  put<TBody>(
+    url: string,
+    data: unknown,
+    options?: Partial<RequestOptions>
+  ): Observable<TBody> {
+    throw new Error('Method not implemented.');
+  }
+
+  patch<TBody>(
+    url: string,
+    data: unknown,
+    options?: Partial<RequestOptions>
+  ): Observable<TBody> {
+    throw new Error('Method not implemented.');
+  }
+
+  delete<TBody>(
+    url: string,
+    options?: Partial<RequestOptions>
+  ): Observable<TBody> {
+    throw new Error('Method not implemented.');
+  }
+
+  /* @todo improve typing */
+  private _buildRequest({
+    url,
+    options: { plugins, ...options },
+    httpHandler$,
+  }: {
+    url: string;
+    options: Partial<RequestOptions>;
+    httpHandler$;
+  }): Observable<any> {
+    const request = createRequest({ url, ...options });
+    const httpHandler = {
+      handle: () => httpHandler$,
+    };
+
     return this._convoyr.handle({
-      request: createRequest({ url }),
-      plugins: config.plugins,
-      httpHandler: {
-        handle() {
-          return httpHandler$;
-        },
-      },
+      request,
+      plugins,
+      httpHandler,
     });
   }
 }

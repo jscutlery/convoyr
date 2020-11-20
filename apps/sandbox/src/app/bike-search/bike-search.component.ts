@@ -75,8 +75,8 @@ export class BikeSearchComponent {
           params: {
             q: query,
           },
-        },
-        { plugins: [createLoggerPlugin()] }
+          plugins: [createLoggerPlugin()],
+        }
       )
     ),
     shareReplay({ bufferSize: 1, refCount: true })
