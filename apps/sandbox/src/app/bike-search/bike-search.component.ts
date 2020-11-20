@@ -5,13 +5,13 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { Convoyr } from '@convoyr/angular';
 import { WithCacheMetadata } from '@convoyr/plugin-cache';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Bike } from '../bike/bike';
 import { BikeCardModule } from '../bike/bike-card.component';
-import { ConvoyrClient } from '../http/convoyr-client';
 import { createLoggerPlugin } from '../http/create-logger-plugin';
 
 @Component({
@@ -86,7 +86,7 @@ export class BikeSearchComponent {
     map(({ cacheMetadata }) => cacheMetadata.isFromCache)
   );
 
-  constructor(private http: ConvoyrClient) {}
+  constructor(private http: Convoyr) {}
 }
 
 @NgModule({

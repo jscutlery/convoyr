@@ -1,12 +1,7 @@
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Convoyr, ConvoyrConfig } from '@convoyr/core';
 
-/**
- * @internal Global Convoyr configuration
- */
-export const _CONVOYR_CONFIG = new InjectionToken<ConvoyrConfig>(
-  'Convoyr Config'
-);
+import { _CONVOYR_CONFIG } from './convoyr.config';
 
 @Injectable()
 export class ConvoyrService extends Convoyr {

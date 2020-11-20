@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Convoyr, ConvoyrConfig, createRequest } from '@convoyr/core';
-import { ConvoyrService } from 'libs/angular/src/lib/convoyr.service';
+import { ConvoyrConfig, createRequest } from '@convoyr/core';
 import { Observable } from 'rxjs';
 
+import { ConvoyrService } from './convoyr.service';
+
 @Injectable({ providedIn: 'root' })
-export class ConvoyrClient {
+export class Convoyr {
   constructor(private _convoyr: ConvoyrService, private _http: HttpClient) {}
 
   get<TBody = unknown>(
