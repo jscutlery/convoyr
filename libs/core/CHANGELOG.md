@@ -1,7 +1,20 @@
-# Change Log
+# Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [5.0.0](https://github.com/jscutlery/convoyr/compare/v4.0.0...v5.0.0) (2020-12-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* **testing:** This breakes `PluginTester` references, the `mockHttpHandler` function should be renamed in `createHttpHandlerMock`.
+
+### Bug Fixes
+
+* **core:** 🐞 handle synchronous error and log notification ([1ec3f72](https://github.com/jscutlery/convoyr/commit/1ec3f723cf9a918c2ac8e3389328d47ed01a6a0f))
+
+
+* **testing:** 🛠  rename to `createHttpHandlerMock` fn ([03a3308](https://github.com/jscutlery/convoyr/commit/03a3308221f35c411b5359e5bc598214bcebcb95))
 
 # [4.0.0](https://github.com/jscutlery/convoyr/compare/v3.2.0...v4.0.0) (2020-05-30)
 
