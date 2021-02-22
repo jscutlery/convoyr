@@ -4599,7 +4599,12 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001032, caniuse-lite@^1.0.30001181:
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001181:
+  version "1.0.30001191"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001191.tgz#bacb432b6701f690c8c5f7c680166b9a9f0843d9"
+  integrity sha512-xJJqzyd+7GCJXkcoBiQ1GuxEiOBCLQ0aVW9HMekifZsAVGdj5eJ4mFB9fEhSHipq9IOk/QXFJUiIr9lZT+EsGw==
+
+caniuse-lite@^1.0.30001032:
   version "1.0.30001190"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001190.tgz#acc6d4a53c68be16cfc314d55c9cab637e558cba"
   integrity sha512-62KVw474IK8E+bACBYhRS0/L6o/1oeAVkpF2WetjV58S5vkzNh0/Rz3lD8D4YCbOTqi0/aD4X3LtoP7V5xnuAg==
@@ -8367,9 +8372,9 @@ is-utf8@^0.2.0:
   integrity sha1-Sw2hRCEE0bM2NA6AeX6GXPOffXI=
 
 is-what@^3.12.0:
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/is-what/-/is-what-3.13.0.tgz#4a2e207513eec14d97c0f5375f22e0e9b0f18131"
-  integrity sha512-qYTOcdAo0H0tvMTl9ZhsjpEZH5Q07JDVrPnFMAQgBM0UctGqVsKE7LgZPNZEFPw1EhUkpaBL/BKnRgVX7CoMTw==
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/is-what/-/is-what-3.14.1.tgz#e1222f46ddda85dead0fd1c9df131760e77755c1"
+  integrity sha512-sNxgpk9793nzSs7bA6JQJGeIuRBQhAaNGG77kzYQgMkrID+lS6SlK07K5LaptscDlSaIgH+GPFzf+d75FVxozA==
 
 is-windows@^1.0.0, is-windows@^1.0.2:
   version "1.0.2"
@@ -10092,9 +10097,9 @@ next-tick@~1.0.0:
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
 ng-packagr@^11.0.0:
-  version "11.2.2"
-  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-11.2.2.tgz#46370418d43c8663def3834ef14a1e7f63c19071"
-  integrity sha512-zCRjoXgmAGC3RNTJqr0tqH6i+o/IlRM87wv49el6dO2fyROSWNzggb9d+Lu5MS4p/Gba4kkNNwTTOfjvJbDXlg==
+  version "11.2.3"
+  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-11.2.3.tgz#7b59eecce6df0e72cc35b1a4bbca4aa5ddca6232"
+  integrity sha512-KBkKw5gMtmtxm4aC1Ley2HGnV/N3MaS4y1NOh3vTY+vgSFMNUbCuuSHDG5x6dGhUerk5RsaCUYuTSp94CeDigA==
   dependencies:
     "@rollup/plugin-commonjs" "^17.0.0"
     "@rollup/plugin-json" "^4.1.0"
