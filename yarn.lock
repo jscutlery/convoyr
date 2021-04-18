@@ -10452,9 +10452,9 @@ object-copy@^0.1.0:
     kind-of "^3.0.3"
 
 object-inspect@^1.9.0:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.10.1.tgz#b69d9494d35a56387bbaebbae61c55510d877a1a"
-  integrity sha512-WQUIkCSDPWm5ing/PTUkLr2KaOXX2uV/vz1hLGW2XbZ/RDUmtgcsOyEqA1ox0rkyNx9mJX4kxX+YWceje3pmag==
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.10.2.tgz#b6385a3e2b7cae0b5eafcf90cddf85d128767f30"
+  integrity sha512-gz58rdPpadwztRrPjZE9DZLOABUpTGdcANUgOwBFO1C+HZZhePoP83M65WGDmbpwFYJSWqavbl4SgDn4k8RYTA==
 
 object-is@^1.0.1:
   version "1.1.5"
@@ -12864,9 +12864,9 @@ socks-proxy-agent@^5.0.0:
     socks "^2.3.3"
 
 socks@^2.3.3:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.0.tgz#6b984928461d39871b3666754b9000ecf39dfac2"
-  integrity sha512-mNmr9owlinMplev0Wd7UHFlqI4ofnBnNzFuzrm63PPaHgbkqCFe4T5LzwKmtQ/f2tX0NTpcdVLyD/FHxFBstYw==
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.1.tgz#989e6534a07cf337deb1b1c94aaa44296520d30e"
+  integrity sha512-kLQ9N5ucj8uIcxrDwjm0Jsqk06xdpBjGNQtpXy4Q8/QY2k+fY7nZH8CARy+hkbG+SGAovmzzuauCpBlb8FrnBA==
   dependencies:
     ip "^1.1.5"
     smart-buffer "^4.1.0"
