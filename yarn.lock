@@ -7046,9 +7046,9 @@ flush-write-stream@^1.0.0:
     readable-stream "^2.3.6"
 
 follow-redirects@^1.0.0, follow-redirects@^1.10.0:
-  version "1.13.3"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
-  integrity sha512-DUgl6+HDzB0iEptNQEXLx/KhTmDb8tZUHSeLqpnjpknR70H0nC2t9N73BK6fN4hOvJ84pKlIQVQ4k5FFlBedKA==
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.0.tgz#f5d260f95c5f8c105894491feee5dc8993b402fe"
+  integrity sha512-0vRwd7RKQBTt+mgu87mtYeofLFZpTas2S9zY+jIeuLJMNvudIgF52nr19q40HOwH5RrhWIPuj9puybzSJiRrVg==
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -9284,9 +9284,9 @@ listr-verbose-renderer@^0.5.0:
     figures "^2.0.0"
 
 listr2@^3.2.2:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/listr2/-/listr2-3.7.1.tgz#ff0c410b10eb1c5c76735e4814128ec8f7d2b983"
-  integrity sha512-cNd368GTrk8351/ov/IV+BSwyf9sJRgI0UIvfORonCZA1u9UHAtAlqSEv9dgafoQIA1CgB3nu4No79pJtK2LHw==
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/listr2/-/listr2-3.8.0.tgz#40dcbcae83cca1005570ff0cc76cc35b51576d09"
+  integrity sha512-TWxRzND4v6UI+Fs3FrNohYcz48jyZUyzvSLgrGTe9TXKLf84T0EfjmP5e27p6e031q3VGl6vBbHdueGFUxgczQ==
   dependencies:
     chalk "^4.1.0"
     cli-truncate "^2.1.0"
