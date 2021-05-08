@@ -12766,10 +12766,10 @@ rxjs-for-await@0.0.2:
   resolved "https://registry.yarnpkg.com/rxjs-for-await/-/rxjs-for-await-0.0.2.tgz#26598a1d6167147cc192172970e7eed4e620384b"
   integrity sha512-IJ8R/ZCFMHOcDIqoABs82jal00VrZx8Xkgfe7TOKoaRPAW5nH/VFlG23bXpeGdrmtqI9UobFPgUKgCuFc7Lncw==
 
-rxjs-marbles@^6.0.0:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/rxjs-marbles/-/rxjs-marbles-6.0.1.tgz#aef219bd51e1e65caf811c267a05f729e04a1c8e"
-  integrity sha512-k9bqj3oRHDRIwnoetpifxXfWRM10Udd1RxgdYLltrE8FmRmKzaHLzxv8oabUlWhQj4/2sfHNR/y7UuhPIcODwA==
+rxjs-marbles@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/rxjs-marbles/-/rxjs-marbles-7.0.0.tgz#fc8c6d2db7ec54fce270ca9628d6ca7e8e7939b3"
+  integrity sha512-9wH5+5ZjMIu0KPcTS5l4Nut38IIXbtgleSTGLf1+DTSt5FtPtO1oaLt+uZO8u6DVFgxGcKZzomtqaCrEgcTaZg==
   dependencies:
     fast-equals "^2.0.0"
     rxjs-report-usage "^1.0.4"
