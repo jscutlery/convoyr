@@ -2891,12 +2891,12 @@
   resolved "https://registry.yarnpkg.com/@octokit/plugin-request-log/-/plugin-request-log-1.0.4.tgz#5e50ed7083a613816b1e4a28aeec5fb7f1462e85"
   integrity sha512-mLUsMkgP7K/cnFEw07kWqXGF5LKrOkD+lhCrKvPHXWDywAwuDUeDwWBpc69XK3pNX0uKiVt8g5z96PJ6z9xCFA==
 
-"@octokit/plugin-rest-endpoint-methods@5.3.3":
-  version "5.3.3"
-  resolved "https://registry.yarnpkg.com/@octokit/plugin-rest-endpoint-methods/-/plugin-rest-endpoint-methods-5.3.3.tgz#b447ed80126d36a9cf99daabb055bf0c157c8d89"
-  integrity sha512-xHlZK9gxVFP2YQYXOmR1ItCwl9k+0Z3cA40oGMQfpPbWIYY32FTM15Qj+V0V6oLJZr0E26Sz3VX6qYlM/ytfig==
+"@octokit/plugin-rest-endpoint-methods@5.3.4":
+  version "5.3.4"
+  resolved "https://registry.yarnpkg.com/@octokit/plugin-rest-endpoint-methods/-/plugin-rest-endpoint-methods-5.3.4.tgz#291dea5af9eecf4d457884d9efbcf72aabbaff57"
+  integrity sha512-2Y2q/FYCsW5tcwIqgnLOgzZXEb3I1VoSQGyHs/Zki/Ufs5H+uT0maPVHatLKw90LQbqK7ON8NpL3Y8IyzG6pNA==
   dependencies:
-    "@octokit/types" "^6.16.6"
+    "@octokit/types" "^6.16.7"
     deprecation "^2.3.1"
 
 "@octokit/request-error@^2.0.5", "@octokit/request-error@^2.1.0":
@@ -2921,16 +2921,16 @@
     universal-user-agent "^6.0.0"
 
 "@octokit/rest@^18.1.0":
-  version "18.6.2"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-18.6.2.tgz#181ef6a23f1e5977569f439bd256041dc9d5a696"
-  integrity sha512-q6nrxhM+oXzPmbZlykNaBP1vG0+mU6URLBy9cl4XXrWcD0k0ShYiaXDaPewbllTxoMevqv+OABb+Q7ycUWkE2A==
+  version "18.6.3"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-18.6.3.tgz#0283de05d5dbc9d3adcacb208c055db03000abf9"
+  integrity sha512-BeV2P48RR3MVPhSBq6KXXHMVHEJg5vnFBkFN1GKPXBohXTp+eb0gJq+5iYgkjbOMG6biNvkKllPDWJchpQHHiA==
   dependencies:
     "@octokit/core" "^3.5.0"
     "@octokit/plugin-paginate-rest" "^2.6.2"
     "@octokit/plugin-request-log" "^1.0.2"
-    "@octokit/plugin-rest-endpoint-methods" "5.3.3"
+    "@octokit/plugin-rest-endpoint-methods" "5.3.4"
 
-"@octokit/types@^6.0.3", "@octokit/types@^6.13.0", "@octokit/types@^6.16.1", "@octokit/types@^6.16.6":
+"@octokit/types@^6.0.3", "@octokit/types@^6.13.0", "@octokit/types@^6.16.1", "@octokit/types@^6.16.7":
   version "6.16.7"
   resolved "https://registry.yarnpkg.com/@octokit/types/-/types-6.16.7.tgz#f27e87daf7ed87bde3e67b2e71956468fa4d02a7"
   integrity sha512-OuQELiwIKeDySgNID52vm33wDRc2aaX8lKYgAw9Hmw939ITow1HspT8/AH3M3jgGFUMDmHlMNBNEmH7xV7ggXQ==
@@ -4737,9 +4737,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001032, caniuse-lite@^1.0.30001181, caniuse-lite@^1.0.30001219, caniuse-lite@^1.0.30001230:
-  version "1.0.30001239"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001239.tgz#66e8669985bb2cb84ccb10f68c25ce6dd3e4d2b8"
-  integrity sha512-cyBkXJDMeI4wthy8xJ2FvDU6+0dtcZSJW3voUF8+e9f1bBeuvyZfc3PNbkOETyhbR+dGCPzn9E7MA3iwzusOhQ==
+  version "1.0.30001240"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001240.tgz#ec15d125b590602c8731545c5351ff054ad2d52f"
+  integrity sha512-nb8mDzfMdxBDN7ZKx8chWafAdBp5DAAlpWvNyUGe5tcDWd838zpzDN3Rah9cjCqhfOKkrvx40G2SDtP0qiWX/w==
 
 canonical-path@1.0.0:
   version "1.0.0"
@@ -5634,15 +5634,15 @@ css-select@^2.0.0:
     domutils "^1.7.0"
     nth-check "^1.0.2"
 
-css-select@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/css-select/-/css-select-3.1.2.tgz#d52cbdc6fee379fba97fb0d3925abbd18af2d9d8"
-  integrity sha512-qmss1EihSuBNWNNhHjxzxSfJoFBM/lERB/Q4EnsJQQC62R2evJDW481091oAdOr9uh46/0n4nrg0It5cAnj1RA==
+css-select@^4.1.3:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/css-select/-/css-select-4.1.3.tgz#a70440f70317f2669118ad74ff105e65849c7067"
+  integrity sha512-gT3wBNd9Nj49rAbmtFHj1cljIAOLYSX1nZ8CB7TBO3INYckygm5B7LISU/szY//YmdiSLbJvDLOx9VnMVpMBxA==
   dependencies:
     boolbase "^1.0.0"
-    css-what "^4.0.0"
-    domhandler "^4.0.0"
-    domutils "^2.4.3"
+    css-what "^5.0.0"
+    domhandler "^4.2.0"
+    domutils "^2.6.0"
     nth-check "^2.0.0"
 
 css-selector-tokenizer@^0.7.1:
@@ -5674,10 +5674,10 @@ css-what@^3.2.1:
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-3.4.2.tgz#ea7026fcb01777edbde52124e21f327e7ae950e4"
   integrity sha512-ACUm3L0/jiZTqfzRM3Hi9Q8eZqd6IK37mMWPLz9PJxkLWllYeRf+EHUSHYEtFop2Eqytaq1FizFVh7XfBnXCDQ==
 
-css-what@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/css-what/-/css-what-4.0.0.tgz#35e73761cab2eeb3d3661126b23d7aa0e8432233"
-  integrity sha512-teijzG7kwYfNVsUh2H/YN62xW3KK9YhXEgSlbxMlcyjPNvdKJqFx5lrwlJgoFP1ZHlB89iGDlo/JyshKeRhv5A==
+css-what@^5.0.0:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/css-what/-/css-what-5.0.1.tgz#3efa820131f4669a8ac2408f9c32e7c7de9f4cad"
+  integrity sha512-FYDTSHb/7KXsWICVsxdmiExPjCfRC4qRFBdVwv7Ax9hMnvMmEjP9RfxTEZ3qPZGmADDn2vAKSo9UcN1jKVYscg==
 
 css@^2.0.0:
   version "2.2.4"
@@ -6277,7 +6277,7 @@ domexception@^2.0.1:
   dependencies:
     webidl-conversions "^5.0.0"
 
-domhandler@^4.0.0, domhandler@^4.2.0:
+domhandler@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-4.2.0.tgz#f9768a5f034be60a89a27c2e4d0f74eba0d8b059"
   integrity sha512-zk7sgt970kzPks2Bf+dwT/PLzghLnsivb9CcxkvR8Mzr66Olr0Ofd8neSbglHJHaHa2MadfoSdNlKYAaafmWfA==
@@ -6292,7 +6292,7 @@ domutils@^1.7.0:
     dom-serializer "0"
     domelementtype "1"
 
-domutils@^2.4.3:
+domutils@^2.6.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/domutils/-/domutils-2.7.0.tgz#8ebaf0c41ebafcf55b0b72ec31c56323712c5442"
   integrity sha512-8eaHa17IwJUPAiB+SoTYBo5mCdeMgdcAoXJ59m6DT1vw+5iLS3gNoqYaRowaBKtGVrOF1Jz4yDTgYKLK2kvfJg==
@@ -13831,14 +13831,14 @@ svgo@^1.0.0:
     util.promisify "~1.0.0"
 
 svgo@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/svgo/-/svgo-2.3.0.tgz#6b3af81d0cbd1e19c83f5f63cec2cb98c70b5373"
-  integrity sha512-fz4IKjNO6HDPgIQxu4IxwtubtbSfGEAJUq/IXyTPIkGhWck/faiiwfkvsB8LnBkKLvSoyNNIY6d13lZprJMc9Q==
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/svgo/-/svgo-2.3.1.tgz#603a69ce50311c0e36791528f549644ec1b3f4bc"
+  integrity sha512-riDDIQgXpEnn0BEl9Gvhh1LNLIyiusSpt64IR8upJu7MwxnzetmF/Y57pXQD2NMX2lVyMRzXt5f2M5rO4wG7Dw==
   dependencies:
     "@trysound/sax" "0.1.1"
     chalk "^4.1.0"
     commander "^7.1.0"
-    css-select "^3.1.2"
+    css-select "^4.1.3"
     css-tree "^1.1.2"
     csso "^4.2.0"
     stable "^0.1.8"
