@@ -2869,10 +2869,10 @@
     "@octokit/types" "^6.0.3"
     universal-user-agent "^6.0.0"
 
-"@octokit/openapi-types@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-8.0.0.tgz#fe2e45a12d881a59db6d8748af4f410b5b9b1873"
-  integrity sha512-h5ncO0VXac0tU6Rg3q60Q2+kru5CgjKVLB4zK9T0AFcVAC5dJDZOzN2cTd4wVitPG8ZWNeWUO2effO8hLqVxAw==
+"@octokit/openapi-types@^8.1.3":
+  version "8.1.3"
+  resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-8.1.3.tgz#45fbb4b0e5a5d61b21aeef7f33d345e05766236b"
+  integrity sha512-iK7SfjjkGdIiopuKEMAzPxSagZtIzWjwfYFBFxLKIS4Q4S8rSLQk7EnlTok2/bNAz1BvxnGKPKe+auSiCIU5QQ==
 
 "@octokit/plugin-enterprise-rest@^6.0.1":
   version "6.0.1"
@@ -2931,11 +2931,11 @@
     "@octokit/plugin-rest-endpoint-methods" "5.3.5"
 
 "@octokit/types@^6.0.3", "@octokit/types@^6.13.0", "@octokit/types@^6.16.1", "@octokit/types@^6.17.1":
-  version "6.17.2"
-  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-6.17.2.tgz#3d98fb01235328dc67968088a315f1b10305af23"
-  integrity sha512-JFqwEchHSfd/J9a0T2sIajjNG0t0JtlhiF2aWHHcNzPLurV/CpJ8vSSaOOPBdAhvhjPjV0e0o61e6cRhVWI1qw==
+  version "6.17.3"
+  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-6.17.3.tgz#af5aaae50bd9230ac502d288a937c0d8e9f2181a"
+  integrity sha512-l3JiWbtK95CTsHTuF8WpE0Raq9efWUUU88CiWiCxRgTsauUkIRmVYZoDZTwAHn1xAnPz0aezQynIo6igS9EqQA==
   dependencies:
-    "@octokit/openapi-types" "^8.0.0"
+    "@octokit/openapi-types" "^8.1.3"
 
 "@rollup/plugin-commonjs@^17.0.0":
   version "17.1.0"
