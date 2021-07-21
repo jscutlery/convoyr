@@ -14018,10 +14018,10 @@ ts-jest@26.x:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-jest@27.0.0:
-  version "27.0.0"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-27.0.0.tgz#b94dbad8f39276b583edc7712e6b3c29e16c8863"
-  integrity sha512-YhuEjDZz9ZjxKbUlgT3XtJb9lyditEjctlo1nLcn983my3Xz4BE3c2ogHhonmGlAdUUiGlz/Dq2KOMXmf1WHfA==
+ts-jest@27.0.4:
+  version "27.0.4"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-27.0.4.tgz#df49683535831560ccb58f94c023d831b1b80df0"
+  integrity sha512-c4E1ECy9Xz2WGfTMyHbSaArlIva7Wi2p43QOMmCqjSSjHP06KXv+aT+eSY+yZMuqsMi3k7pyGsGj2q5oSl5WfQ==
   dependencies:
     bs-logger "0.x"
     buffer-from "1.x"
