@@ -10239,9 +10239,9 @@ nan@^2.12.1:
   integrity sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
 
 nanocolors@^0.1.5:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.1.6.tgz#bc2350d3edfdbfadd7ac018c855ae7c13905a6ad"
-  integrity sha512-2pvTw6vYRaBLGir2xR7MxaJtyWkrn+C53EpW8yPotG+pdAwBvt0Xwk4VJ6VHLY0aLthVZPvDfm9TdZvrvAm5UQ==
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.1.7.tgz#211144a13c134b97ed7f748355236fad2c5dd92b"
+  integrity sha512-8MANP9oq4yChumsERNZJdD6HLM2C7ZuTurIW6li1h5FXnbHt8Er7B58pamrJ8Z/3Qo3Qf2W2d8gkaLRneNKvkA==
 
 nanoid@^3.1.23, nanoid@^3.1.25:
   version "3.1.25"
