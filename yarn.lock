@@ -13196,12 +13196,12 @@ sockjs@0.3.20:
     websocket-driver "0.6.5"
 
 sockjs@^0.3.21:
-  version "0.3.21"
-  resolved "https://registry.yarnpkg.com/sockjs/-/sockjs-0.3.21.tgz#b34ffb98e796930b60a0cfa11904d6a339a7d417"
-  integrity sha512-DhbPFGpxjc6Z3I+uX07Id5ZO2XwYsWOrYjaSeieES78cq+JaJvVe5q/m1uvjIQhXinhIeCFRH6JgXe+mvVMyXw==
+  version "0.3.22"
+  resolved "https://registry.yarnpkg.com/sockjs/-/sockjs-0.3.22.tgz#82fe78118aadbcf3d308de24281c2f490ec6b99b"
+  integrity sha512-zJ0Z5vCQ8izZ6Bulwi/aZ9MYxE8ZLfpKlWyYkM00oBAwPfn3FRu7lNpaQYzC/WJUCx5MeRzJLZgPrE5DiCqOcg==
   dependencies:
     faye-websocket "^0.11.3"
-    uuid "^3.4.0"
+    uuid "^8.3.2"
     websocket-driver "^0.7.4"
 
 socks-proxy-agent@^5.0.0:
